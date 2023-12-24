@@ -4,7 +4,7 @@ import Button from "@/components/Button";
 import Iconify from "@/components/Iconify";
 import { type Locale } from "@/i18n.config";
 import { GENDERS, ICONS } from "@/lib/constants";
-import { formatDateLong, formatName, isFileSizeAllowed, lozalizePhoneNumber, openToast } from "@/lib/utils";
+import { formatDateLong, formatName, isFileSizeAllowed, lozalizePhoneNumber, toast } from "@/lib/utils";
 import Link from "next/link";
 import { Fragment, useState } from "react";
 import ProfileForm from "./ProfileForm";
@@ -15,6 +15,7 @@ import { uploadFiles } from "@/lib/uploadthing";
 import Logo from "@/components/Logo";
 import { CloudUploadOutlined } from "@ant-design/icons";
 import Img from "@/components/Img";
+import { type Dictionary } from "@/lib/dictionary";
 
 type Props = {
   lang: Locale;
@@ -22,9 +23,10 @@ type Props = {
   user: User;
   updateUser: (data: UserUpdateInput) => Promise<TRPC_RESPONSE>;
   refreshUser: () => Promise<void>;
+  t: Dictionary;
 };
 
-export default function HomeContainer({ lang, user, updateUser, refreshUser }: Props) {
+export default function HomeContainer({ lang, user, updateUser, refreshUser, t }: Props) {
   const [isEdit, setIsEdit] = useState<boolean>(false);
 
   const { mutate: uploadImage, isLoading } = useMutation({
@@ -32,13 +34,9 @@ export default function HomeContainer({ lang, user, updateUser, refreshUser }: P
       await uploadFiles("uploadUserImage", { files: [file] });
       await refreshUser();
     },
-    onSuccess: () =>
-      openToast({
-        type: "success",
-        message: "Uploaded successfully",
-        description: "Your profile picture should be changed in seconds...",
-      }),
+    onSuccess: () => toast({ t, type: "success", description: "Uploaded successfully" }),
     onError: (error) => {
+      toast({ t, type: "error", description: "Can't upload image, try again later" });
       console.error(error);
     },
   });
@@ -47,8 +45,7 @@ export default function HomeContainer({ lang, user, updateUser, refreshUser }: P
     const file = e.target.files?.[0];
     if (file && isFileSizeAllowed("1MB", file.size)) {
       uploadImage(file);
-    }
-    //  else  toast({ status: "warning", title: "Please pick a picture that under 1MB" });
+    } else toast({ t, type: "error", description: "Please pick a picture that under 1MB" });
   };
 
   return (
@@ -94,7 +91,7 @@ export default function HomeContainer({ lang, user, updateUser, refreshUser }: P
         <section className="flex flex-col gap-6">
           <section className="flex flex-col gap-6">
             {isEdit ? (
-              <ProfileForm user={user} setIsEdit={setIsEdit} updateUser={updateUser} />
+              <ProfileForm t={t} user={user} setIsEdit={setIsEdit} updateUser={updateUser} />
             ) : (
               <Fragment>
                 <section className="flex flex-col gap-2">

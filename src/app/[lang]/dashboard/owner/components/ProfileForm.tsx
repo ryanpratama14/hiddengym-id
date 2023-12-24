@@ -4,7 +4,8 @@ import Button from "@/components/Button";
 import Iconify from "@/components/Iconify";
 import Input from "@/components/Input";
 import { GENDERS, ICONS } from "@/lib/constants";
-import { cn, formatDate, openToast, removeFormatPhoneNumber } from "@/lib/utils";
+import { type Dictionary } from "@/lib/dictionary";
+import { cn, formatDate, toast, removeFormatPhoneNumber } from "@/lib/utils";
 import { schema } from "@/schema";
 import { type UserUpdateInput, type User } from "@/server/api/routers/user";
 import { type TRPC_RESPONSE } from "@/trpc/shared";
@@ -17,9 +18,10 @@ type Props = {
   user: User;
   setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
   updateUser: (data: UserUpdateInput) => Promise<TRPC_RESPONSE>;
+  t: Dictionary;
 };
 
-export default function ProfileForm({ user, setIsEdit, updateUser }: Props) {
+export default function ProfileForm({ user, setIsEdit, updateUser, t }: Props) {
   const [loading, setLoading] = useState(false);
   const [gender, setGender] = useState<Gender>(user?.gender);
   const {
@@ -45,8 +47,8 @@ export default function ProfileForm({ user, setIsEdit, updateUser }: Props) {
     const res = await updateUser(data);
     setLoading(false);
     setIsEdit(false);
-    if (!res.status) return openToast({ type: "error", message: "An error occurred" });
-    openToast({ type: "success", message: "Success", description: "Your profile has been updated" });
+    if (!res.status) return toast({ type: "error", t, description: "An error occurred" });
+    toast({ type: "success", t, description: "Your profile has been updated" });
   };
 
   return (

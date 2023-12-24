@@ -1,14 +1,17 @@
 {
   "hello": "Hello",
   "send": "Send",
+  "toast": {
+    "success": "Success",
+    "error": "Something went wrong",
+    "warning": "Warning!",
+    "info": "Attention!"
+  },
   "login": {
     "welcomeBack": "Welcome Back!",
     "incorrectPhoneNumber": "Incorrect phone number",
     "incorrectEmail": "Incorrect email or password",
-    "correct": {
-      "message": "Logged In",
-      "description": "Redirecting to dashboard page..."
-    },
+    "correct": "Redirecting to dashboard page...",
     "forgotPasswowrd": "Forgot your password?",
     "newTo": "New to Hidden Gym?"
   }

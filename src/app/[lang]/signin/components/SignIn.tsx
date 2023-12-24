@@ -10,7 +10,7 @@ import { type Dictionary } from "@/lib/dictionary";
 import Input from "@/components/Input";
 import { ICONS, USER_REDIRECT } from "@/lib/constants";
 import { COLORS } from "@/styles/theme";
-import { openToast } from "@/lib/utils";
+import { toast } from "@/lib/utils";
 import { type Locale } from "@/i18n.config";
 
 type Props = {
@@ -43,10 +43,10 @@ export default function Login({ callbackUrl, t, lang }: Props) {
       const session = await getSession();
       if (!res?.error && session?.user) {
         reset();
-        openToast({ message: t.login.correct.message, description: t.login.correct.description, type: "success" });
+        toast({ t, description: t.login.correct, type: "success" });
         router.push(callbackUrl ? `/${callbackUrl}` : USER_REDIRECT[session.user.role]({ lang }));
       } else {
-        openToast({ message: t.login.incorrectEmail, type: "error" });
+        toast({ t, description: t.login.incorrectEmail, type: "error" });
         resetField("credential");
       }
     },

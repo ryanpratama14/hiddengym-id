@@ -7,11 +7,13 @@ import DashboardOwnerHomeContainer from "./components/DashboardOwnerHomeContaine
 import { api } from "@/trpc/server";
 import { type UserUpdateInput } from "@/server/api/routers/user";
 import { revalidatePath } from "next/cache";
+import { useDictionary } from "@/lib/dictionary";
 
 type Props = { params: { lang: Locale } };
 
 export default async function DashboardOwnerPage({ params }: Props) {
   const session = await getServerAuthSession();
+  const t = await useDictionary(params.lang);
   const role: Role = "OWNER";
   if (!session || !session.user) redirect(`/${params.lang}/signin/?callbackUrl=${USER_PATHNAMES[role]}`);
 
@@ -36,6 +38,7 @@ export default async function DashboardOwnerPage({ params }: Props) {
       updateUser={updateUser}
       refreshUser={refreshUser}
       user={user}
+      t={t}
     />
   );
 }

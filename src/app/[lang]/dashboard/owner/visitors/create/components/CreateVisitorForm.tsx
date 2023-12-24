@@ -5,7 +5,8 @@ import Iconify from "@/components/Iconify";
 import Input from "@/components/Input";
 import { type Locale } from "@/i18n.config";
 import { GENDERS, ICONS, USER_REDIRECT } from "@/lib/constants";
-import { cn, openToast } from "@/lib/utils";
+import { type Dictionary } from "@/lib/dictionary";
+import { cn, toast } from "@/lib/utils";
 import { schema } from "@/schema";
 import { type UserCreateVisitorInput } from "@/server/api/routers/user";
 import { type TRPC_RESPONSE } from "@/trpc/shared";
@@ -18,9 +19,10 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 type Props = {
   createVisitor: (data: UserCreateVisitorInput) => Promise<TRPC_RESPONSE>;
   lang: Locale;
+  t: Dictionary;
 };
 
-export default function CreateVisitorForm({ createVisitor, lang }: Props) {
+export default function CreateVisitorForm({ createVisitor, lang, t }: Props) {
   const router = useRouter();
   const [gender, setGender] = useState<Gender>("MALE");
   const [loading, setLoading] = useState<boolean>(false);
@@ -41,8 +43,8 @@ export default function CreateVisitorForm({ createVisitor, lang }: Props) {
     const res = await createVisitor(data);
     setLoading(false);
     reset();
-    if (!res.status) return openToast({ type: "error", message: "Error has been occurred" });
-    openToast({ type: "success", message: "Visitor has been created" });
+    if (!res.status) return toast({ t, type: "error", description: "Error has been occurred" });
+    toast({ t, type: "success", description: "Visitor has been created" });
     router.push(USER_REDIRECT.OWNER({ lang, href: "/visitors" }));
   };
 

@@ -5,6 +5,7 @@ import { type Locale } from "@/i18n.config";
 import { COUNTRY_CODE, USER_PATHNAMES } from "./constants";
 import { type Role } from "@prisma/client";
 import { notification } from "antd";
+import { type Dictionary } from "./dictionary";
 
 export const loadToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
@@ -252,11 +253,11 @@ export const textEllipsis = (text: string, length: number) => {
   return text.length < length ? `${text}` : `${text?.substring(0, length - 3)}...`;
 };
 
-type ToastType = "error" | "info" | "success" | "warning";
-export const openToast = ({ type, message, description }: { type: ToastType; message: string; description?: string }) => {
+type ToastType = "error" | "success" | "warning" | "info";
+export const toast = ({ type, description, t }: { type: ToastType; description: string; t: Dictionary }) => {
   return notification[type]({
-    message,
     description,
+    message: t.toast[type],
     duration: 3.5,
   });
 };

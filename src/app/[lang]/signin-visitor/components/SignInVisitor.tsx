@@ -10,7 +10,7 @@ import { signIn } from "next-auth/react";
 import { type Dictionary } from "@/lib/dictionary";
 import Input from "@/components/Input";
 import { EMAIL_VISITOR_READONLY, USER_REDIRECT } from "@/lib/constants";
-import { openToast } from "@/lib/utils";
+import { toast } from "@/lib/utils";
 import { type Locale } from "@/i18n.config";
 
 type Props = {
@@ -21,6 +21,7 @@ type Props = {
 
 export default function SignInVisitor({ callbackUrl, t, lang }: Props) {
   const router = useRouter();
+  console.log(t);
 
   const {
     register,
@@ -42,10 +43,10 @@ export default function SignInVisitor({ callbackUrl, t, lang }: Props) {
       });
       if (!res?.error) {
         reset();
-        openToast({ message: t.login.correct.message, description: t.login.correct.description, type: "success" });
+        toast({ t, description: t.login.correct, type: "success" });
         router.push(callbackUrl ? `/${lang}${callbackUrl}` : USER_REDIRECT.VISITOR({ lang }));
       } else {
-        openToast({ message: t.login.incorrectPhoneNumber, type: "error" });
+        toast({ t, description: t.login.incorrectPhoneNumber, type: "error" });
         resetField("credential");
       }
     },

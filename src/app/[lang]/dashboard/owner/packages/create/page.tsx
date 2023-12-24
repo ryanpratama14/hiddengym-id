@@ -1,4 +1,4 @@
-import { PackageCreateInput } from "@/server/api/routers/package";
+import { type PackageCreateInput } from "@/server/api/routers/package";
 import { api } from "@/trpc/server";
 import CreatePackageForm from "../components/CreatePackageForm";
 
