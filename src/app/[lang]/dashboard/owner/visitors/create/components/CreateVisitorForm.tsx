@@ -3,7 +3,8 @@
 import Button from "@/components/Button";
 import Iconify from "@/components/Iconify";
 import Input from "@/components/Input";
-import { GENDERS, ICONS, USER_PATHNAMES } from "@/lib/constants";
+import { type Locale } from "@/i18n.config";
+import { GENDERS, ICONS, USER_REDIRECT } from "@/lib/constants";
 import { cn, openToast } from "@/lib/utils";
 import { schema } from "@/schema";
 import { type UserCreateVisitorInput } from "@/server/api/routers/user";
@@ -16,9 +17,10 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 
 type Props = {
   createVisitor: (data: UserCreateVisitorInput) => Promise<TRPC_RESPONSE>;
+  lang: Locale;
 };
 
-export default function CreateVisitorForm({ createVisitor }: Props) {
+export default function CreateVisitorForm({ createVisitor, lang }: Props) {
   const router = useRouter();
   const [gender, setGender] = useState<Gender>("MALE");
   const [loading, setLoading] = useState<boolean>(false);
@@ -41,7 +43,7 @@ export default function CreateVisitorForm({ createVisitor }: Props) {
     reset();
     if (!res.status) return openToast({ type: "error", message: "Error has been occurred" });
     openToast({ type: "success", message: "Visitor has been created" });
-    router.push(`${USER_PATHNAMES.OWNER}/visitors`);
+    router.push(USER_REDIRECT.OWNER({ lang, href: "/visitors" }));
   };
 
   return (

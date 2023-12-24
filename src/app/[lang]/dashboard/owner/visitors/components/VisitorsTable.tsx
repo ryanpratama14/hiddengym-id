@@ -6,7 +6,7 @@ import Img from "@/components/Img";
 import Input from "@/components/Input";
 import Navigator from "@/components/Navigator";
 import { type Locale } from "@/i18n.config";
-import { GENDERS, ICONS, USER_PATHNAMES } from "@/lib/constants";
+import { GENDERS, ICONS, USER_REDIRECT } from "@/lib/constants";
 import { cn, createUrl, formatCurrency, lozalizePhoneNumber, textEllipsis } from "@/lib/utils";
 import { type UserListInputParams, type UserList } from "@/server/api/routers/user";
 import { type SearchParams } from "@/types";
@@ -28,11 +28,16 @@ export default function VisitorsTable({ data, searchParams, lang }: Props) {
   const newSearchParams = useSearchParams();
   const newParams = new URLSearchParams(newSearchParams.toString());
 
+  if (data?.isInvalidPage) {
+    newParams.delete("page");
+    redirect(createUrl(USER_REDIRECT.OWNER({ lang, href: "/visitors" }), newParams));
+  }
+
   const router = useRouter();
   const [gender, setGender] = useState<Gender | undefined>(undefined);
 
   const redirectTable = ({ role, href, newParams }: { role: Role; href: string; newParams: URLSearchParams }) => {
-    router.push(createUrl(`/${lang}${USER_PATHNAMES[role]}${href}`, newParams));
+    router.push(createUrl(USER_REDIRECT[role]({ lang, href }), newParams));
   };
 
   const getTableFilter = ({ name, icon }: { name: keyof UserListInputParams; icon?: IconifyIcon | string }) => ({
@@ -141,11 +146,6 @@ export default function VisitorsTable({ data, searchParams, lang }: Props) {
     ),
   });
 
-  if (data?.isInvalidPage) {
-    newParams.delete("page");
-    redirect(createUrl(`${USER_PATHNAMES.OWNER}/visitors`, newParams));
-  }
-
   return (
     <Table
       className="drop-shadow"
@@ -171,8 +171,8 @@ export default function VisitorsTable({ data, searchParams, lang }: Props) {
           key: "id",
           width: 1,
           dataIndex: "id",
-          render: (text: string) => (
-            <Navigator color="link" href={`${USER_PATHNAMES.OWNER}/visitors/${text}`}>
+          render: (id: string) => (
+            <Navigator color="link" href={USER_REDIRECT.OWNER({ lang, href: `/visitors/${id}` })}>
               View
             </Navigator>
           ),

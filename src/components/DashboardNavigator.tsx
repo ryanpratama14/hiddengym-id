@@ -1,5 +1,5 @@
 import { type Locale } from "@/i18n.config";
-import { USER_PATHNAMES } from "@/lib/constants";
+import { USER_REDIRECT } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { type Role } from "@prisma/client";
 import Link from "next/link";
@@ -11,7 +11,7 @@ const DashboardNavigator = ({
   role,
   isChildren,
   children,
-  lang
+  lang,
 }: {
   href: string;
   isChildren?: boolean;
@@ -27,7 +27,7 @@ const DashboardNavigator = ({
       target={newTab ? "_blank" : undefined}
       rel={newTab ? "noopener noreferrer" : undefined}
       className={cn(`text-base select-none font-medium ${className}`, { "ml-3 text-sm": isChildren })}
-      href={`/${lang}${USER_PATHNAMES[role]}${href}`}
+      href={USER_REDIRECT[role]({ lang, href })}
     >
       {children}
     </Link>

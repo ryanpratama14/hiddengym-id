@@ -4,13 +4,15 @@ import Logo from "@/components/Logo";
 import { useState } from "react";
 import SignIn from "./SignIn";
 import { type Dictionary } from "@/lib/dictionary";
+import { type Locale } from "@/i18n.config";
 
 type Props = {
   callbackUrl?: string;
   t: Dictionary;
+  lang: Locale;
 };
 
-export default function SignInPageContainer({ callbackUrl, t }: Props) {
+export default function SignInPageContainer({ callbackUrl, t, lang }: Props) {
   const [isForgotPassword, setIsForgotPassword] = useState(false);
 
   return (
@@ -27,7 +29,7 @@ export default function SignInPageContainer({ callbackUrl, t }: Props) {
         </section>
         <section className="md:shadow-lg gap-8 p-normal md:w-[50%] w-full  md:bg-light flex flex-col justify-center items-center aspect-square">
           <h4>{isForgotPassword ? "Reset Password" : t.login.welcomeBack}</h4>
-          <SignIn callbackUrl={callbackUrl} setIsForgotPassword={setIsForgotPassword} t={t} />
+          <SignIn callbackUrl={callbackUrl} setIsForgotPassword={setIsForgotPassword} t={t} lang={lang} />
         </section>
       </section>
     </article>

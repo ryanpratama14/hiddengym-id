@@ -46,7 +46,7 @@ export default function ProfileForm({ user, setIsEdit, updateUser }: Props) {
     setLoading(false);
     setIsEdit(false);
     if (!res.status) return openToast({ type: "error", message: "An error occurred" });
-    openToast({ type: "success", message: "Profile has been updated" });
+    openToast({ type: "success", message: "Success", description: "Your profile has been updated" });
   };
 
   return (

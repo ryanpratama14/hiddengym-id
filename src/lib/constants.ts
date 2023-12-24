@@ -49,10 +49,10 @@ export const USER_PATHNAMES: Record<Role, string> = {
 };
 
 export const USER_REDIRECT = {
-  VISITOR: ({ lang, href }: { lang: Locale; href: string }) => `/${lang}${USER_PATHNAMES.VISITOR}${href}`,
-  ADMIN: ({ lang, href }: { lang: Locale; href: string }) => `/${lang}${USER_PATHNAMES.ADMIN}${href}`,
-  OWNER: ({ lang, href }: { lang: Locale; href: string }) => `/${lang}${USER_PATHNAMES.OWNER}${href}`,
-  TRAINER: ({ lang, href }: { lang: Locale; href: string }) => `/${lang}${USER_PATHNAMES.TRAINER}${href}`,
+  VISITOR: ({ lang, href = "" }: { lang: Locale; href?: string }) => `/${lang}${USER_PATHNAMES.VISITOR}${href}`,
+  ADMIN: ({ lang, href = "" }: { lang: Locale; href?: string }) => `/${lang}${USER_PATHNAMES.ADMIN}${href}`,
+  OWNER: ({ lang, href = "" }: { lang: Locale; href?: string }) => `/${lang}${USER_PATHNAMES.OWNER}${href}`,
+  TRAINER: ({ lang, href = "" }: { lang: Locale; href?: string }) => `/${lang}${USER_PATHNAMES.TRAINER}${href}`,
 };
 
 export const EMAIL_VISITOR_READONLY = "readonly@hiddengym-id.com";

@@ -3,7 +3,7 @@
 import Button from "@/components/Button";
 import Iconify from "@/components/Iconify";
 import { type Locale } from "@/i18n.config";
-import { ICONS, USER_PATHNAMES } from "@/lib/constants";
+import { ICONS, USER_REDIRECT } from "@/lib/constants";
 import { cn, createUrl } from "@/lib/utils";
 import { type UserListInput } from "@/server/api/routers/user";
 import { inputVariants } from "@/styles/variants";
@@ -29,7 +29,7 @@ export default function VisitorsTableSearch({ query, lang }: Props) {
           newParams.set("q", search.value);
         } else newParams.delete("q");
         newParams.delete("page");
-        router.push(createUrl(`/${lang}${USER_PATHNAMES.OWNER}/visitors`, newParams));
+        router.push(createUrl(USER_REDIRECT.OWNER({ lang, href: "/visitors" }), newParams));
       }}
       className="flex justify-between gap-2 md:gap-6"
     >
@@ -52,7 +52,7 @@ export default function VisitorsTableSearch({ query, lang }: Props) {
               if (!newParams.get("q")) return;
             }
             newParams.delete("q");
-            router.push(createUrl(`/${lang}${USER_PATHNAMES.OWNER}/visitors`, newParams));
+            router.push(createUrl(USER_REDIRECT.OWNER({ lang, href: "/visitors" }), newParams));
           }}
         >
           <Iconify icon={ICONS.close} className="absolute centered-right -translate-x-1.5 cursor-pointer" width={25} />

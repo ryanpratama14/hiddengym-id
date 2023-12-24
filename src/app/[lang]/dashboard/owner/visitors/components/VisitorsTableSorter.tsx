@@ -3,7 +3,7 @@
 import Button from "@/components/Button";
 import Iconify from "@/components/Iconify";
 import { type Locale } from "@/i18n.config";
-import { ICONS, USER_LIST_SORTERERS, USER_PATHNAMES } from "@/lib/constants";
+import { ICONS, USER_LIST_SORTERERS, USER_REDIRECT } from "@/lib/constants";
 import { cn, createUrl, getSorterSlug } from "@/lib/utils";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -26,7 +26,7 @@ export default function VisitorsTableSorter({ lang }: Props) {
             color="expired"
             onClick={() => {
               newParams.delete("sort");
-              router.push(createUrl(`/${lang}${USER_PATHNAMES.OWNER}/visitors`, newParams));
+              router.push(createUrl(USER_REDIRECT.OWNER({ lang, href: "/visitors" }), newParams));
             }}
           >
             Reset
@@ -45,7 +45,7 @@ export default function VisitorsTableSorter({ lang }: Props) {
                     newParams.set("sort", `${opt.name}-desc`);
                   } else newParams.set("sort", `${opt.name}-asc`);
 
-                  router.push(createUrl(`/${lang}${USER_PATHNAMES.OWNER}/visitors`, newParams));
+                  router.push(createUrl(USER_REDIRECT.OWNER({ lang, href: "/visitors" }), newParams));
                 }}
                 className={cn("hover:underline w-fit text-dark", {
                   underline: active,
