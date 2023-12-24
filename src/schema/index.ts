@@ -14,20 +14,20 @@ export class schema {
   static order = z.enum(["asc", "desc"]).optional();
 
   static pagination = z.object({ page: z.number().min(1), limit: z.number().min(1).optional() });
-  static email = z.string().email("Please provide a valid email");
+  static email = z.string().email("Provide a valid email");
   static fullName = z
     .string()
-    .min(1, "Please provide your name")
+    .min(1, "Please provide a name")
     .regex(/^[A-Za-z\s]+$/, "Name can only contain letters and spaces");
 
   static phoneNumber = z
     .string()
-    .regex(/^\d+$/, "Please provide a valid phone number")
-    .regex(/^8/, "Please start with number 8")
+    .regex(/^\d+$/, "Provide a valid phone number")
+    .regex(/^8/, "Phone Number should starts with number 8")
     .min(10, "At least 10 characters")
     .max(12);
 
-  static date = z.string().min(1, "Please pick a date");
+  static date = z.string().min(1, "Pick a date");
   static dateNullable = z.string().nullable();
   static password = z.string().min(10, "At least 10 characters");
   static loginVisitor = z.object({ credential: schema.phoneNumber });

@@ -52,7 +52,7 @@ export default function VisitorsTableSearch({ query, lang }: Props) {
               if (!newParams.get("q")) return;
             }
             newParams.delete("q");
-            router.push(createUrl(`${lang}/${USER_PATHNAMES.OWNER}/visitors`, newParams));
+            router.push(createUrl(`/${lang}${USER_PATHNAMES.OWNER}/visitors`, newParams));
           }}
         >
           <Iconify icon={ICONS.close} className="absolute centered-right -translate-x-1.5 cursor-pointer" width={25} />

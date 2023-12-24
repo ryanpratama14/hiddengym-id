@@ -38,7 +38,7 @@
     @apply text-xl md:text-2xl font-semibold;
   }
   th {
-    @apply md:text-lg;
+    @apply text-base md:text-lg !font-medium;
   }
   td {
     @apply md:text-base text-sm;

@@ -78,7 +78,7 @@ export default function AddButton({ role, setSelectedKeys }: Props) {
                   <Menu.Item key={item.icon}>
                     <button
                       className={cn(
-                        "rounded-md font-semibold flex gap-2 items-center justify-end px-4 h-8 bg-light hover:bg-orange hover:text-cream text-dark"
+                        "rounded-md font-medium flex gap-2 items-center justify-end px-4 h-8 bg-light hover:bg-orange hover:text-cream text-dark"
                       )}
                       onClick={() => {
                         setSelectedKeys(getDashboardPathname(item.href, role));
