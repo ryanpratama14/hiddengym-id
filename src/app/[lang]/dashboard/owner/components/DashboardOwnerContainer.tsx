@@ -7,19 +7,21 @@ import DashboardLayout from "@/components/DashboardLayout";
 import Iconify from "@/components/Iconify";
 import DashboardNavigator from "@/components/DashboardNavigator";
 import { ICONS } from "@/lib/constants";
+import { type Locale } from "@/i18n.config";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
 type Props = {
   children: React.ReactNode;
   user: User;
+  lang: Locale;
 };
 
-const getDashboardItems = (collapsed: boolean): MenuItem[] => [
+const getDashboardItems = (collapsed: boolean, lang: Locale): MenuItem[] => [
   {
     key: "/",
     label: (
-      <DashboardNavigator href="/" role="OWNER">
+      <DashboardNavigator href="/" role="OWNER" lang={lang}>
         Home
       </DashboardNavigator>
     ),
@@ -28,7 +30,7 @@ const getDashboardItems = (collapsed: boolean): MenuItem[] => [
   {
     key: "/visitors",
     label: (
-      <DashboardNavigator href="/visitors" role="OWNER">
+      <DashboardNavigator href="/visitors" role="OWNER" lang={lang}>
         Visitors
       </DashboardNavigator>
     ),
@@ -37,7 +39,7 @@ const getDashboardItems = (collapsed: boolean): MenuItem[] => [
   {
     key: "/trainers",
     label: (
-      <DashboardNavigator href="/trainers" role="OWNER">
+      <DashboardNavigator href="/trainers" role="OWNER" lang={lang}>
         Trainers
       </DashboardNavigator>
     ),
@@ -46,7 +48,7 @@ const getDashboardItems = (collapsed: boolean): MenuItem[] => [
   {
     key: "/packages",
     label: (
-      <DashboardNavigator href="/packages" role="OWNER">
+      <DashboardNavigator href="/packages" role="OWNER" lang={lang}>
         Packages
       </DashboardNavigator>
     ),
@@ -55,7 +57,7 @@ const getDashboardItems = (collapsed: boolean): MenuItem[] => [
   {
     key: "/products",
     label: (
-      <DashboardNavigator href="/products" role="OWNER">
+      <DashboardNavigator href="/products" role="OWNER" lang={lang}>
         Products
       </DashboardNavigator>
     ),
@@ -69,7 +71,7 @@ const getDashboardItems = (collapsed: boolean): MenuItem[] => [
       {
         key: "/transactions/packages",
         label: (
-          <DashboardNavigator isChildren href="/transactions/packages" role="OWNER">
+          <DashboardNavigator isChildren href="/transactions/packages" role="OWNER" lang={lang}>
             Packages
           </DashboardNavigator>
         ),
@@ -77,7 +79,7 @@ const getDashboardItems = (collapsed: boolean): MenuItem[] => [
       {
         key: "/transactions/products",
         label: (
-          <DashboardNavigator isChildren href="/transactions/products" role="OWNER">
+          <DashboardNavigator isChildren href="/transactions/products" role="OWNER" lang={lang}>
             Products
           </DashboardNavigator>
         ),
@@ -87,7 +89,7 @@ const getDashboardItems = (collapsed: boolean): MenuItem[] => [
   {
     key: "/visits",
     label: (
-      <DashboardNavigator href="/visits" role="OWNER">
+      <DashboardNavigator href="/visits" role="OWNER" lang={lang}>
         Visits
       </DashboardNavigator>
     ),
@@ -96,7 +98,7 @@ const getDashboardItems = (collapsed: boolean): MenuItem[] => [
   {
     key: "/schedules",
     label: (
-      <DashboardNavigator href="/schedules" role="OWNER">
+      <DashboardNavigator href="/schedules" role="OWNER" lang={lang}>
         Schedules
       </DashboardNavigator>
     ),
@@ -105,7 +107,7 @@ const getDashboardItems = (collapsed: boolean): MenuItem[] => [
   {
     key: "/promo-codes",
     label: (
-      <DashboardNavigator href="/promo-codes" role="OWNER">
+      <DashboardNavigator href="/promo-codes" role="OWNER" lang={lang}>
         Promo Codes
       </DashboardNavigator>
     ),
@@ -114,7 +116,7 @@ const getDashboardItems = (collapsed: boolean): MenuItem[] => [
   {
     key: "/sport-types",
     label: (
-      <DashboardNavigator href="/sport-types" role="OWNER">
+      <DashboardNavigator href="/sport-types" role="OWNER" lang={lang}>
         Sport Types
       </DashboardNavigator>
     ),
@@ -123,7 +125,7 @@ const getDashboardItems = (collapsed: boolean): MenuItem[] => [
   {
     key: "/places",
     label: (
-      <DashboardNavigator href="/places" role="OWNER">
+      <DashboardNavigator href="/places" role="OWNER" lang={lang}>
         Places
       </DashboardNavigator>
     ),
@@ -132,7 +134,7 @@ const getDashboardItems = (collapsed: boolean): MenuItem[] => [
   {
     key: "/payment-methods",
     label: (
-      <DashboardNavigator href="/payment-methods" role="OWNER">
+      <DashboardNavigator href="/payment-methods" role="OWNER" lang={lang}>
         Payment Methods
       </DashboardNavigator>
     ),
@@ -140,9 +142,9 @@ const getDashboardItems = (collapsed: boolean): MenuItem[] => [
   },
 ];
 
-export default function DashboardOwnerContainer({ children, user }: Props) {
+export default function DashboardOwnerContainer({ children, user, lang }: Props) {
   return (
-    <DashboardLayout getDashboardItems={getDashboardItems} user={user}>
+    <DashboardLayout getDashboardItems={getDashboardItems} user={user} lang={lang}>
       {children}
     </DashboardLayout>
   );

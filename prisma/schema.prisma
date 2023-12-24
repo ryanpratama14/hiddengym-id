@@ -76,8 +76,7 @@ model Package {
     isActive               Boolean @default(true)
 
     // relations
-    type         PackageType          @relation(fields: [typeId], references: [id])
-    typeId       String               @db.ObjectId
+    type         PackageType
     transactions PackageTransaction[]
     visits       Visit[]
     schedules    Schedule[]
@@ -211,16 +210,6 @@ model PaymentMethod {
     createdDate DateTime @default(now())
 }
 
-model PackageType {
-    id   String          @id @default(auto()) @map("_id") @db.ObjectId
-    name PackageTypeName
-
-    // relations
-    packages Package[]
-
-    createdDate DateTime @default(now())
-}
-
 model Token {
     id         String   @id @default(auto()) @map("_id") @db.ObjectId
     token      String   @unique
@@ -247,7 +236,7 @@ model Sport {
     createdDate DateTime @default(now())
 }
 
-enum PackageTypeName {
+enum PackageType {
     MEMBER // validity
     VISIT // validity
     TRAINER // no validity

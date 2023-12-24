@@ -10,25 +10,27 @@ import DashboardProfileDropdown from "./DashboardProfileDropdown";
 import AddButton from "./AddButton";
 import { COLORS } from "@/styles/theme";
 import { type User } from "@/server/api/routers/user";
-import { USER_PATHNAMES } from "@/lib/constants";
+import { USER_REDIRECT } from "@/lib/constants";
+import { type Locale } from "@/i18n.config";
 
 type Props = {
   children: React.ReactNode;
   user: User;
-  getDashboardItems: (collapsed: boolean) => MenuItem[];
+  getDashboardItems: (collapsed: boolean, lang: Locale) => MenuItem[];
+  lang: Locale;
 };
 
 type MenuItem = Required<MenuProps>["items"][number];
 
-export default function DashboardLayout({ children, getDashboardItems, user }: Props) {
+export default function DashboardLayout({ children, getDashboardItems, user, lang }: Props) {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(true);
   const [selectedKeys, setSelectedKeys] = useState<string[]>(getDashboardPathname(pathname, user.role));
-  const items = getDashboardItems(collapsed);
+  const items = getDashboardItems(collapsed, lang);
 
   return (
     <Fragment>
-      <AddButton role={user.role} setSelectedKeys={setSelectedKeys} />
+      <AddButton role={user.role} setSelectedKeys={setSelectedKeys} lang={lang} />
       <Layout>
         <Layout.Sider
           style={{ overflow: "auto", height: "100vh", position: "fixed", left: 0, top: 0, bottom: 0, zIndex: 20 }}
@@ -65,7 +67,7 @@ export default function DashboardLayout({ children, getDashboardItems, user }: P
               <Menu
                 color={COLORS.cream}
                 onClick={(e) => {
-                  const newPathname = `${USER_PATHNAMES[user.role]}${e.key}`;
+                  const newPathname = USER_REDIRECT[user.role]({ lang, href: e.key });
                   setSelectedKeys(getDashboardPathname(newPathname, user.role));
                   if (!collapsed) setCollapsed(true);
                 }}
@@ -83,16 +85,14 @@ export default function DashboardLayout({ children, getDashboardItems, user }: P
           </section>
         </Layout.Sider>
       </Layout>
-      <article onClick={() => (!collapsed ? setCollapsed(true) : undefined)}>
-        <article className="flex flex-col min-h-screen">
-          <header className="sticky w-full top-0 flex items-center justify-end px-shorter h-14 bg-dark text-cream z-10">
-            <DashboardProfileDropdown user={user} />
-          </header>
-          <section className="bg-cream pl-12 min-h-screen">
-            <article className="p-shorter">{children}</article>
-          </section>
-          <footer className="bg-dark text-right font-semibold px-shorter py-4 text-cream">HIDDEN GYM ©2024</footer>
-        </article>
+      <article className="flex flex-col" onClick={() => (!collapsed ? setCollapsed(true) : undefined)}>
+        <header className="sticky w-full top-0 flex items-center justify-end px-shorter h-14 bg-dark text-cream z-10">
+          <DashboardProfileDropdown user={user} />
+        </header>
+        <section className="bg-cream pl-12">
+          <article className="p-shorter min-h-screen">{children}</article>
+        </section>
+        <footer className="bg-dark text-right font-semibold px-shorter py-4 text-cream">HIDDEN GYM ©2024</footer>
       </article>
     </Fragment>
   );

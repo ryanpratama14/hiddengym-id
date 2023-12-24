@@ -99,6 +99,20 @@ export class schema {
       }),
     });
   };
+
+  static package = class {
+    static create = z.object({
+      name: z.string(),
+      description: z.string(),
+      price: z.number(),
+      validityInDays: z.number().nullable(),
+      totalPermittedSessions: z.number().nullable(),
+      type: schema.packageType,
+      sportIDs: z.array(z.string()),
+      placeIDs: z.array(z.string()),
+      trainerIDs: z.array(z.string()).optional(),
+    });
+  };
 }
 
 export type Pagination = z.infer<typeof schema.pagination>;

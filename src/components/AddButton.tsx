@@ -1,16 +1,18 @@
 "use client";
 
 import Iconify from "@/components/Iconify";
-import { ICONS, USER_PATHNAMES } from "@/lib/constants";
+import { ICONS, USER_REDIRECT } from "@/lib/constants";
 import { cn, getDashboardPathname } from "@/lib/utils";
 import { Menu, Transition } from "@headlessui/react";
 import { type Role } from "@prisma/client";
 import React, { Fragment } from "react";
 import { useRouter } from "next/navigation";
+import { type Locale } from "@/i18n.config";
 
 type Props = {
   role: Role;
   setSelectedKeys: React.Dispatch<React.SetStateAction<string[]>>;
+  lang: Locale;
 };
 
 const ITEMS_TO_REMOVE: Record<Role, string[]> = {
@@ -20,40 +22,40 @@ const ITEMS_TO_REMOVE: Record<Role, string[]> = {
   ADMIN: [],
 };
 
-const ADD_BUTTON_ITEMS = (role: Role) => [
+const ADD_BUTTON_ITEMS = (role: Role, lang: Locale) => [
   {
     label: "Package",
     icon: ICONS.package,
-    href: `${USER_PATHNAMES[role]}/package/create`,
+    href: USER_REDIRECT[role]({ lang, href: "/packages/create" }),
   },
   {
     label: "Product",
     icon: ICONS.product,
-    href: `${USER_PATHNAMES[role]}/product/create`,
+    href: USER_REDIRECT[role]({ lang, href: "/products/create" }),
   },
   {
     label: "Visit",
     icon: ICONS.visit,
-    href: `${USER_PATHNAMES[role]}/visits/create`,
+    href: USER_REDIRECT[role]({ lang, href: "/visits/create" }),
   },
   {
     label: "Schedule",
     icon: ICONS.schedule,
-    href: `${USER_PATHNAMES[role]}/schedules/create`,
+    href: USER_REDIRECT[role]({ lang, href: "/schedules/create" }),
   },
   {
     label: "Transaction",
     icon: ICONS.transaction,
-    href: `${USER_PATHNAMES[role]}/transactions/create`,
+    href: USER_REDIRECT[role]({ lang, href: "/transactions/create" }),
   },
   {
     label: "Visitor",
     icon: ICONS.visitor,
-    href: `${USER_PATHNAMES[role]}/visitors/create`,
+    href: USER_REDIRECT[role]({ lang, href: "/visitors/create" }),
   },
 ];
 
-export default function AddButton({ role, setSelectedKeys }: Props) {
+export default function AddButton({ role, lang, setSelectedKeys }: Props) {
   const router = useRouter();
   return (
     <section className="fixed right-0 bottom-0 pr-shorter pb-shorter">
@@ -71,7 +73,7 @@ export default function AddButton({ role, setSelectedKeys }: Props) {
           leaveTo="transform translate-y-2 opacity-0"
         >
           <Menu.Items className="active:outline-none focus:outline-none outline-none absolute bottom-14 right-0 origin-top-right p-0.5 mt-4 w-fit rounded-md  flex flex-col bg-light shadow-lg">
-            {ADD_BUTTON_ITEMS(role)
+            {ADD_BUTTON_ITEMS(role, lang)
               .filter((obj) => !ITEMS_TO_REMOVE[role].includes(obj.label))
               .map((item) => {
                 return (

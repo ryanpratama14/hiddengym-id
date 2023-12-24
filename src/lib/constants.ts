@@ -1,3 +1,4 @@
+import { Locale } from "@/i18n.config";
 import { COLORS } from "@/styles/theme";
 import { type Gender, type Role } from "@prisma/client";
 
@@ -45,6 +46,13 @@ export const USER_PATHNAMES: Record<Role, string> = {
   ADMIN: `/dashboard/admin`,
   OWNER: `/dashboard/owner`,
   TRAINER: `/dashboard/trainer`,
+};
+
+export const USER_REDIRECT = {
+  VISITOR: ({ lang, href }: { lang: Locale; href: string }) => `/${lang}${USER_PATHNAMES.VISITOR}${href}`,
+  ADMIN: ({ lang, href }: { lang: Locale; href: string }) => `/${lang}${USER_PATHNAMES.ADMIN}${href}`,
+  OWNER: ({ lang, href }: { lang: Locale; href: string }) => `/${lang}${USER_PATHNAMES.OWNER}${href}`,
+  TRAINER: ({ lang, href }: { lang: Locale; href: string }) => `/${lang}${USER_PATHNAMES.TRAINER}${href}`,
 };
 
 export const EMAIL_VISITOR_READONLY = "readonly@hiddengym-id.com";
