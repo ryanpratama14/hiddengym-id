@@ -3,6 +3,8 @@ import { api } from "@/trpc/server";
 import CreateVisitorForm from "./components/CreateVisitorForm";
 import { type Locale } from "@/i18n.config";
 import { useDictionary } from "@/lib/dictionary";
+import { revalidatePath } from "next/cache";
+import { USER_REDIRECT } from "@/lib/constants";
 
 type Props = {
   params: { lang: Locale };
@@ -14,6 +16,7 @@ export default async function CustomerCreatePage({ params }: Props) {
   const createVisitor = async (data: UserCreateVisitorInput) => {
     "use server";
     const res = await api.user.createVisitor.mutate(data);
+    revalidatePath(USER_REDIRECT.OWNER({ lang: params.lang, href: "/visitors" }));
     return res;
   };
 

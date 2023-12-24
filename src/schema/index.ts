@@ -45,25 +45,23 @@ export class schema {
 
     static createVisitor = z
       .object({
-        email: z
-          .string()
-          .optional()
-          .refine(
-            (email) => {
-              if (email) return regex.email.test(email);
-              return true;
-            },
-            {
-              message: "Please provide a valid email",
-              path: ["email"],
-            }
-          ),
+        email: z.string().optional(),
         fullName: schema.fullName,
         phoneNumber: schema.phoneNumber,
         gender: schema.gender,
         packageTransactionId: z.string().optional(),
         transactionDate: z.string().optional(),
       })
+      .refine(
+        ({ email }) => {
+          if (email) return regex.email.test(email);
+          return true;
+        },
+        {
+          message: "Please provide a valid email",
+          path: ["email"],
+        }
+      )
       .refine(
         ({ packageTransactionId, transactionDate }) => {
           if (packageTransactionId && !transactionDate) return false;
