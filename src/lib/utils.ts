@@ -257,6 +257,6 @@ export const openToast = ({ type, message, description }: { type: ToastType; mes
   return notification[type]({
     message,
     description,
-    duration: 5,
+    duration: 3.5,
   });
 };

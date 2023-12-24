@@ -1,7 +1,5 @@
 import { COLORS } from "@/styles/theme";
-import { notificationVariants } from "@/styles/variants";
 import { type Gender, type Role } from "@prisma/client";
-import { notification } from "antd";
 
 export const USER_LIST_SORTERERS = [
   {
@@ -50,29 +48,6 @@ export const USER_PATHNAMES: Record<Role, string> = {
 };
 
 export const EMAIL_VISITOR_READONLY = "readonly@hiddengym-id.com";
-
-type Notification = "info" | "warning" | "error" | "success";
-
-export const openNotification = ({
-  type,
-  message,
-  description,
-}: {
-  type: Notification;
-  message: string;
-  description: string;
-}) => {
-  notification[type]({
-    style: {
-      backgroundColor: "black",
-    },
-    duration: 3,
-    placement: "bottomRight",
-    message,
-    description,
-    className: notificationVariants({ type }),
-  });
-};
 
 export const COUNTRY_CODE = "+62";
 

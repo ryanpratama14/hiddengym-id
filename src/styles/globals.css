@@ -51,7 +51,7 @@
     @apply text-base;
   }
   small {
-    @apply !text-sm font-medium;
+    @apply !text-sm font-normal;
   }
   label {
     @apply select-none;
@@ -101,6 +101,10 @@
 
 .ant-menu-item {
   color: #f9f7ea !important;
+}
+
+.ant-notification-notice-message {
+  font-weight: 500;
 }
 
 body,

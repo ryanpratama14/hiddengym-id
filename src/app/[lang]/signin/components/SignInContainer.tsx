@@ -21,7 +21,7 @@ export default function SignInPageContainer({ callbackUrl, t }: Props) {
             <Logo className="w-full aspect-video" />
             <section className="flex flex-col text-center">
               <h6>HIDDEN GYM</h6>
-              <small className="italic ">eat sleep gym repeat</small>
+              <small className="italic">eat sleep gym repeat</small>
             </section>
           </header>
         </section>
