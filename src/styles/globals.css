@@ -1,0 +1,104 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  a,
+  label,
+  button,
+  li {
+    @apply animate;
+  }
+  h1 {
+    @apply text-6xl md:text-7xl;
+  }
+  h2 {
+    @apply text-5xl md:text-6xl;
+  }
+  h3 {
+    @apply text-4xl md:text-5xl font-semibold;
+  }
+  h4 {
+    @apply text-3xl md:text-4xl font-semibold;
+  }
+  h5 {
+    @apply text-2xl md:text-3xl font-semibold;
+  }
+  h6 {
+    @apply text-xl md:text-2xl font-semibold;
+  }
+  th {
+    @apply md:text-lg;
+  }
+  td {
+    @apply md:text-base text-sm;
+  }
+  label {
+    @apply font-medium;
+  }
+  p,
+  label {
+    @apply text-base;
+  }
+  small {
+    @apply !text-sm font-medium;
+  }
+  label {
+    @apply select-none;
+  }
+}
+
+@layer components {
+  .label {
+    @apply text-lg font-semibold;
+  }
+  /* animation */
+  .animate {
+    @apply transition-all duration-300;
+  }
+  .animate {
+    @apply transition-all duration-300;
+  }
+  .animate-longer {
+    @apply transition-all duration-500;
+  }
+  .animate-longer2 {
+    @apply transition-all duration-700;
+  }
+  .animate-longer3 {
+    @apply transition-all duration-1000;
+  }
+  /* fixed positions for absolute or fixed position */
+  .centered {
+    @apply top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
+  }
+  .centered-bottom {
+    @apply bottom-0 left-1/2 -translate-x-1/2;
+  }
+  .centered-top {
+    @apply top-0 left-1/2 -translate-x-1/2;
+  }
+  .centered-left {
+    @apply top-1/2 left-0 -translate-y-1/2;
+  }
+  .centered-right {
+    @apply top-1/2 right-0 -translate-y-1/2;
+  }
+  .centered-horizontal {
+    @apply left-1/2 -translate-x-1/2;
+  }
+}
+
+.ant-menu-item {
+  color: #f9f7ea !important;
+}

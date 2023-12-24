@@ -1,0 +1,273 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "mongodb"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+    id          String    @id @default(auto()) @map("_id") @db.ObjectId
+    phoneNumber String    @unique
+    email       String?
+    fullName    String
+    birthDate   DateTime?
+    credential  String // used for signin
+    gender      Gender
+    role        Role      @default(VISITOR)
+    isActive    Boolean   @default(true)
+
+    // relations
+    packageTransactions PackageTransaction[]
+    productTransactions ProductTransaction[]
+    visits              Visit[]
+    schedules           Schedule[]           @relation("scheduleVisitors", fields: [scheduleIDs], references: [id])
+    scheduleIDs         String[]             @db.ObjectId
+    tokens              Token[]
+    image               File?                @relation("userImage", fields: [imageId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+    imageId             String?              @db.ObjectId
+    files               File[]
+
+    // for trainer only
+    trainerSports     Sport[]    @relation(fields: [trainerSportIDs], references: [id])
+    trainerSportIDs   String[]   @db.ObjectId
+    trainerPackages   Package[]  @relation(fields: [trainerPackageIDs], references: [id])
+    trainerPackageIDs String[]   @db.ObjectId
+    trainerSchedules  Schedule[] @relation("trainerSchedules")
+
+    createdDate DateTime @default(now())
+
+    @@index(fields: [fullName(sort: Asc)])
+}
+
+model File {
+    id   String @id @default(auto()) @map("_id") @db.ObjectId
+    url  String
+    name String
+
+    // relations
+    imageOwner User[]  @relation("userImage")
+    owner      User?   @relation(fields: [ownerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+    ownerId    String? @db.ObjectId
+
+    createdDate DateTime @default(now())
+}
+
+model PromoCode {
+    id            String  @id @default(auto()) @map("_id") @db.ObjectId
+    code          String  @unique
+    discountPrice Int
+    isActive      Boolean @default(true)
+
+    // relations
+    packagePruchases PackageTransaction[]
+
+    createdDate DateTime @default(now())
+}
+
+model Package {
+    id                     String  @id @default(auto()) @map("_id") @db.ObjectId
+    name                   String  @unique
+    description            String
+    price                  Int
+    validityInDays         Int?
+    totalPermittedSessions Int?
+    isActive               Boolean @default(true)
+
+    // relations
+    type         PackageType          @relation(fields: [typeId], references: [id])
+    typeId       String               @db.ObjectId
+    transactions PackageTransaction[]
+    visits       Visit[]
+    schedules    Schedule[]
+    places       Place[]              @relation(fields: [placeIDs], references: [id])
+    placeIDs     String[]             @db.ObjectId
+    sports       Sport[]              @relation(fields: [sportIDs], references: [id])
+    sportIDs     String[]             @db.ObjectId
+
+    // for trainer
+    trainers   User[]   @relation(fields: [trainerIDs], references: [id])
+    trainerIDs String[] @db.ObjectId
+
+    createdDate DateTime @default(now())
+
+    @@index(fields: [price])
+}
+
+model Schedule {
+    id          String    @id @default(auto()) @map("_id") @db.ObjectId
+    description String
+    startDate   DateTime  @default(now())
+    endDate     DateTime?
+    isConfirmed Boolean   @default(false)
+
+    // relations
+    package    Package  @relation(fields: [packageId], references: [id])
+    packageId  String   @db.ObjectId
+    visitors   User[]   @relation("scheduleVisitors", fields: [visitorIDs], references: [id])
+    visitorIDs String[] @db.ObjectId
+    trainer    User     @relation("trainerSchedules", fields: [trainerId], references: [id])
+    trainerId  String   @db.ObjectId
+
+    createdDate DateTime @default(now())
+
+    @@index(fields: [startDate(sort: Desc)])
+}
+
+model Visit {
+    id          String    @id @default(auto()) @map("_id") @db.ObjectId
+    startDate   DateTime  @default(now())
+    endDate     DateTime?
+    isConfirmed Boolean   @default(false)
+
+    // relation 
+    visitor   User    @relation(fields: [visitorId], references: [id])
+    visitorId String  @db.ObjectId
+    package   Package @relation(fields: [packageId], references: [id])
+    packageId String  @db.ObjectId
+
+    createdDate DateTime @default(now())
+
+    @@index(fields: [startDate(sort: Desc)])
+}
+
+model Product {
+    id    String @id @default(auto()) @map("_id") @db.ObjectId
+    name  String
+    price Int
+
+    // relations
+    transactions ProductTransaction[]
+
+    createdDate DateTime @default(now())
+
+    @@index(fields: [name])
+}
+
+model Place {
+    id      String @id @default(auto()) @map("_id") @db.ObjectId
+    name    String
+    address String
+
+    // relations
+    packages   Package[] @relation(fields: [packageIDs], references: [id])
+    packageIDs String[]  @db.ObjectId
+
+    createdDate DateTime @default(now())
+}
+
+model ProductTransaction {
+    id              String   @id @default(auto()) @map("_id") @db.ObjectId
+    quantity        Int
+    unitPrice       Int
+    totalPrice      Int
+    transactionDate DateTime @default(now())
+
+    // relations
+    paymentMethod   PaymentMethod @relation(fields: [paymentMethodId], references: [id])
+    paymentMethodId String        @db.ObjectId
+    product         Product       @relation(fields: [productId], references: [id]) // bisa banyak produk
+    productId       String        @db.ObjectId
+    buyer           User          @relation(fields: [buyerId], references: [id])
+    buyerId         String        @db.ObjectId
+
+    createdDate DateTime @default(now())
+
+    @@index(fields: [transactionDate(sort: Desc)])
+}
+
+model PackageTransaction {
+    id                         String    @id @default(auto()) @map("_id") @db.ObjectId
+    totalPrice                 Int
+    startDate                  DateTime? @default(now())
+    expiryDate                 DateTime?
+    remainingPermittedSessions Int?
+    transactionDate            DateTime  @default(now())
+
+    // relations
+    paymentMethod   PaymentMethod @relation(fields: [paymentMethodId], references: [id])
+    paymentMethodId String        @db.ObjectId
+    package         Package       @relation(fields: [packageId], references: [id])
+    packageId       String        @db.ObjectId
+    buyer           User          @relation(fields: [buyerId], references: [id])
+    buyerId         String        @db.ObjectId
+    promoCode       PromoCode?    @relation(fields: [promoCodeId], references: [id])
+    promoCodeId     String?       @db.ObjectId
+
+    createdDate DateTime @default(now())
+
+    @@index(fields: [transactionDate(sort: Desc)])
+}
+
+model PaymentMethod {
+    id   String @id @default(auto()) @map("_id") @db.ObjectId
+    name String
+
+    // relations
+    productTransactions ProductTransaction[]
+    packageTransactions PackageTransaction[]
+
+    createdDate DateTime @default(now())
+}
+
+model PackageType {
+    id   String          @id @default(auto()) @map("_id") @db.ObjectId
+    name PackageTypeName
+
+    // relations
+    packages Package[]
+
+    createdDate DateTime @default(now())
+}
+
+model Token {
+    id         String   @id @default(auto()) @map("_id") @db.ObjectId
+    token      String   @unique
+    expiryDate DateTime
+
+    // relations
+    user   User      @relation(fields: [userId], references: [id])
+    userId String    @db.ObjectId
+    type   TokenType
+
+    createdDate DateTime @default(now())
+}
+
+model Sport {
+    id   String @id @default(auto()) @map("_id") @db.ObjectId
+    name String
+
+    // relations
+    trainers   User[]    @relation(fields: [trainerIDs], references: [id])
+    trainerIDs String[]  @db.ObjectId
+    packages   Package[] @relation(fields: [packageIDs], references: [id])
+    packageIDs String[]  @db.ObjectId
+
+    createdDate DateTime @default(now())
+}
+
+enum PackageTypeName {
+    MEMBER // validity
+    VISIT // validity
+    TRAINER // no validity
+}
+
+enum Gender {
+    MALE
+    FEMALE
+}
+
+enum Role {
+    OWNER
+    ADMIN
+    VISITOR
+    TRAINER
+}
+
+enum TokenType {
+    VERIFY_EMAIL
+    FORGOT_PASSWORD
+}
+
+// admin can only today's sales (limited)

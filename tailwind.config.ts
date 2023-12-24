@@ -1,0 +1,85 @@
+import { type Config } from "tailwindcss";
+import { fontFamily } from "tailwindcss/defaultTheme";
+import { withTV } from "tailwind-variants/transformer";
+
+export default withTV({
+  content: ["./src/**/*.tsx"],
+  theme: {
+    extend: {
+      colors: {
+        orange: "#ff4a01",
+        orange2: "#bd3802",
+        green: "#01a8a1",
+        green2: "#007873",
+        emerald: "#2f855a",
+        emerald2: "#226141",
+        cream: "#f9f7ea",
+        red: "#c53030",
+        red2: "#9e2424",
+        blue: "#0091f7",
+        blue2: "#0078cc",
+
+        dark: "#212129",
+        dark2: "#141417",
+        light: "#fafafa",
+      },
+      skew: {
+        20: "20deg",
+        25: "25deg",
+      },
+      padding: {
+        shorter4: "1vw",
+        shorter3: "2vw",
+        shorter2: "3vw",
+        shorter: "4vw",
+        normal: "6vw",
+        longer: "8vw",
+        longer2: "10vw",
+        longer3: "12vw",
+        longer4: "14vw",
+        longer5: "16vw",
+        longer6: "18vw",
+        longer7: "20vw",
+        longer8: "22vw",
+        longer9: "24vw",
+        longer10: "26vw",
+      },
+      margin: {
+        shorter4: "1vw",
+        shorter3: "2vw",
+        shorter2: "3vw",
+        shorter: "4vw",
+        normal: "6vw",
+        longer: "8vw",
+        longer2: "10vw",
+        longer3: "12vw",
+        longer4: "14vw",
+        longer5: "16vw",
+        longer6: "18vw",
+        longer7: "20vw",
+        longer8: "22vw",
+        longer9: "24vw",
+        longer10: "26vw",
+      },
+      borderWidth: {
+        0.5: "0.5px",
+        1: "1px",
+        1.5: "1.5px",
+        3: "3px",
+        10: "10px",
+        12: "12px",
+        14: "14px",
+        16: "16px",
+        18: "18px",
+        20: "20px",
+      },
+      fontSize: {
+        "10xl": "10rem",
+      },
+      fontFamily: {
+        poppins: ["var(--font-poppins)", ...fontFamily.sans],
+      },
+    },
+  },
+  plugins: [],
+}) satisfies Config;
