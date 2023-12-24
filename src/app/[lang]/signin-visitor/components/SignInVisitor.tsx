@@ -10,13 +10,14 @@ import { signIn } from "next-auth/react";
 import { type Dictionary } from "@/lib/dictionary";
 import Input from "@/components/Input";
 import { EMAIL_VISITOR_READONLY, USER_PATHNAMES } from "@/lib/constants";
+import { openToast } from "@/lib/utils";
 
 type Props = {
   callbackUrl?: string;
   t: Dictionary;
 };
 
-export default function SignInVisitor({ callbackUrl }: Props) {
+export default function SignInVisitor({ callbackUrl, t }: Props) {
   const router = useRouter();
 
   const {
@@ -37,11 +38,12 @@ export default function SignInVisitor({ callbackUrl }: Props) {
         credential: data.credential,
         redirect: false,
       });
-
       if (!res?.error) {
         reset();
+        openToast({ message: t.login.correct.message, description: t.login.correct.description, type: "success" });
         router.push(callbackUrl ? `/${callbackUrl}` : USER_PATHNAMES.VISITOR);
       } else {
+        openToast({ message: t.login.incorrectPhoneNumber, type: "error" });
         resetField("credential");
       }
     },

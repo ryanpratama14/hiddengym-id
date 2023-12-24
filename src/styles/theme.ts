@@ -19,7 +19,7 @@ export const COLORS = {
 
 export const antdTheme: ThemeConfig = {
   token: {
-    fontFamily: "var(--poppins)",
+    fontFamily: "",
     colorBgElevated: "",
     colorPrimary: "",
     colorLinkHover: "",

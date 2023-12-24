@@ -10,6 +10,7 @@ import { type Dictionary } from "@/lib/dictionary";
 import Input from "@/components/Input";
 import { ICONS, USER_PATHNAMES } from "@/lib/constants";
 import { COLORS } from "@/styles/theme";
+import { openToast } from "@/lib/utils";
 
 type Props = {
   callbackUrl?: string;
@@ -17,7 +18,7 @@ type Props = {
   t: Dictionary;
 };
 
-export default function Login({ callbackUrl }: Props) {
+export default function Login({ callbackUrl, t }: Props) {
   const router = useRouter();
 
   const {
@@ -40,8 +41,10 @@ export default function Login({ callbackUrl }: Props) {
       const session = await getSession();
       if (!res?.error && session?.user) {
         reset();
+        openToast({ message: t.login.correct.message, description: t.login.correct.description, type: "success" });
         router.push(callbackUrl ? `/${callbackUrl}` : USER_PATHNAMES[session.user.role]);
       } else {
+        openToast({ message: t.login.incorrectEmail, type: "error" });
         resetField("credential");
       }
     },

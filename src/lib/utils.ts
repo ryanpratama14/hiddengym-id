@@ -4,6 +4,7 @@ import { twMerge } from "tailwind-merge";
 import { type Locale } from "@/i18n.config";
 import { COUNTRY_CODE, USER_PATHNAMES } from "./constants";
 import { type Role } from "@prisma/client";
+import { notification } from "antd";
 
 export const loadToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
@@ -249,4 +250,13 @@ export const getSorterSlug = (slug: string | null) => {
 export const textEllipsis = (text: string, length: number) => {
   if (!text) return "";
   return text.length < length ? `${text}` : `${text?.substring(0, length - 3)}...`;
+};
+
+type ToastType = "error" | "info" | "success" | "warning";
+export const openToast = ({ type, message, description }: { type: ToastType; message: string; description?: string }) => {
+  return notification[type]({
+    message,
+    description,
+    duration: 5,
+  });
 };

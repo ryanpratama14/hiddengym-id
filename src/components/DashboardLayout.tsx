@@ -28,7 +28,7 @@ export default function DashboardLayout({ children, getDashboardItems, user }: P
 
   return (
     <Fragment>
-      <AddButton role={user.role} />
+      <AddButton role={user.role} setSelectedKeys={setSelectedKeys} />
       <Layout>
         <Layout.Sider
           style={{ overflow: "auto", height: "100vh", position: "fixed", left: 0, top: 0, bottom: 0, zIndex: 20 }}

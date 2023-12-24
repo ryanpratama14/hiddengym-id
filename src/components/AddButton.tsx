@@ -2,14 +2,15 @@
 
 import Iconify from "@/components/Iconify";
 import { ICONS, USER_PATHNAMES } from "@/lib/constants";
-import { cn } from "@/lib/utils";
+import { cn, getDashboardPathname } from "@/lib/utils";
 import { Menu, Transition } from "@headlessui/react";
 import { type Role } from "@prisma/client";
-import { Fragment } from "react";
+import React, { Fragment } from "react";
 import { useRouter } from "next/navigation";
 
 type Props = {
   role: Role;
+  setSelectedKeys: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
 const ITEMS_TO_REMOVE: Record<Role, string[]> = {
@@ -52,7 +53,7 @@ const ADD_BUTTON_ITEMS = (role: Role) => [
   },
 ];
 
-export default function AddButton({ role }: Props) {
+export default function AddButton({ role, setSelectedKeys }: Props) {
   const router = useRouter();
   return (
     <section className="fixed right-0 bottom-0 pr-shorter pb-shorter">
@@ -79,7 +80,10 @@ export default function AddButton({ role }: Props) {
                       className={cn(
                         "rounded-md font-semibold flex gap-2 items-center justify-end px-4 h-8 bg-light hover:bg-orange hover:text-cream text-dark"
                       )}
-                      onClick={() => router.push(item.href)}
+                      onClick={() => {
+                        setSelectedKeys(getDashboardPathname(item.href, role));
+                        router.push(item.href);
+                      }}
                     >
                       {item.label}
                       <Iconify icon={item.icon} width={25} />

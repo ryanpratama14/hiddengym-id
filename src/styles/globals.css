@@ -102,3 +102,8 @@
 .ant-menu-item {
   color: #f9f7ea !important;
 }
+
+body,
+.ant-notification {
+  font-family: var(--font-poppins) !important;
+}

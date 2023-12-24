@@ -45,7 +45,7 @@ export default function VisitorsTableSorter({ lang }: Props) {
                     newParams.set("sort", `${opt.name}-desc`);
                   } else newParams.set("sort", `${opt.name}-asc`);
 
-                  router.push(createUrl(`${lang}${USER_PATHNAMES.OWNER}/visitors`, newParams));
+                  router.push(createUrl(`/${lang}${USER_PATHNAMES.OWNER}/visitors`, newParams));
                 }}
                 className={cn("hover:underline w-fit text-dark", {
                   underline: active,

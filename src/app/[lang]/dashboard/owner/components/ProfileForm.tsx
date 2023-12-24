@@ -4,7 +4,7 @@ import Button from "@/components/Button";
 import Iconify from "@/components/Iconify";
 import Input from "@/components/Input";
 import { GENDERS, ICONS } from "@/lib/constants";
-import { cn, formatDate, removeFormatPhoneNumber } from "@/lib/utils";
+import { cn, formatDate, openToast, removeFormatPhoneNumber } from "@/lib/utils";
 import { schema } from "@/schema";
 import { type UserUpdateInput, type User } from "@/server/api/routers/user";
 import { type TRPC_RESPONSE } from "@/trpc/shared";
@@ -45,8 +45,8 @@ export default function ProfileForm({ user, setIsEdit, updateUser }: Props) {
     const res = await updateUser(data);
     setLoading(false);
     setIsEdit(false);
-    // if (!res.status) return toast({ status: "error", title: "An error occurred" });
-    // toast({ status: "success", title: "Profile has been updated" });
+    if (!res.status) return openToast({ type: "error", message: "An error occurred" });
+    openToast({ type: "success", message: "Profile has been updated" });
   };
 
   return (

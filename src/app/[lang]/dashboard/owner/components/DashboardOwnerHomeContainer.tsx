@@ -4,7 +4,7 @@ import Button from "@/components/Button";
 import Iconify from "@/components/Iconify";
 import { type Locale } from "@/i18n.config";
 import { GENDERS, ICONS } from "@/lib/constants";
-import { formatDateLong, formatName, isFileSizeAllowed, lozalizePhoneNumber } from "@/lib/utils";
+import { formatDateLong, formatName, isFileSizeAllowed, lozalizePhoneNumber, openToast } from "@/lib/utils";
 import Link from "next/link";
 import { Fragment, useState } from "react";
 import ProfileForm from "./ProfileForm";
@@ -32,12 +32,12 @@ export default function HomeContainer({ lang, user, updateUser, refreshUser }: P
       await uploadFiles("uploadUserImage", { files: [file] });
       await refreshUser();
     },
-    // onSuccess: async () =>
-    //   toast({
-    //     status: "success",
-    //     title: "Uploaded successfully",
-    //     description: "Your profile picture should be changed in seconds...",
-    //   }),
+    onSuccess: () =>
+      openToast({
+        type: "success",
+        message: "Uploaded successfully",
+        description: "Your profile picture should be changed in seconds...",
+      }),
     onError: (error) => {
       console.error(error);
     },

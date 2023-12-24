@@ -4,7 +4,7 @@ import Button from "@/components/Button";
 import Iconify from "@/components/Iconify";
 import Input from "@/components/Input";
 import { GENDERS, ICONS, USER_PATHNAMES } from "@/lib/constants";
-import { cn } from "@/lib/utils";
+import { cn, openToast } from "@/lib/utils";
 import { schema } from "@/schema";
 import { type UserCreateVisitorInput } from "@/server/api/routers/user";
 import { type TRPC_RESPONSE } from "@/trpc/shared";
@@ -39,8 +39,8 @@ export default function CreateVisitorForm({ createVisitor }: Props) {
     const res = await createVisitor(data);
     setLoading(false);
     reset();
-    // if (!res.status) return toast({ status: "error", title: "Error has been occurred" });
-    // toast({ status: "success", title: "Visitor has been created" });
+    if (!res.status) return openToast({ type: "error", message: "Error has been occurred" });
+    openToast({ type: "success", message: "Visitor has been created" });
     router.push(`${USER_PATHNAMES.OWNER}/visitors`);
   };
 
