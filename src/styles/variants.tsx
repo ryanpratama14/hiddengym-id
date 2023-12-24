@@ -1,7 +1,7 @@
 import { tv } from "tailwind-variants";
 
 export const buttonVariants = tv({
-  base: "select-none font-semibold text-light active:scale-95 outline-none text-center",
+  base: "select-none font-medium text-light active:scale-95 outline-none text-center",
   variants: {
     rounded: {
       md: "rounded-md",
