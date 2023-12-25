@@ -2,7 +2,6 @@
 
 import Logo from "@/components/Logo";
 import { type Locale } from "@/i18n.config";
-import { USER_REDIRECT } from "@/lib/constants";
 import { cn, getSelectedMenu } from "@/lib/utils";
 import { type User } from "@/server/api/routers/user";
 import { COLORS } from "@/styles/theme";
@@ -13,7 +12,6 @@ import { usePathname } from "next/navigation";
 import { Fragment, useEffect, useState } from "react";
 import AddButton from "./AddButton";
 import DashboardProfileDropdown from "./DashboardProfileDropdown";
-import NavigatorX from "./NavigatorX";
 
 type Props = {
   children: React.ReactNode;
