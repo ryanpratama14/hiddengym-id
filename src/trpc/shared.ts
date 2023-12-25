@@ -33,7 +33,7 @@ const getBaseUrl = () => {
 
 export const getUrl = () => `${getBaseUrl()}/api/trpc`;
 
-export const PAGINATION_LIMIT = 20;
+export const PAGINATION_LIMIT = 5;
 
 export const ERROR_MESSAGES: Record<TRPC_ERROR_CODE_KEY, string> = {
   PARSE_ERROR: "Error parsing the request. Please check the syntax of your request.",

@@ -7,9 +7,10 @@ import { USER_PATHNAMES } from "@/lib/constants";
 // components
 import SignInVisitor from "~/signin-visitor/components/SignInVisitor";
 import SignInVisitorHeader from "~/signin-visitor/components/SignInVisitorHeader";
+import { type SearchParams } from "@/types";
 
 type Props = {
-  searchParams: Record<string, string | undefined>;
+  searchParams: SearchParams;
   params: { lang: Locale };
 };
 
@@ -26,7 +27,7 @@ export default async function SignInVisitorPage({ searchParams, params }: Props)
         </section>
         <section className="md:shadow-lg gap-8 p-normal md:w-[50%] w-full  md:bg-light flex flex-col justify-center items-center aspect-square">
           <h4>{t.login.welcomeBack}</h4>
-          <SignInVisitor callbackUrl={searchParams.callbackUrl} t={t} lang={params.lang} />
+          <SignInVisitor callbackUrl={searchParams.callbackUrl as string} t={t} lang={params.lang} />
         </section>
       </section>
     </article>

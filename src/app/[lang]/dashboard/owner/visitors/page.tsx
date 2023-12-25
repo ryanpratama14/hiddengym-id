@@ -5,9 +5,10 @@ import { type Locale } from "@/i18n.config";
 import VisitorsTableSearch from "./components/VisitorsTableSearch";
 import VisitorsTable from "./components/VisitorsTable";
 import VisitorsTableSorter from "./components/VisitorsTableSorter";
+import { type SearchParams } from "@/types";
 
 type Props = {
-  searchParams: Record<string, string | string[] | undefined>;
+  searchParams: SearchParams;
   params: { lang: Locale };
 };
 
@@ -15,7 +16,7 @@ export default async function VisitorsPage({ searchParams, params }: Props) {
   const query: UserListInput = {
     pagination: {
       page: Number(searchParams.page) || 1,
-      limit: Number(searchParams.limit) || 30,
+      limit: searchParams.limit ? Number(searchParams.limit) : undefined,
     },
     params: {
       fullName: searchParams.q as string,
