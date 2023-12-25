@@ -1,9 +1,7 @@
 import { cn } from "@/lib/utils";
 import { type ComponentProps, type FC } from "react";
 
-interface LogoProps
-  extends Omit<ComponentProps<"section">, "className">,
-    Required<Pick<ComponentProps<"section">, "className">> {}
+interface LogoProps extends Omit<ComponentProps<"section">, "className">, Required<Pick<ComponentProps<"section">, "className">> {}
 
 const Logo: FC<LogoProps> = ({ className, ...rest }) => {
   return (

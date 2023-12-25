@@ -7,9 +7,7 @@ import { PulseLoader } from "react-spinners";
 import { type VariantProps } from "tailwind-variants";
 import Iconify from "./Iconify";
 
-function ButtonLoader() {
-  return <PulseLoader color={COLORS.cream} size={6} />;
-}
+const ButtonLoader = () => <PulseLoader color={COLORS.cream} size={6} />;
 
 type ButtonProps = ComponentProps<"button"> &
   VariantProps<typeof buttonVariants> & {

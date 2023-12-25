@@ -4,6 +4,7 @@ import Button from "@/components/Button";
 import Iconify from "@/components/Iconify";
 import Img from "@/components/Img";
 import Logo from "@/components/Logo";
+import NavigatorX from "@/components/NavigatorX";
 import { toast } from "@/components/Toast";
 import { type Locale } from "@/i18n.config";
 import { GENDERS, ICONS } from "@/lib/constants";
@@ -15,7 +16,6 @@ import { type TRPC_RESPONSE } from "@/trpc/shared";
 import { type ChangeEvent } from "@/types";
 import { CloudUploadOutlined } from "@ant-design/icons";
 import { useMutation } from "@tanstack/react-query";
-import Link from "next/link";
 import { Fragment, useState } from "react";
 import ProfileForm from "./ProfileForm";
 
@@ -115,18 +115,18 @@ export default function HomeContainer({ lang, user, updateUser, refreshUser, t }
                   <section className="flex flex-col">
                     <p className="label">Email</p>
                     {user?.email ? (
-                      <Link target="_blank" href={`mailto:${user?.email}`} className="hover:underline">
+                      <NavigatorX newTab href={`mailto:${user?.email}`} className="hover:underline">
                         {user?.email}
-                      </Link>
+                      </NavigatorX>
                     ) : (
                       <p>-</p>
                     )}
                   </section>
                   <section className="flex flex-col">
                     <p className="label">Phone Number</p>
-                    <Link target="_blank" href={`tel:${user.phoneNumber}`} className="hover:underline">
+                    <NavigatorX newTab href={`tel:${user.phoneNumber}`} className="hover:underline">
                       {lozalizePhoneNumber(user?.phoneNumber)}
-                    </Link>
+                    </NavigatorX>
                   </section>
                   <section className="flex flex-col">
                     <p className="label">Gender</p>

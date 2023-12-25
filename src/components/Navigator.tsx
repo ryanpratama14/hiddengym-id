@@ -7,23 +7,16 @@ import { type VariantProps } from "tailwind-variants";
 
 const iconSize = 22;
 
-const Navigator = ({
-  href,
-  children,
-  newTab,
-  className,
-
-  icon,
-  ...rest
-}: {
+type Props = {
   href: string;
   children: React.ReactNode;
   className?: string;
   newTab?: boolean;
   target?: React.HTMLAttributeAnchorTarget;
-
   icon?: IconifyIcon | string;
-} & VariantProps<typeof buttonVariants>) => {
+} & VariantProps<typeof buttonVariants>;
+
+export default function Navigator({ href, children, newTab, className, icon, ...rest }: Props) {
   return (
     <Link
       target={newTab ? "_blank" : undefined}
@@ -35,6 +28,4 @@ const Navigator = ({
       {children}
     </Link>
   );
-};
-
-export default Navigator;
+}

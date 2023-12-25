@@ -5,6 +5,7 @@ import Iconify from "@/components/Iconify";
 import Img from "@/components/Img";
 import Input from "@/components/Input";
 import Navigator from "@/components/Navigator";
+import NavigatorX from "@/components/NavigatorX";
 import { type Locale } from "@/i18n.config";
 import { GENDERS, ICONS, USER_REDIRECT } from "@/lib/constants";
 import { cn, createUrl, formatCurrency, lozalizePhoneNumber, textEllipsis } from "@/lib/utils";
@@ -14,7 +15,6 @@ import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import { type Role } from "@prisma/client";
 import { Table } from "antd";
 import { type FilterDropdownProps } from "antd/es/table/interface";
-import Link from "next/link";
 import { redirect, useRouter, useSearchParams } from "next/navigation";
 
 type Props = {
@@ -184,9 +184,9 @@ export default function VisitorsTable({ data, searchParams, lang }: Props) {
           dataIndex: "phoneNumber",
           ...getTableFilter({ name: "phoneNumber" }),
           render: (text: string) => (
-            <Link target="_blank" href={`tel:${text}`} className="hover:underline text-dark">
+            <NavigatorX newTab href={`tel:${text}`} className="hover:underline text-dark">
               {lozalizePhoneNumber(text)}
-            </Link>
+            </NavigatorX>
           ),
         },
         {

@@ -86,4 +86,8 @@ export const ICONS = {
   place: "ic:outline-place",
   payment_method: "material-symbols:payments-outline",
   person: "material-symbols:person-outline",
+  success: "icon-park-solid:folder-success",
+  error: "icon-park-solid:folder-failed",
+  info: "icon-park-solid:info",
+  warning: "material-symbols:warning",
 };

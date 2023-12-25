@@ -71,9 +71,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             })}
           />
 
-          {withPasswordIcon ? (
-            <Iconify width={iconSize} icon={ICONS.password} className="absolute centered-left text-dark" />
-          ) : null}
+          {withPasswordIcon ? <Iconify width={iconSize} icon={ICONS.password} className="absolute centered-left text-dark" /> : null}
 
           <Iconify
             width={iconSize}
