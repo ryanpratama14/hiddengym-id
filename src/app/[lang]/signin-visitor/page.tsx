@@ -3,8 +3,10 @@ import { useDictionary } from "@/lib/dictionary";
 import { getServerAuthSession } from "@/server/auth";
 import { redirect } from "next/navigation";
 import { USER_PATHNAMES } from "@/lib/constants";
-import SignInVisitor from "./components/SignInVisitor";
-import SignInVisitorHeader from "./components/SignInVisitorHeader";
+
+// components
+import SignInVisitor from "~/signin-visitor/components/SignInVisitor";
+import SignInVisitorHeader from "~/signin-visitor/components/SignInVisitorHeader";
 
 type Props = {
   searchParams: Record<string, string | undefined>;

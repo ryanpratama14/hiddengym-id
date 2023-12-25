@@ -4,7 +4,7 @@ import Button from "@/components/Button";
 import Iconify from "@/components/Iconify";
 import { type Locale } from "@/i18n.config";
 import { GENDERS, ICONS } from "@/lib/constants";
-import { formatDateLong, formatName, isFileSizeAllowed, lozalizePhoneNumber, toast } from "@/lib/utils";
+import { formatDateLong, formatName, isFileSizeAllowed, lozalizePhoneNumber } from "@/lib/utils";
 import Link from "next/link";
 import { Fragment, useState } from "react";
 import ProfileForm from "./ProfileForm";
@@ -16,6 +16,7 @@ import Logo from "@/components/Logo";
 import { CloudUploadOutlined } from "@ant-design/icons";
 import Img from "@/components/Img";
 import { type Dictionary } from "@/lib/dictionary";
+import { toast } from "@/components/Toast";
 
 type Props = {
   lang: Locale;

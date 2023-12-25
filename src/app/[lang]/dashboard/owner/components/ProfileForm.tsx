@@ -3,9 +3,10 @@
 import Button from "@/components/Button";
 import Iconify from "@/components/Iconify";
 import Input from "@/components/Input";
+import { toast } from "@/components/Toast";
 import { GENDERS, ICONS } from "@/lib/constants";
 import { type Dictionary } from "@/lib/dictionary";
-import { cn, formatDate, toast, removeFormatPhoneNumber } from "@/lib/utils";
+import { cn, formatDate, removeFormatPhoneNumber } from "@/lib/utils";
 import { schema } from "@/schema";
 import { type UserUpdateInput, type User } from "@/server/api/routers/user";
 import { type TRPC_RESPONSE } from "@/trpc/shared";

@@ -1,9 +1,9 @@
 import { type Locale } from "@/i18n.config";
-import SignInContainer from "./components/SignInContainer";
 import { useDictionary } from "@/lib/dictionary";
 import { getServerAuthSession } from "@/server/auth";
 import { redirect } from "next/navigation";
 import { USER_PATHNAMES } from "@/lib/constants";
+import SignInContainer from "~/signin/components/SignInContainer";
 
 type Props = {
   searchParams: Record<string, string | undefined>;

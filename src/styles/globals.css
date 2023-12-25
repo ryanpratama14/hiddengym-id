@@ -107,6 +107,11 @@
   font-weight: 500;
 }
 
+.ant-notification-notice-wrapper,
+.ant-notification-notice {
+  border-radius: 6px !important;
+}
+
 body,
 .ant-notification {
   font-family: var(--font-poppins) !important;

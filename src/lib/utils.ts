@@ -252,12 +252,3 @@ export const textEllipsis = (text: string, length: number) => {
   if (!text) return "";
   return text.length < length ? `${text}` : `${text?.substring(0, length - 3)}...`;
 };
-
-type ToastType = "error" | "success" | "warning" | "info";
-export const toast = ({ type, description, t }: { type: ToastType; description: string; t: Dictionary }) => {
-  return notification[type]({
-    description,
-    message: t.toast[type],
-    duration: 3.5,
-  });
-};

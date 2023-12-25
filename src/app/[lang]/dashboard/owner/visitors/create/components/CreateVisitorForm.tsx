@@ -3,10 +3,11 @@
 import Button from "@/components/Button";
 import Iconify from "@/components/Iconify";
 import Input from "@/components/Input";
+import { toast } from "@/components/Toast";
 import { type Locale } from "@/i18n.config";
 import { GENDERS, ICONS, USER_REDIRECT } from "@/lib/constants";
 import { type Dictionary } from "@/lib/dictionary";
-import { cn, toast } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { schema } from "@/schema";
 import { type UserCreateVisitorInput } from "@/server/api/routers/user";
 import { type TRPC_RESPONSE } from "@/trpc/shared";

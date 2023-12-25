@@ -10,7 +10,7 @@ import { type Dictionary } from "@/lib/dictionary";
 import Input from "@/components/Input";
 import { ICONS, USER_REDIRECT } from "@/lib/constants";
 import { COLORS } from "@/styles/theme";
-import { toast } from "@/lib/utils";
+import { toast } from "@/components/Toast";
 import { type Locale } from "@/i18n.config";
 
 type Props = {
