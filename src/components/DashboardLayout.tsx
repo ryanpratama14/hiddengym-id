@@ -26,8 +26,8 @@ export default function DashboardLayout({ children, getDashboardItems, user, lan
   const pathname = usePathname();
 
   const [collapsed, setCollapsed] = useState(true);
-  const [selectedKeys, setSelectedKeys] = useState<string[]>(getDashboardPathname(pathname, user.role));
-  const [selectedMenu, setSelectedMenu] = useState(getSelectedMenu({ pathname, role: user.role }));
+  const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
+  const [selectedMenu, setSelectedMenu] = useState({ title: "", href: "" });
   const items = getDashboardItems(collapsed, lang);
   const dashboardSubMenu = DASHBOARD_SUB_MENUS.find((value) => pathname.includes(value.toLowerCase()));
   const handleCollapse = () => (collapsed ? undefined : setCollapsed(true));
