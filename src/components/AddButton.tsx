@@ -6,8 +6,8 @@ import { ADD_BUTTON_ITEMS, ADD_BUTTON_ITEMS_TO_REMOVE, ICONS } from "@/lib/const
 import { cn } from "@/lib/utils";
 import { Menu, Transition } from "@headlessui/react";
 import { type Role } from "@prisma/client";
-import React, { Fragment } from "react";
-import NavigatorX from "./NavigatorX";
+import { useRouter } from "next/navigation";
+import { Fragment } from "react";
 
 type Props = {
   role: Role;
@@ -16,6 +16,7 @@ type Props = {
 };
 
 export default function AddButton({ role, lang, handleCollapse }: Props) {
+  const router = useRouter();
   return (
     <aside onClick={handleCollapse} className="fixed right-0 bottom-0 pr-shorter pb-shorter">
       <Menu as="section" className="relative">
@@ -37,15 +38,16 @@ export default function AddButton({ role, lang, handleCollapse }: Props) {
               .map((item) => {
                 return (
                   <Menu.Item key={item.icon}>
-                    <NavigatorX
-                      href={item.href}
+                    <button
+                      type="button"
+                      onClick={() => router.push(item.href)}
                       className={cn(
                         "rounded-md font-medium flex gap-2 items-center justify-end px-4 h-8 bg-light hover:bg-orange hover:text-cream text-dark",
                       )}
                     >
                       {item.label}
                       <Iconify icon={item.icon} width={25} />
-                    </NavigatorX>
+                    </button>
                   </Menu.Item>
                 );
               })}
