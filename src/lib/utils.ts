@@ -37,7 +37,7 @@ export const createSearchParams = (params: Record<string, string | string[]>, ne
 
 export const formatName = (name: string): string => {
   const trimmedName = name.trim();
-  const words = trimmedName.split(/\s+/); // Split by one or more spaces
+  const words = trimmedName.split(/\s+/);
   const capitalizedWords = words.map((word) => {
     const lowercaseWord = word.toLowerCase();
     return lowercaseWord.charAt(0).toUpperCase() + lowercaseWord.slice(1);
@@ -167,7 +167,7 @@ export const formatPhoneNumber = (phoneNumber: string): string => `${COUNTRY_COD
 export const removeFormatPhoneNumber = (phoneNumber: string): string => phoneNumber.replace(COUNTRY_CODE, "");
 
 export const lozalizePhoneNumber = (phoneNumber: string): string => {
-  const formattedNumber = `${COUNTRY_CODE} ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}-${phoneNumber.slice(10)}`;
+  const formattedNumber = `${phoneNumber.slice(0, 3)} ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}-${phoneNumber.slice(10)}`;
   return formattedNumber;
 };
 
