@@ -91,3 +91,43 @@ export const ICONS = {
   info: "icon-park-solid:info",
   warning: "material-symbols:warning",
 };
+
+export const ADD_BUTTON_ITEMS_TO_REMOVE: Record<Role, string[]> = {
+  VISITOR: ["Package", "Product", "Schedule", "Transaction", "Consumer"],
+  TRAINER: ["Package", "Product", "Transaction"],
+  OWNER: [],
+  ADMIN: [],
+};
+
+export const ADD_BUTTON_ITEMS = (role: Role, lang: Locale) => [
+  {
+    label: "Package",
+    icon: ICONS.package,
+    href: USER_REDIRECT[role]({ lang, href: "/packages/create" }),
+  },
+  {
+    label: "Product",
+    icon: ICONS.product,
+    href: USER_REDIRECT[role]({ lang, href: "/products/create" }),
+  },
+  {
+    label: "Visit",
+    icon: ICONS.visit,
+    href: USER_REDIRECT[role]({ lang, href: "/visits/create" }),
+  },
+  {
+    label: "Schedule",
+    icon: ICONS.schedule,
+    href: USER_REDIRECT[role]({ lang, href: "/schedules/create" }),
+  },
+  {
+    label: "Transaction",
+    icon: ICONS.transaction,
+    href: USER_REDIRECT[role]({ lang, href: "/transactions/create" }),
+  },
+  {
+    label: "Visitor",
+    icon: ICONS.visitor,
+    href: USER_REDIRECT[role]({ lang, href: "/visitors/create" }),
+  },
+];

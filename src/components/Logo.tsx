@@ -1,9 +1,9 @@
 import { cn } from "@/lib/utils";
-import { type ComponentProps, type FC } from "react";
+import { type ComponentProps } from "react";
 
 interface LogoProps extends Omit<ComponentProps<"section">, "className">, Required<Pick<ComponentProps<"section">, "className">> {}
 
-const Logo: FC<LogoProps> = ({ className, ...rest }) => {
+export default function Logo({ className, ...rest }: LogoProps) {
   return (
     <section {...rest} className={cn(className, "flex gap-2 items-center justify-center")}>
       <section className="flex items-center justify-center w-[20%] h-full">
@@ -25,6 +25,4 @@ const Logo: FC<LogoProps> = ({ className, ...rest }) => {
       </section>
     </section>
   );
-};
-
-export default Logo;
+}

@@ -2,7 +2,7 @@
 
 import Iconify from "@/components/Iconify";
 import { type Locale } from "@/i18n.config";
-import { ICONS, USER_REDIRECT } from "@/lib/constants";
+import { ADD_BUTTON_ITEMS, ADD_BUTTON_ITEMS_TO_REMOVE, ICONS } from "@/lib/constants";
 import { cn, getDashboardPathname } from "@/lib/utils";
 import { Menu, Transition } from "@headlessui/react";
 import { type Role } from "@prisma/client";
@@ -11,50 +11,10 @@ import React, { Fragment } from "react";
 
 type Props = {
   role: Role;
-  setSelectedKeys: React.Dispatch<React.SetStateAction<string[]>>;
   lang: Locale;
+  setSelectedKeys: React.Dispatch<React.SetStateAction<string[]>>;
   handleCollapse: React.MouseEventHandler<HTMLElement>;
 };
-
-const ITEMS_TO_REMOVE: Record<Role, string[]> = {
-  VISITOR: ["Package", "Product", "Schedule", "Transaction", "Consumer"],
-  TRAINER: ["Package", "Product", "Transaction"],
-  OWNER: [],
-  ADMIN: [],
-};
-
-const ADD_BUTTON_ITEMS = (role: Role, lang: Locale) => [
-  {
-    label: "Package",
-    icon: ICONS.package,
-    href: USER_REDIRECT[role]({ lang, href: "/packages/create" }),
-  },
-  {
-    label: "Product",
-    icon: ICONS.product,
-    href: USER_REDIRECT[role]({ lang, href: "/products/create" }),
-  },
-  {
-    label: "Visit",
-    icon: ICONS.visit,
-    href: USER_REDIRECT[role]({ lang, href: "/visits/create" }),
-  },
-  {
-    label: "Schedule",
-    icon: ICONS.schedule,
-    href: USER_REDIRECT[role]({ lang, href: "/schedules/create" }),
-  },
-  {
-    label: "Transaction",
-    icon: ICONS.transaction,
-    href: USER_REDIRECT[role]({ lang, href: "/transactions/create" }),
-  },
-  {
-    label: "Visitor",
-    icon: ICONS.visitor,
-    href: USER_REDIRECT[role]({ lang, href: "/visitors/create" }),
-  },
-];
 
 export default function AddButton({ role, lang, setSelectedKeys, handleCollapse }: Props) {
   const router = useRouter();
@@ -75,7 +35,7 @@ export default function AddButton({ role, lang, setSelectedKeys, handleCollapse 
         >
           <Menu.Items className="active:outline-none focus:outline-none outline-none absolute bottom-14 right-0 origin-top-right p-0.5 mt-4 w-fit rounded-md  flex flex-col bg-light shadow-lg">
             {ADD_BUTTON_ITEMS(role, lang)
-              .filter((obj) => !ITEMS_TO_REMOVE[role].includes(obj.label))
+              .filter((obj) => !ADD_BUTTON_ITEMS_TO_REMOVE[role].includes(obj.label))
               .map((item) => {
                 return (
                   <Menu.Item key={item.icon}>
