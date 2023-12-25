@@ -6,9 +6,7 @@ import Iconify from "@/components/Iconify";
 import { type Locale } from "@/i18n.config";
 import { ICONS } from "@/lib/constants";
 import { type User } from "@/server/api/routers/user";
-import { type MenuProps } from "antd";
-
-type MenuItem = Required<MenuProps>["items"][number];
+import { type ItemType, type MenuItemType } from "antd/es/menu/hooks/useItems";
 
 type Props = {
   children: React.ReactNode;
@@ -16,7 +14,7 @@ type Props = {
   lang: Locale;
 };
 
-const getDashboardItems = (collapsed: boolean, lang: Locale): MenuItem[] => [
+const getDashboardItems = (collapsed: boolean, lang: Locale): ItemType<MenuItemType>[] => [
   {
     key: "/",
     label: (

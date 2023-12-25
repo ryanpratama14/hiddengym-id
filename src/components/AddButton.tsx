@@ -3,7 +3,7 @@
 import Iconify from "@/components/Iconify";
 import { type Locale } from "@/i18n.config";
 import { ADD_BUTTON_ITEMS, ADD_BUTTON_ITEMS_TO_REMOVE, ICONS } from "@/lib/constants";
-import { cn, getDashboardPathname } from "@/lib/utils";
+import { cn, getDashboardPathname, getSelectedMenu } from "@/lib/utils";
 import { Menu, Transition } from "@headlessui/react";
 import { type Role } from "@prisma/client";
 import { useRouter } from "next/navigation";
@@ -12,11 +12,12 @@ import React, { Fragment } from "react";
 type Props = {
   role: Role;
   lang: Locale;
+  setSelectedMenu: React.Dispatch<React.SetStateAction<string>>;
   setSelectedKeys: React.Dispatch<React.SetStateAction<string[]>>;
   handleCollapse: React.MouseEventHandler<HTMLElement>;
 };
 
-export default function AddButton({ role, lang, setSelectedKeys, handleCollapse }: Props) {
+export default function AddButton({ role, lang, setSelectedKeys, setSelectedMenu, handleCollapse }: Props) {
   const router = useRouter();
   return (
     <aside onClick={handleCollapse} className="fixed right-0 bottom-0 pr-shorter pb-shorter">
@@ -44,6 +45,7 @@ export default function AddButton({ role, lang, setSelectedKeys, handleCollapse 
                         "rounded-md font-medium flex gap-2 items-center justify-end px-4 h-8 bg-light hover:bg-orange hover:text-cream text-dark",
                       )}
                       onClick={() => {
+                        setSelectedMenu(getSelectedMenu({ pathname: item.href, role }));
                         setSelectedKeys(getDashboardPathname(item.href, role));
                         router.push(item.href);
                       }}

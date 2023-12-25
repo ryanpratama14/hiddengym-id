@@ -2,12 +2,13 @@
 
 import Logo from "@/components/Logo";
 import { type Locale } from "@/i18n.config";
-import { USER_REDIRECT } from "@/lib/constants";
-import { cn, getDashboardPathname } from "@/lib/utils";
+import { DASHBOARD_MENUS, USER_REDIRECT } from "@/lib/constants";
+import { cn, getDashboardPathname, getSelectedMenu } from "@/lib/utils";
 import { type User } from "@/server/api/routers/user";
 import { COLORS } from "@/styles/theme";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
-import { Layout, Menu, type MenuProps } from "antd";
+import { Layout, Menu } from "antd";
+import { type ItemType, type MenuItemType } from "antd/es/menu/hooks/useItems";
 import { usePathname } from "next/navigation";
 import { Fragment, useState } from "react";
 import AddButton from "./AddButton";
@@ -16,18 +17,18 @@ import DashboardProfileDropdown from "./DashboardProfileDropdown";
 type Props = {
   children: React.ReactNode;
   user: User;
-  getDashboardItems: (collapsed: boolean, lang: Locale) => MenuItem[];
+  getDashboardItems: (collapsed: boolean, lang: Locale) => ItemType<MenuItemType>[];
+
   lang: Locale;
 };
 
-type MenuItem = Required<MenuProps>["items"][number];
-
 export default function DashboardLayout({ children, getDashboardItems, user, lang }: Props) {
   const pathname = usePathname();
+
   const [collapsed, setCollapsed] = useState(true);
   const [selectedKeys, setSelectedKeys] = useState<string[]>(getDashboardPathname(pathname, user.role));
+  const [selectedMenu, setSelectedMenu] = useState(getSelectedMenu({ pathname, role: user.role }));
   const items = getDashboardItems(collapsed, lang);
-
   const handleCollapse = () => (collapsed ? undefined : setCollapsed(true));
 
   return (
@@ -55,7 +56,8 @@ export default function DashboardLayout({ children, getDashboardItems, user, lan
                 onClick={(e) => {
                   const newPathname = USER_REDIRECT[user.role]({ lang, href: e.key });
                   setSelectedKeys(getDashboardPathname(newPathname, user.role));
-                  if (!collapsed) setCollapsed(true);
+                  setSelectedMenu(DASHBOARD_MENUS[e.key] ?? "");
+                  handleCollapse();
                 }}
                 selectedKeys={selectedKeys}
                 mode="inline"
@@ -72,18 +74,24 @@ export default function DashboardLayout({ children, getDashboardItems, user, lan
         </Layout.Sider>
       </Layout>
 
-      <nav
-        onClick={handleCollapse}
-        className="fixed w-full top-0 flex items-center justify-end px-shorter h-14 bg-dark text-cream z-10"
-      >
-        <DashboardProfileDropdown user={user} />
+      <nav onClick={handleCollapse} className="fixed flex items-center w-full top-0 h-14 bg-dark text-cream z-10">
+        <section className="px-shorter ml-[3.1rem] flex items-center justify-between w-full">
+          <p className="font-medium px-4 py-0.5 rounded-md border-2 select-none border-cream shadow-lg">{selectedMenu}</p>
+          <DashboardProfileDropdown user={user} />
+        </section>
       </nav>
 
       <article onClick={handleCollapse} className="min-h-screen p-shorter bg-cream ml-[3.1rem] mt-14">
         {children}
       </article>
 
-      <AddButton handleCollapse={handleCollapse} role={user.role} setSelectedKeys={setSelectedKeys} lang={lang} />
+      <AddButton
+        setSelectedMenu={setSelectedMenu}
+        setSelectedKeys={setSelectedKeys}
+        handleCollapse={handleCollapse}
+        role={user.role}
+        lang={lang}
+      />
     </Fragment>
   );
 }

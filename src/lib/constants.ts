@@ -131,3 +131,19 @@ export const ADD_BUTTON_ITEMS = (role: Role, lang: Locale) => [
     href: USER_REDIRECT[role]({ lang, href: "/visitors/create" }),
   },
 ];
+
+export const DASHBOARD_MENUS: Record<string, string> = {
+  "/": "Home",
+  "/visitors": "Visitors",
+  "/trainers": "Trainers",
+  "/packages": "Packages",
+  "/products": "Products",
+  "/transactions/packages": "Transactions | Packages",
+  "/transactions/products": "Transactions | Products",
+  "/visits": "Visits",
+  "/schedules": "Schedules",
+  "/promo-codes": "Promo Codes",
+  "/sport-types": "Sport Types",
+  "/places": "Places",
+  "/payment-methods": "Payment Methods",
+};

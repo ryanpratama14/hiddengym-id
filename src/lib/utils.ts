@@ -3,7 +3,7 @@ import { type Role } from "@prisma/client";
 import { clsx, type ClassValue } from "clsx";
 import { type ReadonlyURLSearchParams } from "next/navigation";
 import { twMerge } from "tailwind-merge";
-import { COUNTRY_CODE, USER_PATHNAMES } from "./constants";
+import { COUNTRY_CODE, DASHBOARD_MENUS, USER_PATHNAMES } from "./constants";
 
 export const loadToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
@@ -246,4 +246,14 @@ export const getSorterSlug = (slug: string | null) => {
 export const textEllipsis = (text: string, length: number) => {
   if (!text) return "";
   return text.length < length ? `${text}` : `${text?.substring(0, length - 3)}...`;
+};
+
+export const getSelectedMenu = ({ pathname, role }: { pathname: string; role: Role }): string => {
+  const pathnameArray = getDashboardPathname(pathname, role);
+  for (const path of pathnameArray) {
+    if (DASHBOARD_MENUS[path]) {
+      return DASHBOARD_MENUS[path] ?? "";
+    }
+  }
+  return "";
 };
