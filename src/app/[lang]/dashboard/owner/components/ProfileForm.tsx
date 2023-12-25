@@ -6,7 +6,7 @@ import Input from "@/components/Input";
 import { toast } from "@/components/Toast";
 import { GENDERS, ICONS } from "@/lib/constants";
 import { type Dictionary } from "@/lib/dictionary";
-import { cn, formatDate, removeFormatPhoneNumber } from "@/lib/utils";
+import { formatDate, removeFormatPhoneNumber } from "@/lib/utils";
 import { schema } from "@/schema";
 import { type User, type UserUpdateInput } from "@/server/api/routers/user";
 import { type TRPC_RESPONSE } from "@/trpc/shared";
@@ -61,10 +61,7 @@ export default function ProfileForm({ user, setIsEdit, updateUser, t }: Props) {
           {GENDERS.map((option, index) => {
             return (
               <section key={option.label} className="items-center flex gap-2">
-                <button
-                  type="button"
-                  className="relative rounded-full w-6 aspect-square border-1 border-dark has-[:checked]:bg-dark"
-                >
+                <button type="button" className="relative rounded-full w-6 aspect-square border-1 border-dark has-[:checked]:bg-dark">
                   <input
                     value={option.value}
                     className="cursor-pointer absolute w-full h-full opacity-0 z-10 top-0 left-0"

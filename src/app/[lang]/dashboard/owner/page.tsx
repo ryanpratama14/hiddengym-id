@@ -31,14 +31,5 @@ export default async function DashboardOwnerPage({ params }: Props) {
 
   const user = await api.user.detailMe.query();
 
-  return (
-    <DashboardOwnerHomeContainer
-      lang={params.lang}
-      id={session.user.id}
-      updateUser={updateUser}
-      refreshUser={refreshUser}
-      user={user}
-      t={t}
-    />
-  );
+  return <DashboardOwnerHomeContainer lang={params.lang} updateUser={updateUser} refreshUser={refreshUser} user={user} t={t} />;
 }

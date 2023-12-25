@@ -21,7 +21,6 @@ import ProfileForm from "./ProfileForm";
 
 type Props = {
   lang: Locale;
-  id: string;
   user: User;
   updateUser: (data: UserUpdateInput) => Promise<TRPC_RESPONSE>;
   refreshUser: () => Promise<void>;
@@ -57,7 +56,7 @@ export default function HomeContainer({ lang, user, updateUser, refreshUser, t }
         <section className="flex flex-col gap-6 pb-2">
           <section className="relative bg-light rounded-full w-full aspect-square shadow">
             {isLoading ? null : (
-              <section className="shadow-lg flex items-center justify-center px-1 py-0.5 bg-green text-light absolute bottom-0 right-0 rounded-md z-10">
+              <section className="shadow-lg flex items-center justify-center px-1 py-0.5 bg-green text-light absolute bottom-0 right-0 rounded-md z-10 overflow-hidden">
                 <input
                   accept="image/*"
                   type="file"

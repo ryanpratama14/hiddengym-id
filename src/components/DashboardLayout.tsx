@@ -85,14 +85,13 @@ export default function DashboardLayout({ children, getDashboardItems, user, lan
           </section>
         </Layout.Sider>
       </Layout>
-      <article className="flex flex-col" onClick={() => (!collapsed ? setCollapsed(true) : undefined)}>
-        <header className="sticky w-full top-0 flex items-center justify-end px-shorter h-14 bg-dark text-cream z-10">
-          <DashboardProfileDropdown user={user} />
-        </header>
-        <section className="bg-cream pl-12">
-          <article className="p-shorter min-h-screen">{children}</article>
-        </section>
-        <footer className="bg-dark text-right font-semibold px-shorter py-4 text-cream">HIDDEN GYM ©2024</footer>
+
+      <nav className="sticky top-0 flex items-center justify-end px-shorter h-14 bg-dark text-cream z-10">
+        <DashboardProfileDropdown user={user} />
+      </nav>
+
+      <article className="bg-cream pl-12" onClick={() => (!collapsed ? setCollapsed(true) : undefined)}>
+        <article className="p-shorter min-h-screen">{children}</article>
       </article>
     </Fragment>
   );
