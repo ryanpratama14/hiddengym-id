@@ -1,6 +1,6 @@
 import { type PackageCreateInput } from "@/server/api/routers/package";
 import { api } from "@/trpc/server";
-import CreatePackageForm from "../components/CreatePackageForm";
+import CreatePackageForm from "@owner/packages/components/CreatePackageForm";
 
 export default function PackageCreatePage() {
   const createPackage = async (data: PackageCreateInput) => {

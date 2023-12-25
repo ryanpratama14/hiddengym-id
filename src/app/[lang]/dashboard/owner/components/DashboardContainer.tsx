@@ -141,7 +141,7 @@ const getDashboardItems = (collapsed: boolean, lang: Locale): MenuItem[] => [
   },
 ];
 
-export default function DashboardOwnerContainer({ children, user, lang }: Props) {
+export default function DashboardContainer({ children, user, lang }: Props) {
   return (
     <DashboardLayout getDashboardItems={getDashboardItems} user={user} lang={lang}>
       {children}

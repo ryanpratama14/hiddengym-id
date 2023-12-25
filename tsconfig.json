@@ -28,7 +28,11 @@
     "paths": {
       "@/*": ["./src/*"],
       "#/*": ["./public/*"],
-      "~/*": ["./src/app/[lang]/*"]
+      "~/*": ["./src/app/[lang]/*"],
+      "@owner/*": ["./src/app/[lang]/dashboard/owner/*"],
+      "@trainer/*": ["./src/app/[lang]/dashboard/trainer/*"],
+      "@admin/*": ["./src/app/[lang]/dashboard/admin/*"],
+      "@visitor/*": ["./src/app/[lang]/dashboard/visitor/*"]
     }
   },
   "include": [".eslintrc.cjs", "next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.cjs", "**/*.js", ".next/types/**/*.ts"],

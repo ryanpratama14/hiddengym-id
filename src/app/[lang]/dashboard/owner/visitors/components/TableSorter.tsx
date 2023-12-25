@@ -11,7 +11,7 @@ type Props = {
   lang: Locale;
 };
 
-export default function VisitorsTableSorter({ lang }: Props) {
+export default function TableSorter({ lang }: Props) {
   const router = useRouter();
   const newSearchParams = useSearchParams();
   const newParams = new URLSearchParams(newSearchParams.toString());

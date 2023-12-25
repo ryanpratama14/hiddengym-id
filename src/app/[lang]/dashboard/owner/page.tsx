@@ -4,10 +4,10 @@ import { useDictionary } from "@/lib/dictionary";
 import { type UserUpdateInput } from "@/server/api/routers/user";
 import { getServerAuthSession } from "@/server/auth";
 import { api } from "@/trpc/server";
+import HomeContainer from "@owner/components/HomeContainer";
 import { type Role } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import DashboardOwnerHomeContainer from "./components/DashboardOwnerHomeContainer";
 
 type Props = { params: { lang: Locale } };
 
@@ -31,5 +31,5 @@ export default async function DashboardOwnerPage({ params }: Props) {
 
   const user = await api.user.detailMe.query();
 
-  return <DashboardOwnerHomeContainer lang={params.lang} updateUser={updateUser} refreshUser={refreshUser} user={user} t={t} />;
+  return <HomeContainer lang={params.lang} updateUser={updateUser} refreshUser={refreshUser} user={user} t={t} />;
 }

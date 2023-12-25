@@ -4,7 +4,6 @@ import Iconify from "@/components/Iconify";
 import { type Locale } from "@/i18n.config";
 import { ICONS, USER_REDIRECT } from "@/lib/constants";
 import { cn, getDashboardPathname } from "@/lib/utils";
-import { type MouseEvent } from "@/types";
 import { Menu, Transition } from "@headlessui/react";
 import { type Role } from "@prisma/client";
 import { useRouter } from "next/navigation";
