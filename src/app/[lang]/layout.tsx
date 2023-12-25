@@ -1,25 +1,22 @@
 import "@/styles/globals.css";
 import AntdProvider from "@/components/AntdProvider";
+import { type Locale } from "@/i18n.config";
 import { TRPCReactProvider } from "@/trpc/react";
 import { type Metadata } from "next";
-import { Poppins } from "next/font/google";
 import { cookies } from "next/headers";
-
-const poppins = Poppins({
-  subsets: ["latin"],
-  variable: "--font-poppins",
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
-});
 
 export const metadata: Metadata = {
   title: "Hidden Gym",
   description: "Hidden Gym",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+
+type Props = { children: React.ReactNode; params: { lang: Locale } };
+
+export default function RootLayout({ children, params }: Props) {
   return (
-    <html lang="en">
-      <body className={`bg-cream ${poppins.variable}`}>
+    <html lang={params.lang}>
+      <body>
         <TRPCReactProvider cookies={cookies().toString()}>
           <AntdProvider>
             <main>{children}</main>

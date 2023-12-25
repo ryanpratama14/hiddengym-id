@@ -26,7 +26,6 @@ export default function DashboardLayout({ children, getDashboardItems, user, lan
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(true);
   const [selectedMenu, setSelectedMenu] = useState(getSelectedMenu({ pathname, role: user.role }));
-  const items = getDashboardItems(collapsed, lang);
   const handleCollapse = () => (collapsed ? undefined : setCollapsed(true));
 
   useEffect(() => {
@@ -53,7 +52,13 @@ export default function DashboardLayout({ children, getDashboardItems, user, lan
               >
                 {!collapsed ? <MenuFoldOutlined style={{ fontSize: "30px" }} /> : <MenuUnfoldOutlined style={{ fontSize: "30px" }} />}
               </button>
-              <Menu color={COLORS.cream} onClick={handleCollapse} selectedKeys={selectedMenu.keys} mode="inline" items={items} />
+              <Menu
+                color={COLORS.cream}
+                onClick={handleCollapse}
+                selectedKeys={selectedMenu.keys}
+                mode="inline"
+                items={getDashboardItems(collapsed, lang).map((item) => ({ ...item, title: "" })) as ItemType<MenuItemType>[]}
+              />
             </nav>
             {collapsed ? null : (
               <section className="w-full flex flex-col gap-4 text-cream items-center justify-center">
