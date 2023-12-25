@@ -66,9 +66,9 @@ export default function DashboardLayout({ children, getDashboardItems, user, lan
       <nav onClick={handleCollapse} className="fixed flex items-center w-full top-0 h-14 bg-dark text-cream z-10">
         <section className="px-shorter ml-[3.1rem] flex items-center justify-between w-full">
           <section className="flex gap-2">
-            <p className="font-medium px-2 py-0.5 rounded-md border-2 select-none border-cream shadow-lg">{selectedMenu.name}</p>
+            <p className="font-medium px-3 py-0.5 rounded-md border-2 select-none border-cream shadow-lg">{selectedMenu.name}</p>
             {selectedMenu.subName ? (
-              <p className="font-medium px-2 py-0.5 rounded-md border-2 select-none bg-orange border-orange shadow-lg">
+              <p className="font-medium px-3 py-0.5 rounded-md border-2 select-none bg-light border-light shadow-lg text-dark">
                 {selectedMenu.subName}
               </p>
             ) : null}

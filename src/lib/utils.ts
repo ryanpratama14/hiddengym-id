@@ -255,14 +255,18 @@ export const getSelectedMenu = ({
   pathname: string;
   role: Role;
 }): { name: string; href: string; subName: string; keys: string[] } => {
-  const pathnameArray = getDashboardPathname(pathname, role);
-  for (const path of pathnameArray) {
-    return {
-      keys: pathnameArray,
-      name: DASHBOARD_MENUS[path] ?? "",
-      href: path,
-      subName: DASHBOARD_SUB_MENUS.find((value) => pathname.includes(value.toLowerCase())) ?? "",
-    };
+  const selectedMenu = {
+    name: "",
+    href: "",
+    subName: DASHBOARD_SUB_MENUS.find((value) => pathname.includes(value.toLowerCase())) ?? "",
+    keys: getDashboardPathname(pathname, role),
+  };
+
+  for (const path of selectedMenu.keys) {
+    if (DASHBOARD_MENUS[path]) {
+      selectedMenu.name = DASHBOARD_MENUS[path] ?? "";
+      selectedMenu.href = path;
+    }
   }
-  return { name: "", href: "", subName: "", keys: [] };
+  return selectedMenu;
 };
