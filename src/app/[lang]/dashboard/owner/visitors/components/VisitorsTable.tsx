@@ -61,9 +61,7 @@ export default function VisitorsTable({ data, searchParams, lang }: Props) {
                   <section key={option.label} className="items-center flex gap-2">
                     <button
                       type="button"
-                      className={cn(
-                        "relative rounded-full w-6 bg-white aspect-square border-1 border-dark has-[:checked]:bg-dark",
-                      )}
+                      className="relative rounded-full w-6 bg-white aspect-square border-1 border-dark has-[:checked]:bg-dark"
                     >
                       <div className="has-[:checked]:scale-0 animate absolute centered w-[40%] aspect-square rounded-full bg-white" />
                       <input

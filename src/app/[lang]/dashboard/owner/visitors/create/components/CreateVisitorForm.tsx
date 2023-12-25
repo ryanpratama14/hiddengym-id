@@ -12,7 +12,6 @@ import { schema } from "@/schema";
 import { type UserCreateVisitorInput } from "@/server/api/routers/user";
 import { type TRPC_RESPONSE } from "@/trpc/shared";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { type Gender } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
@@ -25,7 +24,6 @@ type Props = {
 
 export default function CreateVisitorForm({ createVisitor, lang, t }: Props) {
   const router = useRouter();
-  const [gender, setGender] = useState<Gender>("MALE");
   const [loading, setLoading] = useState<boolean>(false);
   const [isAddingTransaction, setIsAddingTransaction] = useState<boolean>(false);
 
@@ -63,15 +61,11 @@ export default function CreateVisitorForm({ createVisitor, lang, t }: Props) {
             <p>Gender</p>
             <section className="grid grid-cols-2 h-10">
               {GENDERS.map((option, index) => {
-                const checked = gender === option.value;
                 return (
                   <section key={option.label} className="items-center flex gap-2">
                     <button
                       type="button"
-                      className={cn("relative rounded-full w-6 bg-white aspect-square border-1 border-dark", {
-                        "bg-dark": checked,
-                      })}
-                      onClick={() => setGender(option.value)}
+                      className="relative rounded-full w-6 bg-white aspect-square border-1 border-dark has-[:checked]:bg-dark"
                     >
                       <input
                         value={option.value}
@@ -80,11 +74,7 @@ export default function CreateVisitorForm({ createVisitor, lang, t }: Props) {
                         type="radio"
                         {...register("gender")}
                       />
-                      <div
-                        className={`animate absolute centered w-[40%] aspect-square rounded-full bg-white ${
-                          !checked && "scale-0"
-                        }`}
-                      />
+                      <div className="animate absolute centered w-[40%] aspect-square rounded-full bg-white has-[:checked]:scale-0" />
                     </button>
                     <label className="flex items-center" htmlFor={`gender_option_${index}`}>
                       <Iconify

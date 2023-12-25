@@ -63,7 +63,7 @@ export default function ProfileForm({ user, setIsEdit, updateUser, t }: Props) {
               <section key={option.label} className="items-center flex gap-2">
                 <button
                   type="button"
-                  className={cn("relative rounded-full w-6 aspect-square border-1 border-dark has-[:checked]:bg-dark")}
+                  className="relative rounded-full w-6 aspect-square border-1 border-dark has-[:checked]:bg-dark"
                 >
                   <input
                     value={option.value}
@@ -72,9 +72,7 @@ export default function ProfileForm({ user, setIsEdit, updateUser, t }: Props) {
                     type="radio"
                     {...register("body.gender")}
                   />
-                  <div
-                    className={`animate absolute centered w-[40%] aspect-square rounded-full bg-cream has-[:checked]:scale-0`}
-                  />
+                  <div className="animate absolute centered w-[40%] aspect-square rounded-full bg-cream has-[:checked]:scale-0" />
                 </button>
                 <label className="flex items-center" htmlFor={`gender_option_${index}`}>
                   <Iconify color={option.color} width={25} icon={option.icon} />
