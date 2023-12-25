@@ -35,20 +35,21 @@ export default function DashboardLayout({ children, getDashboardItems, user, lan
       <Layout>
         <Layout.Sider
           style={{ overflow: "auto", height: "100vh", position: "fixed", left: 0, top: 0, bottom: 0, zIndex: 20 }}
-          collapsedWidth={55}
+          collapsedWidth={50}
           trigger={null}
           collapsible
           collapsed={collapsed}
           width={250}
         >
-          <section className="min-h-screen flex flex-col gap-6 justify-between pb-6">
-            <section className="flex flex-col gap-6">
-              <section
+          <aside className="min-h-screen flex flex-col gap-6 justify-between pb-6">
+            <nav className="flex flex-col gap-6">
+              <button
+                type="button"
                 onClick={() => setCollapsed(!collapsed)}
-                className="cursor-pointer bg-cream gap-2 flex items-center w-full justify-center h-14 text-dark"
+                className="bg-cream gap-2 flex items-center w-full justify-center h-14 text-dark"
               >
-                {!collapsed ? <MenuFoldOutlined style={{ fontSize: "30px" }} /> : <MenuUnfoldOutlined style={{ fontSize: "30px" }} />}
-              </section>
+                {!collapsed ? <MenuFoldOutlined style={{ fontSize: "28px" }} /> : <MenuUnfoldOutlined style={{ fontSize: "28px" }} />}
+              </button>
               <Menu
                 color={COLORS.cream}
                 onClick={(e) => {
@@ -60,14 +61,14 @@ export default function DashboardLayout({ children, getDashboardItems, user, lan
                 mode="inline"
                 items={items}
               />
-            </section>
+            </nav>
             {collapsed ? null : (
               <section className="w-full flex flex-col gap-4 text-cream items-center justify-center">
                 <Logo className="w-[70%] aspect-video" />
                 <p className={cn("font-semibold")}>HIDDEN GYM</p>
               </section>
             )}
-          </section>
+          </aside>
         </Layout.Sider>
       </Layout>
 
@@ -78,8 +79,8 @@ export default function DashboardLayout({ children, getDashboardItems, user, lan
         <DashboardProfileDropdown user={user} />
       </nav>
 
-      <article className="bg-cream pl-14 pt-14" onClick={handleCollapse}>
-        <article className="min-h-screen p-shorter">{children}</article>
+      <article onClick={handleCollapse} className="min-h-screen p-shorter bg-cream ml-[3.1rem] mt-14">
+        {children}
       </article>
 
       <AddButton handleCollapse={handleCollapse} role={user.role} setSelectedKeys={setSelectedKeys} lang={lang} />
