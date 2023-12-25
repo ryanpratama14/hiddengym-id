@@ -3,22 +3,19 @@
 import Iconify from "@/components/Iconify";
 import { type Locale } from "@/i18n.config";
 import { ADD_BUTTON_ITEMS, ADD_BUTTON_ITEMS_TO_REMOVE, ICONS } from "@/lib/constants";
-import { cn, getDashboardPathname, getSelectedMenu } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { Menu, Transition } from "@headlessui/react";
 import { type Role } from "@prisma/client";
-import { useRouter } from "next/navigation";
 import React, { Fragment } from "react";
+import NavigatorX from "./NavigatorX";
 
 type Props = {
   role: Role;
   lang: Locale;
-  setSelectedMenu: React.Dispatch<React.SetStateAction<string>>;
-  setSelectedKeys: React.Dispatch<React.SetStateAction<string[]>>;
   handleCollapse: React.MouseEventHandler<HTMLElement>;
 };
 
-export default function AddButton({ role, lang, setSelectedKeys, setSelectedMenu, handleCollapse }: Props) {
-  const router = useRouter();
+export default function AddButton({ role, lang, handleCollapse }: Props) {
   return (
     <aside onClick={handleCollapse} className="fixed right-0 bottom-0 pr-shorter pb-shorter">
       <Menu as="section" className="relative">
@@ -40,19 +37,15 @@ export default function AddButton({ role, lang, setSelectedKeys, setSelectedMenu
               .map((item) => {
                 return (
                   <Menu.Item key={item.icon}>
-                    <button
+                    <NavigatorX
+                      href={item.href}
                       className={cn(
                         "rounded-md font-medium flex gap-2 items-center justify-end px-4 h-8 bg-light hover:bg-orange hover:text-cream text-dark",
                       )}
-                      onClick={() => {
-                        setSelectedMenu(getSelectedMenu({ pathname: item.href, role }));
-                        setSelectedKeys(getDashboardPathname(item.href, role));
-                        router.push(item.href);
-                      }}
                     >
                       {item.label}
                       <Iconify icon={item.icon} width={25} />
-                    </button>
+                    </NavigatorX>
                   </Menu.Item>
                 );
               })}

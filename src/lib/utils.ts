@@ -248,12 +248,12 @@ export const textEllipsis = (text: string, length: number) => {
   return text.length < length ? `${text}` : `${text?.substring(0, length - 3)}...`;
 };
 
-export const getSelectedMenu = ({ pathname, role }: { pathname: string; role: Role }): string => {
+export const getSelectedMenu = ({ pathname, role }: { pathname: string; role: Role }): { title: string; href: string } => {
   const pathnameArray = getDashboardPathname(pathname, role);
   for (const path of pathnameArray) {
     if (DASHBOARD_MENUS[path]) {
-      return DASHBOARD_MENUS[path] ?? "";
+      return { title: DASHBOARD_MENUS[path] ?? "", href: path };
     }
   }
-  return "";
+  return { title: "", href: "" };
 };

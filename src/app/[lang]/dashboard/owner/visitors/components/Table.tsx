@@ -152,7 +152,7 @@ export default function VisitorsTable({ data, searchParams, lang }: Props) {
           width: 1,
           dataIndex: "id",
           render: (id: string) => (
-            <Navigator color="link" href={USER_REDIRECT.OWNER({ lang, href: `/visitors/${id}` })}>
+            <Navigator color="link" href={USER_REDIRECT.OWNER({ lang, href: `/visitors/detail/${id}` })}>
               View
             </Navigator>
           ),

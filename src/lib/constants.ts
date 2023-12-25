@@ -138,8 +138,8 @@ export const DASHBOARD_MENUS: Record<string, string> = {
   "/trainers": "Trainers",
   "/packages": "Packages",
   "/products": "Products",
-  "/transactions/packages": "Transactions | Packages",
-  "/transactions/products": "Transactions | Products",
+  "/transactions/packages": "Packages Transactions",
+  "/transactions/products": "Products Transactions",
   "/visits": "Visits",
   "/schedules": "Schedules",
   "/promo-codes": "Promo Codes",
@@ -147,3 +147,5 @@ export const DASHBOARD_MENUS: Record<string, string> = {
   "/places": "Places",
   "/payment-methods": "Payment Methods",
 };
+
+export const DASHBOARD_SUB_MENUS = ["Detail", "Update", "Create"];
