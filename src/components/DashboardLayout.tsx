@@ -31,8 +31,6 @@ export default function DashboardLayout({ children, getDashboardItems, user, lan
     setSelectedMenu(getSelectedMenu({ pathname, role: user.role }));
   }, [pathname]);
 
-  console.log(selectedMenu);
-
   return (
     <Fragment>
       <Layout>
