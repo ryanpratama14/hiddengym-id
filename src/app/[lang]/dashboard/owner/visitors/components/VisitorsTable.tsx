@@ -11,12 +11,11 @@ import { cn, createUrl, formatCurrency, lozalizePhoneNumber, textEllipsis } from
 import { type UserList, type UserListInputParams } from "@/server/api/routers/user";
 import { type SearchParams } from "@/types";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
-import { type Gender, type Role } from "@prisma/client";
+import { type Role } from "@prisma/client";
 import { Table } from "antd";
 import { type FilterDropdownProps } from "antd/es/table/interface";
 import Link from "next/link";
 import { redirect, useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
 
 type Props = {
   data?: UserList;
@@ -34,7 +33,6 @@ export default function VisitorsTable({ data, searchParams, lang }: Props) {
   }
 
   const router = useRouter();
-  const [gender, setGender] = useState<Gender | undefined>(undefined);
 
   const redirectTable = ({ role, href, newParams }: { role: Role; href: string; newParams: URLSearchParams }) => {
     router.push(createUrl(USER_REDIRECT[role]({ lang, href }), newParams));
@@ -51,7 +49,6 @@ export default function VisitorsTable({ data, searchParams, lang }: Props) {
             if (value.value) {
               newParams.set(name, value.value);
             } else newParams.delete(name);
-            if (gender) newParams.set("gender", gender);
             confirm();
             redirectTable({ href: "/visitors", newParams, role: "OWNER" });
           }}
@@ -60,38 +57,27 @@ export default function VisitorsTable({ data, searchParams, lang }: Props) {
           {name === "gender" ? (
             <section className="grid grid-cols-2">
               {GENDERS.map((option, index) => {
-                const defaultValue = gender ?? searchParams.gender;
-                const checked = defaultValue === option.value;
                 return (
-                  <section onClick={() => setGender(option.value)} key={option.label} className="items-center flex gap-2">
+                  <section key={option.label} className="items-center flex gap-2">
                     <button
                       type="button"
-                      className={cn("relative rounded-full w-6 bg-white aspect-square border-1 border-dark", {
-                        "bg-dark": checked,
-                      })}
+                      className={cn(
+                        "relative rounded-full w-6 bg-white aspect-square border-1 border-dark has-[:checked]:bg-dark",
+                      )}
                     >
+                      <div className="has-[:checked]:scale-0 animate absolute centered w-[40%] aspect-square rounded-full bg-white" />
                       <input
-                        value={defaultValue}
-                        className="cursor-pointer absolute w-full h-full opacity-0 z-10 top-0 left-0"
+                        className="cursor-pointer absolute w-full h-full opacity-0 z-10 top-0 left-0 "
                         id={`gender_option_${index}`}
                         type="radio"
                         name={name}
                         key={name}
-                      />
-                      <div
-                        className={`animate absolute centered w-[40%] aspect-square rounded-full bg-white ${
-                          !checked && "scale-0"
-                        }`}
+                        value={option.value}
+                        defaultChecked={searchParams.gender === option.value}
                       />
                     </button>
                     <label className="flex items-center" htmlFor={`gender_option_${index}`}>
-                      <Iconify
-                        className={cn("text-pink-500", {
-                          "text-blue": option.value === "MALE",
-                        })}
-                        width={25}
-                        icon={option.icon}
-                      />
+                      <Iconify color={option.color} width={25} icon={option.icon} />
                     </label>
                   </section>
                 );
@@ -119,7 +105,6 @@ export default function VisitorsTable({ data, searchParams, lang }: Props) {
                   form.reset();
                   if (!searchParams[name]) return;
                 }
-                if (gender) setGender(undefined);
                 newParams.delete(name);
                 newParams.delete("page");
                 confirm();

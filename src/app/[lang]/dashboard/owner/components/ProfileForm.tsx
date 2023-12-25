@@ -11,7 +11,6 @@ import { schema } from "@/schema";
 import { type User, type UserUpdateInput } from "@/server/api/routers/user";
 import { type TRPC_RESPONSE } from "@/trpc/shared";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { type Gender } from "@prisma/client";
 import { useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 
@@ -24,7 +23,6 @@ type Props = {
 
 export default function ProfileForm({ user, setIsEdit, updateUser, t }: Props) {
   const [loading, setLoading] = useState(false);
-  const [gender, setGender] = useState<Gender>(user?.gender);
   const {
     register,
     handleSubmit,
@@ -61,15 +59,11 @@ export default function ProfileForm({ user, setIsEdit, updateUser, t }: Props) {
         <p>Gender</p>
         <section className="grid grid-cols-2 h-10">
           {GENDERS.map((option, index) => {
-            const checked = gender === option.value;
             return (
               <section key={option.label} className="items-center flex gap-2">
                 <button
                   type="button"
-                  className={cn("relative rounded-full w-6 aspect-square border-1 border-dark", {
-                    "bg-dark": checked,
-                  })}
-                  onClick={() => setGender(option.value)}
+                  className={cn("relative rounded-full w-6 aspect-square border-1 border-dark has-[:checked]:bg-dark")}
                 >
                   <input
                     value={option.value}
@@ -79,7 +73,7 @@ export default function ProfileForm({ user, setIsEdit, updateUser, t }: Props) {
                     {...register("body.gender")}
                   />
                   <div
-                    className={`animate absolute centered w-[40%] aspect-square rounded-full bg-cream ${!checked && "scale-0"}`}
+                    className={`animate absolute centered w-[40%] aspect-square rounded-full bg-cream has-[:checked]:scale-0`}
                   />
                 </button>
                 <label className="flex items-center" htmlFor={`gender_option_${index}`}>
