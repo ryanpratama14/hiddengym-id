@@ -28,13 +28,14 @@ export default function DashboardLayout({ children, getDashboardItems, user, lan
   const [selectedKeys, setSelectedKeys] = useState<string[]>(getDashboardPathname(pathname, user.role));
   const items = getDashboardItems(collapsed, lang);
 
+  const handleCollapse = () => (collapsed ? undefined : setCollapsed(true));
+
   return (
     <Fragment>
-      <AddButton role={user.role} setSelectedKeys={setSelectedKeys} lang={lang} />
       <Layout>
         <Layout.Sider
           style={{ overflow: "auto", height: "100vh", position: "fixed", left: 0, top: 0, bottom: 0, zIndex: 20 }}
-          collapsedWidth={50}
+          collapsedWidth={55}
           trigger={null}
           collapsible
           collapsed={collapsed}
@@ -44,25 +45,9 @@ export default function DashboardLayout({ children, getDashboardItems, user, lan
             <section className="flex flex-col gap-6">
               <section
                 onClick={() => setCollapsed(!collapsed)}
-                className={cn("cursor-pointer bg-cream gap-2 flex items-center w-full justify-center h-14 text-dark", {
-                  "rounded-r-full": collapsed,
-                })}
+                className="cursor-pointer bg-cream gap-2 flex items-center w-full justify-center h-14 text-dark"
               >
-                {!collapsed ? (
-                  <MenuFoldOutlined
-                    style={{ fontSize: "30px" }}
-                    className={cn({
-                      "-translate-x-0.5": collapsed,
-                    })}
-                  />
-                ) : (
-                  <MenuUnfoldOutlined
-                    style={{ fontSize: "30px" }}
-                    className={cn({
-                      "-translate-x-0.5": collapsed,
-                    })}
-                  />
-                )}
+                {!collapsed ? <MenuFoldOutlined style={{ fontSize: "30px" }} /> : <MenuUnfoldOutlined style={{ fontSize: "30px" }} />}
               </section>
               <Menu
                 color={COLORS.cream}
@@ -86,13 +71,18 @@ export default function DashboardLayout({ children, getDashboardItems, user, lan
         </Layout.Sider>
       </Layout>
 
-      <nav className="sticky top-0 flex items-center justify-end px-shorter h-14 bg-dark text-cream z-10">
+      <nav
+        onClick={handleCollapse}
+        className="fixed w-full top-0 flex items-center justify-end px-shorter h-14 bg-dark text-cream z-10"
+      >
         <DashboardProfileDropdown user={user} />
       </nav>
 
-      <article className="bg-cream pl-12" onClick={() => (!collapsed ? setCollapsed(true) : undefined)}>
-        <article className="p-shorter min-h-screen">{children}</article>
+      <article className="bg-cream pl-14 pt-14" onClick={handleCollapse}>
+        <article className="min-h-screen p-shorter">{children}</article>
       </article>
+
+      <AddButton handleCollapse={handleCollapse} role={user.role} setSelectedKeys={setSelectedKeys} lang={lang} />
     </Fragment>
   );
 }

@@ -15,7 +15,7 @@ type Props = {
 export default function DashboardProfileDropdown({ user }: Props) {
   return (
     <Menu as="article" className="relative">
-      <Menu.Button className="w-10 aspect-square bg-cream rounded-full relative shadow border-1 border-dotted border-dark">
+      <Menu.Button className="size-10 bg-cream rounded-full relative shadow border-1 border-dotted border-dark">
         <section>
           {user?.image?.url ? (
             <Img src={user.image.url} alt="Profile Picture" className="absolute centered object-cover w-full h-full rounded-full" />

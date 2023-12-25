@@ -4,6 +4,7 @@ import Iconify from "@/components/Iconify";
 import { type Locale } from "@/i18n.config";
 import { ICONS, USER_REDIRECT } from "@/lib/constants";
 import { cn, getDashboardPathname } from "@/lib/utils";
+import { type MouseEvent } from "@/types";
 import { Menu, Transition } from "@headlessui/react";
 import { type Role } from "@prisma/client";
 import { useRouter } from "next/navigation";
@@ -13,6 +14,7 @@ type Props = {
   role: Role;
   setSelectedKeys: React.Dispatch<React.SetStateAction<string[]>>;
   lang: Locale;
+  handleCollapse: React.MouseEventHandler<HTMLElement>;
 };
 
 const ITEMS_TO_REMOVE: Record<Role, string[]> = {
@@ -55,10 +57,10 @@ const ADD_BUTTON_ITEMS = (role: Role, lang: Locale) => [
   },
 ];
 
-export default function AddButton({ role, lang, setSelectedKeys }: Props) {
+export default function AddButton({ role, lang, setSelectedKeys, handleCollapse }: Props) {
   const router = useRouter();
   return (
-    <section className="fixed right-0 bottom-0 pr-shorter pb-shorter">
+    <aside onClick={handleCollapse} className="fixed right-0 bottom-0 pr-shorter pb-shorter">
       <Menu as="section" className="relative">
         <Menu.Button className="w-10 aspect-square bg-green text-cream rounded-full relative shadow">
           <Iconify icon={ICONS.add} className="absolute centered" width={35} />
@@ -96,6 +98,6 @@ export default function AddButton({ role, lang, setSelectedKeys }: Props) {
           </Menu.Items>
         </Transition>
       </Menu>
-    </section>
+    </aside>
   );
 }
