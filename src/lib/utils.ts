@@ -3,7 +3,7 @@ import { type Role } from "@prisma/client";
 import { clsx, type ClassValue } from "clsx";
 import { type ReadonlyURLSearchParams } from "next/navigation";
 import { twMerge } from "tailwind-merge";
-import { COUNTRY_CODE, DASHBOARD_MENUS, USER_PATHNAMES } from "./constants";
+import { COUNTRY_CODE, DASHBOARD_MENUS, DASHBOARD_SUB_MENUS, USER_PATHNAMES } from "./constants";
 
 export const loadToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
@@ -217,6 +217,19 @@ export const formatCurrency = (number: number) => {
   return formatter.format(number);
 };
 
+export const getSorterSlug = (slug: string | null) => {
+  if (slug) {
+    const [name, sorterer] = slug.split("-");
+    return { name, sorterer };
+  }
+  return null;
+};
+
+export const textEllipsis = (text: string, length: number) => {
+  if (!text) return "";
+  return text.length < length ? `${text}` : `${text?.substring(0, length - 3)}...`;
+};
+
 export const getDashboardPathname = (pathname: string, role: Role): string[] => {
   const substring = USER_PATHNAMES[role];
   const startIndex = pathname.indexOf(substring);
@@ -235,25 +248,23 @@ export const getDashboardPathname = (pathname: string, role: Role): string[] => 
   }
 };
 
-export const getSorterSlug = (slug: string | null) => {
-  if (slug) {
-    const [name, sorterer] = slug.split("-");
-    return { name, sorterer };
-  }
-  return null;
-};
-
-export const textEllipsis = (text: string, length: number) => {
-  if (!text) return "";
-  return text.length < length ? `${text}` : `${text?.substring(0, length - 3)}...`;
-};
-
-export const getSelectedMenu = ({ pathname, role }: { pathname: string; role: Role }): { title: string; href: string } => {
+export const getSelectedMenu = ({
+  pathname,
+  role,
+}: {
+  pathname: string;
+  role: Role;
+}): { name: string; href: string; subName: string; keys: string[] } => {
   const pathnameArray = getDashboardPathname(pathname, role);
   for (const path of pathnameArray) {
     if (DASHBOARD_MENUS[path]) {
-      return { title: DASHBOARD_MENUS[path] ?? "", href: path };
+      return {
+        keys: pathnameArray,
+        name: DASHBOARD_MENUS[path] ?? "",
+        href: path,
+        subName: DASHBOARD_SUB_MENUS.find((value) => pathname.includes(value.toLowerCase())) ?? "",
+      };
     }
   }
-  return { title: "", href: "" };
+  return { name: "", href: "", subName: "", keys: [] };
 };

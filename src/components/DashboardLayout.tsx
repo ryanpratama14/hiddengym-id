@@ -2,8 +2,8 @@
 
 import Logo from "@/components/Logo";
 import { type Locale } from "@/i18n.config";
-import { DASHBOARD_SUB_MENUS, USER_REDIRECT } from "@/lib/constants";
-import { cn, getDashboardPathname, getSelectedMenu } from "@/lib/utils";
+import { USER_REDIRECT } from "@/lib/constants";
+import { cn, getSelectedMenu } from "@/lib/utils";
 import { type User } from "@/server/api/routers/user";
 import { COLORS } from "@/styles/theme";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
@@ -24,18 +24,16 @@ type Props = {
 
 export default function DashboardLayout({ children, getDashboardItems, user, lang }: Props) {
   const pathname = usePathname();
-
   const [collapsed, setCollapsed] = useState(true);
-  const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
   const [selectedMenu, setSelectedMenu] = useState(getSelectedMenu({ pathname, role: user.role }));
   const items = getDashboardItems(collapsed, lang);
-  const dashboardSubMenu = DASHBOARD_SUB_MENUS.find((value) => pathname.includes(value.toLowerCase()));
   const handleCollapse = () => (collapsed ? undefined : setCollapsed(true));
 
   useEffect(() => {
     setSelectedMenu(getSelectedMenu({ pathname, role: user.role }));
-    setSelectedKeys(getDashboardPathname(pathname, user.role));
   }, [pathname]);
+
+  console.log(selectedMenu);
 
   return (
     <Fragment>
@@ -57,7 +55,7 @@ export default function DashboardLayout({ children, getDashboardItems, user, lan
               >
                 {!collapsed ? <MenuFoldOutlined style={{ fontSize: "28px" }} /> : <MenuUnfoldOutlined style={{ fontSize: "28px" }} />}
               </button>
-              <Menu color={COLORS.cream} onClick={handleCollapse} selectedKeys={selectedKeys} mode="inline" items={items} />
+              <Menu color={COLORS.cream} onClick={handleCollapse} selectedKeys={selectedMenu.keys} mode="inline" items={items} />
             </nav>
             {collapsed ? null : (
               <section className="w-full flex flex-col gap-4 text-cream items-center justify-center">
@@ -72,15 +70,10 @@ export default function DashboardLayout({ children, getDashboardItems, user, lan
       <nav onClick={handleCollapse} className="fixed flex items-center w-full top-0 h-14 bg-dark text-cream z-10">
         <section className="px-shorter ml-[3.1rem] flex items-center justify-between w-full">
           <section className="flex gap-2">
-            <NavigatorX
-              href={USER_REDIRECT[user.role]({ lang, href: selectedMenu.href })}
-              className="font-medium px-2 py-0.5 rounded-md border-2 select-none border-cream shadow-lg"
-            >
-              {selectedMenu.title}
-            </NavigatorX>
-            {dashboardSubMenu ? (
+            <p className="font-medium px-2 py-0.5 rounded-md border-2 select-none border-cream shadow-lg">{selectedMenu.name}</p>
+            {selectedMenu.subName ? (
               <p className="font-medium px-2 py-0.5 rounded-md border-2 select-none bg-orange border-orange shadow-lg">
-                {dashboardSubMenu}
+                {selectedMenu.subName}
               </p>
             ) : null}
           </section>
