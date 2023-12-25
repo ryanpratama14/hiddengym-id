@@ -8,12 +8,12 @@ import { GENDERS, ICONS } from "@/lib/constants";
 import { type Dictionary } from "@/lib/dictionary";
 import { cn, formatDate, removeFormatPhoneNumber } from "@/lib/utils";
 import { schema } from "@/schema";
-import { type UserUpdateInput, type User } from "@/server/api/routers/user";
+import { type User, type UserUpdateInput } from "@/server/api/routers/user";
 import { type TRPC_RESPONSE } from "@/trpc/shared";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type Gender } from "@prisma/client";
 import { useState } from "react";
-import { type SubmitHandler, useForm } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
 
 type Props = {
   user: User;
@@ -56,12 +56,7 @@ export default function ProfileForm({ user, setIsEdit, updateUser, t }: Props) {
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
       <Input label="Full Name" {...register("body.fullName")} error={errors.body?.fullName?.message} />
       <Input icon={ICONS.email} label="Email" {...register("body.email")} error={errors.body?.email?.message} />
-      <Input
-        label="Phone Number"
-        {...register("body.phoneNumber")}
-        error={errors.body?.phoneNumber?.message}
-        isPhoneNumber
-      />
+      <Input label="Phone Number" {...register("body.phoneNumber")} error={errors.body?.phoneNumber?.message} isPhoneNumber />
       <section className="flex flex-col">
         <p>Gender</p>
         <section className="grid grid-cols-2 h-10">
@@ -84,9 +79,7 @@ export default function ProfileForm({ user, setIsEdit, updateUser, t }: Props) {
                     {...register("body.gender")}
                   />
                   <div
-                    className={`animate absolute centered w-[40%] aspect-square rounded-full bg-cream ${
-                      !checked && "scale-0"
-                    }`}
+                    className={`animate absolute centered w-[40%] aspect-square rounded-full bg-cream ${!checked && "scale-0"}`}
                   />
                 </button>
                 <label className="flex items-center" htmlFor={`gender_option_${index}`}>

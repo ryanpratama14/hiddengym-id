@@ -1,10 +1,9 @@
 import "@/styles/globals.css";
-
+import AntdProvider from "@/components/AntdProvider";
+import { TRPCReactProvider } from "@/trpc/react";
+import { type Metadata } from "next";
 import { Poppins } from "next/font/google";
 import { cookies } from "next/headers";
-import { TRPCReactProvider } from "@/trpc/react";
-import AntdProvider from "@/components/AntdProvider";
-import { type Metadata } from "next";
 
 const poppins = Poppins({
   subsets: ["latin"],

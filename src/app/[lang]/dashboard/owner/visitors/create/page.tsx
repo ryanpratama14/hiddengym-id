@@ -1,10 +1,10 @@
+import { type Locale } from "@/i18n.config";
+import { USER_REDIRECT } from "@/lib/constants";
+import { useDictionary } from "@/lib/dictionary";
 import { type UserCreateVisitorInput } from "@/server/api/routers/user";
 import { api } from "@/trpc/server";
-import CreateVisitorForm from "./components/CreateVisitorForm";
-import { type Locale } from "@/i18n.config";
-import { useDictionary } from "@/lib/dictionary";
 import { revalidatePath } from "next/cache";
-import { USER_REDIRECT } from "@/lib/constants";
+import CreateVisitorForm from "./components/CreateVisitorForm";
 
 type Props = {
   params: { lang: Locale };

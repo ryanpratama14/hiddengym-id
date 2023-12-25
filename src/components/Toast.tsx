@@ -1,7 +1,7 @@
 import { type Dictionary } from "@/lib/dictionary";
+import { COLORS } from "@/styles/theme";
 import { notification } from "antd";
 import Iconify from "./Iconify";
-import { COLORS } from "@/styles/theme";
 
 type ToastType = "error" | "success" | "warning" | "info";
 

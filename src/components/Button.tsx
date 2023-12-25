@@ -1,11 +1,11 @@
 import { cn } from "@/lib/utils";
+import { COLORS } from "@/styles/theme";
 import { buttonVariants } from "@/styles/variants";
-import { type ComponentProps, forwardRef } from "react";
+import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
+import { forwardRef, type ComponentProps } from "react";
+import { PulseLoader } from "react-spinners";
 import { type VariantProps } from "tailwind-variants";
 import Iconify from "./Iconify";
-import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
-import { COLORS } from "@/styles/theme";
-import { PulseLoader } from "react-spinners";
 
 function ButtonLoader() {
   return <PulseLoader color={COLORS.cream} size={6} />;
@@ -38,7 +38,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         )}
       </button>
     );
-  }
+  },
 );
 
 Button.displayName = "Button";

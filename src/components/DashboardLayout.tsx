@@ -1,17 +1,17 @@
 "use client";
 
 import Logo from "@/components/Logo";
+import { type Locale } from "@/i18n.config";
+import { USER_REDIRECT } from "@/lib/constants";
 import { cn, getDashboardPathname } from "@/lib/utils";
+import { type User } from "@/server/api/routers/user";
+import { COLORS } from "@/styles/theme";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { Layout, Menu, type MenuProps } from "antd";
 import { usePathname } from "next/navigation";
 import { Fragment, useState } from "react";
-import DashboardProfileDropdown from "./DashboardProfileDropdown";
 import AddButton from "./AddButton";
-import { COLORS } from "@/styles/theme";
-import { type User } from "@/server/api/routers/user";
-import { USER_REDIRECT } from "@/lib/constants";
-import { type Locale } from "@/i18n.config";
+import DashboardProfileDropdown from "./DashboardProfileDropdown";
 
 type Props = {
   children: React.ReactNode;

@@ -8,10 +8,10 @@ import Navigator from "@/components/Navigator";
 import { type Locale } from "@/i18n.config";
 import { GENDERS, ICONS, USER_REDIRECT } from "@/lib/constants";
 import { cn, createUrl, formatCurrency, lozalizePhoneNumber, textEllipsis } from "@/lib/utils";
-import { type UserListInputParams, type UserList } from "@/server/api/routers/user";
+import { type UserList, type UserListInputParams } from "@/server/api/routers/user";
 import { type SearchParams } from "@/types";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
-import { type Role, type Gender } from "@prisma/client";
+import { type Gender, type Role } from "@prisma/client";
 import { Table } from "antd";
 import { type FilterDropdownProps } from "antd/es/table/interface";
 import Link from "next/link";
@@ -138,7 +138,7 @@ export default function VisitorsTable({ data, searchParams, lang }: Props) {
           "aspect-square w-7 text-cream hover:text-dark hover:bg-cream relative rounded-full hover:shadow-lg animate",
           {
             "bg-cream text-dark": Object.keys(searchParams).includes(name),
-          }
+          },
         )}
       >
         <Iconify icon={ICONS.search} width={22} className="absolute centered" />
@@ -185,11 +185,7 @@ export default function VisitorsTable({ data, searchParams, lang }: Props) {
             <section className="flex gap-2 items-center">
               <section className="w-8 aspect-square bg-cream rounded-full relative shadow border-1 border-dotted border-dark">
                 {user?.image?.url ? (
-                  <Img
-                    src={user.image.url}
-                    alt={text}
-                    className="absolute centered object-cover w-full h-full rounded-full"
-                  />
+                  <Img src={user.image.url} alt={text} className="absolute centered object-cover w-full h-full rounded-full" />
                 ) : (
                   <Iconify
                     icon={user.gender === "MALE" ? ICONS.male : ICONS.female}

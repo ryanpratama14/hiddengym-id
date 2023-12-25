@@ -1,13 +1,13 @@
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import CredentialsProvider from "next-auth/providers/credentials";
-import { getServerSession, type DefaultSession, type NextAuthOptions } from "next-auth";
-import { verify } from "argon2";
-import { schema } from "@/schema";
-import { db } from "@/server/db";
 import { env } from "@/env";
-import { type Role } from "@prisma/client";
 import { EMAIL_VISITOR_READONLY } from "@/lib/constants";
 import { formatPhoneNumber } from "@/lib/utils";
+import { schema } from "@/schema";
+import { db } from "@/server/db";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import { type Role } from "@prisma/client";
+import { verify } from "argon2";
+import { getServerSession, type DefaultSession, type NextAuthOptions } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
 
 declare module "next-auth" {
   interface Session extends DefaultSession {

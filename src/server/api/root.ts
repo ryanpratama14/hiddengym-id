@@ -1,9 +1,7 @@
-import { createTRPCRouter } from "@/server/api/trpc";
-
-// routers
-import { userRouter } from "@/server/api/routers/user";
-import { paymentMethodRouter } from "@/server/api/routers/paymentMethod";
 import { packageRouter } from "@/server/api/routers/package";
+import { paymentMethodRouter } from "@/server/api/routers/paymentMethod";
+import { userRouter } from "@/server/api/routers/user";
+import { createTRPCRouter } from "@/server/api/trpc";
 
 export const appRouter = createTRPCRouter({
   user: userRouter,

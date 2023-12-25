@@ -1,11 +1,9 @@
-import { type ReadonlyURLSearchParams } from "next/navigation";
-import { type ClassValue, clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
 import { type Locale } from "@/i18n.config";
-import { COUNTRY_CODE, USER_PATHNAMES } from "./constants";
 import { type Role } from "@prisma/client";
-import { notification } from "antd";
-import { type Dictionary } from "./dictionary";
+import { clsx, type ClassValue } from "clsx";
+import { type ReadonlyURLSearchParams } from "next/navigation";
+import { twMerge } from "tailwind-merge";
+import { COUNTRY_CODE, USER_PATHNAMES } from "./constants";
 
 export const loadToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
@@ -13,7 +11,7 @@ export const cn = (...inputs: ClassValue[]): string => twMerge(clsx(inputs));
 
 export const consoleError = (error: string) => {
   console.error(
-    `❌ ${getNewDate().toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit", second: "2-digit" })} 👉 ${error}`
+    `❌ ${getNewDate().toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit", second: "2-digit" })} 👉 ${error}`,
   );
 };
 
@@ -23,10 +21,7 @@ export const createUrl = (pathname: string, params: URLSearchParams | ReadonlyUR
   return `${pathname}${queryString}`;
 };
 
-export const createSearchParams = (
-  params: Record<string, string | string[]>,
-  newParams?: URLSearchParams
-): URLSearchParams => {
+export const createSearchParams = (params: Record<string, string | string[]>, newParams?: URLSearchParams): URLSearchParams => {
   const updatedParams = new URLSearchParams(newParams);
   for (const [key, values] of Object.entries(params)) {
     if (Array.isArray(values)) {

@@ -1,10 +1,10 @@
+import { type Locale } from "@/i18n.config";
+import { USER_PATHNAMES } from "@/lib/constants";
 import { getServerAuthSession } from "@/server/auth";
+import { api } from "@/trpc/server";
+import { type Role } from "@prisma/client";
 import { redirect } from "next/navigation";
 import DashboardOwnerContainer from "./components/DashboardOwnerContainer";
-import { USER_PATHNAMES } from "@/lib/constants";
-import { type Role } from "@prisma/client";
-import { api } from "@/trpc/server";
-import { type Locale } from "@/i18n.config";
 
 type Props = { children: React.ReactNode; params: { lang: Locale } };
 

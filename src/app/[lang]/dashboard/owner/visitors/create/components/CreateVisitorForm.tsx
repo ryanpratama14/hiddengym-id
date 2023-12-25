@@ -15,7 +15,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { type Gender } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { type SubmitHandler, useForm } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
 
 type Props = {
   createVisitor: (data: UserCreateVisitorInput) => Promise<TRPC_RESPONSE>;
@@ -31,6 +31,7 @@ export default function CreateVisitorForm({ createVisitor, lang, t }: Props) {
 
   const {
     register,
+    unregister,
     handleSubmit,
     formState: { errors },
     reset,
@@ -104,7 +105,10 @@ export default function CreateVisitorForm({ createVisitor, lang, t }: Props) {
             <Button
               color={isAddingTransaction ? "danger" : "none"}
               size="m"
-              onClick={() => setIsAddingTransaction(!isAddingTransaction)}
+              onClick={() => {
+                unregister(["packageTransactionId", "transactionDate"]);
+                setIsAddingTransaction(!isAddingTransaction);
+              }}
               className={cn({ "text-dark bg-dark/10": !isAddingTransaction })}
             >
               {`${isAddingTransaction ? "Remove" : "Add"} package transaction`}
@@ -120,12 +124,7 @@ export default function CreateVisitorForm({ createVisitor, lang, t }: Props) {
             {...register("packageTransactionId")}
             label="Package"
           />
-          <Input
-            error={errors.transactionDate?.message}
-            {...register("transactionDate")}
-            label="Transaction Date"
-            type="date"
-          />
+          <Input error={errors.transactionDate?.message} {...register("transactionDate")} label="Transaction Date" type="date" />
         </section>
       ) : null}
 

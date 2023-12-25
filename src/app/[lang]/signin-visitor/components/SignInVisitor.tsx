@@ -1,17 +1,17 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { type SubmitHandler, useForm } from "react-hook-form";
+import Button from "@/components/Button";
+import Input from "@/components/Input";
+import { toast } from "@/components/Toast";
+import { type Locale } from "@/i18n.config";
+import { EMAIL_VISITOR_READONLY, USER_REDIRECT } from "@/lib/constants";
+import { type Dictionary } from "@/lib/dictionary";
+import { schema, type LoginVisitor } from "@/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { type LoginVisitor, schema } from "@/schema";
 import { useMutation } from "@tanstack/react-query";
 import { signIn } from "next-auth/react";
-import { type Dictionary } from "@/lib/dictionary";
-import { EMAIL_VISITOR_READONLY, USER_REDIRECT } from "@/lib/constants";
-import { type Locale } from "@/i18n.config";
-import Button from "@/components/Button";
-import { toast } from "@/components/Toast";
-import Input from "@/components/Input";
+import { useRouter } from "next/navigation";
+import { useForm, type SubmitHandler } from "react-hook-form";
 
 type Props = {
   callbackUrl?: string;

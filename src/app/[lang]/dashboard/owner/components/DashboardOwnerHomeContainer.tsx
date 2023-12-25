@@ -2,21 +2,21 @@
 
 import Button from "@/components/Button";
 import Iconify from "@/components/Iconify";
+import Img from "@/components/Img";
+import Logo from "@/components/Logo";
+import { toast } from "@/components/Toast";
 import { type Locale } from "@/i18n.config";
 import { GENDERS, ICONS } from "@/lib/constants";
+import { type Dictionary } from "@/lib/dictionary";
+import { uploadFiles } from "@/lib/uploadthing";
 import { formatDateLong, formatName, isFileSizeAllowed, lozalizePhoneNumber } from "@/lib/utils";
+import { type User, type UserUpdateInput } from "@/server/api/routers/user";
+import { type TRPC_RESPONSE } from "@/trpc/shared";
+import { CloudUploadOutlined } from "@ant-design/icons";
+import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 import { Fragment, useState } from "react";
 import ProfileForm from "./ProfileForm";
-import { type User, type UserUpdateInput } from "@/server/api/routers/user";
-import { type TRPC_RESPONSE } from "@/trpc/shared";
-import { useMutation } from "@tanstack/react-query";
-import { uploadFiles } from "@/lib/uploadthing";
-import Logo from "@/components/Logo";
-import { CloudUploadOutlined } from "@ant-design/icons";
-import Img from "@/components/Img";
-import { type Dictionary } from "@/lib/dictionary";
-import { toast } from "@/components/Toast";
 
 type Props = {
   lang: Locale;

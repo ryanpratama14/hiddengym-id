@@ -1,10 +1,10 @@
+import { COUNTRY_CODE, ICONS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { inputVariants } from "@/styles/variants";
-import { forwardRef, type ComponentProps, useId, useState } from "react";
+import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
+import { forwardRef, useId, useState, type ComponentProps } from "react";
 import { type VariantProps } from "tailwind-variants";
 import Iconify from "./Iconify";
-import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
-import { COUNTRY_CODE, ICONS } from "@/lib/constants";
 
 type InputProps = ComponentProps<"input"> &
   VariantProps<typeof inputVariants> & {
@@ -85,7 +85,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         {error ? <small className={cn("text-red  text-xs mt-0.5")}>{error}</small> : null}
       </section>
     );
-  }
+  },
 );
 
 export default Input;

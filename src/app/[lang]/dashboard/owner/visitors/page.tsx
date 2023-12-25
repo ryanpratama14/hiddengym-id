@@ -1,11 +1,11 @@
-import { api } from "@/trpc/server";
-import { type UserListInput } from "@/server/api/routers/user";
-import { type Gender } from "@prisma/client";
 import { type Locale } from "@/i18n.config";
-import VisitorsTableSearch from "./components/VisitorsTableSearch";
-import VisitorsTable from "./components/VisitorsTable";
-import VisitorsTableSorter from "./components/VisitorsTableSorter";
+import { type UserListInput } from "@/server/api/routers/user";
+import { api } from "@/trpc/server";
 import { type SearchParams } from "@/types";
+import { type Gender } from "@prisma/client";
+import VisitorsTable from "./components/VisitorsTable";
+import VisitorsTableSearch from "./components/VisitorsTableSearch";
+import VisitorsTableSorter from "./components/VisitorsTableSorter";
 
 type Props = {
   searchParams: SearchParams;

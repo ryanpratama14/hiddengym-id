@@ -1,13 +1,12 @@
 "use client";
 
-import { type MenuProps } from "antd";
-import { type User } from "@/server/api/routers/user";
-
 import DashboardLayout from "@/components/DashboardLayout";
-import Iconify from "@/components/Iconify";
 import DashboardNavigator from "@/components/DashboardNavigator";
-import { ICONS } from "@/lib/constants";
+import Iconify from "@/components/Iconify";
 import { type Locale } from "@/i18n.config";
+import { ICONS } from "@/lib/constants";
+import { type User } from "@/server/api/routers/user";
+import { type MenuProps } from "antd";
 
 type MenuItem = Required<MenuProps>["items"][number];
 

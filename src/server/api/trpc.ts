@@ -1,9 +1,9 @@
-import { initTRPC } from "@trpc/server";
-import superjson from "superjson";
-import { ZodError } from "zod";
 import { getServerAuthSession } from "@/server/auth";
 import { db } from "@/server/db";
 import { THROW_TRPC_ERROR } from "@/trpc/shared";
+import { initTRPC } from "@trpc/server";
+import superjson from "superjson";
+import { ZodError } from "zod";
 
 export const createTRPCContext = async (opts: { headers: Headers }) => {
   const session = await getServerAuthSession();

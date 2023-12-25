@@ -1,13 +1,13 @@
 "use client";
 
 import Iconify from "@/components/Iconify";
+import { type Locale } from "@/i18n.config";
 import { ICONS, USER_REDIRECT } from "@/lib/constants";
 import { cn, getDashboardPathname } from "@/lib/utils";
 import { Menu, Transition } from "@headlessui/react";
 import { type Role } from "@prisma/client";
-import React, { Fragment } from "react";
 import { useRouter } from "next/navigation";
-import { type Locale } from "@/i18n.config";
+import React, { Fragment } from "react";
 
 type Props = {
   role: Role;
@@ -80,7 +80,7 @@ export default function AddButton({ role, lang, setSelectedKeys }: Props) {
                   <Menu.Item key={item.icon}>
                     <button
                       className={cn(
-                        "rounded-md font-medium flex gap-2 items-center justify-end px-4 h-8 bg-light hover:bg-orange hover:text-cream text-dark"
+                        "rounded-md font-medium flex gap-2 items-center justify-end px-4 h-8 bg-light hover:bg-orange hover:text-cream text-dark",
                       )}
                       onClick={() => {
                         setSelectedKeys(getDashboardPathname(item.href, role));

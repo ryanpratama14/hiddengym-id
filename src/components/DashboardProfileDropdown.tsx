@@ -1,12 +1,12 @@
-import { Menu, Transition } from "@headlessui/react";
-import { Fragment } from "react";
-import { signOut } from "next-auth/react";
 import { ICONS } from "@/lib/constants";
-import Button from "./Button";
 import { cn } from "@/lib/utils";
-import Img from "./Img";
-import Iconify from "./Iconify";
 import { type User } from "@/server/api/routers/user";
+import { Menu, Transition } from "@headlessui/react";
+import { signOut } from "next-auth/react";
+import { Fragment } from "react";
+import Button from "./Button";
+import Iconify from "./Iconify";
+import Img from "./Img";
 
 type Props = {
   user: User;

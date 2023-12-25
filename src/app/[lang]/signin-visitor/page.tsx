@@ -1,13 +1,12 @@
 import { type Locale } from "@/i18n.config";
+import { USER_PATHNAMES } from "@/lib/constants";
 import { useDictionary } from "@/lib/dictionary";
 import { getServerAuthSession } from "@/server/auth";
-import { redirect } from "next/navigation";
-import { USER_PATHNAMES } from "@/lib/constants";
-
+import { type SearchParams } from "@/types";
 // components
 import SignInVisitor from "~/signin-visitor/components/SignInVisitor";
 import SignInVisitorHeader from "~/signin-visitor/components/SignInVisitorHeader";
-import { type SearchParams } from "@/types";
+import { redirect } from "next/navigation";
 
 type Props = {
   searchParams: SearchParams;

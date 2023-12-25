@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { type FC, type ComponentProps } from "react";
+import { type ComponentProps, type FC } from "react";
 
 interface LogoProps
   extends Omit<ComponentProps<"section">, "className">,

@@ -1,10 +1,10 @@
 "use client";
 
 import Logo from "@/components/Logo";
+import { type Locale } from "@/i18n.config";
+import { type Dictionary } from "@/lib/dictionary";
 import { useState } from "react";
 import SignIn from "./SignIn";
-import { type Dictionary } from "@/lib/dictionary";
-import { type Locale } from "@/i18n.config";
 
 type Props = {
   callbackUrl?: string;

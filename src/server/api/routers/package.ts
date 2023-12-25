@@ -1,6 +1,6 @@
 import { schema } from "@/schema";
 import { createTRPCRouter, ownerProcedure } from "@/server/api/trpc";
-import { type RouterInputs, THROW_OK, THROW_TRPC_ERROR } from "@/trpc/shared";
+import { THROW_OK, THROW_TRPC_ERROR, type RouterInputs } from "@/trpc/shared";
 
 export const packageRouter = createTRPCRouter({
   create: ownerProcedure.input(schema.package.create).query(async ({ ctx, input }) => {

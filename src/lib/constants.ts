@@ -1,6 +1,6 @@
+import { type Locale } from "@/i18n.config";
 import { COLORS } from "@/styles/theme";
 import { type Gender, type Role } from "@prisma/client";
-import { type Locale } from "@/i18n.config";
 
 export const USER_LIST_SORTERERS = [
   {

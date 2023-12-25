@@ -1,10 +1,10 @@
 import { type Locale } from "@/i18n.config";
+import { USER_PATHNAMES } from "@/lib/constants";
 import { useDictionary } from "@/lib/dictionary";
 import { getServerAuthSession } from "@/server/auth";
-import { redirect } from "next/navigation";
-import { USER_PATHNAMES } from "@/lib/constants";
-import SignInContainer from "~/signin/components/SignInContainer";
 import { type SearchParams } from "@/types";
+import SignInContainer from "~/signin/components/SignInContainer";
+import { redirect } from "next/navigation";
 
 type Props = {
   searchParams: SearchParams;

@@ -1,13 +1,13 @@
 import { type Locale } from "@/i18n.config";
 import { USER_PATHNAMES } from "@/lib/constants";
+import { useDictionary } from "@/lib/dictionary";
+import { type UserUpdateInput } from "@/server/api/routers/user";
 import { getServerAuthSession } from "@/server/auth";
+import { api } from "@/trpc/server";
 import { type Role } from "@prisma/client";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import DashboardOwnerHomeContainer from "./components/DashboardOwnerHomeContainer";
-import { api } from "@/trpc/server";
-import { type UserUpdateInput } from "@/server/api/routers/user";
-import { revalidatePath } from "next/cache";
-import { useDictionary } from "@/lib/dictionary";
 
 type Props = { params: { lang: Locale } };
 

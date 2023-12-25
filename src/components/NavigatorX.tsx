@@ -1,7 +1,6 @@
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/styles/variants";
 import Link from "next/link";
-
 import { type VariantProps } from "tailwind-variants";
 
 const NavigatorX = ({
