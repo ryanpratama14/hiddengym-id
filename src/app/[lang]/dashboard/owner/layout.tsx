@@ -12,7 +12,7 @@ export default async function DashboardOwnerLayout({ children, params }: Props) 
   const session = await getServerAuthSession();
   const role: Role = "OWNER";
 
-  if (!session || !session.user || session.user.role !== role) redirect(`/signin/?callbackUrl=${USER_PATHNAMES[role]}`);
+  if (!session || !session.user || session.user.role !== role) redirect(`/${params.lang}/signin/?callbackUrl=${USER_PATHNAMES[role]}`);
 
   const user = await api.user.detailMe.query();
 

@@ -12,6 +12,7 @@ import { uploadFiles } from "@/lib/uploadthing";
 import { formatDateLong, formatName, isFileSizeAllowed, lozalizePhoneNumber } from "@/lib/utils";
 import { type User, type UserUpdateInput } from "@/server/api/routers/user";
 import { type TRPC_RESPONSE } from "@/trpc/shared";
+import { type ChangeEvent } from "@/types";
 import { CloudUploadOutlined } from "@ant-design/icons";
 import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
@@ -35,14 +36,15 @@ export default function HomeContainer({ lang, user, updateUser, refreshUser, t }
       await uploadFiles("uploadUserImage", { files: [file] });
       await refreshUser();
     },
-    onSuccess: () => toast({ t, type: "success", description: "Uploaded successfully" }),
+    onSuccess: () =>
+      toast({ t, type: "success", description: "Uploaded successfully, your profile picture should be changed in seconds..." }),
     onError: (error) => {
       toast({ t, type: "error", description: "Can't upload image, try again later" });
       console.error(error);
     },
   });
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e: ChangeEvent) => {
     const file = e.target.files?.[0];
     if (file && isFileSizeAllowed("1MB", file.size)) {
       uploadImage(file);

@@ -1,4 +1,4 @@
-import { formatName, formatPhoneNumber, getNewDate } from "@/lib/utils";
+import { formatName, formatPhoneNumber, getExpiryDate, getNewDate, getStartDate } from "@/lib/utils";
 import { schema } from "@/schema";
 import { createTRPCRouter, ownerProcedure, protectedProcedure, publicProcedure } from "@/server/api/trpc";
 import {
@@ -48,17 +48,19 @@ export const userRouter = createTRPCRouter({
   }),
 
   createVisitor: publicProcedure.input(schema.user.createVisitor).mutation(async ({ ctx, input }) => {
-    const data = await ctx.db.user.findUnique({ where: { phoneNumber: input.phoneNumber } });
+    const { packageData, visitorData } = input;
+    const data = await ctx.db.user.findUnique({ where: { phoneNumber: visitorData.phoneNumber } });
     if (data) return THROW_TRPC_ERROR("CONFLICT");
-    await ctx.db.user.create({
+    const newData = await ctx.db.user.create({
       data: {
-        fullName: formatName(input.fullName),
-        email: input?.email ? input.email.toLowerCase() : null,
-        phoneNumber: formatPhoneNumber(input.phoneNumber),
-        gender: input.gender,
-        credential: await hash(input.phoneNumber),
+        fullName: formatName(visitorData.fullName),
+        email: visitorData?.email ? visitorData.email.toLowerCase() : null,
+        phoneNumber: formatPhoneNumber(visitorData.phoneNumber),
+        gender: visitorData.gender,
+        credential: await hash(visitorData.phoneNumber),
       },
     });
+
     return THROW_OK("CREATED");
   }),
 

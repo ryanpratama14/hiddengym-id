@@ -35,7 +35,9 @@ export default function CreateVisitorForm({ createVisitor, lang, t }: Props) {
     reset,
   } = useForm<UserCreateVisitorInput>({
     resolver: zodResolver(schema.user.createVisitor),
-    defaultValues: { gender: "MALE" },
+    defaultValues: {
+      visitorData: { gender: "MALE" },
+    },
   });
 
   const onSubmit: SubmitHandler<UserCreateVisitorInput> = async (data) => {
@@ -51,11 +53,26 @@ export default function CreateVisitorForm({ createVisitor, lang, t }: Props) {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
       <section className="grid md:grid-cols-2 gap-6">
-        <Input error={errors.fullName?.message} icon={ICONS.person} label="Full Name" {...register("fullName")} />
-        <Input error={errors.phoneNumber?.message} label="Phone Number" {...register("phoneNumber")} isPhoneNumber />
+        <Input
+          error={errors.visitorData?.fullName?.message}
+          icon={ICONS.person}
+          label="Full Name"
+          {...register("visitorData.fullName")}
+        />
+        <Input
+          error={errors.visitorData?.phoneNumber?.message}
+          label="Phone Number"
+          {...register("visitorData.phoneNumber")}
+          isPhoneNumber
+        />
       </section>
       <section className="grid md:grid-cols-2 gap-6">
-        <Input error={errors.email?.message} icon={ICONS.email} label="Email (Optional)" {...register("email")} />
+        <Input
+          error={errors.visitorData?.email?.message}
+          icon={ICONS.email}
+          label="Email (Optional)"
+          {...register("visitorData.email")}
+        />
         <section className="flex flex-col gap-6">
           <section className="flex flex-col">
             <p>Gender</p>
@@ -72,7 +89,7 @@ export default function CreateVisitorForm({ createVisitor, lang, t }: Props) {
                         className="cursor-pointer absolute w-full h-full opacity-0 z-10 top-0 left-0"
                         id={`gender_option_${index}`}
                         type="radio"
-                        {...register("gender")}
+                        {...register("visitorData.gender")}
                       />
                       <div className="animate absolute centered w-[40%] aspect-square rounded-full bg-white has-[:checked]:scale-0" />
                     </button>
@@ -96,7 +113,7 @@ export default function CreateVisitorForm({ createVisitor, lang, t }: Props) {
               color={isAddingTransaction ? "danger" : "none"}
               size="m"
               onClick={() => {
-                unregister(["packageTransactionId", "transactionDate"]);
+                unregister(["packageData.packageId", "packageData.transactionDate"]);
                 setIsAddingTransaction(!isAddingTransaction);
               }}
               className={cn({ "text-dark bg-dark/10": !isAddingTransaction })}
@@ -110,11 +127,16 @@ export default function CreateVisitorForm({ createVisitor, lang, t }: Props) {
         <section className="grid grid-cols-2 gap-6">
           <Input
             required={isAddingTransaction}
-            error={errors.packageTransactionId?.message}
-            {...register("packageTransactionId")}
+            error={errors.packageData?.packageId?.message}
+            {...register("packageData.packageId")}
             label="Package"
           />
-          <Input error={errors.transactionDate?.message} {...register("transactionDate")} label="Transaction Date" type="date" />
+          <Input
+            error={errors.packageData?.transactionDate?.message}
+            {...register("packageData.transactionDate")}
+            label="Transaction Date"
+            type="date"
+          />
         </section>
       ) : null}
 
