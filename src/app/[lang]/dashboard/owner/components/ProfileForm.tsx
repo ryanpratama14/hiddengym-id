@@ -85,7 +85,7 @@ export default function ProfileForm({ user, setIsEdit, updateUser, t }: Props) {
         <Button disabled={loading} onClick={() => setIsEdit(false)} size="l" color="expired">
           Cancel
         </Button>
-        <Button title="Save" disabled={loading} size="l" type="submit" color="success" loading={loading}>
+        <Button disabled={loading} loading={loading} size="l" type="submit" color="success">
           Save
         </Button>
       </section>

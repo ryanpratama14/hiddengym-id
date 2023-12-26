@@ -4,7 +4,6 @@ import AddButton from "@/components/AddButton";
 import DashboardProfileDropdown from "@/components/DashboardProfileDropdown";
 import Logo from "@/components/Logo";
 import { type Locale } from "@/i18n.config";
-import { USER_REDIRECT } from "@/lib/constants";
 import { cn, getSelectedMenu } from "@/lib/utils";
 import { type User } from "@/server/api/routers/user";
 import { COLORS } from "@/styles/theme";
@@ -25,11 +24,11 @@ type Props = {
 export default function DashboardLayout({ children, getDashboardItems, user, lang }: Props) {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(true);
-  const [selectedMenu, setSelectedMenu] = useState(getSelectedMenu({ pathname, role: user.role }));
+  const [selectedMenu, setSelectedMenu] = useState(getSelectedMenu({ pathname, role: user.role, lang }));
   const handleCollapse = () => (collapsed ? undefined : setCollapsed(true));
 
   useEffect(() => {
-    setSelectedMenu(getSelectedMenu({ pathname, role: user.role }));
+    setSelectedMenu(getSelectedMenu({ pathname, role: user.role, lang }));
   }, [pathname]);
 
   return (
@@ -73,10 +72,7 @@ export default function DashboardLayout({ children, getDashboardItems, user, lan
       <nav onClick={handleCollapse} className="fixed flex items-center w-full top-0 h-14 bg-dark text-cream z-10">
         <section className="px-shorter ml-[3.1rem] flex items-center justify-between w-full">
           <section className="flex gap-2">
-            <Link
-              href={USER_REDIRECT[user.role]({ lang, href: selectedMenu.href })}
-              className="font-medium px-3 py-0.5 rounded-md border-2 select-none border-cream shadow-lg"
-            >
+            <Link href={selectedMenu.href} className="font-medium px-3 py-0.5 rounded-md border-2 select-none border-cream shadow-lg">
               {selectedMenu.name}
             </Link>
             {selectedMenu.subName ? (

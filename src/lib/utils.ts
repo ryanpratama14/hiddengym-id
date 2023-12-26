@@ -1,9 +1,9 @@
 import { type Locale } from "@/i18n.config";
+import { COUNTRY_CODE, DASHBOARD_MENUS, DASHBOARD_SUB_MENUS, USER_PATHNAMES, USER_REDIRECT } from "@/lib/constants";
 import { type Role } from "@prisma/client";
 import { clsx, type ClassValue } from "clsx";
 import { type ReadonlyURLSearchParams } from "next/navigation";
 import { twMerge } from "tailwind-merge";
-import { COUNTRY_CODE, DASHBOARD_MENUS, DASHBOARD_SUB_MENUS, USER_PATHNAMES } from "./constants";
 
 export const loadToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
@@ -248,7 +248,7 @@ export const getDashboardPathname = (pathname: string, role: Role): string[] => 
   }
 };
 
-export const getSelectedMenu = ({ pathname, role }: { pathname: string; role: Role }) => {
+export const getSelectedMenu = ({ pathname, role, lang }: { pathname: string; role: Role; lang: Locale }) => {
   const selectedMenu = {
     name: "",
     href: "",
@@ -258,7 +258,7 @@ export const getSelectedMenu = ({ pathname, role }: { pathname: string; role: Ro
   for (const path of selectedMenu.keys) {
     if (DASHBOARD_MENUS[path]) {
       selectedMenu.name = DASHBOARD_MENUS[path] ?? "";
-      selectedMenu.href = path;
+      selectedMenu.href = USER_REDIRECT[role]({ lang, href: path });
     }
   }
   return selectedMenu;
