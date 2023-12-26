@@ -21,9 +21,10 @@ type Props = {
   data?: UserList;
   searchParams: SearchParams;
   lang: Locale;
+  loading: boolean;
 };
 
-export default function VisitorsTable({ data, searchParams, lang }: Props) {
+export default function VisitorsTable({ data, searchParams, lang, loading }: Props) {
   const newSearchParams = useSearchParams();
   const newParams = new URLSearchParams(newSearchParams.toString());
 
@@ -128,6 +129,7 @@ export default function VisitorsTable({ data, searchParams, lang }: Props) {
 
   return (
     <Table
+      loading={loading}
       className="drop-shadow"
       pagination={{
         current: data?.page,

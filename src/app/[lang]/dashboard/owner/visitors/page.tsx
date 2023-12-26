@@ -1,6 +1,8 @@
+"use client";
+
 import { type Locale } from "@/i18n.config";
 import { type UserListInput } from "@/server/api/routers/user";
-import { api } from "@/trpc/server";
+import { api } from "@/trpc/react";
 import { type SearchParams } from "@/types";
 import Table from "@owner/visitors/components/Table";
 import TableSearch from "@owner/visitors/components/TableSearch";
@@ -12,7 +14,7 @@ type Props = {
   params: { lang: Locale };
 };
 
-export default async function VisitorsPage({ searchParams, params }: Props) {
+export default function VisitorsPage({ searchParams, params }: Props) {
   const query: UserListInput = {
     pagination: {
       page: Number(searchParams.page) || 1,
@@ -28,13 +30,13 @@ export default async function VisitorsPage({ searchParams, params }: Props) {
     sorting: searchParams.sort as string,
   };
 
-  const data = await api.user.list.query(query);
+  const { data, isLoading: loading } = api.user.list.useQuery(query);
 
   return (
     <section className="grid grid-cols-1 md:grid-cols-5 gap-12">
       <section className="flex flex-col gap-6 md:col-span-4">
-        <TableSearch lang={params.lang} query={query} />
-        <Table lang={params.lang} data={data} searchParams={searchParams} />
+        <TableSearch loading={loading} lang={params.lang} query={query} />
+        <Table loading={loading} lang={params.lang} data={data} searchParams={searchParams} />
       </section>
       <TableSorter lang={params.lang} />
     </section>

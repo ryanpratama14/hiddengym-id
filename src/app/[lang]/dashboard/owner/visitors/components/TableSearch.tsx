@@ -12,9 +12,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 type Props = {
   query: UserListInput;
   lang: Locale;
+  loading: boolean;
 };
 
-export default function TableSearch({ query, lang }: Props) {
+export default function TableSearch({ query, lang, loading }: Props) {
   const router = useRouter();
   const newSearchParams = useSearchParams();
   const newParams = new URLSearchParams(newSearchParams.toString());
@@ -58,7 +59,7 @@ export default function TableSearch({ query, lang }: Props) {
           <Iconify icon={ICONS.close} className="absolute centered-right -translate-x-1.5 cursor-pointer" width={25} />
         </button>
       </section>
-      <Button type="submit" className="relative h-full w-[20%]" size="xl">
+      <Button loading={loading} type="submit" className="relative h-full w-[20%]" size="xl">
         <Iconify icon={ICONS.search} className="md:hidden absolute centered" width={30} />
         <span className="md:block hidden">Search</span>
       </Button>
