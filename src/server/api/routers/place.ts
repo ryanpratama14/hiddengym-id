@@ -1,7 +1,7 @@
 import { formatName } from "@/lib/utils";
 import { schema } from "@/schema";
 import { createTRPCRouter, ownerProcedure } from "@/server/api/trpc";
-import { THROW_ERROR, THROW_OK, type RouterInputs } from "@/trpc/shared";
+import { THROW_ERROR, THROW_OK, type RouterInputs, type RouterOutputs } from "@/trpc/shared";
 
 export const placeRouter = createTRPCRouter({
   create: ownerProcedure.input(schema.place.create).mutation(async ({ ctx, input }) => {
@@ -10,7 +10,15 @@ export const placeRouter = createTRPCRouter({
     await ctx.db.place.create({ data: { name: formatName(input.name), address: input.address, url: input.url } });
     return THROW_OK("CREATED");
   }),
+
+  list: ownerProcedure.query(async ({ ctx }) => {
+    const data = await ctx.db.place.findMany();
+    return data;
+  }),
 });
+
+// outputs
+export type PlaceList = RouterOutputs["place"]["list"];
 
 // inputs
 export type PlaceCreateInput = RouterInputs["place"]["create"];

@@ -16,7 +16,7 @@ type InputProps = ComponentProps<"input"> &
     isPhoneNumber?: boolean;
   };
 
-const iconSize = 22;
+export const inputIconSize = 22;
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ label, error, type, className, size, color, icon, disabled, classNameDiv, withPasswordIcon, isPhoneNumber, ...rest }, ref) => {
@@ -44,10 +44,10 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               maxLength={isPhoneNumber ? 12 : 81}
               {...rest}
             />
-            {icon ? <Iconify width={iconSize} icon={icon} className="absolute centered-left translate-x-3 text-dark" /> : null}
+            {icon ? <Iconify width={inputIconSize} icon={icon} className="absolute centered-left translate-x-3 text-dark" /> : null}
             {isPhoneNumber ? (
               <section className="flex items-center absolute centered-left translate-x-3">
-                <Iconify width={iconSize} icon={ICONS.phone} className="text-dark" />
+                <Iconify width={inputIconSize} icon={ICONS.phone} className="text-dark" />
                 <p className="font-semibold">{COUNTRY_CODE}</p>
               </section>
             ) : null}

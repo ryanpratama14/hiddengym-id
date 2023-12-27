@@ -98,6 +98,11 @@ export const userRouter = createTRPCRouter({
     return THROW_OK("OK");
   }),
 
+  listTrainer: ownerProcedure.query(async ({ ctx }) => {
+    const data = await ctx.db.user.findMany({ where: { role: "TRAINER" }, ...userSelect });
+    return data;
+  }),
+
   list: ownerProcedure.input(schema.user.list).query(async ({ ctx, input }) => {
     const { pagination, params, sorting } = input;
 
@@ -133,6 +138,7 @@ export const userRouter = createTRPCRouter({
 export type User = RouterOutputs["user"]["detail"];
 export type UserList = RouterOutputs["user"]["list"];
 export type UserListData = RouterOutputs["user"]["list"]["data"];
+export type UserListTrainer = RouterOutputs["user"]["listTrainer"];
 
 // inputs
 export type UserCreateInput = RouterInputs["user"]["create"];

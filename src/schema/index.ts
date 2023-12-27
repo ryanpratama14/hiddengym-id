@@ -140,6 +140,16 @@ export class schema {
           message: "This field is required since you unchecked unlimited sessions",
           path: ["totalPermittedSessions"],
         },
+      )
+      .refine(
+        ({ type, trainerIDs }) => {
+          if (type === "TRAINER" && !trainerIDs?.length) return false;
+          return true;
+        },
+        {
+          message: "Pick at least 1 trainer",
+          path: ["trainerIDs"],
+        },
       );
   };
 

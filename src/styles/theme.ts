@@ -27,6 +27,17 @@ export const antdTheme: ThemeConfig = {
     colorLink: "",
   },
   components: {
+    Select: {
+      colorBgElevated: COLORS.light,
+      selectorBg: COLORS.cream,
+      colorBorder: COLORS.dark,
+      optionSelectedBg: COLORS.blue2,
+      optionSelectedColor: COLORS.cream,
+      optionSelectedFontWeight: 500,
+      colorPrimary: COLORS.cream,
+      fontSize: 16,
+      optionFontSize: 14,
+    },
     Layout: {
       headerBg: COLORS.dark,
       siderBg: COLORS.dark,

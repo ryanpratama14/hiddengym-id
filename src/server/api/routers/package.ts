@@ -1,6 +1,6 @@
 import { schema } from "@/schema";
-import { createTRPCRouter, ownerProcedure } from "@/server/api/trpc";
-import { THROW_ERROR, THROW_OK, type RouterInputs } from "@/trpc/shared";
+import { createTRPCRouter, ownerProcedure, publicProcedure } from "@/server/api/trpc";
+import { prismaExclude, THROW_ERROR, THROW_OK, type RouterInputs } from "@/trpc/shared";
 
 export const packageRouter = createTRPCRouter({
   create: ownerProcedure.input(schema.package.create).query(async ({ ctx, input }) => {
@@ -21,6 +21,18 @@ export const packageRouter = createTRPCRouter({
       },
     });
     return THROW_OK("CREATED");
+  }),
+
+  list: publicProcedure.query(async ({ ctx }) => {
+    const data = await ctx.db.package.findMany({
+      select: {
+        ...prismaExclude("Package", ["placeIDs", "sportIDs", "trainerIDs"]),
+        trainers: true,
+        places: true,
+        sports: true,
+      },
+    });
+    return data;
   }),
 });
 
