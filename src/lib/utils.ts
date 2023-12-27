@@ -102,11 +102,26 @@ export const getExpiryDate = ({ days, isVisit = false }: { days: number; isVisit
   return date;
 };
 
-export const getExpiryDateFromDate = (dateString: string): Date => {
-  const date = getNewDate(dateString);
+export const getExpiryDateFromDate = ({
+  days,
+  dateString,
+  isVisit = false,
+}: {
+  days: number;
+  isVisit?: boolean;
+  dateString: string;
+}): Date => {
+  const date = new Date(dateString);
+  date.setDate(date.getDate() + days - (isVisit ? 1 : 0));
   date.setHours(23, 59, 59, 999);
   return date;
 };
+
+// export const getExpiryDateFromDate = (dateString: string): Date => {
+//   const date = getNewDate(dateString);
+//   date.setHours(23, 59, 59, 999);
+//   return date;
+// };
 
 export const getTodayExpiryDate = (): Date => {
   const date = getNewDate();
@@ -155,10 +170,18 @@ export const formatDate = (date: Date): string => {
   return `${year}-${month}-${day}`;
 };
 
-export const formatDateLong = (date: Date, locale: Locale): string => {
-  return date.toLocaleDateString(locale, {
+export const formatDateLong = (date: Date, locale?: Locale): string => {
+  return date.toLocaleDateString(locale ?? ["id-ID"], {
     year: "numeric",
     month: "long",
+    day: "numeric",
+  });
+};
+
+export const formatDateShort = (date: Date, locale?: Locale): string => {
+  return date.toLocaleDateString(locale ?? ["id-ID"], {
+    year: "numeric",
+    month: "numeric",
     day: "numeric",
   });
 };
