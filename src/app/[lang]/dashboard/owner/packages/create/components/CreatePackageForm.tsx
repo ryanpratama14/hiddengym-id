@@ -66,7 +66,9 @@ export default function CreatePackageForm({}: Props) {
           <option onClick={() => resetField("totalPermittedSessions")} value="VISIT">
             VISIT
           </option>
-          <option value="TRAINER">TRAINER</option>
+          <option onClick={() => resetField("validityInDays")} value="TRAINER">
+            TRAINER
+          </option>
         </select>
       </section>
       <section className="grid md:grid-cols-2 gap-6">
