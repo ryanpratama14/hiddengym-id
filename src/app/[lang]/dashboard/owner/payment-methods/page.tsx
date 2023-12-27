@@ -1,4 +1,4 @@
-import Button from "@/components/Button";
+import Navigator from "@/components/Navigator";
 import { cn } from "@/lib/utils";
 import { api } from "@/trpc/server";
 
@@ -30,9 +30,9 @@ export default async function PaymentMethodsPage() {
                       <p>products</p>
                     </section>
                   </section>
-                  <Button color="link" size="l">
+                  <Navigator href="/" color="link" size="l">
                     More Detail
-                  </Button>
+                  </Navigator>
                 </section>
               </section>
             </section>

@@ -1,3 +1,5 @@
+"use client";
+
 import { COUNTRY_CODE, ICONS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { inputVariants } from "@/styles/variants";

@@ -1,5 +1,5 @@
 import { createTRPCRouter, ownerProcedure } from "@/server/api/trpc";
-import { prismaExclude } from "@/trpc/shared";
+import { prismaExclude, type RouterOutputs } from "@/trpc/shared";
 
 export const paymentMethodRouter = createTRPCRouter({
   list: ownerProcedure.query(async ({ ctx }) => {
@@ -12,3 +12,6 @@ export const paymentMethodRouter = createTRPCRouter({
     });
   }),
 });
+
+// outputs
+export type PaymentMethodList = RouterOutputs["paymentMethod"]["list"];
