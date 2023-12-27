@@ -1,13 +1,15 @@
 "use client";
 
+import Button from "@/components/Button";
 import Iconify from "@/components/Iconify";
 import Input from "@/components/Input";
 import { ICONS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { type PackageCreateInput } from "@/server/api/routers/package";
+import { inputVariants } from "@/styles/variants";
 import { type TRPC_RESPONSE } from "@/trpc/shared";
 import { type ChangeEvent, type FormEvent } from "@/types";
-import { PackageType } from "@prisma/client";
+import { type PackageType } from "@prisma/client";
 import { useState } from "react";
 
 const initialData: PackageCreateInput = {
@@ -28,6 +30,7 @@ type Props = {
 export default function CreatePackageForm({ createPackage }: Props) {
   const [data, setData] = useState<PackageCreateInput>(initialData);
   const [isUnlimitedSessions, setIsUnlimitedSession] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -40,13 +43,15 @@ export default function CreatePackageForm({ createPackage }: Props) {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-      <section className="flex flex-col">
-        <label htmlFor="type">Package Type</label>
+      <section className="flex flex-col gap-0.5">
+        <label htmlFor="type">Type</label>
         <select
+          className={inputVariants()}
           id="type"
           value={data.type}
           onChange={(e) => {
             const type = e.target.value as PackageType;
+            if (type === "TRAINER") setIsUnlimitedSession(false);
             setData((prev) => ({
               ...prev,
               type,
@@ -106,6 +111,11 @@ export default function CreatePackageForm({ createPackage }: Props) {
             <label>Unlimited</label>
           </section>
         </section>
+      </section>
+      <section className="flex justify-center items-center">
+        <Button className="md:w-fit w-full" loading={loading} type="submit" color="success" size="xl">
+          Create Package
+        </Button>
       </section>
     </form>
   );

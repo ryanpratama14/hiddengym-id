@@ -38,7 +38,7 @@ export default function CreateSportForm({ createSportType, lang, t }: Props) {
     const res = await createSportType(data);
     setLoading(false);
     reset();
-    if (!res.status) return toast({ t, type: "error", description: "Sport Type with this name is already exist" });
+    if (!res.status) return toast({ t, type: "error", description: "Sport Type with this name is already exists" });
     toast({ t, type: "success", description: "Sport type has been created" });
     router.push(USER_REDIRECT.OWNER({ lang, href: "/sport-types" }));
   };

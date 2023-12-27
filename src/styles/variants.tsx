@@ -43,6 +43,7 @@ export const inputVariants = tv({
     },
     size: {
       m: "h-10",
+      none: " ",
     },
     border: {
       bottom: "border-b-1.5 border-dark",

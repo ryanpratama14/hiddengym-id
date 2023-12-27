@@ -101,14 +101,15 @@ export class schema {
     static create = z
       .object({
         name: z.string().min(4),
-        description: z.string().min(4),
+        description: z.string().nullable(),
         price: z.number().min(1),
-        validityInDays: z.number().min(1).nullable(),
-        totalPermittedSessions: z.number().min(1).nullable(),
+        validityInDays: z.number().nullable(),
+        totalPermittedSessions: z.number().nullable(),
         type: schema.packageType,
-        sportIDs: z.array(z.string()),
-        placeIDs: z.array(z.string()),
+        sportIDs: z.array(z.string()).min(1, "Pick at least 1 sport type"),
+        placeIDs: z.array(z.string()).min(1, "Pick at least 1 place"),
         trainerIDs: z.array(z.string()).optional(),
+        isUnlimitedSessions: z.boolean(),
       })
       .refine(
         ({ type, validityInDays }) => {
@@ -119,11 +120,38 @@ export class schema {
           message: "Validity is required",
           path: ["validityInDays"],
         },
+      )
+      .refine(
+        ({ type, totalPermittedSessions }) => {
+          if (type === "TRAINER" && !totalPermittedSessions) return false;
+          return true;
+        },
+        {
+          message: "This field is required since the type is Trainer",
+          path: ["totalPermittedSessions"],
+        },
+      )
+      .refine(
+        ({ isUnlimitedSessions, totalPermittedSessions }) => {
+          if (!isUnlimitedSessions && !totalPermittedSessions) return false;
+          return true;
+        },
+        {
+          message: "This field is required since you unchecked unlimited sessions",
+          path: ["totalPermittedSessions"],
+        },
       );
   };
 
   static sport = class {
     static create = z.object({ name: z.string().min(3, "At least 3 characters") });
+  };
+  static place = class {
+    static create = z.object({
+      name: z.string().min(3),
+      address: z.string().min(3),
+      url: z.string().url("Provide a google maps link"),
+    });
   };
 }
 

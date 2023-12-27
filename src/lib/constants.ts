@@ -93,6 +93,7 @@ export const ICONS = {
   check: "mdi:check",
   session: "carbon:prompt-session",
   validity: "game-icons:duration",
+  url: "tabler:link",
 };
 
 export const ADD_BUTTON_ITEMS_TO_REMOVE: Record<Role, string[]> = {

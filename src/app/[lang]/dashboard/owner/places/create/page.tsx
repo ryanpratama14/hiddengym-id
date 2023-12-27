@@ -1,28 +1,28 @@
 import { type Locale } from "@/i18n.config";
 import { useDictionary } from "@/lib/dictionary";
-import { type SportCreateInput } from "@/server/api/routers/sport";
+import { type PlaceCreateInput } from "@/server/api/routers/place";
 import { api } from "@/trpc/server";
 import { revalidatePath } from "next/cache";
-import CreateSportForm from "./components/CreateSportForm";
+import CreatePlaceForm from "./components/CreatePlaceForm";
 
 type Props = {
   params: { lang: Locale };
 };
 
-export default async function SportTypeCreatePage({ params }: Props) {
+export default async function PlaceCreatePage({ params }: Props) {
   const t = await useDictionary(params.lang);
 
-  const createSportType = async (data: SportCreateInput) => {
+  const createPlace = async (data: PlaceCreateInput) => {
     "use server";
-    const res = await api.sport.create.mutate(data);
+    const res = await api.place.create.mutate(data);
     revalidatePath("/");
     return res;
   };
 
   return (
     <section className="flex flex-col gap-12 items-center justify-center pt-16">
-      <h3>Create Sport Type</h3>
-      <CreateSportForm t={t} createSportType={createSportType} lang={params.lang} />
+      <h3>Create Place</h3>
+      <CreatePlaceForm t={t} createPlace={createPlace} lang={params.lang} />
     </section>
   );
 }

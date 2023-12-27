@@ -72,7 +72,7 @@ model PromoCode {
 model Package {
     id                     String  @id @default(auto()) @map("_id") @db.ObjectId
     name                   String  @unique
-    description            String
+    description            String?
     price                  Int
     validityInDays         Int?
     totalPermittedSessions Int?
@@ -152,6 +152,7 @@ model Place {
     id      String @id @default(auto()) @map("_id") @db.ObjectId
     name    String
     address String
+    url     String
 
     // relations
     packages   Package[] @relation(fields: [packageIDs], references: [id])
