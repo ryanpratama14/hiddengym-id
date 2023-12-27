@@ -3,36 +3,44 @@
 import Button from "@/components/Button";
 import Iconify from "@/components/Iconify";
 import Input from "@/components/Input";
+import InputSelect from "@/components/InputSelect";
 import { toast } from "@/components/Toast";
 import { type Locale } from "@/i18n.config";
 import { GENDERS, ICONS, USER_REDIRECT } from "@/lib/constants";
 import { type Dictionary } from "@/lib/dictionary";
-import { cn } from "@/lib/utils";
+import { cn, formatCurrency, formatDateLong, getNewDate } from "@/lib/utils";
 import { schema } from "@/schema";
+import { type PackageList } from "@/server/api/routers/package";
 import { type UserCreateVisitorInput } from "@/server/api/routers/user";
 import { type TRPC_RESPONSE } from "@/trpc/shared";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { type Package } from "@prisma/client";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { useForm, type SubmitHandler } from "react-hook-form";
+import { Fragment, useState } from "react";
+import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 
 type Props = {
   createVisitor: (data: UserCreateVisitorInput) => Promise<TRPC_RESPONSE>;
   lang: Locale;
   t: Dictionary;
+  option: { packages: PackageList };
 };
 
-export default function CreateVisitorForm({ createVisitor, lang, t }: Props) {
+export default function CreateVisitorForm({ createVisitor, lang, t, option }: Props) {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
   const [isAddingTransaction, setIsAddingTransaction] = useState<boolean>(false);
+  const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
 
   const {
     register,
     unregister,
     handleSubmit,
+    control,
     formState: { errors },
     reset,
+    setValue,
+    watch,
   } = useForm<UserCreateVisitorInput>({
     resolver: zodResolver(schema.user.createVisitor),
     defaultValues: {
@@ -48,6 +56,10 @@ export default function CreateVisitorForm({ createVisitor, lang, t }: Props) {
     if (!res.status) return toast({ t, type: "error", description: "Visitor with this phone number already exists" });
     toast({ t, type: "success", description: "Visitor has been created" });
     router.push(USER_REDIRECT.OWNER({ lang, href: "/visitors" }));
+  };
+
+  const data = {
+    transactionDate: watch("packageData.transactionDate"),
   };
 
   return (
@@ -113,8 +125,9 @@ export default function CreateVisitorForm({ createVisitor, lang, t }: Props) {
               color={isAddingTransaction ? "danger" : "none"}
               size="m"
               onClick={() => {
-                unregister(["packageData.packageId", "packageData.transactionDate"]);
+                unregister("packageData");
                 setIsAddingTransaction(!isAddingTransaction);
+                setSelectedPackage(null);
               }}
               className={cn({ "text-dark bg-dark/10": !isAddingTransaction })}
             >
@@ -125,12 +138,24 @@ export default function CreateVisitorForm({ createVisitor, lang, t }: Props) {
       </section>
       {isAddingTransaction ? (
         <section className="grid grid-cols-2 gap-6">
-          <Input
-            required={isAddingTransaction}
-            error={errors.packageData?.packageId?.message}
-            {...register("packageData.packageId")}
-            label="Package"
+          <Controller
+            control={control}
+            name="packageData.packageId"
+            render={({ field }) => (
+              <InputSelect
+                {...field}
+                icon={ICONS.package}
+                error={errors.packageData?.packageId?.message}
+                options={option.packages.map((e) => ({ ...e, value: e.id, label: e.name }))}
+                label="Package"
+                onChange={(value, item) => {
+                  setSelectedPackage(item as Package);
+                  setValue("packageData.packageId", value as string);
+                }}
+              />
+            )}
           />
+
           <Input
             error={errors.packageData?.transactionDate?.message}
             {...register("packageData.transactionDate")}
@@ -140,8 +165,23 @@ export default function CreateVisitorForm({ createVisitor, lang, t }: Props) {
         </section>
       ) : null}
 
+      {selectedPackage ? (
+        <section className="p-6 bg-orange text-cream">
+          <p>Package Detail</p>
+          <p>{formatCurrency(selectedPackage.price)}</p>
+          <p>Transaction Date: {data.transactionDate ? formatDateLong(getNewDate(data.transactionDate), lang) : "-"}</p>
+        </section>
+      ) : null}
+
       <section className="flex justify-center items-center">
-        <Button className="md:w-fit w-full" loading={loading} type="submit" color="success" size="xl">
+        <Button
+          onClick={() => console.log(watch())}
+          className="md:w-fit w-full"
+          loading={loading}
+          type="submit"
+          color="success"
+          size="xl"
+        >
           Create User
         </Button>
       </section>

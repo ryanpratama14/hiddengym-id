@@ -3,6 +3,7 @@ import { useDictionary } from "@/lib/dictionary";
 import { type PackageCreateInput } from "@/server/api/routers/package";
 import { api } from "@/trpc/server";
 import CreatePackageForm from "@owner/packages/create/components/CreatePackageForm";
+import { revalidatePath } from "next/cache";
 
 type Props = {
   params: { lang: Locale };
@@ -12,6 +13,7 @@ export default async function PackageCreatePage({ params }: Props) {
   const createPackage = async (data: PackageCreateInput) => {
     "use server";
     const res = await api.package.create.query(data);
+    revalidatePath("/");
     return res;
   };
 

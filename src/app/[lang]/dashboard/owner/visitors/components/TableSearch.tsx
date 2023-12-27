@@ -5,18 +5,16 @@ import Iconify from "@/components/Iconify";
 import Input from "@/components/Input";
 import { type Locale } from "@/i18n.config";
 import { ICONS, USER_REDIRECT } from "@/lib/constants";
-import { cn, createUrl } from "@/lib/utils";
+import { createUrl } from "@/lib/utils";
 import { type UserListInput } from "@/server/api/routers/user";
-import { inputVariants } from "@/styles/variants";
 import { useRouter, useSearchParams } from "next/navigation";
 
 type Props = {
   query: UserListInput;
   lang: Locale;
-  loading: boolean;
 };
 
-export default function TableSearch({ query, lang, loading }: Props) {
+export default function TableSearch({ query, lang }: Props) {
   const router = useRouter();
   const newSearchParams = useSearchParams();
   const newParams = new URLSearchParams(newSearchParams.toString());
@@ -45,7 +43,7 @@ export default function TableSearch({ query, lang, loading }: Props) {
           icon={ICONS.search}
         />
       </section>
-      <Button loading={loading} type="submit" className="relative h-full w-[20%]" size="xl">
+      <Button type="submit" className="relative h-full w-[20%]" size="xl">
         <Iconify icon={ICONS.search} className="md:hidden absolute centered" width={30} />
         <span className="md:block hidden">Search</span>
       </Button>

@@ -34,7 +34,7 @@ const InputSelect = forwardRef<
           ref={ref}
           optionFilterProp="children"
           filterOption={(input, option) => ((option?.label as string) ?? "").toLowerCase().includes(input.toLowerCase())}
-          style={{ width: "100%" }}
+          style={{ width: "100%", height: "100%" }}
           showSearch={props.showSearch}
         />
         {props.icon ? (

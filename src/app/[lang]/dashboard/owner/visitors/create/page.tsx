@@ -19,10 +19,14 @@ export default async function CustomerCreatePage({ params }: Props) {
     return res;
   };
 
+  const option = {
+    packages: await api.package.list.query(),
+  };
+
   return (
     <section className="main-create-padding">
       <h3>Create Visitor</h3>
-      <CreateVisitorForm t={t} createVisitor={createVisitor} lang={params.lang} />
+      <CreateVisitorForm option={option} t={t} createVisitor={createVisitor} lang={params.lang} />
     </section>
   );
 }
