@@ -18,7 +18,7 @@ const initialData: PackageCreateInput = {
   type: "MEMBER",
   name: "",
   description: null,
-  price: 10000,
+  price: 0,
   placeIDs: [],
   sportIDs: [],
   validityInDays: null,
@@ -60,11 +60,13 @@ export default function CreatePackageForm({}: Props) {
       <section className="flex flex-col">
         <label htmlFor="type">Package Type</label>
         <select className={inputVariants()} {...register("type")} id="type">
-          <option value="MEMBER">MEMBER</option>
-          <option value="VISIT">VISIT</option>
-          <option onClick={() => resetField("validityInDays")} value="TRAINER">
-            TRAINER
+          <option onClick={() => resetField("totalPermittedSessions")} value="MEMBER">
+            MEMBER
           </option>
+          <option onClick={() => resetField("totalPermittedSessions")} value="VISIT">
+            VISIT
+          </option>
+          <option value="TRAINER">TRAINER</option>
         </select>
       </section>
       <section className="grid md:grid-cols-2 gap-6">
@@ -92,7 +94,7 @@ export default function CreatePackageForm({}: Props) {
         {data.type === "VISIT" ? null : (
           <section className="flex flex-col gap-2">
             <Input
-              disabled={data.isUnlimitedSessions}
+              disabled={data.isUnlimitedSessions && data.type !== "TRAINER"}
               error={errors.totalPermittedSessions?.message}
               {...register("totalPermittedSessions", { setValueAs: (v: string) => (!v ? null : parseInt(v)) })}
               type="number"
@@ -135,6 +137,8 @@ export default function CreatePackageForm({}: Props) {
         <Button
           onClick={() => {
             console.log(watch());
+            const val = schema.package.create.safeParse(watch());
+            if (!val.success) console.log(val.error);
           }}
           className="md:w-fit w-full"
           loading={loading}
