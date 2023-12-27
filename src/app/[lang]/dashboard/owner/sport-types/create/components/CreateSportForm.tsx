@@ -44,7 +44,7 @@ export default function CreateSportForm({ createSportType, lang, t }: Props) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full">
       <Input icon={ICONS.sport} error={errors.name?.message} label="Name" {...register("name")} />
       <section className="flex justify-center items-center">
         <Button className="md:w-fit w-full" loading={loading} type="submit" color="success" size="xl">

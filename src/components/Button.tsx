@@ -21,7 +21,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ type, color, size, className, loading = false, children, classNameDiv, rounded, icon, ...rest }, ref) => {
     return (
       <button
-        disabled={loading}
+        disabled={type === "submit" ? loading : undefined}
         type={type ? type : "button"}
         ref={ref}
         {...rest}

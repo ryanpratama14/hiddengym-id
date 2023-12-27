@@ -73,7 +73,7 @@ export default function CreatePackageForm({ option, createPackage, t, lang }: Pr
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full">
       <section className="flex flex-col gap-0.5">
         <label htmlFor="type">Package Type</label>
         <select className={inputVariants()} {...register("type")} id="type">

@@ -4,6 +4,7 @@ import { api } from "@/trpc/server";
 
 export default async function PaymentMethodsPage() {
   const data = await api.paymentMethod.list.query();
+  console.log(data);
 
   return (
     <section className="flex flex-col gap-6">

@@ -16,33 +16,38 @@ import {
   formatPhoneNumber,
   getExpiryDateFromDate,
   getNewDate,
+  isDateToday,
   lozalizePhoneNumber,
 } from "@/lib/utils";
 import { schema } from "@/schema";
 import { type PackageList } from "@/server/api/routers/package";
 import { type PaymentMethodList } from "@/server/api/routers/paymentMethod";
+import { type PromoCodeDetail, type PromoCodeDetailInput } from "@/server/api/routers/promoCode";
 import { type UserCreateVisitorInput } from "@/server/api/routers/user";
 import { inputVariants } from "@/styles/variants";
 import { type TRPC_RESPONSE } from "@/trpc/shared";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { type Package, type PaymentMethod } from "@prisma/client";
+import { type Package, type PaymentMethod, type PromoCode } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { Fragment, useState } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 
 type Props = {
   createVisitor: (data: UserCreateVisitorInput) => Promise<TRPC_RESPONSE>;
+  checkPromoCode: (data: PromoCodeDetailInput) => Promise<PromoCodeDetail | null>;
   lang: Locale;
   t: Dictionary;
   option: { packages: PackageList; paymentMethods: PaymentMethodList };
 };
 
-export default function CreateVisitorForm({ createVisitor, lang, t, option }: Props) {
+export default function CreateVisitorForm({ createVisitor, lang, t, option, checkPromoCode }: Props) {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
+  const [loadingPromoCode, setLoadingPromoCode] = useState<boolean>(false);
   const [isAddingTransaction, setIsAddingTransaction] = useState<boolean>(false);
   const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<PaymentMethod | null>(null);
+  const [selectedPromoCode, setSelectedPromoCode] = useState<PromoCode | null>(null);
 
   const {
     register,
@@ -63,6 +68,7 @@ export default function CreateVisitorForm({ createVisitor, lang, t, option }: Pr
   const onSubmit: SubmitHandler<UserCreateVisitorInput> = async (data) => {
     setLoading(true);
     const res = await createVisitor(data);
+    console.log(res);
     setLoading(false);
     reset();
     if (!res.status) return toast({ t, type: "error", description: "Visitor with this phone number already exists" });
@@ -75,10 +81,13 @@ export default function CreateVisitorForm({ createVisitor, lang, t, option }: Pr
     fullName: watch("visitorData.fullName"),
     phoneNumber: watch("visitorData.phoneNumber"),
     email: watch("visitorData.email"),
+    promoCodeCode: watch("packageData.promoCodeCode"),
   };
 
+  console.log(selectedPackage);
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full">
       <section className="grid md:grid-cols-2 gap-6">
         <Input
           error={errors.visitorData?.fullName?.message}
@@ -201,11 +210,32 @@ export default function CreateVisitorForm({ createVisitor, lang, t, option }: Pr
             {/* PROMO_CODES */}
 
             <section className="flex flex-col gap-0.5">
-              <label>Promo Code (Optional)</label>
-              <section className="grid grid-cols-3 items-end gap-4">
-                <input className={cn("col-span-2", inputVariants())} />
-                <Button size="m" className="h-full">
-                  Apply
+              <label htmlFor="promoCodeCode">Promo Code (Optional)</label>
+              <section className="grid grid-cols-3 items-end gap-2">
+                <input
+                  disabled={loadingPromoCode || !!selectedPromoCode?.code}
+                  id="promoCodeCode"
+                  {...register("packageData.promoCodeCode")}
+                  className={cn("col-span-2", inputVariants())}
+                />
+                <Button
+                  icon={selectedPromoCode?.code && ICONS.check}
+                  color={selectedPromoCode ? "success" : "primary"}
+                  loading={loadingPromoCode}
+                  disabled={loadingPromoCode || !!selectedPromoCode?.code}
+                  onClick={async () => {
+                    if (!data.promoCodeCode) return toast({ type: "warning", t, description: "Fill out the Promo Code first" });
+                    setLoadingPromoCode(true);
+                    const res = await checkPromoCode({ code: data.promoCodeCode });
+                    setLoadingPromoCode(false);
+                    if (!res) return toast({ type: "error", t, description: "Promo Code is expired or doesn't exist" });
+                    setSelectedPromoCode(res);
+                    toast({ type: "success", t, description: "Promo Code applied" });
+                  }}
+                  size="m"
+                  className="h-full"
+                >
+                  {selectedPromoCode?.code ? "Applied" : "Apply"}
                 </Button>
               </section>
             </section>
@@ -223,7 +253,13 @@ export default function CreateVisitorForm({ createVisitor, lang, t, option }: Pr
               </section>
               <section className="flex flex-col items-end">
                 <p className="font-semibold">TOTAL AMOUNT</p>
-                <h6 className="w-fit px-2 text-light bg-orange">{formatCurrency(selectedPackage.price)}</h6>
+                <h6 className="w-fit px-2 text-light bg-orange">
+                  {formatCurrency(
+                    selectedPromoCode?.discountPrice
+                      ? selectedPackage.price - selectedPromoCode?.discountPrice
+                      : selectedPackage.price,
+                  )}
+                </h6>
               </section>
             </section>
 
@@ -242,8 +278,10 @@ export default function CreateVisitorForm({ createVisitor, lang, t, option }: Pr
                 <small>{formatCurrency(selectedPackage.price)}</small>
               </section>
               <section className="flex justify-between items-center">
-                <p>Promo Code</p>
-                <small>{formatCurrency(selectedPackage.price)}</small>
+                <p>
+                  Promo Code Applied: <code>{selectedPromoCode?.code ?? "-"}</code>
+                </p>
+                <small>{formatCurrency(selectedPromoCode?.discountPrice ?? 0)}</small>
               </section>
             </section>
 
@@ -251,25 +289,33 @@ export default function CreateVisitorForm({ createVisitor, lang, t, option }: Pr
               {selectedPackage.validityInDays && data.transactionDate ? (
                 <section className="flex justify-between items-center gap-6">
                   <section className="flex flex-col w-fit">
-                    <small className="font-medium">Start</small>
-                    <p>{formatDateShort(getNewDate(data.transactionDate))}</p>
+                    <small>Start</small>
+                    <p className="font-semibold">{formatDateShort(getNewDate(data.transactionDate))}</p>
                   </section>
                   <div className="w-[50%] h-0.5 bg-dark" />
                   <section className="flex flex-col text-right w-fit">
-                    <small className="font-medium">Expiry</small>
-                    <p>
-                      {formatDateShort(
+                    <small>Expiry</small>
+                    <p className="font-semibold">
+                      {isDateToday(
                         getExpiryDateFromDate({
                           days: selectedPackage.validityInDays,
                           dateString: data.transactionDate,
                           isVisit: selectedPackage.type === "VISIT",
                         }),
-                      )}
+                      )
+                        ? "Today"
+                        : formatDateShort(
+                            getExpiryDateFromDate({
+                              days: selectedPackage.validityInDays,
+                              dateString: data.transactionDate,
+                              isVisit: selectedPackage.type === "VISIT",
+                            }),
+                          )}
                     </p>
                   </section>
                 </section>
               ) : null}
-              <p>Permitted sessions: {selectedPackage.totalPermittedSessions ?? "Unlimited"}</p>
+              <p>Permitted sessions: {selectedPackage.totalPermittedSessions ?? "none"}</p>
             </section>
 
             {selectedPaymentMethod ? (

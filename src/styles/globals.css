@@ -64,7 +64,7 @@
 
 @layer components {
   .main-create-padding {
-    @apply flex flex-col gap-6 md:gap-12 items-center justify-center py-shorter;
+    @apply flex flex-col gap-6 md:gap-12 items-center justify-center py-shorter xl:px-36 2xl:px-[28rem];
   }
   .label {
     @apply text-lg font-semibold;

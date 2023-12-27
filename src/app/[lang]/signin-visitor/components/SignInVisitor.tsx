@@ -64,14 +64,7 @@ export default function SignInVisitor({ callbackUrl, t, lang }: Props) {
             {...register("credential")}
             error={errors.credential?.message}
           />
-          <Button
-            loading={isLoading}
-            disabled={isLoading}
-            className="mt-2"
-            type="submit"
-            color={isLoading ? "disabled" : "expired"}
-            size="xl"
-          >
+          <Button loading={isLoading} className="mt-2" type="submit" color={isLoading ? "disabled" : "expired"} size="xl">
             Sign In
           </Button>
         </form>

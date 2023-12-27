@@ -1,7 +1,12 @@
+import { api } from "@/trpc/server";
+
 type Props = {
   params: { id: string };
 };
 
-export default function VisitorByIdPage({ params }: Props) {
+export default async function VisitorByIdPage({ params }: Props) {
+  const data = await api.user.detail.query({ id: params.id });
+  console.log(data);
+
   return <div>{params.id}</div>;
 }

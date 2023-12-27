@@ -67,7 +67,7 @@ export class schema {
           packageId: z.string(),
           transactionDate: schema.date,
           paymentMethodId: z.string(),
-          promoCodeId: z.string().optional(),
+          promoCodeCode: z.string().nullable(),
         })
         .optional(),
     });
@@ -161,6 +161,30 @@ export class schema {
       name: z.string().min(3),
       address: z.string().min(3),
       url: z.string().url("Provide a google maps link"),
+    });
+  };
+
+  static promoCode = class {
+    static create = z.object({
+      code: z
+        .string()
+        .min(4, "At least 4 characters")
+        .regex(/^[A-Z0-9]+$/, "Code should be uppercase and contain only letters and numbers"),
+      discountPrice: z.number().min(1),
+      isActive: z.boolean().default(true),
+    });
+  };
+
+  static packageTransaction = class {
+    static create = z.object({
+      totalPrice: z.number().min(1),
+      startDate: schema.dateNullable,
+      expiryDate: schema.dateNullable,
+      transactionDate: schema.date,
+      paymentMethodId: z.string(),
+      packageId: z.string(),
+      buyerId: z.string(),
+      promoCodeCode: z.string().nullable(),
     });
   };
 }

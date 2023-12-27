@@ -51,7 +51,7 @@ export default function ProfileForm({ user, setIsEdit, updateUser, t }: Props) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full">
       <Input label="Full Name" {...register("body.fullName")} error={errors.body?.fullName?.message} />
       <Input icon={ICONS.email} label="Email" {...register("body.email")} error={errors.body?.email?.message} />
       <Input label="Phone Number" {...register("body.phoneNumber")} error={errors.body?.phoneNumber?.message} isPhoneNumber />
@@ -85,7 +85,7 @@ export default function ProfileForm({ user, setIsEdit, updateUser, t }: Props) {
         <Button disabled={loading} onClick={() => setIsEdit(false)} size="l" color="expired">
           Cancel
         </Button>
-        <Button disabled={loading} loading={loading} size="l" type="submit" color="success">
+        <Button loading={loading} size="l" type="submit" color="success">
           Save
         </Button>
       </section>

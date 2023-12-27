@@ -3,13 +3,14 @@ import { prismaExclude, type RouterOutputs } from "@/trpc/shared";
 
 export const paymentMethodRouter = createTRPCRouter({
   list: ownerProcedure.query(async ({ ctx }) => {
-    return ctx.db.paymentMethod.findMany({
+    const data = ctx.db.paymentMethod.findMany({
       select: {
         packageTransactions: true,
         productTransactions: true,
         ...prismaExclude("PaymentMethod", ["createdDate"]),
       },
     });
+    return data;
   }),
 });
 

@@ -1,4 +1,4 @@
-import { formatName, formatPhoneNumber, getExpiryDate, getNewDate, getStartDate } from "@/lib/utils";
+import { formatName, formatPhoneNumber, getExpiryDateFromDate, getNewDate, getStartDate } from "@/lib/utils";
 import { schema } from "@/schema";
 import { createTRPCRouter, ownerProcedure, protectedProcedure, publicProcedure } from "@/server/api/trpc";
 import {
@@ -20,7 +20,7 @@ const userSelect = {
   select: {
     ...prismaExclude("User", ["credential", "scheduleIDs", "trainerPackageIDs", "trainerSportIDs"]),
     image: true,
-    // packageTransactions: true,
+    packageTransactions: true,
     // productTransactions: true,
     // visits: true,
     // schedules: true,
@@ -61,6 +61,35 @@ export const userRouter = createTRPCRouter({
         credential: await hash(visitorData.phoneNumber),
       },
     });
+
+    if (packageData) {
+      const selectedPackage = await ctx.db.package.findFirst({ where: { id: packageData.packageId } });
+      const promoCode = input?.packageData?.promoCodeCode
+        ? await ctx.db.promoCode.findFirst({ where: { code: input.packageData.promoCodeCode } })
+        : null;
+
+      if (selectedPackage) {
+        await ctx.db.packageTransaction.create({
+          data: {
+            totalPrice: promoCode ? selectedPackage.price - promoCode.discountPrice : selectedPackage.price,
+            startDate: packageData.transactionDate ? getStartDate(packageData.transactionDate) : null,
+            expiryDate: selectedPackage.validityInDays
+              ? getExpiryDateFromDate({
+                  days: selectedPackage.validityInDays,
+                  isVisit: selectedPackage.type === "VISIT",
+                  dateString: packageData.transactionDate,
+                })
+              : null,
+            remainingPermittedSessions: selectedPackage.totalPermittedSessions,
+            transactionDate: getStartDate(packageData.transactionDate),
+            paymentMethodId: packageData.paymentMethodId,
+            packageId: packageData.packageId,
+            buyerId: newData.id,
+            promoCodeId: promoCode?.id ? promoCode.id : null,
+          },
+        });
+      }
+    }
 
     return THROW_OK("CREATED");
   }),

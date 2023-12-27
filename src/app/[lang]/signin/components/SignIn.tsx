@@ -67,7 +67,7 @@ export default function Login({ callbackUrl, t, lang }: Props) {
             label="Email"
           />
           <Input withPasswordIcon {...register("credential")} error={errors.credential?.message} type="password" />
-          <Button className="mt-2" type="submit" color={isLoading ? "disabled" : "expired"} size="xl" disabled={isLoading}>
+          <Button className="mt-2" type="submit" color={isLoading ? "disabled" : "expired"} size="xl">
             {isLoading ? <PulseLoader color={COLORS.cream} size={6} /> : "Sign In"}
           </Button>
         </form>

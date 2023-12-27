@@ -45,7 +45,7 @@ export default function CreatePlaceForm({ createPlace, lang, t }: Props) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full">
       <Input icon={ICONS.place} error={errors.name?.message} label="Name" {...register("name")} />
       <Input icon={ICONS.url} error={errors.url?.message} label="Google Maps Link" {...register("url")} />
       <InputTextArea label="Address" {...register("address")} error={errors.address?.message} />

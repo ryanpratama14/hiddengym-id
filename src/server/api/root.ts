@@ -1,16 +1,20 @@
-import { packageRouter } from "@/server/api/routers/package";
-import { paymentMethodRouter } from "@/server/api/routers/paymentMethod";
-import { sportRouter } from "@/server/api/routers/sport";
-import { userRouter } from "@/server/api/routers/user";
 import { createTRPCRouter } from "@/server/api/trpc";
-import { placeRouter } from "./routers/place";
+import { packageRouter } from "@router/package";
+import { packageTransactionRouter } from "@router/packageTransaction";
+import { paymentMethodRouter } from "@router/paymentMethod";
+import { placeRouter } from "@router/place";
+import { promoCodeRouter } from "@router/promoCode";
+import { sportRouter } from "@router/sport";
+import { userRouter } from "@router/user";
 
 export const appRouter = createTRPCRouter({
   user: userRouter,
   paymentMethod: paymentMethodRouter,
   package: packageRouter,
+  packageTransaction: packageTransactionRouter,
   sport: sportRouter,
   place: placeRouter,
+  promoCode: promoCodeRouter,
 });
 
 export type AppRouter = typeof appRouter;
