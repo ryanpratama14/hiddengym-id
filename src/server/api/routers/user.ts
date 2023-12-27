@@ -52,6 +52,12 @@ export const userRouter = createTRPCRouter({
     const { packageData, visitorData } = input;
     const data = await ctx.db.user.findUnique({ where: { phoneNumber: visitorData.phoneNumber } });
     if (data) return THROW_ERROR("CONFLICT");
+
+    if (visitorData.email) {
+      const data = await ctx.db.user.findFirst({ where: { email: visitorData.email } });
+      if (data) return THROW_ERROR("CONFLICT");
+    }
+
     const newData = await ctx.db.user.create({
       data: {
         fullName: formatName(visitorData.fullName),

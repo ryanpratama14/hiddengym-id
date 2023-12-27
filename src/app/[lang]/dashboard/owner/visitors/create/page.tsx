@@ -20,10 +20,9 @@ export default async function CustomerCreatePage({ params }: Props) {
     return res;
   };
 
-  const checkPromoCode = async (data: PromoCodeDetailInput): Promise<PromoCodeDetail | null> => {
+  const checkPromoCode = async (data: PromoCodeDetailInput): Promise<PromoCodeDetail> => {
     "use server";
     const res = await api.promoCode.detail.mutate(data);
-    if (!res) return null;
     return res;
   };
 
@@ -35,7 +34,7 @@ export default async function CustomerCreatePage({ params }: Props) {
   return (
     <section className="main-create-padding">
       <h3>Create Visitor</h3>
-      <CreateVisitorForm option={option} t={t} createVisitor={createVisitor} checkPromoCode={checkPromoCode} lang={params.lang} />
+      <CreateVisitorForm option={option} t={t} createVisitor={createVisitor} lang={params.lang} checkPromoCode={checkPromoCode} />
     </section>
   );
 }

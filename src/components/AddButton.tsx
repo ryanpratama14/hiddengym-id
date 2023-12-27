@@ -18,7 +18,7 @@ type Props = {
 export default function AddButton({ role, lang, handleCollapse }: Props) {
   const router = useRouter();
   return (
-    <aside onClick={handleCollapse} className="fixed right-0 bottom-0 pr-shorter pb-shorter">
+    <aside onClick={handleCollapse} className="fixed right-0 bottom-0 pr-shorter pb-shorter z-50">
       <Menu as="section" className="relative">
         <Menu.Button className="w-10 aspect-square bg-green text-cream rounded-full relative shadow">
           <Iconify icon={ICONS.add} className="absolute centered" width={35} />
@@ -32,7 +32,7 @@ export default function AddButton({ role, lang, handleCollapse }: Props) {
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform translate-y-2 opacity-0"
         >
-          <Menu.Items className="z-50 active:outline-none w-44 focus:outline-none outline-none absolute bottom-14 right-0 origin-top-right p-0.5 mt-4 rounded-md  flex flex-col bg-light shadow-lg">
+          <Menu.Items className="active:outline-none w-44 focus:outline-none outline-none absolute bottom-14 right-0 origin-top-right p-0.5 mt-4 rounded-md  flex flex-col bg-light shadow-lg">
             {ADD_BUTTON_ITEMS(role, lang)
               .filter((obj) => !ADD_BUTTON_ITEMS_TO_REMOVE[role].includes(obj.label))
               .map((item) => {

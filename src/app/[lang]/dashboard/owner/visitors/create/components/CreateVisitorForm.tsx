@@ -34,13 +34,13 @@ import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 
 type Props = {
   createVisitor: (data: UserCreateVisitorInput) => Promise<TRPC_RESPONSE>;
-  checkPromoCode: (data: PromoCodeDetailInput) => Promise<PromoCodeDetail | null>;
+  checkPromoCode: (data: PromoCodeDetailInput) => Promise<PromoCodeDetail>;
   lang: Locale;
   t: Dictionary;
   option: { packages: PackageList; paymentMethods: PaymentMethodList };
 };
 
-export default function CreateVisitorForm({ createVisitor, lang, t, option, checkPromoCode }: Props) {
+export default function CreateVisitorForm({ createVisitor, checkPromoCode, lang, t, option }: Props) {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
   const [loadingPromoCode, setLoadingPromoCode] = useState<boolean>(false);
@@ -69,8 +69,8 @@ export default function CreateVisitorForm({ createVisitor, lang, t, option, chec
     setLoading(true);
     const res = await createVisitor(data);
     setLoading(false);
+    if (!res.status) return toast({ t, type: "error", description: "Visitor with this phone number / email already exists" });
     reset();
-    if (!res.status) return toast({ t, type: "error", description: "Visitor with this phone number already exists" });
     toast({ t, type: "success", description: "Visitor has been created" });
     router.push(USER_REDIRECT.OWNER({ lang, href: "/visitors" }));
   };
@@ -81,6 +81,7 @@ export default function CreateVisitorForm({ createVisitor, lang, t, option, chec
     phoneNumber: watch("visitorData.phoneNumber"),
     email: watch("visitorData.email"),
     promoCodeCode: watch("packageData.promoCodeCode"),
+    packageId: watch("packageData.packageId"),
   };
 
   return (
@@ -148,7 +149,9 @@ export default function CreateVisitorForm({ createVisitor, lang, t, option, chec
               onClick={() => {
                 unregister("packageData");
                 setIsAddingTransaction(!isAddingTransaction);
-                setSelectedPackage(null);
+                if (selectedPackage) setSelectedPackage(null);
+                if (selectedPaymentMethod) setSelectedPaymentMethod(null);
+                if (selectedPromoCode) setSelectedPromoCode(null);
               }}
               className={cn({ "text-dark bg-dark/10": !isAddingTransaction })}
             >
@@ -210,23 +213,26 @@ export default function CreateVisitorForm({ createVisitor, lang, t, option, chec
               <label htmlFor="promoCodeCode">Promo Code (Optional)</label>
               <section className="grid grid-cols-3 items-end gap-2">
                 <input
-                  disabled={loadingPromoCode || !!selectedPromoCode?.code}
+                  disabled={loadingPromoCode || !!selectedPromoCode?.code || !selectedPackage?.id}
                   id="promoCodeCode"
                   {...register("packageData.promoCodeCode")}
-                  className={cn("col-span-2", inputVariants())}
+                  className={cn("col-span-2", inputVariants(), {
+                    "border-dark/30": loadingPromoCode || !!selectedPromoCode?.code || !selectedPackage?.id,
+                  })}
                 />
                 <Button
                   icon={selectedPromoCode?.code && ICONS.check}
                   color={selectedPromoCode ? "success" : "primary"}
                   loading={loadingPromoCode}
-                  disabled={loadingPromoCode || !!selectedPromoCode?.code}
+                  disabled={loadingPromoCode}
                   onClick={async () => {
+                    if (!data.packageId) return toast({ type: "warning", t, description: "Pick package first" });
                     if (!data.promoCodeCode) return toast({ type: "warning", t, description: "Fill out the Promo Code first" });
                     setLoadingPromoCode(true);
                     const res = await checkPromoCode({ code: data.promoCodeCode });
                     setLoadingPromoCode(false);
-                    if (!res) return toast({ type: "error", t, description: "Promo Code is expired or doesn't exist" });
-                    setSelectedPromoCode(res);
+                    if (!res.data) return toast({ type: "error", t, description: "Promo Code is expired or doesn't exist" });
+                    setSelectedPromoCode(res.data);
                     toast({ type: "success", t, description: "Promo Code applied" });
                   }}
                   size="m"
@@ -242,7 +248,7 @@ export default function CreateVisitorForm({ createVisitor, lang, t, option, chec
 
       {selectedPackage ? (
         <section className="flex justify-center items-center">
-          <section className="md:w-[70%] w-full flex flex-col gap-6 p-4 shadow bg-light text-dark">
+          <section className="md:w-[30rem] w-full flex flex-col gap-6 p-3 lg:p-6 shadow bg-light text-dark">
             <section className="flex justify-between w-full">
               <section className="flex flex-col">
                 <h6>Package TXN</h6>
@@ -269,50 +275,61 @@ export default function CreateVisitorForm({ createVisitor, lang, t, option, chec
             <section className="flex flex-col gap-1">
               <section className="flex justify-between items-center">
                 <section className="flex gap-2 items-center">
-                  <span className="font-semibold border-1 border-dark px-1">{selectedPackage.type}</span>
-                  <p>{selectedPackage.name}</p>
+                  <small className="font-semibold border-1 border-dark px-1">{selectedPackage.type}</small>
+                  <small>{selectedPackage.name}</small>
                 </section>
                 <small>{formatCurrency(selectedPackage.price)}</small>
               </section>
-              <section className="flex justify-between items-center">
-                <p>
-                  Promo Code Applied: <code>{selectedPromoCode?.code ?? "-"}</code>
-                </p>
-                <small>{formatCurrency(selectedPromoCode?.discountPrice ?? 0)}</small>
-              </section>
+              {selectedPromoCode ? (
+                <section className="flex justify-between items-center">
+                  <section className="flex gap-1 items-center">
+                    <small>PROMO CODE</small>
+                    <code className="text-sm italic underline">{selectedPromoCode.code}</code>
+                  </section>
+
+                  <small>{formatCurrency(-selectedPromoCode.discountPrice)}</small>
+                </section>
+              ) : null}
             </section>
 
             <section className="flex flex-col">
               {selectedPackage.validityInDays && data.transactionDate ? (
-                <section className="flex justify-between items-center gap-6">
-                  <section className="flex flex-col w-fit">
+                <section className="flex flex-col">
+                  <section className="flex justify-between">
                     <small>Start</small>
-                    <p className="font-semibold">{formatDateShort(getNewDate(data.transactionDate))}</p>
-                  </section>
-                  <div className="w-[50%] h-0.5 bg-dark" />
-                  <section className="flex flex-col text-right w-fit">
                     <small>Expiry</small>
-                    <p className="font-semibold">
-                      {isDateToday(
-                        getExpiryDateFromDate({
-                          days: selectedPackage.validityInDays,
-                          dateString: data.transactionDate,
-                          isVisit: selectedPackage.type === "VISIT",
-                        }),
-                      )
-                        ? "Today"
-                        : formatDateShort(
-                            getExpiryDateFromDate({
-                              days: selectedPackage.validityInDays,
-                              dateString: data.transactionDate,
-                              isVisit: selectedPackage.type === "VISIT",
-                            }),
-                          )}
-                    </p>
+                  </section>
+                  <section className="flex justify-between items-center gap-6">
+                    <section className="flex flex-col w-fit">
+                      <p className="font-semibold">{formatDateShort(getNewDate(data.transactionDate))}</p>
+                    </section>
+                    <div className="w-[50%] h-0.5 bg-dark" />
+                    <section className="flex flex-col text-right w-fit">
+                      <p className="font-semibold">
+                        {isDateToday(
+                          getExpiryDateFromDate({
+                            days: selectedPackage.validityInDays,
+                            dateString: data.transactionDate,
+                            isVisit: selectedPackage.type === "VISIT",
+                          }),
+                        )
+                          ? "Today"
+                          : formatDateShort(
+                              getExpiryDateFromDate({
+                                days: selectedPackage.validityInDays,
+                                dateString: data.transactionDate,
+                                isVisit: selectedPackage.type === "VISIT",
+                              }),
+                            )}
+                      </p>
+                    </section>
                   </section>
                 </section>
               ) : null}
-              <p>Permitted sessions: {selectedPackage.totalPermittedSessions ?? "none"}</p>
+              <small>
+                Permitted sessions:{" "}
+                {selectedPackage.totalPermittedSessions ? `${selectedPackage.totalPermittedSessions} session(s)` : "none"}
+              </small>
             </section>
 
             {selectedPaymentMethod ? (

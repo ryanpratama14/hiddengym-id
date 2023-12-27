@@ -1,6 +1,6 @@
 import { schema } from "@/schema";
 import { createTRPCRouter, ownerProcedure } from "@/server/api/trpc";
-import { THROW_ERROR, THROW_OK, THROW_TRPC_ERROR, type RouterInputs, type RouterOutputs } from "@/trpc/shared";
+import { THROW_ERROR, THROW_OK, type RouterInputs, type RouterOutputs } from "@/trpc/shared";
 import { z } from "zod";
 
 export const promoCodeRouter = createTRPCRouter({
@@ -18,9 +18,9 @@ export const promoCodeRouter = createTRPCRouter({
 
   detail: ownerProcedure.input(z.object({ code: z.string() })).mutation(async ({ ctx, input }) => {
     const data = await ctx.db.promoCode.findFirst({ where: { code: input.code } });
-    if (!data) return THROW_TRPC_ERROR("NOT_FOUND");
-    if (!data.isActive) return THROW_TRPC_ERROR("FORBIDDEN");
-    return data;
+    if (!data) return { ...THROW_ERROR("NOT_FOUND"), data: null };
+    if (!data.isActive) return { ...THROW_ERROR("CONFLICT"), data: null };
+    return { ...THROW_OK("OK"), data };
   }),
 });
 

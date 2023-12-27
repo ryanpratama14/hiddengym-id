@@ -29,6 +29,10 @@ export class schema {
 
   static date = z.string().min(1, "Pick a date");
   static dateNullable = z.string().nullable();
+  static promoCodeCode = z
+    .string()
+    .min(4, "At least 4 characters")
+    .regex(/^[A-Z0-9]+$/, "Code should be uppercase and contain only letters and numbers");
   static password = z.string().min(10, "At least 10 characters");
   static loginVisitor = z.object({ credential: schema.phoneNumber });
   static login = z.object({ email: schema.email, credential: schema.password }); // also for next-auth
@@ -166,10 +170,7 @@ export class schema {
 
   static promoCode = class {
     static create = z.object({
-      code: z
-        .string()
-        .min(4, "At least 4 characters")
-        .regex(/^[A-Z0-9]+$/, "Code should be uppercase and contain only letters and numbers"),
+      code: schema.promoCodeCode,
       discountPrice: z.number().min(1),
       isActive: z.boolean().default(true),
     });
@@ -184,7 +185,7 @@ export class schema {
       paymentMethodId: z.string(),
       packageId: z.string(),
       buyerId: z.string(),
-      promoCodeCode: z.string().nullable(),
+      promoCodeCode: schema.promoCodeCode,
     });
   };
 }
