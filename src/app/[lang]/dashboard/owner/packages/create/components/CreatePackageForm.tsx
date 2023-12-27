@@ -152,6 +152,7 @@ export default function CreatePackageForm({ option, createPackage, t, lang }: Pr
           <InputSelect
             {...field}
             mode="multiple"
+            showSearch={false}
             options={option.places.map((e) => ({ value: e.id, label: e.name }))}
             icon={ICONS.place}
             error={errors.placeIDs?.message}
@@ -166,6 +167,7 @@ export default function CreatePackageForm({ option, createPackage, t, lang }: Pr
         render={({ field }) => (
           <InputSelect
             {...field}
+            showSearch={false}
             mode="multiple"
             options={option.sports.map((e) => ({ value: e.id, label: e.name }))}
             icon={ICONS.sport}
@@ -181,6 +183,7 @@ export default function CreatePackageForm({ option, createPackage, t, lang }: Pr
           name="trainerIDs"
           render={({ field }) => (
             <InputSelect
+              showSearch={false}
               {...field}
               mode="multiple"
               options={option.trainers.map((e) => ({ value: e.id, label: e.fullName }))}

@@ -19,6 +19,7 @@ const InputSelect = forwardRef<
     label: string;
     error?: string;
     multiple?: boolean;
+    showSearch?: boolean;
   }
 >(function InputSelect(props, ref) {
   const id = useId();
@@ -34,7 +35,7 @@ const InputSelect = forwardRef<
           optionFilterProp="children"
           filterOption={(input, option) => ((option?.label as string) ?? "").toLowerCase().includes(input.toLowerCase())}
           style={{ width: "100%" }}
-          showSearch
+          showSearch={props.showSearch}
         />
         {props.icon ? (
           <Iconify width={inputIconSize} icon={props.icon} className="absolute centered-left translate-x-3 text-dark" />

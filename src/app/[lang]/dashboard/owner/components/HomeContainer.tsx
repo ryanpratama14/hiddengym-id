@@ -52,7 +52,7 @@ export default function HomeContainer({ lang, user, updateUser, refreshUser, t }
 
   return (
     <section className="grid md:grid-cols-3 gap-y-6 md:gap-16 2xl:px-longer">
-      <section className="flex flex-col p-6 gap-6">
+      <section className="flex flex-col p-3 gap-6">
         <section className="flex flex-col gap-6 pb-2">
           <section className="relative bg-light rounded-full w-full aspect-square shadow">
             {isLoading ? null : (
@@ -149,7 +149,7 @@ export default function HomeContainer({ lang, user, updateUser, refreshUser, t }
           </section>
         </section>
       </section>
-      <section className="md:col-span-2 bg-light h-fit p-6 shadow"></section>
+      <section className="md:col-span-2 bg-light h-fit shadow p-3">das</section>
     </section>
   );
 }

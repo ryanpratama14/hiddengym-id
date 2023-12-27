@@ -2,6 +2,7 @@
 
 import Button from "@/components/Button";
 import Iconify from "@/components/Iconify";
+import Input from "@/components/Input";
 import { type Locale } from "@/i18n.config";
 import { ICONS, USER_REDIRECT } from "@/lib/constants";
 import { cn, createUrl } from "@/lib/utils";
@@ -35,29 +36,14 @@ export default function TableSearch({ query, lang, loading }: Props) {
       className="flex justify-between gap-2 md:gap-6"
     >
       <section className="relative w-[80%] group">
-        <input
+        <Input
           key={query.params?.fullName}
           defaultValue={query.params?.fullName}
           name="fullName"
           autoComplete="off"
-          className={cn("pl-10 py-5", inputVariants({ border: "bottom", rounded: "none", color: "orange" }))}
-          placeholder="Search by name..."
+          placeholder="Search by full name..."
+          icon={ICONS.search}
         />
-        <Iconify icon={ICONS.search} className="absolute centered-left translate-x-1.5" width={25} />
-        <button
-          type="button"
-          onClick={(e) => {
-            const form = e.currentTarget.form!;
-            if (form) {
-              form.reset();
-              if (!newParams.get("q")) return;
-            }
-            newParams.delete("q");
-            router.push(createUrl(USER_REDIRECT.OWNER({ lang, href: "/visitors" }), newParams));
-          }}
-        >
-          <Iconify icon={ICONS.close} className="absolute centered-right -translate-x-1.5 cursor-pointer" width={25} />
-        </button>
       </section>
       <Button loading={loading} type="submit" className="relative h-full w-[20%]" size="xl">
         <Iconify icon={ICONS.search} className="md:hidden absolute centered" width={30} />
