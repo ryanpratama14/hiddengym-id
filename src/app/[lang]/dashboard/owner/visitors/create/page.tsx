@@ -20,7 +20,7 @@ export default async function CustomerCreatePage({ params }: Props) {
   };
 
   return (
-    <section className="flex flex-col gap-12 items-center justify-center pt-16">
+    <section className="flex flex-col gap-12 items-center justify-center py-shorter">
       <h3>Create Visitor</h3>
       <CreateVisitorForm t={t} createVisitor={createVisitor} lang={params.lang} />
     </section>

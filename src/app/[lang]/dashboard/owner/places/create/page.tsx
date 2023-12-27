@@ -20,7 +20,7 @@ export default async function PlaceCreatePage({ params }: Props) {
   };
 
   return (
-    <section className="flex flex-col gap-12 items-center justify-center pt-16">
+    <section className="flex flex-col gap-12 items-center justify-center py-shorter">
       <h3>Create Place</h3>
       <CreatePlaceForm t={t} createPlace={createPlace} lang={params.lang} />
     </section>
