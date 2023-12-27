@@ -19,7 +19,7 @@ type InputProps = ComponentProps<"input"> &
 const iconSize = 22;
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ label, error, type, className, size, color, icon, classNameDiv, withPasswordIcon, isPhoneNumber, ...rest }, ref) => {
+  ({ label, error, type, className, size, color, icon, disabled, classNameDiv, withPasswordIcon, isPhoneNumber, ...rest }, ref) => {
     const id = useId();
 
     const [showPassword, setShowPassword] = useState(false);
@@ -30,23 +30,25 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           {label ? <label htmlFor={id}>{label}</label> : null}
           <section className="relative">
             <input
+              disabled={disabled}
               inputMode={isPhoneNumber ? "numeric" : undefined}
               type={type ? type : "text"}
               className={cn(inputVariants({ size, color, className }), {
                 "border-red border-dashed": error,
-                "pl-7": icon,
+                "pl-10": icon,
                 "pl-16": isPhoneNumber,
+                "border-dark/30": disabled,
               })}
               ref={ref}
               id={id}
               maxLength={isPhoneNumber ? 12 : 56}
               {...rest}
             />
-            {icon ? <Iconify width={iconSize} icon={icon} className="absolute centered-left text-dark" /> : null}
+            {icon ? <Iconify width={iconSize} icon={icon} className="absolute centered-left translate-x-3 text-dark" /> : null}
             {isPhoneNumber ? (
-              <section className="flex gap-2 items-centered absolute centered-left">
+              <section className="flex items-center absolute centered-left translate-x-3">
                 <Iconify width={iconSize} icon={ICONS.phone} className="text-dark" />
-                <p className="absolute centered-left font-semibold translate-x-6">{COUNTRY_CODE}</p>
+                <p className="font-semibold">{COUNTRY_CODE}</p>
               </section>
             ) : null}
           </section>

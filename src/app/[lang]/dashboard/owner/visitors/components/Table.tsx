@@ -89,7 +89,7 @@ export default function VisitorsTable({ data, searchParams, lang, loading }: Pro
               defaultValue={searchParams[name]}
               isPhoneNumber={name === "phoneNumber"}
               name={name}
-              className={cn("text-base h-8")}
+              className={cn("text-base")}
             />
           )}
           <section className="grid grid-cols-2 gap-2">

@@ -110,6 +110,10 @@ export class schema {
       trainerIDs: z.array(z.string()).optional(),
     });
   };
+
+  static sport = class {
+    static create = z.object({ name: z.string().min(3, "At least 3 characters") });
+  };
 }
 
 export type Pagination = z.infer<typeof schema.pagination>;

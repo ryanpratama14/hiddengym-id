@@ -90,6 +90,9 @@ export const ICONS = {
   error: "icon-park-solid:folder-failed",
   info: "icon-park-solid:info",
   warning: "material-symbols:warning",
+  check: "mdi:check",
+  session: "carbon:prompt-session",
+  validity: "game-icons:duration",
 };
 
 export const ADD_BUTTON_ITEMS_TO_REMOVE: Record<Role, string[]> = {
@@ -100,6 +103,16 @@ export const ADD_BUTTON_ITEMS_TO_REMOVE: Record<Role, string[]> = {
 };
 
 export const ADD_BUTTON_ITEMS = (role: Role, lang: Locale) => [
+  {
+    label: "Place",
+    icon: ICONS.place,
+    href: USER_REDIRECT[role]({ lang, href: "/places/create" }),
+  },
+  {
+    label: "Sport Type",
+    icon: ICONS.sport,
+    href: USER_REDIRECT[role]({ lang, href: "/sport-types/create" }),
+  },
   {
     label: "Package",
     icon: ICONS.package,

@@ -7,6 +7,7 @@ import {
   getSortingQuery,
   insensitiveMode,
   prismaExclude,
+  THROW_ERROR,
   THROW_OK,
   THROW_TRPC_ERROR,
   type RouterInputs,
@@ -33,7 +34,7 @@ const userSelect = {
 export const userRouter = createTRPCRouter({
   create: publicProcedure.input(schema.user.create).mutation(async ({ ctx, input }) => {
     const data = await ctx.db.user.findFirst({ where: { email: input.email } });
-    if (data) return THROW_TRPC_ERROR("CONFLICT");
+    if (data) return THROW_ERROR("CONFLICT");
     await ctx.db.user.create({
       data: {
         email: input.email.toLowerCase(),
@@ -50,7 +51,7 @@ export const userRouter = createTRPCRouter({
   createVisitor: publicProcedure.input(schema.user.createVisitor).mutation(async ({ ctx, input }) => {
     const { packageData, visitorData } = input;
     const data = await ctx.db.user.findUnique({ where: { phoneNumber: visitorData.phoneNumber } });
-    if (data) return THROW_TRPC_ERROR("CONFLICT");
+    if (data) return THROW_ERROR("CONFLICT");
     const newData = await ctx.db.user.create({
       data: {
         fullName: formatName(visitorData.fullName),

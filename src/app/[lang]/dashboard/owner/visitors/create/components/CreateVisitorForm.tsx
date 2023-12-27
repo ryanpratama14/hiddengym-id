@@ -45,7 +45,7 @@ export default function CreateVisitorForm({ createVisitor, lang, t }: Props) {
     const res = await createVisitor(data);
     setLoading(false);
     reset();
-    if (!res.status) return toast({ t, type: "error", description: "Error has been occurred" });
+    if (!res.status) return toast({ t, type: "error", description: "Visitor with this phone number already exists" });
     toast({ t, type: "success", description: "Visitor has been created" });
     router.push(USER_REDIRECT.OWNER({ lang, href: "/visitors" }));
   };

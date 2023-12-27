@@ -19,7 +19,7 @@ export default async function DashboardOwnerPage({ params }: Props) {
 
   const refreshUser = async () => {
     "use server";
-    return revalidatePath(USER_PATHNAMES[session.user.role]);
+    return revalidatePath("/");
   };
 
   const updateUser = async (data: UserUpdateInput) => {

@@ -35,7 +35,7 @@ export const buttonVariants = tv({
 });
 
 export const inputVariants = tv({
-  base: "w-full rounded-none animate outline-none bg-inherit hover:border-dark/30 placeholder:text-dark/30",
+  base: "w-full pl-3 rounded-none animate outline-none bg-inherit hover:border-dark/30 placeholder:text-dark/30",
   variants: {
     color: {
       blue: " focus:border-blue2",
@@ -55,9 +55,9 @@ export const inputVariants = tv({
   },
   defaultVariants: {
     size: "m",
-    color: "blue",
-    border: "bottom",
-    rounded: "none",
+    color: "orange",
+    border: "all",
+    rounded: "md",
   },
 });
 
