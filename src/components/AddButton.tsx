@@ -32,7 +32,7 @@ export default function AddButton({ role, lang, handleCollapse }: Props) {
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform translate-y-2 opacity-0"
         >
-          <Menu.Items className="active:outline-none focus:outline-none outline-none absolute bottom-14 right-0 origin-top-right p-0.5 mt-4 w-fit rounded-md  flex flex-col bg-light shadow-lg">
+          <Menu.Items className="z-50 active:outline-none focus:outline-none outline-none absolute bottom-14 right-0 origin-top-right p-0.5 mt-4 w-fit rounded-md  flex flex-col bg-light shadow-lg">
             {ADD_BUTTON_ITEMS(role, lang)
               .filter((obj) => !ADD_BUTTON_ITEMS_TO_REMOVE[role].includes(obj.label))
               .map((item) => {

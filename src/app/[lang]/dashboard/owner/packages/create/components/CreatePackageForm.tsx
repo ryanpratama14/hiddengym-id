@@ -192,7 +192,11 @@ export default function CreatePackageForm({ option, createPackage, t, lang }: Pr
         />
       ) : null}
 
-      <InputTextArea error={errors.description?.message} label="Description (optional)" {...register("description")} />
+      <InputTextArea
+        error={errors.description?.message}
+        label="Description (optional)"
+        {...register("description", { setValueAs: (v: string) => (v ? v : null) })}
+      />
       <section className="flex justify-center items-center">
         <Button
           onClick={() => {
