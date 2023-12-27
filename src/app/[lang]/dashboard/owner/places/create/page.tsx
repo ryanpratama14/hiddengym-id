@@ -12,7 +12,7 @@ type Props = {
 export default async function PlaceCreatePage({ params }: Props) {
   const t = await useDictionary(params.lang);
 
-  const createPlace = async (data: PlaceCreateInput) => {
+  const createData = async (data: PlaceCreateInput) => {
     "use server";
     const res = await api.place.create.mutate(data);
     revalidatePath("/");
@@ -22,7 +22,7 @@ export default async function PlaceCreatePage({ params }: Props) {
   return (
     <section className="main-create-padding">
       <h3>Create Place</h3>
-      <CreatePlaceForm t={t} createPlace={createPlace} lang={params.lang} />
+      <CreatePlaceForm t={t} createData={createData} lang={params.lang} />
     </section>
   );
 }

@@ -15,12 +15,12 @@ import { useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 
 type Props = {
-  createSportType: (data: SportCreateInput) => Promise<TRPC_RESPONSE>;
+  createData: (data: SportCreateInput) => Promise<TRPC_RESPONSE>;
   lang: Locale;
   t: Dictionary;
 };
 
-export default function CreateSportForm({ createSportType, lang, t }: Props) {
+export default function CreateSportForm({ createData, lang, t }: Props) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const {
@@ -35,7 +35,7 @@ export default function CreateSportForm({ createSportType, lang, t }: Props) {
 
   const onSubmit: SubmitHandler<SportCreateInput> = async (data) => {
     setLoading(true);
-    const res = await createSportType(data);
+    const res = await createData(data);
     setLoading(false);
     reset();
     if (!res.status) return toast({ t, type: "error", description: "Sport Type with this name is already exists" });

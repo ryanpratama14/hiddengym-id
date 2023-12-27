@@ -68,7 +68,6 @@ export default function CreateVisitorForm({ createVisitor, lang, t, option, chec
   const onSubmit: SubmitHandler<UserCreateVisitorInput> = async (data) => {
     setLoading(true);
     const res = await createVisitor(data);
-    console.log(res);
     setLoading(false);
     reset();
     if (!res.status) return toast({ t, type: "error", description: "Visitor with this phone number already exists" });
@@ -83,8 +82,6 @@ export default function CreateVisitorForm({ createVisitor, lang, t, option, chec
     email: watch("visitorData.email"),
     promoCodeCode: watch("packageData.promoCodeCode"),
   };
-
-  console.log(selectedPackage);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full">
@@ -339,14 +336,7 @@ export default function CreateVisitorForm({ createVisitor, lang, t, option, chec
       ) : null}
 
       <section className="flex justify-center items-center">
-        <Button
-          onClick={() => console.log(watch())}
-          className="md:w-fit w-full"
-          loading={loading}
-          type="submit"
-          color="success"
-          size="xl"
-        >
+        <Button className="md:w-fit w-full" loading={loading} type="submit" color="success" size="xl">
           Create User
         </Button>
       </section>

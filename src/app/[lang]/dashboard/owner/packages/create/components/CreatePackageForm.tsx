@@ -34,13 +34,13 @@ const initialData: PackageCreateInput = {
 };
 
 type Props = {
-  createPackage: (data: PackageCreateInput) => Promise<TRPC_RESPONSE>;
+  createData: (data: PackageCreateInput) => Promise<TRPC_RESPONSE>;
   option: { places: PlaceList; sports: SportList; trainers: UserListTrainer };
   t: Dictionary;
   lang: Locale;
 };
 
-export default function CreatePackageForm({ option, createPackage, t, lang }: Props) {
+export default function CreatePackageForm({ option, createData, t, lang }: Props) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -59,7 +59,7 @@ export default function CreatePackageForm({ option, createPackage, t, lang }: Pr
 
   const onSubmit: SubmitHandler<PackageCreateInput> = async (data) => {
     setLoading(true);
-    const res = await createPackage(data);
+    const res = await createData(data);
     setLoading(false);
     reset();
     if (!res.status) return toast({ t, type: "error", description: "Package with this name is already exists" });
@@ -201,18 +201,7 @@ export default function CreatePackageForm({ option, createPackage, t, lang }: Pr
         {...register("description", { setValueAs: (v: string) => (v ? v : null) })}
       />
       <section className="flex justify-center items-center">
-        <Button
-          onClick={() => {
-            console.log(watch());
-            const val = schema.package.create.safeParse(watch());
-            if (!val.success) console.log(val.error);
-          }}
-          className="md:w-fit w-full"
-          loading={loading}
-          type="submit"
-          color="success"
-          size="xl"
-        >
+        <Button className="md:w-fit w-full" loading={loading} type="submit" color="success" size="xl">
           Create Package
         </Button>
       </section>

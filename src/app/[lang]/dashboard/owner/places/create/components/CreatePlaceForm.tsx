@@ -16,12 +16,12 @@ import { useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 
 type Props = {
-  createPlace: (data: PlaceCreateInput) => Promise<TRPC_RESPONSE>;
+  createData: (data: PlaceCreateInput) => Promise<TRPC_RESPONSE>;
   lang: Locale;
   t: Dictionary;
 };
 
-export default function CreatePlaceForm({ createPlace, lang, t }: Props) {
+export default function CreatePlaceForm({ createData, lang, t }: Props) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const {
@@ -36,7 +36,7 @@ export default function CreatePlaceForm({ createPlace, lang, t }: Props) {
 
   const onSubmit: SubmitHandler<PlaceCreateInput> = async (data) => {
     setLoading(true);
-    const res = await createPlace(data);
+    const res = await createData(data);
     setLoading(false);
     reset();
     if (!res.status) return toast({ t, type: "error", description: "Place is already exists" });

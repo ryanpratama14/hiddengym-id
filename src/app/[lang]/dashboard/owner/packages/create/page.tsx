@@ -10,7 +10,7 @@ type Props = {
 };
 
 export default async function PackageCreatePage({ params }: Props) {
-  const createPackage = async (data: PackageCreateInput) => {
+  const createData = async (data: PackageCreateInput) => {
     "use server";
     const res = await api.package.create.query(data);
     revalidatePath("/");
@@ -28,7 +28,7 @@ export default async function PackageCreatePage({ params }: Props) {
   return (
     <section className="main-create-padding">
       <h3>Create Package</h3>
-      <CreatePackageForm createPackage={createPackage} option={option} lang={params.lang} t={t} />
+      <CreatePackageForm createData={createData} option={option} lang={params.lang} t={t} />
     </section>
   );
 }

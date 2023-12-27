@@ -34,7 +34,6 @@ export default function CreatePromoCodeForm({ createData, lang, t }: Props) {
   });
 
   const onSubmit: SubmitHandler<PromoCodeCreateInput> = async (data) => {
-    console.log(data);
     setLoading(true);
     const res = await createData(data);
     setLoading(false);

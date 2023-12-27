@@ -21,7 +21,6 @@ type Props = {
 
 export default function SignInVisitor({ callbackUrl, t, lang }: Props) {
   const router = useRouter();
-  console.log(t);
 
   const {
     register,

@@ -12,7 +12,7 @@ type Props = {
 export default async function SportTypeCreatePage({ params }: Props) {
   const t = await useDictionary(params.lang);
 
-  const createSportType = async (data: SportCreateInput) => {
+  const createData = async (data: SportCreateInput) => {
     "use server";
     const res = await api.sport.create.mutate(data);
     revalidatePath("/");
@@ -22,7 +22,7 @@ export default async function SportTypeCreatePage({ params }: Props) {
   return (
     <section className="main-create-padding">
       <h3>Create Sport Type</h3>
-      <CreateSportForm t={t} createSportType={createSportType} lang={params.lang} />
+      <CreateSportForm t={t} createData={createData} lang={params.lang} />
     </section>
   );
 }

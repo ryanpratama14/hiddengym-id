@@ -6,7 +6,6 @@ type Props = {
 
 export default async function VisitorByIdPage({ params }: Props) {
   const data = await api.user.detail.query({ id: params.id });
-  console.log(data);
 
   return <div>{params.id}</div>;
 }
