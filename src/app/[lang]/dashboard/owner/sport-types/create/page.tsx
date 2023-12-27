@@ -20,7 +20,7 @@ export default async function SportTypeCreatePage({ params }: Props) {
   };
 
   return (
-    <section className="flex flex-col gap-12 items-center justify-center py-shorter">
+    <section className="main-create-padding">
       <h3>Create Sport Type</h3>
       <CreateSportForm t={t} createSportType={createSportType} lang={params.lang} />
     </section>

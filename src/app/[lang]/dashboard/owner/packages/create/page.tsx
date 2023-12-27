@@ -24,7 +24,7 @@ export default async function PackageCreatePage({ params }: Props) {
   const t = await useDictionary(params.lang);
 
   return (
-    <section className="flex flex-col gap-12 items-center justify-center py-shorter">
+    <section className="main-create-padding">
       <h3>Create Package</h3>
       <CreatePackageForm createPackage={createPackage} option={option} lang={params.lang} t={t} />
     </section>
