@@ -15,9 +15,9 @@ import { type User, type UserUpdateInput } from "@/server/api/routers/user";
 import { type TRPC_RESPONSE } from "@/trpc/shared";
 import { type ChangeEvent } from "@/types";
 import { CloudUploadOutlined } from "@ant-design/icons";
+import ProfileForm from "@owner/components/ProfileForm";
 import { useMutation } from "@tanstack/react-query";
 import { Fragment, useState } from "react";
-import ProfileForm from "./ProfileForm";
 
 type Props = {
   lang: Locale;
