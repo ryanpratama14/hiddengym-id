@@ -1,11 +1,10 @@
 "use client";
 
 import Button from "@/components/Button";
-import Iconify from "@/components/Iconify";
 import Input from "@/components/Input";
+import InputCheckbox from "@/components/InputCheckbox";
 import InputTextArea from "@/components/InputTextArea";
 import { ICONS } from "@/lib/constants";
-import { cn } from "@/lib/utils";
 import { schema } from "@/schema";
 import { type PackageCreateInput } from "@/server/api/routers/package";
 import { inputVariants } from "@/styles/variants";
@@ -104,30 +103,12 @@ export default function CreatePackageForm({}: Props) {
               label="Total Permitted Sessions"
             />
             {data.type === "TRAINER" ? null : (
-              <data className="flex gap-2 items-center justify-end">
-                <button
-                  onClick={() => resetField("totalPermittedSessions")}
-                  type="button"
-                  className={cn("relative rounded-md size-5 border-1.5 border-dark bg-light", {
-                    "bg-orange border-orange": data.isUnlimitedSessions,
-                  })}
-                >
-                  <div />
-                  <Iconify
-                    icon={ICONS.check}
-                    width={20}
-                    className={cn("text-cream absolute centered", {
-                      "scale-0": !data.isUnlimitedSessions,
-                    })}
-                  />
-                  <input
-                    className="cursor-pointer absolute centered opacity-0 size-full"
-                    type="checkbox"
-                    {...register("isUnlimitedSessions")}
-                  />
-                </button>
-                <label>Unlimited</label>
-              </data>
+              <InputCheckbox
+                onClickButton={() => resetField("totalPermittedSessions")}
+                selectedValue={data.isUnlimitedSessions}
+                label="Unlimited"
+                {...register("isUnlimitedSessions")}
+              />
             )}
           </section>
         )}
