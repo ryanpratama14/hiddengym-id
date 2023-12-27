@@ -74,11 +74,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           />
 
           {withPasswordIcon ? (
-            <Iconify width={iconSize} icon={ICONS.password} className="absolute centered-left translate-x-3 text-dark" />
+            <Iconify width={inputIconSize} icon={ICONS.password} className="absolute centered-left translate-x-3 text-dark" />
           ) : null}
 
           <Iconify
-            width={iconSize}
+            width={inputIconSize}
             icon={showPassword ? "mdi:eye-off" : "mdi:eye"}
             onClick={() => setShowPassword(!showPassword)}
             className="absolute centered-right -translate-x-2 text-dark"

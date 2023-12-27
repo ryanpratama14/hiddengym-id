@@ -4,8 +4,7 @@ import { buttonVariants } from "@/styles/variants";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import Link from "next/link";
 import { type VariantProps } from "tailwind-variants";
-
-const iconSize = 22;
+import { inputIconSize } from "./Input";
 
 type Props = {
   href: string;
@@ -24,7 +23,7 @@ export default function Navigator({ href, children, newTab, className, icon, ...
       className={cn({ "gap-2": icon }, buttonVariants({ ...rest, className }))}
       href={href}
     >
-      {icon ? <Iconify icon={icon} width={iconSize} /> : null}
+      {icon ? <Iconify icon={icon} width={inputIconSize} /> : null}
       {children}
     </Link>
   );

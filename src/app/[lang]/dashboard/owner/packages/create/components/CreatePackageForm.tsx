@@ -1,15 +1,14 @@
 "use client";
 
 import Button from "@/components/Button";
-import Iconify from "@/components/Iconify";
-import Input, { inputIconSize } from "@/components/Input";
+import Input from "@/components/Input";
 import InputCheckbox from "@/components/InputCheckbox";
+import InputSelect from "@/components/InputSelect";
 import InputTextArea from "@/components/InputTextArea";
 import { toast } from "@/components/Toast";
 import { type Locale } from "@/i18n.config";
 import { ICONS, USER_REDIRECT } from "@/lib/constants";
 import { type Dictionary } from "@/lib/dictionary";
-import { cn } from "@/lib/utils";
 import { schema } from "@/schema";
 import { type PackageCreateInput } from "@/server/api/routers/package";
 import { type PlaceList } from "@/server/api/routers/place";
@@ -18,7 +17,6 @@ import { type UserListTrainer } from "@/server/api/routers/user";
 import { inputVariants } from "@/styles/variants";
 import { type TRPC_RESPONSE } from "@/trpc/shared";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Select } from "antd";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
@@ -151,22 +149,14 @@ export default function CreatePackageForm({ option, createPackage, t, lang }: Pr
         control={control}
         name="placeIDs"
         render={({ field }) => (
-          <section className="flex flex-col gap-0.5">
-            <label>Places</label>
-            <section className="relative">
-              <Select
-                options={option.places.map((e) => ({ value: e.id, label: e.name }))}
-                {...field}
-                mode="multiple"
-                optionFilterProp="children"
-                filterOption={(input, option) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase())}
-                style={{ width: "100%" }}
-                showSearch
-              />
-              <Iconify width={inputIconSize} icon={ICONS.place} className="absolute centered-left translate-x-3 text-dark" />
-            </section>
-            {errors.placeIDs ? <small className={cn("text-red text-xs mt-0.5")}>{errors.placeIDs.message}</small> : null}
-          </section>
+          <InputSelect
+            {...field}
+            mode="multiple"
+            options={option.places.map((e) => ({ value: e.id, label: e.name }))}
+            icon={ICONS.place}
+            error={errors.placeIDs?.message}
+            label="Places"
+          />
         )}
       />
 
@@ -174,23 +164,14 @@ export default function CreatePackageForm({ option, createPackage, t, lang }: Pr
         control={control}
         name="sportIDs"
         render={({ field }) => (
-          <section className="flex flex-col gap-0.5">
-            <label>Sport Type</label>
-            <section className="relative">
-              <Select
-                options={option.sports.map((e) => ({ value: e.id, label: e.name }))}
-                {...field}
-                mode="multiple"
-                optionFilterProp="children"
-                filterOption={(input, option) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase())}
-                style={{ width: "100%" }}
-                showSearch
-                className="pl-12!"
-              />
-              <Iconify width={inputIconSize} icon={ICONS.sport} className="absolute centered-left translate-x-3 text-dark" />
-            </section>
-            {errors.sportIDs ? <small className={cn("text-red text-xs mt-0.5")}>{errors.sportIDs.message}</small> : null}
-          </section>
+          <InputSelect
+            {...field}
+            mode="multiple"
+            options={option.sports.map((e) => ({ value: e.id, label: e.name }))}
+            icon={ICONS.sport}
+            error={errors.sportIDs?.message}
+            label="Sport Types"
+          />
         )}
       />
 
@@ -199,22 +180,14 @@ export default function CreatePackageForm({ option, createPackage, t, lang }: Pr
           control={control}
           name="trainerIDs"
           render={({ field }) => (
-            <section className="flex flex-col gap-0.5">
-              <label>Trainers</label>
-              <section className="relative">
-                <Select
-                  options={option.trainers.map((e) => ({ value: e.id, label: e.fullName }))}
-                  {...field}
-                  mode="multiple"
-                  optionFilterProp="children"
-                  filterOption={(input, option) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase())}
-                  style={{ width: "100%" }}
-                  showSearch
-                />
-                <Iconify width={inputIconSize} icon={ICONS.trainer} className="absolute centered-left translate-x-3 text-dark" />
-              </section>
-              {errors.trainerIDs ? <small className={cn("text-red text-xs mt-0.5")}>{errors.trainerIDs.message}</small> : null}
-            </section>
+            <InputSelect
+              {...field}
+              mode="multiple"
+              options={option.trainers.map((e) => ({ value: e.id, label: e.fullName }))}
+              icon={ICONS.trainer}
+              error={errors.trainerIDs?.message}
+              label="Trainers"
+            />
           )}
         />
       ) : null}

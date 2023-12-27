@@ -6,6 +6,7 @@ import { forwardRef, type ComponentProps } from "react";
 import { PulseLoader } from "react-spinners";
 import { type VariantProps } from "tailwind-variants";
 import Iconify from "./Iconify";
+import { inputIconSize } from "./Input";
 
 const ButtonLoader = () => <PulseLoader color={COLORS.cream} size={6} />;
 
@@ -30,7 +31,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           <ButtonLoader />
         ) : (
           <section className={cn(classNameDiv, { "flex justify-center gap-2 items-center": icon })}>
-            {icon && !loading ? <Iconify icon={icon} width={22} /> : ""}
+            {icon && !loading ? <Iconify icon={icon} width={inputIconSize} /> : ""}
             <section>{children}</section>
           </section>
         )}

@@ -2,8 +2,7 @@ import Iconify from "@/components/Iconify";
 import { cn } from "@/lib/utils";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import Link from "next/link";
-
-const iconSize = 22;
+import { inputIconSize } from "./Input";
 
 type Props = {
   href: string;
@@ -22,7 +21,7 @@ export default function NavigatorX({ href, children, newTab, className, icon }: 
       className={cn(className, { "gap-2": icon })}
       href={href}
     >
-      {icon ? <Iconify icon={icon} width={iconSize} /> : null}
+      {icon ? <Iconify icon={icon} width={inputIconSize} /> : null}
       {children}
     </Link>
   );

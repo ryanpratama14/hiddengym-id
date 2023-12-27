@@ -4,6 +4,7 @@ import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import { forwardRef, useId, type ComponentProps } from "react";
 import { type VariantProps } from "tailwind-variants";
 import Iconify from "./Iconify";
+import { inputIconSize } from "./Input";
 
 type InputProps = ComponentProps<"textarea"> &
   VariantProps<typeof inputVariants> & {
@@ -12,8 +13,6 @@ type InputProps = ComponentProps<"textarea"> &
     classNameDiv?: string;
     icon?: IconifyIcon | string;
   };
-
-const iconSize = 22;
 
 const InputTextArea = forwardRef<HTMLTextAreaElement, InputProps>(
   ({ label, error, className, color, icon, disabled, classNameDiv, ...rest }, ref) => {
@@ -35,7 +34,7 @@ const InputTextArea = forwardRef<HTMLTextAreaElement, InputProps>(
             id={id}
             {...rest}
           />
-          {icon ? <Iconify width={iconSize} icon={icon} className="absolute centered-left translate-x-3 text-dark" /> : null}
+          {icon ? <Iconify width={inputIconSize} icon={icon} className="absolute centered-left translate-x-3 text-dark" /> : null}
         </section>
         {error ? <small className={cn("text-red  text-xs mt-0.5")}>{error}</small> : null}
       </section>
