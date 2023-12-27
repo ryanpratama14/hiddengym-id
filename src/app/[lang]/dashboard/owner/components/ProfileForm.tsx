@@ -52,7 +52,7 @@ export default function ProfileForm({ user, setIsEdit, updateUser, t }: Props) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full">
-      <Input label="Full Name" {...register("body.fullName")} error={errors.body?.fullName?.message} />
+      <Input icon={ICONS.person} label="Full Name" {...register("body.fullName")} error={errors.body?.fullName?.message} />
       <Input icon={ICONS.email} label="Email" {...register("body.email")} error={errors.body?.email?.message} />
       <Input label="Phone Number" {...register("body.phoneNumber")} error={errors.body?.phoneNumber?.message} isPhoneNumber />
       <section className="flex flex-col">

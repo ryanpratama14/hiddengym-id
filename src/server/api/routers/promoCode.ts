@@ -18,8 +18,7 @@ export const promoCodeRouter = createTRPCRouter({
 
   detail: ownerProcedure.input(z.object({ code: z.string() })).mutation(async ({ ctx, input }) => {
     const data = await ctx.db.promoCode.findFirst({ where: { code: input.code } });
-    if (!data) return { ...THROW_ERROR("NOT_FOUND"), data: null };
-    if (!data.isActive) return { ...THROW_ERROR("CONFLICT"), data: null };
+    if (!data || !data.isActive) return { ...THROW_ERROR("FORBIDDEN"), data: null };
     return { ...THROW_OK("OK"), data };
   }),
 });
