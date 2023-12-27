@@ -16,6 +16,8 @@ import {
   formatPhoneNumber,
   getExpiryDateFromDate,
   getNewDate,
+  getStartDate,
+  isDateExpired,
   isDateToday,
   lozalizePhoneNumber,
 } from "@/lib/utils";
@@ -208,47 +210,49 @@ export default function CreateVisitorForm({ createVisitor, checkPromoCode, lang,
             />
 
             {/* PROMO_CODES */}
-
             <section className="flex flex-col gap-0.5">
               <label htmlFor="promoCodeCode">Promo Code (Optional)</label>
-              <section className="grid grid-cols-3 items-end gap-2">
-                <input
-                  disabled={loadingPromoCode || !!selectedPromoCode?.code || !selectedPackage?.id}
-                  id="promoCodeCode"
-                  {...register("packageData.promoCodeCode")}
-                  className={cn("col-span-2", inputVariants(), {
-                    "border-dark/30": loadingPromoCode || !!selectedPromoCode?.code || !selectedPackage?.id,
-                  })}
-                />
-                <Button
-                  icon={selectedPromoCode?.code && ICONS.check}
-                  color={selectedPromoCode ? "success" : "primary"}
-                  loading={loadingPromoCode}
-                  disabled={loadingPromoCode}
-                  onClick={async () => {
-                    if (!data.packageId) return toast({ type: "warning", t, description: "Pick package first" });
-                    if (!data.promoCodeCode) return toast({ type: "warning", t, description: "Fill out the Promo Code first" });
-                    setLoadingPromoCode(true);
-                    const res = await checkPromoCode({ code: data.promoCodeCode });
-                    setLoadingPromoCode(false);
-                    if (!res.data) return toast({ type: "error", t, description: "Promo Code is expired or doesn't exist" });
-                    setSelectedPromoCode(res.data);
-                    toast({ type: "success", t, description: "Promo Code applied" });
-                  }}
-                  size="m"
-                  className="h-full"
-                >
-                  {selectedPromoCode?.code ? "Applied" : "Apply"}
-                </Button>
+              <section className="flex flex-col">
+                <section className="grid grid-cols-3 items-end gap-2">
+                  <input
+                    disabled={loadingPromoCode || !!selectedPromoCode?.code || !selectedPackage?.id}
+                    id="promoCodeCode"
+                    {...register("packageData.promoCodeCode")}
+                    className={cn("col-span-2", inputVariants(), {
+                      "border-dark/30": loadingPromoCode || !!selectedPromoCode?.code || !selectedPackage?.id,
+                    })}
+                  />
+                  <Button
+                    icon={selectedPromoCode?.code && ICONS.check}
+                    color={selectedPromoCode ? "success" : "primary"}
+                    loading={loadingPromoCode}
+                    disabled={loadingPromoCode}
+                    onClick={async () => {
+                      if (!data.packageId) return toast({ type: "warning", t, description: "Pick package first" });
+                      if (!data.promoCodeCode) return toast({ type: "warning", t, description: "Fill out the Promo Code first" });
+                      setLoadingPromoCode(true);
+                      const res = await checkPromoCode({ code: data.promoCodeCode });
+                      setLoadingPromoCode(false);
+                      if (!res.data) return toast({ type: "error", t, description: "Promo Code is expired or doesn't exist" });
+                      setSelectedPromoCode(res.data);
+                      toast({ type: "success", t, description: "Promo Code applied" });
+                    }}
+                    size="m"
+                    className="h-full"
+                  >
+                    {selectedPromoCode?.code ? "Applied" : "Apply"}
+                  </Button>
+                </section>
               </section>
             </section>
           </section>
         </Fragment>
       ) : null}
 
+      {/* TRANSACTION_INVOICE */}
       {selectedPackage ? (
         <section className="flex justify-center items-center">
-          <section className="md:w-[30rem] w-full flex flex-col gap-6 p-3 lg:p-6 shadow bg-light text-dark">
+          <section className="md:w-[30rem] w-full flex flex-col gap-4 p-3 lg:p-6 shadow bg-light text-dark">
             <section className="flex justify-between w-full">
               <section className="flex flex-col">
                 <h6>Package TXN</h6>
@@ -301,7 +305,7 @@ export default function CreateVisitorForm({ createVisitor, checkPromoCode, lang,
                   </section>
                   <section className="flex justify-between items-center gap-6">
                     <section className="flex flex-col w-fit">
-                      <p className="font-semibold">{formatDateShort(getNewDate(data.transactionDate))}</p>
+                      <p className="font-semibold">{formatDateShort(getStartDate(data.transactionDate))}</p>
                     </section>
                     <div className="w-[50%] h-0.5 bg-dark" />
                     <section className="flex flex-col text-right w-fit">
@@ -314,22 +318,30 @@ export default function CreateVisitorForm({ createVisitor, checkPromoCode, lang,
                           }),
                         )
                           ? "Today"
-                          : formatDateShort(
-                              getExpiryDateFromDate({
-                                days: selectedPackage.validityInDays,
-                                dateString: data.transactionDate,
-                                isVisit: selectedPackage.type === "VISIT",
-                              }),
-                            )}
+                          : isDateExpired(
+                                getExpiryDateFromDate({
+                                  days: selectedPackage.validityInDays,
+                                  dateString: data.transactionDate,
+                                  isVisit: selectedPackage.type === "VISIT",
+                                }),
+                              )
+                            ? "Expired"
+                            : formatDateShort(
+                                getExpiryDateFromDate({
+                                  days: selectedPackage.validityInDays,
+                                  dateString: data.transactionDate,
+                                  isVisit: selectedPackage.type === "VISIT",
+                                }),
+                              )}
                       </p>
                     </section>
                   </section>
                 </section>
               ) : null}
-              <small>
-                Permitted sessions:{" "}
-                {selectedPackage.totalPermittedSessions ? `${selectedPackage.totalPermittedSessions} session(s)` : "none"}
-              </small>
+
+              {selectedPackage.totalPermittedSessions ? (
+                <small>Permitted sessions: {`${selectedPackage.totalPermittedSessions} session(s)`}</small>
+              ) : null}
             </section>
 
             {selectedPaymentMethod ? (
