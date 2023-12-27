@@ -31,12 +31,12 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           <section className="relative">
             <input
               disabled={disabled}
-              inputMode={isPhoneNumber ? "numeric" : undefined}
+              inputMode={type === "number" || isPhoneNumber ? "numeric" : undefined}
               type={type ? type : "text"}
-              className={cn(inputVariants({ size, color, className }), {
-                "border-red border-dashed": error,
+              className={cn("pr-3", inputVariants({ size, color, className }), {
+                "border-red focus:border-red": error,
                 "pl-10": icon,
-                "pl-16": isPhoneNumber,
+                "pl-[4.2rem]": isPhoneNumber,
                 "border-dark/30": disabled,
               })}
               ref={ref}
@@ -68,12 +68,14 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             placeholder="----------"
             type={showPassword ? "text" : "password"}
             className={cn(inputVariants({ size, color, className }), {
-              "border-red border-dashed": error,
-              "pl-7 pr-9": withPasswordIcon,
+              "border-red focus:border-red": error,
+              "pl-10 pr-9": withPasswordIcon,
             })}
           />
 
-          {withPasswordIcon ? <Iconify width={iconSize} icon={ICONS.password} className="absolute centered-left text-dark" /> : null}
+          {withPasswordIcon ? (
+            <Iconify width={iconSize} icon={ICONS.password} className="absolute centered-left translate-x-3 text-dark" />
+          ) : null}
 
           <Iconify
             width={iconSize}

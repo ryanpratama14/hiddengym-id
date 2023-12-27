@@ -98,17 +98,28 @@ export class schema {
   };
 
   static package = class {
-    static create = z.object({
-      name: z.string(),
-      description: z.string(),
-      price: z.number(),
-      validityInDays: z.number().nullable(),
-      totalPermittedSessions: z.number().nullable(),
-      type: schema.packageType,
-      sportIDs: z.array(z.string()),
-      placeIDs: z.array(z.string()),
-      trainerIDs: z.array(z.string()).optional(),
-    });
+    static create = z
+      .object({
+        name: z.string().min(4),
+        description: z.string().min(4),
+        price: z.number().min(1),
+        validityInDays: z.number().min(1).nullable(),
+        totalPermittedSessions: z.number().min(1).nullable(),
+        type: schema.packageType,
+        sportIDs: z.array(z.string()),
+        placeIDs: z.array(z.string()),
+        trainerIDs: z.array(z.string()).optional(),
+      })
+      .refine(
+        ({ type, validityInDays }) => {
+          if (type !== "TRAINER" && !validityInDays) return false;
+          return true;
+        },
+        {
+          message: "Validity is required",
+          path: ["validityInDays"],
+        },
+      );
   };
 
   static sport = class {
