@@ -8,7 +8,7 @@ import Navigator from "@/components/Navigator";
 import NavigatorX from "@/components/NavigatorX";
 import { type Locale } from "@/i18n.config";
 import { DETERMINE_GENDER, GENDERS, ICONS, USER_REDIRECT } from "@/lib/constants";
-import { cn, createUrl, formatCurrency, lozalizePhoneNumber, textEllipsis } from "@/lib/utils";
+import { cn, createUrl, formatCurrency, localizePhoneNumber, textEllipsis } from "@/lib/utils";
 import { type UserList, type UserListInputParams } from "@/server/api/routers/user";
 import { PAGINATION_LIMIT } from "@/trpc/shared";
 import { type SearchParams } from "@/types";
@@ -197,7 +197,7 @@ export default function VisitorsTable({ data, searchParams, lang, loading }: Pro
           ...getTableFilter({ name: "phoneNumber" }),
           render: (text: string) => (
             <NavigatorX newTab href={`tel:${text}`} className="hover:underline text-dark">
-              {lozalizePhoneNumber(text)}
+              {localizePhoneNumber(text)}
             </NavigatorX>
           ),
         },

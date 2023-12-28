@@ -10,7 +10,7 @@ import { type Locale } from "@/i18n.config";
 import { DETERMINE_GENDER, GENDERS } from "@/lib/constants";
 import { type Dictionary } from "@/lib/dictionary";
 import { uploadFiles } from "@/lib/uploadthing";
-import { formatDateLong, formatName, isFileSizeAllowed, lozalizePhoneNumber } from "@/lib/utils";
+import { formatDateLong, formatName, isFileSizeAllowed, localizePhoneNumber } from "@/lib/utils";
 import { type User, type UserUpdateInput } from "@/server/api/routers/user";
 import { type TRPC_RESPONSE } from "@/trpc/shared";
 import { type ChangeEvent } from "@/types";
@@ -121,7 +121,7 @@ export default function HomeContainer({ lang, user, updateUser, refreshUser, t }
                   <section className="flex flex-col">
                     <p className="label">Phone Number</p>
                     <NavigatorX newTab href={`tel:${user.phoneNumber}`} className="hover:underline">
-                      {lozalizePhoneNumber(user?.phoneNumber)}
+                      {localizePhoneNumber(user?.phoneNumber)}
                     </NavigatorX>
                   </section>
                   <section className="flex flex-col">

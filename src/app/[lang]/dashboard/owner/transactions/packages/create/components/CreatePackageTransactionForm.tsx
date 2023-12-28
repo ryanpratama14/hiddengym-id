@@ -18,7 +18,7 @@ import {
   getTodayDate,
   isDateExpired,
   isDateToday,
-  lozalizePhoneNumber,
+  localizePhoneNumber,
 } from "@/lib/utils";
 import { schema } from "@/schema";
 import { type PackageList } from "@/server/api/routers/package";
@@ -205,7 +205,7 @@ export default function CreatePackageTransactionForm({ createData, checkPromoCod
 
             <section className="flex flex-col">
               <p className="font-medium underline">{selectedBuyer.fullName}</p>
-              <small>{lozalizePhoneNumber(selectedBuyer.phoneNumber)}</small>
+              <small>{localizePhoneNumber(selectedBuyer.phoneNumber)}</small>
               <small>{selectedBuyer?.email}</small>
             </section>
 

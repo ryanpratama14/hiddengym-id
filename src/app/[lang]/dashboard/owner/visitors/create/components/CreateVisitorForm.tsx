@@ -20,7 +20,7 @@ import {
   getTodayDate,
   isDateExpired,
   isDateToday,
-  lozalizePhoneNumber,
+  localizePhoneNumber,
 } from "@/lib/utils";
 import { schema } from "@/schema";
 import { type PackageList } from "@/server/api/routers/package";
@@ -280,7 +280,7 @@ export default function CreateVisitorForm({ createVisitor, checkPromoCode, lang,
 
             <section className="flex flex-col text-center">
               <p className="font-medium underline">{data.fullName}</p>
-              <small>{lozalizePhoneNumber(formatPhoneNumber(data.phoneNumber))}</small>
+              <small>{localizePhoneNumber(formatPhoneNumber(data.phoneNumber))}</small>
               <small>{data.email}</small>
             </section>
 

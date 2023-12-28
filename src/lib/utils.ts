@@ -189,7 +189,7 @@ export const formatDateShort = (date: Date, locale?: Locale): string => {
 export const formatPhoneNumber = (phoneNumber: string): string => `${COUNTRY_CODE}${phoneNumber}`;
 export const removeFormatPhoneNumber = (phoneNumber: string): string => phoneNumber.replace(COUNTRY_CODE, "");
 
-export const lozalizePhoneNumber = (phoneNumber: string): string => {
+export const localizePhoneNumber = (phoneNumber: string): string => {
   const formattedNumber = `${phoneNumber.slice(0, 3)} ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}-${phoneNumber.slice(10)}`;
   return formattedNumber;
 };

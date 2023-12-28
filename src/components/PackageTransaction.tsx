@@ -1,4 +1,4 @@
-import { formatCurrency, formatDateShort, isDateExpired, isDateToday } from "@/lib/utils";
+import { formatCurrency, formatDateShort, isDateExpired, isDateToday, localizePhoneNumber } from "@/lib/utils";
 import { type PackageTransactionDetail } from "@/server/api/routers/packageTransaction";
 import Logo from "./Logo";
 
@@ -25,7 +25,7 @@ export default function PackageTransaction({ data }: Props) {
 
         <section className="flex flex-col">
           <p className="font-medium underline">{data.buyer.fullName}</p>
-          <small>{data.buyer.phoneNumber}</small>
+          <small>{localizePhoneNumber(data.buyer.phoneNumber)}</small>
           <small>{data.buyer?.email}</small>
         </section>
 
