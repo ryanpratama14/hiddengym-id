@@ -94,6 +94,7 @@ export const ICONS = {
   session: "carbon:prompt-session",
   validity: "game-icons:duration",
   url: "tabler:link",
+  name: "mdi:rename-outline",
 };
 
 export const ADD_BUTTON_ITEMS_TO_REMOVE: Record<Role, string[]> = {

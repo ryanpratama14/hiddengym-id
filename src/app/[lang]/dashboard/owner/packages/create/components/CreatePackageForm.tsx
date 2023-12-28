@@ -14,9 +14,9 @@ import { type PackageCreateInput } from "@/server/api/routers/package";
 import { type PlaceList } from "@/server/api/routers/place";
 import { type SportList } from "@/server/api/routers/sport";
 import { type UserListTrainer } from "@/server/api/routers/user";
-import { inputVariants } from "@/styles/variants";
 import { type TRPC_RESPONSE } from "@/trpc/shared";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { type PackageType } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
@@ -52,6 +52,7 @@ export default function CreatePackageForm({ option, createData, t, lang }: Props
     reset,
     control,
     resetField,
+    setValue,
   } = useForm<PackageCreateInput>({
     resolver: zodResolver(schema.package.create),
     defaultValues: initialData,
@@ -74,34 +75,42 @@ export default function CreatePackageForm({ option, createData, t, lang }: Props
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full">
-      <section className="flex flex-col gap-0.5">
-        <label htmlFor="type">Package Type</label>
-        <select className={inputVariants()} {...register("type")} id="type">
-          <option
-            onClick={() => {
-              resetField("totalPermittedSessions");
-              resetField("trainerIDs");
+      <Controller
+        control={control}
+        name="type"
+        render={({ field }) => (
+          <InputSelect
+            icon={ICONS.package}
+            {...field}
+            options={[
+              {
+                label: "MEMBER",
+                value: "MEMBER",
+              },
+              {
+                label: "VISIT",
+                value: "VISIT",
+              },
+              {
+                label: "TRAINER",
+                value: "TRAINER",
+              },
+            ]}
+            label="Package Type"
+            onChange={(e) => {
+              const value = e as PackageType;
+              setValue("type", value);
+              if (value !== "TRAINER") {
+                resetField("totalPermittedSessions");
+                resetField("trainerIDs");
+              } else resetField("validityInDays");
             }}
-            value="MEMBER"
-          >
-            MEMBER
-          </option>
-          <option
-            onClick={() => {
-              resetField("totalPermittedSessions");
-              resetField("trainerIDs");
-            }}
-            value="VISIT"
-          >
-            VISIT
-          </option>
-          <option onClick={() => resetField("validityInDays")} value="TRAINER">
-            TRAINER
-          </option>
-        </select>
-      </section>
+          />
+        )}
+      />
+
       <section className="grid md:grid-cols-2 gap-6">
-        <Input error={errors.name?.message} {...register("name")} icon={ICONS.package} label="Name" />
+        <Input error={errors.name?.message} {...register("name")} icon={ICONS.name} label="Name" />
         <Input
           error={errors.price?.message}
           {...register("price", { setValueAs: (v: string) => (!v ? 0 : parseInt(v)) })}
