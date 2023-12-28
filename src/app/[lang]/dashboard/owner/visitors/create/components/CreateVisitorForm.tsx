@@ -17,6 +17,7 @@ import {
   getExpiryDateFromDate,
   getNewDate,
   getStartDate,
+  getTodayDate,
   isDateExpired,
   isDateToday,
   lozalizePhoneNumber,
@@ -149,8 +150,9 @@ export default function CreateVisitorForm({ createVisitor, checkPromoCode, lang,
               color={isAddingTransaction ? "danger" : "none"}
               size="m"
               onClick={() => {
-                unregister("packageData");
                 setIsAddingTransaction(!isAddingTransaction);
+                if (isAddingTransaction) unregister("packageData");
+                if (!isAddingTransaction) setValue("packageData.transactionDate", getTodayDate());
                 if (selectedPackage) setSelectedPackage(null);
                 if (selectedPaymentMethod) setSelectedPaymentMethod(null);
                 if (selectedPromoCode) setSelectedPromoCode(null);
@@ -218,13 +220,13 @@ export default function CreateVisitorForm({ createVisitor, checkPromoCode, lang,
                     disabled={loadingPromoCode || !!selectedPromoCode?.code || !selectedPackage?.id}
                     id="promoCodeCode"
                     {...register("packageData.promoCodeCode")}
-                    className={cn("col-span-2", inputVariants(), {
+                    className={cn("col-span-2 font-mono", inputVariants(), {
                       "border-dark/30": loadingPromoCode || !!selectedPromoCode?.code || !selectedPackage?.id,
                     })}
                   />
                   <Button
                     icon={selectedPromoCode?.code && ICONS.check}
-                    color={selectedPromoCode ? "success" : "primary"}
+                    color={selectedPromoCode ? "active" : "primary"}
                     loading={loadingPromoCode}
                     disabled={loadingPromoCode}
                     onClick={async () => {
@@ -365,7 +367,14 @@ export default function CreateVisitorForm({ createVisitor, checkPromoCode, lang,
       ) : null}
 
       <section className="flex justify-center items-center">
-        <Button className="md:w-fit w-full" loading={loading} type="submit" color="success" size="xl">
+        <Button
+          onClick={() => console.log(watch())}
+          className="md:w-fit w-full"
+          loading={loading}
+          type="submit"
+          color="success"
+          size="xl"
+        >
           Create User
         </Button>
       </section>

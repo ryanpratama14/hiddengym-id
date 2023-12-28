@@ -30,8 +30,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         {loading ? (
           <ButtonLoader />
         ) : (
-          <section className={cn(classNameDiv, { "flex justify-center gap-2 items-center": icon })}>
-            {icon && !loading ? <Iconify icon={icon} width={inputIconSize} /> : ""}
+          <section className={cn(classNameDiv, { "flex justify-center gap-1.5 items-center": icon })}>
+            {icon && !loading ? <Iconify icon={icon} width={inputIconSize} /> : null}
             <section>{children}</section>
           </section>
         )}

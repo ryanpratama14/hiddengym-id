@@ -132,6 +132,10 @@ body,
   padding-bottom: 0.25rem !important;
 }
 
+.ant-select-selection-search {
+  padding-left: 1.75rem !important;
+}
+
 .ant-select-selection-search-input {
   height: 100% !important;
 }
