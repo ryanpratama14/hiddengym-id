@@ -124,40 +124,10 @@ body,
   font-family: "Poppins", sans-serif !important;
 }
 
-.ant-select-selector {
-  border-width: 1.5px !important;
-  outline: none !important;
-  padding-left: 2.5rem !important;
-  padding-top: 0.25rem !important;
-  padding-bottom: 0.25rem !important;
-}
-
-.ant-select-selection-search {
-  padding-left: 1.75rem !important;
-}
-
-.ant-select-selection-search-input {
-  height: 100% !important;
-}
-
 .ant-select-focused .ant-select-selector,
 .ant-select-selector:focus,
 .ant-select-selector:active,
 .ant-select-open .ant-select-selector {
   border-color: #ff4a01 !important;
   box-shadow: none !important;
-}
-
-.ant-select-selection-search {
-  border-radius: 0px !important;
-}
-
-.ant-select-item,
-.ant-select-dropdown {
-  border-radius: 0 !important;
-  align-items: center;
-}
-
-.ant-select-selection-search {
-  margin-inline-start: 0px !important;
 }

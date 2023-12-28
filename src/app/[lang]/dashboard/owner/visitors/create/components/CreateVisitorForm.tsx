@@ -61,6 +61,7 @@ export default function CreateVisitorForm({ createVisitor, checkPromoCode, lang,
     reset,
     setValue,
     watch,
+    clearErrors,
   } = useForm<UserCreateVisitorInput>({
     resolver: zodResolver(schema.user.createVisitor),
     defaultValues: {
@@ -153,6 +154,8 @@ export default function CreateVisitorForm({ createVisitor, checkPromoCode, lang,
                 setIsAddingTransaction(!isAddingTransaction);
                 if (isAddingTransaction) unregister("packageData");
                 if (!isAddingTransaction) setValue("packageData.transactionDate", getTodayDate());
+                if (!isAddingTransaction) setValue("packageData.packageId", "");
+                if (!isAddingTransaction) setValue("packageData.paymentMethodId", "");
                 if (selectedPackage) setSelectedPackage(null);
                 if (selectedPaymentMethod) setSelectedPaymentMethod(null);
                 if (selectedPromoCode) setSelectedPromoCode(null);
@@ -180,6 +183,7 @@ export default function CreateVisitorForm({ createVisitor, checkPromoCode, lang,
                   onChange={(value, item) => {
                     setSelectedPackage(item as Package);
                     setValue("packageData.packageId", value as string);
+                    clearErrors("packageData.packageId");
                   }}
                 />
               )}
@@ -206,6 +210,7 @@ export default function CreateVisitorForm({ createVisitor, checkPromoCode, lang,
                   onChange={(value, item) => {
                     setSelectedPaymentMethod(item as PaymentMethod);
                     setValue("packageData.paymentMethodId", value as string);
+                    clearErrors("packageData.paymentMethodId");
                   }}
                 />
               )}
@@ -237,6 +242,7 @@ export default function CreateVisitorForm({ createVisitor, checkPromoCode, lang,
                       setLoadingPromoCode(false);
                       if (!res.data) return toast({ type: "error", t, description: "Promo Code is expired or doesn't exist" });
                       setSelectedPromoCode(res.data);
+                      setValue("packageData.promoCodeId", res.data.id);
                       toast({ type: "success", t, description: "Promo Code applied" });
                     }}
                     size="m"

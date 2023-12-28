@@ -70,8 +70,8 @@ export const userRouter = createTRPCRouter({
 
     if (packageData) {
       const selectedPackage = await ctx.db.package.findFirst({ where: { id: packageData.packageId } });
-      const promoCode = input?.packageData?.promoCodeCode
-        ? await ctx.db.promoCode.findFirst({ where: { code: input.packageData.promoCodeCode } })
+      const promoCode = input?.packageData?.promoCodeId
+        ? await ctx.db.promoCode.findFirst({ where: { id: input.packageData.promoCodeId } })
         : null;
 
       if (selectedPackage) {
@@ -138,6 +138,10 @@ export const userRouter = createTRPCRouter({
     return data;
   }),
 
+  listVisitor: ownerProcedure.query(async ({ ctx }) => {
+    return await ctx.db.user.findMany({ where: { role: "VISITOR" }, select: prismaExclude("User", ["credential"]) });
+  }),
+
   list: ownerProcedure.input(schema.user.list).query(async ({ ctx, input }) => {
     const { pagination, params, sorting } = input;
 
@@ -165,13 +169,16 @@ export const userRouter = createTRPCRouter({
     const updatedData = data
       .map((user) => ({
         ...user,
-        totalSpending:
-          accumulateValue(user.packageTransactions, "totalPrice") + accumulateValue(user.productTransactions, "totalPrice"),
+        spending: {
+          package: accumulateValue(user.packageTransactions, "totalPrice"),
+          product: accumulateValue(user.productTransactions, "totalPrice"),
+          total: accumulateValue(user.packageTransactions, "totalPrice") + accumulateValue(user.productTransactions, "totalPrice"),
+        },
       }))
-      .filter((user) => user.totalSpending >= params.totalSpending);
+      .filter((user) => user.spending.total >= params.totalSpending);
 
     if (params.totalSpending) {
-      updatedData.sort((a, b) => a.totalSpending - b.totalSpending);
+      updatedData.sort((a, b) => a.spending.total - b.spending.total);
     }
 
     return {
@@ -184,6 +191,7 @@ export const userRouter = createTRPCRouter({
 // outputs
 export type User = RouterOutputs["user"]["detail"];
 export type UserList = RouterOutputs["user"]["list"];
+export type UserListVisitor = RouterOutputs["user"]["listVisitor"];
 export type UserListData = RouterOutputs["user"]["list"]["data"];
 export type UserListTrainer = RouterOutputs["user"]["listTrainer"];
 

@@ -1,3 +1,4 @@
+import "@/styles/ant-select.css";
 import { cn } from "@/lib/utils";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import { Select } from "antd";

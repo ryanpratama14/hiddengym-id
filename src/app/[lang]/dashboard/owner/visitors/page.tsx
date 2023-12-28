@@ -3,6 +3,7 @@
 import { type Locale } from "@/i18n.config";
 import { type UserListInput } from "@/server/api/routers/user";
 import { api } from "@/trpc/react";
+import { PAGINATION_LIMIT } from "@/trpc/shared";
 import { type SearchParams } from "@/types";
 import Table from "@owner/visitors/components/Table";
 import TableSearch from "@owner/visitors/components/TableSearch";
@@ -18,7 +19,7 @@ export default function VisitorsPage({ searchParams, params }: Props) {
   const query: UserListInput = {
     pagination: {
       page: Number(searchParams.page) || 1,
-      limit: searchParams.limit ? Number(searchParams.limit) : undefined,
+      limit: Number(searchParams.limit) || PAGINATION_LIMIT,
     },
     params: {
       fullName: searchParams.q as string,

@@ -10,6 +10,7 @@ import { type Locale } from "@/i18n.config";
 import { GENDERS, ICONS, USER_REDIRECT } from "@/lib/constants";
 import { cn, createUrl, formatCurrency, lozalizePhoneNumber, textEllipsis } from "@/lib/utils";
 import { type UserList, type UserListInputParams } from "@/server/api/routers/user";
+import { PAGINATION_LIMIT } from "@/trpc/shared";
 import { type SearchParams } from "@/types";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import { type Role } from "@prisma/client";
@@ -35,8 +36,8 @@ export default function VisitorsTable({ data, searchParams, lang, loading }: Pro
 
   const router = useRouter();
 
-  const redirectTable = ({ role, href, newParams }: { role: Role; href: string; newParams: URLSearchParams }) => {
-    router.push(createUrl(USER_REDIRECT[role]({ lang, href }), newParams));
+  const redirectTable = (newParams: URLSearchParams) => {
+    router.push(createUrl(USER_REDIRECT.OWNER({ lang, href: "/visitors" }), newParams));
   };
 
   const getTableFilter = ({ name, icon }: { name: keyof UserListInputParams; icon?: IconifyIcon | string }) => ({
@@ -51,7 +52,7 @@ export default function VisitorsTable({ data, searchParams, lang, loading }: Pro
               newParams.set(name, value.value);
             } else newParams.delete(name);
             confirm();
-            redirectTable({ href: "/visitors", newParams, role: "OWNER" });
+            redirectTable(newParams);
           }}
           className="flex flex-col gap-2 w-52 bg-light p-2 rounded-md shadow"
         >
@@ -108,7 +109,7 @@ export default function VisitorsTable({ data, searchParams, lang, loading }: Pro
                 newParams.delete(name);
                 newParams.delete("page");
                 confirm();
-                redirectTable({ href: "/visitors", newParams, role: "OWNER" });
+                redirectTable(newParams);
               }}
             >
               Reset
@@ -139,13 +140,22 @@ export default function VisitorsTable({ data, searchParams, lang, loading }: Pro
               current: data?.page,
               pageSize: data?.limit,
               total: data?.totalData,
+              showSizeChanger: true,
+              pageSizeOptions: [String(PAGINATION_LIMIT), "75", "100"],
+              onChange: (_, limit) => {
+                if (limit === PAGINATION_LIMIT) {
+                  newParams.delete("limit");
+                } else newParams.set("limit", String(limit));
+                redirectTable(newParams);
+              },
+              showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} visitors`,
             }
       }
       onChange={(pagination) => {
         if (pagination.current === 1) {
           newParams.delete("page");
         } else newParams.set("page", String(pagination.current));
-        redirectTable({ href: "/visitors", newParams, role: "OWNER" });
+        redirectTable(newParams);
       }}
       rowKey="id"
       dataSource={data?.data}
@@ -201,7 +211,7 @@ export default function VisitorsTable({ data, searchParams, lang, loading }: Pro
           key: "email",
           dataIndex: "email",
           ...getTableFilter({ name: "email", icon: "ic:outline-email" }),
-          render: (text: string) => (text ? text : "-"),
+          render: (text: string) => text ?? "-",
         },
         {
           title: "Gender",
@@ -222,10 +232,9 @@ export default function VisitorsTable({ data, searchParams, lang, loading }: Pro
         {
           align: "right",
           title: "Total Spending",
-          key: "totalSpending",
-          dataIndex: "totalSpending",
+          key: "totalSpending.total",
           ...getTableFilter({ name: "totalSpending", icon: ICONS.payment_method }),
-          render: (text: number) => formatCurrency(text),
+          render: (_, item) => formatCurrency(item.spending.total),
         },
       ]}
     />

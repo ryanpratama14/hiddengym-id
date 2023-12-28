@@ -13,7 +13,8 @@ export class schema {
   static tokenType = z.enum(["VERIFY_EMAIL", "FORGOT_PASSWORD"]);
   static order = z.enum(["asc", "desc"]).optional();
 
-  static pagination = z.object({ page: z.number().min(1), limit: z.number().min(1).optional() });
+  static names = z.string().min(3, "At least 3 characters");
+  static pagination = z.object({ page: z.number().min(1), limit: z.number().min(1) });
   static email = z.string().email("Provide a valid email");
   static fullName = z
     .string()
@@ -68,10 +69,11 @@ export class schema {
 
       packageData: z
         .object({
-          packageId: z.string(),
+          packageId: z.string().min(1, "Select package"),
           transactionDate: schema.date,
-          paymentMethodId: z.string(),
-          promoCodeCode: z.string().nullable(),
+          paymentMethodId: z.string().min(1, "Select payment method"),
+          promoCodeCode: z.string().optional(),
+          promoCodeId: z.string().optional(),
         })
         .optional(),
     });
@@ -158,12 +160,13 @@ export class schema {
   };
 
   static sport = class {
-    static create = z.object({ name: z.string().min(3, "At least 3 characters") });
+    static create = z.object({ name: schema.names });
   };
+
   static place = class {
     static create = z.object({
-      name: z.string().min(3),
-      address: z.string().min(3),
+      name: schema.names,
+      address: schema.names,
       url: z.string().url("Provide a google maps link"),
     });
   };
@@ -176,16 +179,35 @@ export class schema {
     });
   };
 
+  static product = class {
+    static create = z.object({
+      name: schema.names,
+      price: z.number().min(1),
+    });
+  };
+
   static packageTransaction = class {
     static create = z.object({
-      totalPrice: z.number().min(1),
-      startDate: schema.dateNullable,
-      expiryDate: schema.dateNullable,
       transactionDate: schema.date,
-      paymentMethodId: z.string(),
-      packageId: z.string(),
-      buyerId: z.string(),
-      promoCodeCode: schema.promoCodeCode,
+      paymentMethodId: z.string().min(1, "Select payment method"),
+      packageId: z.string().min(1, "Select package"),
+      buyerId: z.string().min(1, "Select buyer"),
+      promoCodeCode: z.string().optional(),
+      promoCodeId: z.string().optional(),
+    });
+
+    static list = z.object({
+      pagination: schema.pagination,
+      sorting: z.string().optional(),
+      params: z
+        .object({
+          buyer: z.string().optional(),
+          package: z.string().optional(),
+          pacageType: schema.packageType.optional(),
+          paymentMethod: z.string().optional(),
+          withPromoCode: z.boolean().optional(),
+        })
+        .optional(),
     });
   };
 }

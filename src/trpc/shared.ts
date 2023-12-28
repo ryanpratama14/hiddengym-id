@@ -32,7 +32,7 @@ const getBaseUrl = () => {
 
 export const getUrl = () => `${getBaseUrl()}/api/trpc`;
 
-export const PAGINATION_LIMIT = 30;
+export const PAGINATION_LIMIT = 50;
 
 export const ERROR_MESSAGES: Record<TRPC_ERROR_CODE_KEY, string> = {
   PARSE_ERROR: "Error parsing the request. Please check the syntax of your request.",
@@ -179,11 +179,11 @@ export const getEnumKeys = <K extends string>(obj: Record<K, unknown>): K | unde
   if (keys[0]) return keys[0];
 };
 
-export const getPagination = ({ limit = PAGINATION_LIMIT, page }: Pagination) => {
+export const getPagination = ({ limit, page }: Pagination) => {
   return { skip: (page - 1) * limit, take: limit };
 };
 
-export const getPaginationData = ({ totalData, limit = PAGINATION_LIMIT, page }: Pagination & { totalData: number }) => {
+export const getPaginationData = ({ totalData, limit, page }: Pagination & { totalData: number }) => {
   const totalPages = Math.ceil(totalData / limit) || 1;
   const start = (page - 1) * limit;
   const end = start + limit;
