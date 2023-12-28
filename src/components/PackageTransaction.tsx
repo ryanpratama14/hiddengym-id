@@ -75,7 +75,7 @@ export default function PackageTransaction({ data }: Props) {
           ) : null}
 
           {data.package.totalPermittedSessions ? (
-            <small>Permitted sessions: {`${data.package.totalPermittedSessions} session(s)`}</small>
+            <small className="text-left">Permitted sessions: {`${data.package.totalPermittedSessions} session(s)`}</small>
           ) : null}
         </section>
 

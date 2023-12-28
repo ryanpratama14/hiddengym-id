@@ -258,7 +258,7 @@ export default function PackageTransactionsTable({ data, searchParams, lang, loa
           {
             title: "Promo Code",
             key: "promoCode",
-            render: (_, item) => (item.promoCodeId ? "True" : "-"),
+            render: (_, item) => <code>{item.promoCode ? item.promoCode.code : "-"}</code>,
           },
         ]}
       />
