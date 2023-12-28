@@ -192,12 +192,13 @@ export default function PackageTransactionsTable({ data, searchParams, lang, loa
           {
             title: "Total Price",
             key: "totalPrice",
+            align: "right",
             dataIndex: "totalPrice",
             render: (text: number) => formatCurrency(text),
             ...getTableFilter({ name: "totalPrice" }),
           },
           {
-            title: "Payment Method",
+            title: "Paid By",
             key: "paymentMethod.name",
             render: (_, item) => item.paymentMethod.name,
             ...getTableFilter({ name: "paymentMethod", icon: ICONS.payment_method }),
