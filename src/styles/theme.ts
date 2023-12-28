@@ -59,7 +59,7 @@ export const antdTheme: ThemeConfig = {
       headerSortActiveBg: COLORS.orange,
       headerBorderRadius: 6,
       colorBgContainer: COLORS.light,
-      cellPaddingBlock: 4,
+      cellPaddingBlock: 5,
       rowHoverBg: "#e8e8ed",
     },
   },

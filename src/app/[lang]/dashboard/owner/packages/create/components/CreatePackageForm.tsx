@@ -2,12 +2,11 @@
 
 import Button from "@/components/Button";
 import Input from "@/components/Input";
-import InputCheckbox from "@/components/InputCheckbox";
 import InputSelect from "@/components/InputSelect";
 import InputTextArea from "@/components/InputTextArea";
 import { toast } from "@/components/Toast";
 import { type Locale } from "@/i18n.config";
-import { ICONS, USER_REDIRECT } from "@/lib/constants";
+import { ICONS, PACKAGE_TYPES, USER_REDIRECT } from "@/lib/constants";
 import { type Dictionary } from "@/lib/dictionary";
 import { schema } from "@/schema";
 import { type PackageCreateInput } from "@/server/api/routers/package";
@@ -82,25 +81,12 @@ export default function CreatePackageForm({ option, createData, t, lang }: Props
           <InputSelect
             icon={ICONS.package}
             {...field}
-            options={[
-              {
-                label: "MEMBER",
-                value: "MEMBER",
-              },
-              {
-                label: "VISIT",
-                value: "VISIT",
-              },
-              {
-                label: "TRAINER",
-                value: "TRAINER",
-              },
-            ]}
+            options={PACKAGE_TYPES}
             label="Package Type"
             onChange={(e) => {
               const value = e as PackageType;
               setValue("type", value);
-              if (value !== "TRAINER") {
+              if (value !== "SESSIONS") {
                 resetField("totalPermittedSessions");
                 resetField("trainerIDs");
               } else resetField("validityInDays");
@@ -120,7 +106,16 @@ export default function CreatePackageForm({ option, createData, t, lang }: Props
         />
       </section>
       <section className="grid md:grid-cols-2 gap-6">
-        {data.type === "TRAINER" ? null : (
+        {data.type === "SESSIONS" ? (
+          <Input
+            disabled={data.isUnlimitedSessions && data.type !== "SESSIONS"}
+            error={errors.totalPermittedSessions?.message}
+            {...register("totalPermittedSessions", { setValueAs: (v: string) => (!v ? null : parseInt(v)) })}
+            type="number"
+            icon={ICONS.session}
+            label="Total Permitted Sessions"
+          />
+        ) : (
           <Input
             error={errors.validityInDays?.message}
             icon={ICONS.validity}
@@ -131,44 +126,23 @@ export default function CreatePackageForm({ option, createData, t, lang }: Props
           />
         )}
 
-        {data.type === "VISIT" ? null : (
-          <section className="flex flex-col gap-2">
-            <Input
-              disabled={data.isUnlimitedSessions && data.type !== "TRAINER"}
-              error={errors.totalPermittedSessions?.message}
-              {...register("totalPermittedSessions", { setValueAs: (v: string) => (!v ? null : parseInt(v)) })}
-              type="number"
-              icon={ICONS.session}
-              label="Total Permitted Sessions"
+        <Controller
+          control={control}
+          name="placeIDs"
+          render={({ field }) => (
+            <InputSelect
+              {...field}
+              mode="multiple"
+              showSearch={false}
+              options={option.places.map((e) => ({ value: e.id, label: e.name }))}
+              icon={ICONS.place}
+              error={errors.placeIDs?.message}
+              label="Places"
             />
-            {data.type === "TRAINER" ? null : (
-              <InputCheckbox
-                onClickButton={() => resetField("totalPermittedSessions")}
-                selectedValue={data.isUnlimitedSessions}
-                label="Unlimited"
-                {...register("isUnlimitedSessions")}
-              />
-            )}
-          </section>
-        )}
+          )}
+        />
       </section>
       {/* dropdowns */}
-
-      <Controller
-        control={control}
-        name="placeIDs"
-        render={({ field }) => (
-          <InputSelect
-            {...field}
-            mode="multiple"
-            showSearch={false}
-            options={option.places.map((e) => ({ value: e.id, label: e.name }))}
-            icon={ICONS.place}
-            error={errors.placeIDs?.message}
-            label="Places"
-          />
-        )}
-      />
 
       <Controller
         control={control}
@@ -186,7 +160,7 @@ export default function CreatePackageForm({ option, createData, t, lang }: Props
         )}
       />
 
-      {data.type === "TRAINER" ? (
+      {data.type === "SESSIONS" ? (
         <Controller
           control={control}
           name="trainerIDs"
@@ -210,7 +184,14 @@ export default function CreatePackageForm({ option, createData, t, lang }: Props
         {...register("description", { setValueAs: (v: string) => (v ? v : null) })}
       />
       <section className="flex justify-center items-center">
-        <Button className="md:w-fit w-full" loading={loading} type="submit" color="success" size="xl">
+        <Button
+          onClick={() => console.log(watch())}
+          className="md:w-fit w-full"
+          loading={loading}
+          type="submit"
+          color="success"
+          size="xl"
+        >
           Create Package
         </Button>
       </section>

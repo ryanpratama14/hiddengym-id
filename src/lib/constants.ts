@@ -1,6 +1,7 @@
 import { type Locale } from "@/i18n.config";
 import { COLORS } from "@/styles/theme";
-import { type Gender, type Role } from "@prisma/client";
+import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
+import { type Gender, type PackageType, type Role } from "@prisma/client";
 
 export const USER_LIST_SORTERERS = [
   {
@@ -21,23 +22,18 @@ export const USER_LIST_SORTERERS = [
   },
 ];
 
-export const GENDERS: {
-  value: Gender;
-  icon: string;
-  label: string;
-  color: string;
-}[] = [
+export const PACKAGE_TYPES: { label: string; value: PackageType }[] = [
   {
-    icon: "material-symbols:male",
-    value: "MALE",
-    label: "Male",
-    color: COLORS.blue,
+    label: "MEMBER",
+    value: "MEMBER",
   },
   {
-    icon: "material-symbols:female",
-    value: "FEMALE",
-    label: "Female",
-    color: "#ec4899",
+    label: "VISIT",
+    value: "VISIT",
+  },
+  {
+    label: "SESSIONS",
+    value: "SESSIONS",
   },
 ];
 
@@ -95,6 +91,46 @@ export const ICONS = {
   validity: "game-icons:duration",
   url: "tabler:link",
   name: "mdi:rename-outline",
+};
+
+export const GENDERS: {
+  value: Gender;
+  icon: string;
+  label: string;
+  color: string;
+}[] = [
+  {
+    icon: "material-symbols:male",
+    value: "MALE",
+    label: "Male",
+    color: COLORS.blue,
+  },
+  {
+    icon: "material-symbols:female",
+    value: "FEMALE",
+    label: "Female",
+    color: "#ec4899",
+  },
+];
+
+export const DETERMINE_GENDER: Record<
+  Gender,
+  { icon: IconifyIcon | string; value: Gender; label: string; color: string; picture: IconifyIcon | string }
+> = {
+  MALE: {
+    icon: "material-symbols:male",
+    picture: ICONS.male,
+    value: "MALE",
+    label: "Male",
+    color: COLORS.blue,
+  },
+  FEMALE: {
+    icon: "material-symbols:female",
+    picture: ICONS.female,
+    value: "FEMALE",
+    label: "Female",
+    color: "#ec4899",
+  },
 };
 
 export const ADD_BUTTON_ITEMS_TO_REMOVE: Record<Role, string[]> = {

@@ -7,13 +7,12 @@ import Input from "@/components/Input";
 import Navigator from "@/components/Navigator";
 import NavigatorX from "@/components/NavigatorX";
 import { type Locale } from "@/i18n.config";
-import { GENDERS, ICONS, USER_REDIRECT } from "@/lib/constants";
+import { DETERMINE_GENDER, GENDERS, ICONS, USER_REDIRECT } from "@/lib/constants";
 import { cn, createUrl, formatCurrency, lozalizePhoneNumber, textEllipsis } from "@/lib/utils";
 import { type UserList, type UserListInputParams } from "@/server/api/routers/user";
 import { PAGINATION_LIMIT } from "@/trpc/shared";
 import { type SearchParams } from "@/types";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
-import { type Role } from "@prisma/client";
 import { Table } from "antd";
 import { type FilterDropdownProps } from "antd/es/table/interface";
 import { redirect, useRouter, useSearchParams } from "next/navigation";
@@ -184,11 +183,7 @@ export default function VisitorsTable({ data, searchParams, lang, loading }: Pro
                 {user?.image?.url ? (
                   <Img src={user.image.url} alt={text} className="absolute centered object-cover w-full h-full rounded-full" />
                 ) : (
-                  <Iconify
-                    icon={user.gender === "MALE" ? ICONS.male : ICONS.female}
-                    className="absolute centered text-dark"
-                    width={22}
-                  />
+                  <Iconify icon={DETERMINE_GENDER[user.gender].picture} className="absolute centered text-dark" width={22} />
                 )}
               </section>
               {textEllipsis(text, 27)}

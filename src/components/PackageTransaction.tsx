@@ -3,15 +3,17 @@ import { type PackageTransactionDetail } from "@/server/api/routers/packageTrans
 import Logo from "./Logo";
 
 type Props = {
-  data: PackageTransactionDetail;
+  data: PackageTransactionDetail | null;
 };
 
 export default function PackageTransaction({ data }: Props) {
+  if (!data) return null;
+
   return (
     <section className="flex justify-center items-center">
       <section className="md:w-[30rem] w-full flex flex-col gap-4 p-3 lg:p-6 shadow bg-light text-dark">
         <section className="flex justify-between w-full">
-          <section className="flex flex-col">
+          <section className="flex flex-col text-left">
             <h6>Package TXN</h6>
             <p className="font-medium">Date: {formatDateShort(data.transactionDate)}</p>
           </section>

@@ -9,7 +9,7 @@ export class schema {
   // enums
   static role = z.enum(["OWNER", "ADMIN", "TRAINER", "VISITOR"]).default("VISITOR");
   static gender = z.enum(["MALE", "FEMALE"]);
-  static packageType = z.enum(["MEMBER", "VISIT", "TRAINER"]);
+  static packageType = z.enum(["MEMBER", "VISIT", "SESSIONS"]);
   static tokenType = z.enum(["VERIFY_EMAIL", "FORGOT_PASSWORD"]);
   static order = z.enum(["asc", "desc"]).optional();
 
@@ -119,7 +119,7 @@ export class schema {
       })
       .refine(
         ({ type, validityInDays }) => {
-          if (type !== "TRAINER" && !validityInDays) return false;
+          if (type !== "SESSIONS" && !validityInDays) return false;
           return true;
         },
         {
@@ -129,11 +129,11 @@ export class schema {
       )
       .refine(
         ({ type, totalPermittedSessions }) => {
-          if (type === "TRAINER" && !totalPermittedSessions) return false;
+          if (type === "SESSIONS" && !totalPermittedSessions) return false;
           return true;
         },
         {
-          message: "This field is required since the type is Trainer",
+          message: "This field is required since the type is Sessions",
           path: ["totalPermittedSessions"],
         },
       )
@@ -149,7 +149,7 @@ export class schema {
       )
       .refine(
         ({ type, trainerIDs }) => {
-          if (type === "TRAINER" && !trainerIDs?.length) return false;
+          if (type === "SESSIONS" && !trainerIDs?.length) return false;
           return true;
         },
         {
@@ -203,9 +203,10 @@ export class schema {
         .object({
           buyer: z.string().optional(),
           package: z.string().optional(),
-          pacageType: schema.packageType.optional(),
+          packageType: schema.packageType.optional(),
           paymentMethod: z.string().optional(),
           withPromoCode: z.boolean().optional(),
+          totalPrice: z.number().optional(),
         })
         .optional(),
     });

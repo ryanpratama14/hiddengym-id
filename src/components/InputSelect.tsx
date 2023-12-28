@@ -17,7 +17,7 @@ const InputSelect = forwardRef<
   SelectProps<ValueType, OptionType> & {
     children?: React.ReactNode;
     icon?: IconifyIcon | string;
-    label: string;
+    label?: string;
     error?: string;
     multiple?: boolean;
     showSearch?: boolean;
@@ -27,7 +27,7 @@ const InputSelect = forwardRef<
 
   return (
     <section className="flex flex-col gap-0.5">
-      <label htmlFor={id}>{props.label}</label>
+      {props.label ? <label htmlFor={id}>{props.label}</label> : null}
       <section className="relative">
         <Select
           {...props}

@@ -278,7 +278,7 @@ export default function CreateVisitorForm({ createVisitor, checkPromoCode, lang,
               </section>
             </section>
 
-            <section className="flex flex-col">
+            <section className="flex flex-col text-center">
               <p className="font-medium underline">{data.fullName}</p>
               <small>{lozalizePhoneNumber(formatPhoneNumber(data.phoneNumber))}</small>
               <small>{data.email}</small>

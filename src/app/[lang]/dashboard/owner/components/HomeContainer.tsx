@@ -7,7 +7,7 @@ import Logo from "@/components/Logo";
 import NavigatorX from "@/components/NavigatorX";
 import { toast } from "@/components/Toast";
 import { type Locale } from "@/i18n.config";
-import { GENDERS, ICONS } from "@/lib/constants";
+import { DETERMINE_GENDER, GENDERS } from "@/lib/constants";
 import { type Dictionary } from "@/lib/dictionary";
 import { uploadFiles } from "@/lib/uploadthing";
 import { formatDateLong, formatName, isFileSizeAllowed, lozalizePhoneNumber } from "@/lib/utils";
@@ -78,11 +78,7 @@ export default function HomeContainer({ lang, user, updateUser, refreshUser, t }
                 <p>uploading...</p>
               </section>
             ) : (
-              <Iconify
-                icon={user?.gender === "MALE" ? ICONS.male : ICONS.female}
-                className="absolute text-dark centered"
-                width={220}
-              />
+              <Iconify icon={DETERMINE_GENDER[user.gender].picture} className="absolute text-dark centered" width={220} />
             )}
           </section>
         </section>

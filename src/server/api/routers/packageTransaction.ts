@@ -1,9 +1,10 @@
-import { getExpiryDateFromDate, getStartDate } from "@/lib/utils";
+import { formatName, getExpiryDateFromDate, getStartDate } from "@/lib/utils";
 import { schema } from "@/schema";
 import { createTRPCRouter, ownerProcedure, protectedProcedure } from "@/server/api/trpc";
 import {
   getPagination,
   getPaginationData,
+  insensitiveMode,
   prismaExclude,
   THROW_ERROR,
   THROW_OK,
@@ -11,12 +12,13 @@ import {
   type RouterInputs,
   type RouterOutputs,
 } from "@/trpc/shared";
+import { type NonUndefined } from "react-hook-form";
 import { z } from "zod";
 
 const packageTransactionSelect = {
   select: {
     ...prismaExclude("PackageTransaction", []),
-    buyer: true,
+    buyer: { select: { ...prismaExclude("User", ["credential"]), image: true } },
     package: true,
     promoCode: true,
     paymentMethod: true,
@@ -35,10 +37,13 @@ export const packageTransactionRouter = createTRPCRouter({
 
     const whereQuery = {
       where: {
-        buyer: { fullName: { contains: params?.buyer } },
-        package: { name: { contains: params?.package }, type: params?.pacageType },
-        paymentMethod: { name: { contains: params?.paymentMethod } },
+        buyer: { fullName: { contains: params?.buyer && formatName(params?.buyer), ...insensitiveMode } },
+        package: { name: { contains: params?.package, ...insensitiveMode }, type: params?.packageType },
+        paymentMethod: { name: { contains: params?.paymentMethod, ...insensitiveMode } },
         promoCodeId: params?.withPromoCode ? { not: null } : undefined,
+        totalPrice: {
+          gte: params?.totalPrice,
+        },
       },
     };
 
@@ -47,7 +52,7 @@ export const packageTransactionRouter = createTRPCRouter({
         ...getPagination(pagination),
         ...packageTransactionSelect,
         ...whereQuery,
-        orderBy: [{ transactionDate: "desc" }],
+        orderBy: params?.totalPrice ? [{ totalPrice: "asc" }] : [{ transactionDate: "desc" }],
       }),
       ctx.db.packageTransaction.count(whereQuery),
     ]);
@@ -64,18 +69,22 @@ export const packageTransactionRouter = createTRPCRouter({
 
     if (!selectedPackage) return THROW_ERROR("NOT_FOUND");
 
+    const isSessions = selectedPackage.type === "SESSIONS";
+
     await ctx.db.packageTransaction.create({
       data: {
         totalPrice: promoCode ? selectedPackage.price - promoCode.discountPrice : selectedPackage.price,
-        startDate: input.transactionDate && selectedPackage.type !== "TRAINER" ? getStartDate(input.transactionDate) : null,
-        expiryDate: selectedPackage.validityInDays
-          ? getExpiryDateFromDate({
-              days: selectedPackage.validityInDays,
-              isVisit: selectedPackage.type === "VISIT",
-              dateString: input.transactionDate,
-            })
-          : null,
-        remainingPermittedSessions: selectedPackage.totalPermittedSessions,
+        startDate: selectedPackage.type !== "SESSIONS" ? getStartDate(input.transactionDate) : null,
+        expiryDate:
+          selectedPackage.validityInDays && !isSessions
+            ? getExpiryDateFromDate({
+                days: selectedPackage.validityInDays,
+                isVisit: selectedPackage.type === "VISIT",
+                dateString: input.transactionDate,
+              })
+            : null,
+        remainingPermittedSessions:
+          isSessions && selectedPackage.totalPermittedSessions ? selectedPackage.totalPermittedSessions : null,
         transactionDate: getStartDate(input.transactionDate),
         paymentMethodId: input.paymentMethodId,
         packageId: input.packageId,
@@ -94,4 +103,5 @@ export type PackageTransactionDetail = RouterOutputs["packageTransaction"]["deta
 
 // inputs
 export type PackageTransactionCreateInput = RouterInputs["packageTransaction"]["create"];
+export type PackageTransactionListInputParams = NonUndefined<RouterInputs["packageTransaction"]["list"]["params"]>;
 export type PackageTransactionListInput = RouterInputs["packageTransaction"]["list"];

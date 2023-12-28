@@ -244,7 +244,7 @@ model Sport {
 enum PackageType {
     MEMBER // validity
     VISIT // validity
-    TRAINER // no validity
+    SESSIONS // no validity
 }
 
 enum Gender {
