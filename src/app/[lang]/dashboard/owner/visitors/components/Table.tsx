@@ -21,9 +21,10 @@ type Props = {
   data?: UserList;
   searchParams: SearchParams;
   lang: Locale;
+  loading: boolean;
 };
 
-export default function VisitorsTable({ data, searchParams, lang }: Props) {
+export default function VisitorsTable({ data, searchParams, lang, loading }: Props) {
   const newSearchParams = useSearchParams();
   const newParams = new URLSearchParams(newSearchParams.toString());
 
@@ -128,12 +129,17 @@ export default function VisitorsTable({ data, searchParams, lang }: Props) {
 
   return (
     <Table
+      loading={loading}
       className="drop-shadow"
-      pagination={{
-        current: data?.page,
-        pageSize: data?.limit,
-        total: data?.totalData,
-      }}
+      pagination={
+        searchParams.totalSpending
+          ? false
+          : {
+              current: data?.page,
+              pageSize: data?.limit,
+              total: data?.totalData,
+            }
+      }
       onChange={(pagination) => {
         if (pagination.current === 1) {
           newParams.delete("page");
@@ -218,7 +224,7 @@ export default function VisitorsTable({ data, searchParams, lang }: Props) {
           key: "totalSpending",
           dataIndex: "totalSpending",
           ...getTableFilter({ name: "totalSpending" }),
-          render: () => formatCurrency(12312333),
+          render: (text: number) => formatCurrency(text),
         },
       ]}
     />

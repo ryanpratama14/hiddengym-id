@@ -96,7 +96,7 @@ export class schema {
         phoneNumber: z.string().optional(),
         email: z.string().optional(),
         gender: schema.gender.optional(),
-        totalSpending: z.string().optional(),
+        totalSpending: z.number(),
       }),
     });
   };

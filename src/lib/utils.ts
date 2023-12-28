@@ -286,3 +286,7 @@ export const getSelectedMenu = ({ pathname, role, lang }: { pathname: string; ro
   }
   return selectedMenu;
 };
+
+export const accumulateValue = <T extends Record<K, number>, K extends keyof T>(array: T[], fieldName: K): T[K] => {
+  return array.reduce((accumulator, item) => accumulator + item[fieldName], 0) as unknown as T[K];
+};

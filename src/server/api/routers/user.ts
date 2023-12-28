@@ -1,4 +1,4 @@
-import { formatName, formatPhoneNumber, getExpiryDateFromDate, getNewDate, getStartDate } from "@/lib/utils";
+import { accumulateValue, formatName, formatPhoneNumber, getExpiryDateFromDate, getNewDate, getStartDate } from "@/lib/utils";
 import { schema } from "@/schema";
 import { createTRPCRouter, ownerProcedure, protectedProcedure, publicProcedure } from "@/server/api/trpc";
 import {
@@ -21,7 +21,7 @@ const userSelect = {
     ...prismaExclude("User", ["credential", "scheduleIDs", "trainerPackageIDs", "trainerSportIDs"]),
     image: true,
     packageTransactions: true,
-    // productTransactions: true,
+    productTransactions: true,
     // visits: true,
     // schedules: true,
     // files: true,
@@ -155,15 +155,27 @@ export const userRouter = createTRPCRouter({
     const [data, totalData] = await ctx.db.$transaction([
       ctx.db.user.findMany({
         ...getSortingQuery(sorting),
-        ...getPagination(pagination),
+        ...(!params.totalSpending && getPagination(pagination)),
         ...whereQuery,
         ...userSelect,
       }),
       ctx.db.user.count(whereQuery),
     ]);
 
+    const updatedData = data
+      .map((user) => ({
+        ...user,
+        totalSpending:
+          accumulateValue(user.packageTransactions, "totalPrice") + accumulateValue(user.productTransactions, "totalPrice"),
+      }))
+      .filter((user) => user.totalSpending >= params.totalSpending);
+
+    if (params.totalSpending) {
+      updatedData.sort((a, b) => a.totalSpending - b.totalSpending);
+    }
+
     return {
-      data,
+      data: updatedData,
       ...getPaginationData({ page: pagination.page, limit: pagination.limit, totalData }),
     };
   }),

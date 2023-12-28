@@ -1,11 +1,10 @@
-import { z } from "zod";
-import SuperJSON from "superjson";
-import { Prisma } from "@prisma/client";
-import { TRPCError } from "@trpc/server";
-import { type inferRouterInputs, type inferRouterOutputs } from "@trpc/server";
-import { type AppRouter } from "@/server/api/root";
 import { type Pagination } from "@/schema";
+import { type AppRouter } from "@/server/api/root";
+import { Prisma } from "@prisma/client";
+import { TRPCError, type inferRouterInputs, type inferRouterOutputs } from "@trpc/server";
 import { type TRPC_ERROR_CODE_KEY } from "@trpc/server/rpc";
+import SuperJSON from "superjson";
+import { z } from "zod";
 
 export type TRPC_OK_CODE_KEY = "OK" | "CREATED" | "ACCEPTED" | "NO_CONTENT" | "RESET_CONTENT" | "PARTIAL_CONTENT";
 export type TRPC_CODE_KEY = TRPC_OK_CODE_KEY | TRPC_ERROR_CODE_KEY;
@@ -33,7 +32,7 @@ const getBaseUrl = () => {
 
 export const getUrl = () => `${getBaseUrl()}/api/trpc`;
 
-export const PAGINATION_LIMIT = 5;
+export const PAGINATION_LIMIT = 30;
 
 export const ERROR_MESSAGES: Record<TRPC_ERROR_CODE_KEY, string> = {
   PARSE_ERROR: "Error parsing the request. Please check the syntax of your request.",
@@ -108,7 +107,7 @@ export const prismaExclude = <T extends Entity, K extends Keys<T>>(type: T, omit
 
 export const removeFieldsFromArray = <T extends Record<string, unknown>, K extends keyof T>(
   objects: Array<T>,
-  fieldsToRemove: K[]
+  fieldsToRemove: K[],
 ): Array<Omit<T, K>> => {
   return objects.map((obj) => {
     const updatedObj = structuredClone(obj);
@@ -121,7 +120,7 @@ export const removeFieldsFromArray = <T extends Record<string, unknown>, K exten
 
 export const removeFieldsFromObject = <T extends Record<string, unknown>, K extends keyof T>(
   object: T,
-  fieldsToRemove: K[]
+  fieldsToRemove: K[],
 ): Omit<T, K> => {
   const updatedObj = structuredClone(object);
   for (const field of fieldsToRemove) {
@@ -138,7 +137,7 @@ export const mergeZodSchema = <T extends Entity>(entity: T): z.ZodObject<Record<
     return schema.merge(
       z.object({
         [field]: z.string().optional(),
-      })
+      }),
     );
   }, z.object({}));
 
@@ -203,7 +202,7 @@ export const getPaginationData = ({ totalData, limit = PAGINATION_LIMIT, page }:
 export const insensitiveMode = { mode: "insensitive" as Prisma.QueryMode };
 
 export const getSortingQuery = (sorting?: string) => {
-  if (sorting) {
+  if (sorting && !sorting.includes("totalSpending")) {
     const [name, value] = sorting.split("-");
     return {
       orderBy: [{ [name!]: value }],
