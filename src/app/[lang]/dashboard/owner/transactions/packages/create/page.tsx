@@ -1,7 +1,7 @@
 import { type Locale } from "@/i18n.config";
 import { useDictionary } from "@/lib/dictionary";
 import { type PackageTransactionCreateInput } from "@/server/api/routers/packageTransaction";
-import { type PromoCodeDetail, type PromoCodeDetailInput } from "@/server/api/routers/promoCode";
+import { type PromoCodeCheck, type PromoCodeCheckInput } from "@/server/api/routers/promoCode";
 import { api } from "@/trpc/server";
 import { revalidatePath } from "next/cache";
 import CreatePackageTransactionForm from "./components/CreatePackageTransactionForm";
@@ -20,9 +20,9 @@ export default async function PackageTransactionCreatePage({ params }: Props) {
     return res;
   };
 
-  const checkPromoCode = async (data: PromoCodeDetailInput): Promise<PromoCodeDetail> => {
+  const checkPromoCode = async (data: PromoCodeCheckInput): Promise<PromoCodeCheck> => {
     "use server";
-    const res = await api.promoCode.detail.mutate(data);
+    const res = await api.promoCode.checkPromoCode.mutate(data);
     return res;
   };
 

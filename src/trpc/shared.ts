@@ -202,7 +202,7 @@ export const getPaginationData = ({ totalData, limit, page }: Pagination & { tot
 export const insensitiveMode = { mode: "insensitive" as Prisma.QueryMode };
 
 export const getSortingQuery = (sorting?: string) => {
-  if (sorting && !sorting.includes("totalSpending")) {
+  if (sorting) {
     const [name, value] = sorting.split("-");
     return {
       orderBy: [{ [name!]: value }],

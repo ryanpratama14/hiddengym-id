@@ -27,7 +27,7 @@ export default function VisitorsPage({ searchParams, params }: Props) {
       email: searchParams.email as string,
       gender: searchParams.gender as Gender,
       role: "VISITOR",
-      totalSpending: Number(searchParams.totalSpending) || 0,
+      totalSpending: searchParams.totalSpending ? Number(searchParams.totalSpending) : undefined,
     },
     sorting: searchParams.sort as string,
   };

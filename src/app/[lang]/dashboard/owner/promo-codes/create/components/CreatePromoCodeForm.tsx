@@ -2,9 +2,10 @@
 
 import Button from "@/components/Button";
 import Input from "@/components/Input";
+import InputSelect from "@/components/InputSelect";
 import { toast } from "@/components/Toast";
 import { type Locale } from "@/i18n.config";
-import { ICONS, USER_REDIRECT } from "@/lib/constants";
+import { ICONS, PROMO_CODE_TYPES, USER_REDIRECT } from "@/lib/constants";
 import { type Dictionary } from "@/lib/dictionary";
 import { schema } from "@/schema";
 import { type TRPC_RESPONSE } from "@/trpc/shared";
@@ -12,7 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { type PromoCodeCreateInput } from "@router/promoCode";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useForm, type SubmitHandler } from "react-hook-form";
+import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 
 type Props = {
   createData: (data: PromoCodeCreateInput) => Promise<TRPC_RESPONSE>;
@@ -28,9 +29,10 @@ export default function CreatePromoCodeForm({ createData, lang, t }: Props) {
     handleSubmit,
     formState: { errors },
     reset,
+    control,
   } = useForm<PromoCodeCreateInput>({
     resolver: zodResolver(schema.promoCode.create),
-    defaultValues: { isActive: true, discountPrice: 0 },
+    defaultValues: { isActive: true, discountPrice: 0, type: "REGULAR" },
   });
 
   const onSubmit: SubmitHandler<PromoCodeCreateInput> = async (data) => {
@@ -55,6 +57,14 @@ export default function CreatePromoCodeForm({ createData, lang, t }: Props) {
           {...register("discountPrice", { setValueAs: (v: string) => (!v ? 0 : parseInt(v)) })}
         />
       </section>
+
+      <Controller
+        control={control}
+        name="type"
+        render={({ field }) => (
+          <InputSelect {...field} icon={ICONS.package} error={errors.type?.message} options={PROMO_CODE_TYPES} label="Type" />
+        )}
+      />
       <section className="flex justify-center items-center">
         <Button className="md:w-fit w-full" loading={loading} type="submit" color="success" size="xl">
           Create Promo Code

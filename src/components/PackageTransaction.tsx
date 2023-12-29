@@ -85,7 +85,7 @@ export default function PackageTransaction({ data }: Props) {
           <small className="!text-xs">txn. {data.id}</small>
         </section>
         <section className="flex flex-col justify-center items-center gap-6 mt-6">
-          <Logo className="aspect-video w-full md:w-[70%]" />
+          <Logo className="aspect-video w-[50%]" />
           <section className="flex justify-center flex-col gap-1 text-center">
             <h6>HIDDEN GYM</h6>
             <small className="text-balance">

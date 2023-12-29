@@ -1,4 +1,4 @@
-import { accumulateValue, formatName, formatPhoneNumber, getNewDate } from "@/lib/utils";
+import { formatName, formatPhoneNumber, getNewDate } from "@/lib/utils";
 import { schema } from "@/schema";
 import { createTRPCRouter, ownerAdminProcedure, ownerProcedure, protectedProcedure, publicProcedure } from "@/server/api/trpc";
 import {
@@ -22,6 +22,9 @@ const userSelect = {
     image: true,
     packageTransactions: true,
     productTransactions: true,
+    totalSpending: true,
+    totalSpendingPackage: true,
+    totalSpendingProduct: true,
     // visits: true,
     // schedules: true,
     // files: true,
@@ -65,6 +68,7 @@ export const userRouter = createTRPCRouter({
         phoneNumber: formatPhoneNumber(visitorData.phoneNumber),
         gender: visitorData.gender,
         credential: await hash(visitorData.phoneNumber),
+        birthDate: visitorData.birthDate ? getNewDate(visitorData.birthDate) : null,
       },
     });
 
@@ -124,38 +128,16 @@ export const userRouter = createTRPCRouter({
         email: { contains: params?.email, ...insensitiveMode },
         gender: params?.gender,
         fullName: { contains: params?.fullName && formatName(params?.fullName), ...insensitiveMode },
+        totalSpending: { gte: params?.totalSpending },
       },
     };
 
     const [data, totalData] = await ctx.db.$transaction([
-      ctx.db.user.findMany({
-        ...getSortingQuery(sorting),
-        ...(!params.totalSpending && getPagination(pagination)),
-        ...whereQuery,
-        ...userSelect,
-      }),
+      ctx.db.user.findMany({ ...getSortingQuery(sorting), ...getPagination(pagination), ...whereQuery, ...userSelect }),
       ctx.db.user.count(whereQuery),
     ]);
 
-    const updatedData = data
-      .map((user) => ({
-        ...user,
-        spending: {
-          package: accumulateValue(user.packageTransactions, "totalPrice"),
-          product: accumulateValue(user.productTransactions, "totalPrice"),
-          total: accumulateValue(user.packageTransactions, "totalPrice") + accumulateValue(user.productTransactions, "totalPrice"),
-        },
-      }))
-      .filter((user) => user.spending.total >= params.totalSpending);
-
-    if (params.totalSpending) {
-      updatedData.sort((a, b) => a.spending.total - b.spending.total);
-    }
-
-    return {
-      data: updatedData,
-      ...getPaginationData({ page: pagination.page, limit: pagination.limit, totalData }),
-    };
+    return { data, ...getPaginationData({ page: pagination.page, limit: pagination.limit, totalData }) };
   }),
 });
 

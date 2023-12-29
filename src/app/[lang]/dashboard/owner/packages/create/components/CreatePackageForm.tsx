@@ -62,7 +62,7 @@ export default function CreatePackageForm({ option, createData, t, lang }: Props
     const res = await createData(data);
     setLoading(false);
     reset();
-    if (!res.status) return toast({ t, type: "error", description: "Package with this name is already exists" });
+    if (!res.status) return toast({ t, type: "error", description: "A payment method with this name already exists" });
     toast({ t, type: "success", description: "Package has been created" });
     router.push(USER_REDIRECT.OWNER({ lang, href: "/packages" }));
   };

@@ -15,9 +15,10 @@ import {
   formatDateShort,
   formatPhoneNumber,
   getExpiryDateFromDate,
+  getInputDate,
   getNewDate,
   getStartDate,
-  getTodayDate,
+  getUserAge,
   isDateExpired,
   isDateToday,
   localizePhoneNumber,
@@ -26,7 +27,7 @@ import { schema } from "@/schema";
 import { type PackageList } from "@/server/api/routers/package";
 import { type PackageTransactionCreateInput } from "@/server/api/routers/packageTransaction";
 import { type PaymentMethodList } from "@/server/api/routers/paymentMethod";
-import { type PromoCodeDetail, type PromoCodeDetailInput } from "@/server/api/routers/promoCode";
+import { type PromoCodeCheck, type PromoCodeCheckInput } from "@/server/api/routers/promoCode";
 import { type UserCreateVisitor, type UserCreateVisitorInput } from "@/server/api/routers/user";
 import { inputVariants } from "@/styles/variants";
 import { type TRPC_RESPONSE } from "@/trpc/shared";
@@ -38,7 +39,7 @@ import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 
 type Props = {
   createVisitor: (data: UserCreateVisitorInput) => Promise<UserCreateVisitor>;
-  checkPromoCode: (data: PromoCodeDetailInput) => Promise<PromoCodeDetail>;
+  checkPromoCode: (data: PromoCodeCheckInput) => Promise<PromoCodeCheck>;
   createPackageTransaction: (data: PackageTransactionCreateInput) => Promise<TRPC_RESPONSE>;
   lang: Locale;
   t: Dictionary;
@@ -64,11 +65,10 @@ export default function CreateVisitorForm({ createVisitor, checkPromoCode, lang,
     setValue,
     watch,
     clearErrors,
+    resetField,
   } = useForm<UserCreateVisitorInput>({
     resolver: zodResolver(schema.user.createVisitor),
-    defaultValues: {
-      visitorData: { gender: "MALE" },
-    },
+    defaultValues: { visitorData: { gender: "MALE" } },
   });
 
   const data = {
@@ -78,6 +78,8 @@ export default function CreateVisitorForm({ createVisitor, checkPromoCode, lang,
     email: watch("visitorData.email"),
     promoCodeCode: watch("packageData.promoCodeCode"),
     packageId: watch("packageData.packageId"),
+    birthDate: watch("visitorData.birthDate"),
+    promoCodeId: watch("packageData.promoCodeId"),
   };
 
   const onSubmit: SubmitHandler<UserCreateVisitorInput> = async (data) => {
@@ -127,38 +129,51 @@ export default function CreateVisitorForm({ createVisitor, checkPromoCode, lang,
           {...register("visitorData.email")}
         />
         <section className="flex flex-col gap-6">
-          <section className="flex flex-col">
-            <p>Gender</p>
-            <section className="grid grid-cols-2 h-10">
-              {GENDERS.map((option, index) => {
-                return (
-                  <section key={option.label} className="items-center flex gap-2">
-                    <button
-                      type="button"
-                      className="relative rounded-full w-6 bg-white aspect-square border-1 border-dark has-[:checked]:bg-dark"
-                    >
-                      <input
-                        value={option.value}
-                        className="cursor-pointer absolute w-full h-full opacity-0 z-10 top-0 left-0"
-                        id={`gender_option_${index}`}
-                        type="radio"
-                        {...register("visitorData.gender")}
-                      />
-                      <div className="animate absolute centered w-[40%] aspect-square rounded-full bg-white has-[:checked]:scale-0" />
-                    </button>
-                    <label className="flex items-center" htmlFor={`gender_option_${index}`}>
-                      <Iconify
-                        className={cn("text-pink-500", {
-                          "text-blue": option.value === "MALE",
-                        })}
-                        width={25}
-                        icon={option.icon}
-                      />
-                      {option.label}
-                    </label>
-                  </section>
-                );
-              })}
+          <section className="grid grid-cols-2 gap-6">
+            <Input
+              error={errors.visitorData?.birthDate?.message}
+              label="Date of Birth (Optional)"
+              type="date"
+              onChange={(e) => {
+                if (selectedPromoCode) setSelectedPromoCode(null);
+                if (data.promoCodeId) resetField("packageData.promoCodeId");
+                if (data.promoCodeCode) resetField("packageData.promoCodeCode");
+                setValue("visitorData.birthDate", e.target.value);
+              }}
+            />
+            <section className="flex flex-col">
+              <p>Gender</p>
+              <section className="grid grid-cols-2 h-10">
+                {GENDERS.map((option, index) => {
+                  return (
+                    <section key={option.label} className="items-center flex gap-2">
+                      <button
+                        type="button"
+                        className="relative rounded-full w-6 bg-white aspect-square border-1 border-dark has-[:checked]:bg-dark"
+                      >
+                        <input
+                          value={option.value}
+                          className="cursor-pointer absolute w-full h-full opacity-0 z-10 top-0 left-0"
+                          id={`gender_option_${index}`}
+                          type="radio"
+                          {...register("visitorData.gender")}
+                        />
+                        <div className="animate absolute centered w-[40%] aspect-square rounded-full bg-white has-[:checked]:scale-0" />
+                      </button>
+                      <label className="flex items-center" htmlFor={`gender_option_${index}`}>
+                        <Iconify
+                          className={cn("text-pink-500", {
+                            "text-blue": option.value === "MALE",
+                          })}
+                          width={25}
+                          icon={option.icon}
+                        />
+                        {option.label}
+                      </label>
+                    </section>
+                  );
+                })}
+              </section>
             </section>
           </section>
           <section className="flex justify-end">
@@ -168,7 +183,7 @@ export default function CreateVisitorForm({ createVisitor, checkPromoCode, lang,
               onClick={() => {
                 setIsAddingTransaction(!isAddingTransaction);
                 if (isAddingTransaction) unregister("packageData");
-                if (!isAddingTransaction) setValue("packageData.transactionDate", getTodayDate());
+                if (!isAddingTransaction) setValue("packageData.transactionDate", getInputDate());
                 if (!isAddingTransaction) setValue("packageData.packageId", "");
                 if (!isAddingTransaction) setValue("packageData.paymentMethodId", "");
                 if (selectedPackage) setSelectedPackage(null);
@@ -205,8 +220,8 @@ export default function CreateVisitorForm({ createVisitor, checkPromoCode, lang,
             />
 
             <Input
-              error={errors.packageData?.transactionDate?.message}
               {...register("packageData.transactionDate")}
+              error={errors.packageData?.transactionDate?.message}
               label="Transaction Date"
               type="date"
             />
@@ -248,14 +263,26 @@ export default function CreateVisitorForm({ createVisitor, checkPromoCode, lang,
                     icon={selectedPromoCode?.code && ICONS.check}
                     color={selectedPromoCode ? "active" : "primary"}
                     loading={loadingPromoCode}
-                    disabled={loadingPromoCode}
+                    disabled={loadingPromoCode || !!selectedPromoCode?.id}
                     onClick={async () => {
+                      if (!data.birthDate) return toast({ type: "warning", t, description: "Pick date of birth first" });
                       if (!data.packageId) return toast({ type: "warning", t, description: "Pick package first" });
                       if (!data.promoCodeCode) return toast({ type: "warning", t, description: "Fill out the Promo Code first" });
+
                       setLoadingPromoCode(true);
-                      const res = await checkPromoCode({ code: data.promoCodeCode });
+                      const res = await checkPromoCode({ code: data.promoCodeCode, birthDate: data.birthDate });
                       setLoadingPromoCode(false);
-                      if (!res.data) return toast({ type: "error", t, description: "Promo Code is expired or doesn't exist" });
+
+                      if (res.code === "NOT_FOUND")
+                        return toast({ type: "error", t, description: "Promo Code is expired or doesn't exist" });
+                      if (res.code === "FORBIDDEN")
+                        return toast({
+                          type: "error",
+                          t,
+                          description: `Not eligible to use this promo code.\nAge: ${getUserAge(getNewDate(data.birthDate))}.`,
+                        });
+
+                      if (!res.data) return toast({ type: "error", t, description: "Promo Code doesn't exist" });
                       setSelectedPromoCode(res.data);
                       setValue("packageData.promoCodeId", res.data.id);
                       toast({ type: "success", t, description: "Promo Code applied" });
@@ -374,7 +401,7 @@ export default function CreateVisitorForm({ createVisitor, checkPromoCode, lang,
             ) : null}
 
             <section className="flex flex-col justify-center items-center gap-6 mt-6">
-              <Logo className="aspect-video w-full md:w-[70%]" />
+              <Logo className="aspect-video w-[50%]" />
               <section className="flex justify-center flex-col gap-1 text-center">
                 <h6>HIDDEN GYM</h6>
                 <small className="text-balance">

@@ -1,7 +1,7 @@
 import { type Locale } from "@/i18n.config";
 import { useDictionary } from "@/lib/dictionary";
 import { type PackageTransactionCreateInput } from "@/server/api/routers/packageTransaction";
-import { type PromoCodeDetail, type PromoCodeDetailInput } from "@/server/api/routers/promoCode";
+import { type PromoCodeCheck, type PromoCodeCheckInput } from "@/server/api/routers/promoCode";
 import { type UserCreateVisitor, type UserCreateVisitorInput } from "@/server/api/routers/user";
 import { api } from "@/trpc/server";
 import { type TRPC_RESPONSE } from "@/trpc/shared";
@@ -29,9 +29,9 @@ export default async function CustomerCreatePage({ params }: Props) {
     return res;
   };
 
-  const checkPromoCode = async (data: PromoCodeDetailInput): Promise<PromoCodeDetail> => {
+  const checkPromoCode = async (data: PromoCodeCheckInput): Promise<PromoCodeCheck> => {
     "use server";
-    const res = await api.promoCode.detail.mutate(data);
+    const res = await api.promoCode.checkPromoCode.mutate(data);
     return res;
   };
 

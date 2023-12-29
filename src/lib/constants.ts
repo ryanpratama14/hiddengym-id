@@ -1,7 +1,7 @@
 import { type Locale } from "@/i18n.config";
 import { COLORS } from "@/styles/theme";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
-import { type Gender, type PackageType, type Role } from "@prisma/client";
+import { type Gender, type PackageType, type PromoCodeType, type Role } from "@prisma/client";
 
 export const USER_LIST_SORTERERS = [
   {
@@ -20,6 +20,10 @@ export const USER_LIST_SORTERERS = [
     name: "gender",
     title: "Gender",
   },
+  {
+    name: "totalSpending",
+    title: "Total Spending",
+  },
 ];
 
 export const PACKAGE_TYPES: { label: string; value: PackageType }[] = [
@@ -34,6 +38,17 @@ export const PACKAGE_TYPES: { label: string; value: PackageType }[] = [
   {
     label: "SESSIONS",
     value: "SESSIONS",
+  },
+];
+
+export const PROMO_CODE_TYPES: { label: string; value: PromoCodeType }[] = [
+  {
+    label: "REGULAR",
+    value: "REGULAR",
+  },
+  {
+    label: "STUDENT",
+    value: "STUDENT",
   },
 ];
 

@@ -13,9 +13,10 @@ import {
   formatCurrency,
   formatDateShort,
   getExpiryDateFromDate,
+  getInputDate,
   getNewDate,
   getStartDate,
-  getTodayDate,
+  getUserAge,
   isDateExpired,
   isDateToday,
   localizePhoneNumber,
@@ -24,9 +25,10 @@ import { schema } from "@/schema";
 import { type PackageList } from "@/server/api/routers/package";
 import { type PackageTransactionCreateInput } from "@/server/api/routers/packageTransaction";
 import { type PaymentMethodList } from "@/server/api/routers/paymentMethod";
-import { type PromoCodeDetail, type PromoCodeDetailInput } from "@/server/api/routers/promoCode";
+import { type PromoCodeCheck, type PromoCodeCheckInput } from "@/server/api/routers/promoCode";
 import { type UserListVisitor } from "@/server/api/routers/user";
 import { inputVariants } from "@/styles/variants";
+import { api } from "@/trpc/react";
 import { type TRPC_RESPONSE } from "@/trpc/shared";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type Package, type PaymentMethod, type PromoCode, type User } from "@prisma/client";
@@ -36,16 +38,14 @@ import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 
 type Props = {
   createData: (data: PackageTransactionCreateInput) => Promise<TRPC_RESPONSE>;
-  checkPromoCode: (data: PromoCodeDetailInput) => Promise<PromoCodeDetail>;
   lang: Locale;
   t: Dictionary;
   option: { packages: PackageList; paymentMethods: PaymentMethodList; visitors: UserListVisitor };
 };
 
-export default function CreatePackageTransactionForm({ createData, checkPromoCode, lang, t, option }: Props) {
+export default function CreatePackageTransactionForm({ createData, lang, t, option }: Props) {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
-  const [loadingPromoCode, setLoadingPromoCode] = useState<boolean>(false);
   const [selectedBuyer, setSelectedBuyer] = useState<User | null>();
   const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<PaymentMethod | null>(null);
@@ -60,9 +60,10 @@ export default function CreatePackageTransactionForm({ createData, checkPromoCod
     setValue,
     watch,
     clearErrors,
+    resetField,
   } = useForm<PackageTransactionCreateInput>({
     resolver: zodResolver(schema.packageTransaction.create),
-    defaultValues: { transactionDate: getTodayDate(), paymentMethodId: "", buyerId: "", packageId: "" },
+    defaultValues: { transactionDate: getInputDate(), paymentMethodId: "", buyerId: "", packageId: "" },
   });
 
   const onSubmit: SubmitHandler<PackageTransactionCreateInput> = async (data) => {
@@ -79,7 +80,20 @@ export default function CreatePackageTransactionForm({ createData, checkPromoCod
     transactionDate: watch("transactionDate"),
     promoCodeCode: watch("promoCodeCode"),
     packageId: watch("packageId"),
+    promoCodeId: watch("promoCodeId"),
   };
+
+  const { mutate: checkPromoCode, isLoading: loadingPromoCode } = api.promoCode.checkPromoCode.useMutation({
+    onSuccess: (res) => {
+      setSelectedPromoCode(res);
+      setValue("promoCodeId", res.id);
+      toast({ type: "success", t, description: "Promo Code applied" });
+    },
+    onError: (err) => {
+      if (err.data?.code === "NOT_FOUND") return toast({ type: "error", t, description: err.message });
+      if (err.data?.code === "FORBIDDEN") return toast({ type: "error", t, description: err.message });
+    },
+  });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full">
@@ -99,6 +113,9 @@ export default function CreatePackageTransactionForm({ createData, checkPromoCod
                 setSelectedBuyer(item as User);
                 setValue("buyerId", value as string);
                 clearErrors("buyerId");
+                if (selectedPromoCode && selectedPromoCode.type === "STUDENT") setSelectedPromoCode(null);
+                if (data.promoCodeCode) resetField("promoCodeCode");
+                if (data.promoCodeId) resetField("promoCodeId");
               }}
             />
           )}
@@ -162,17 +179,12 @@ export default function CreatePackageTransactionForm({ createData, checkPromoCod
               icon={selectedPromoCode?.code && ICONS.check}
               color={selectedPromoCode ? "active" : "primary"}
               loading={loadingPromoCode}
-              disabled={loadingPromoCode}
-              onClick={async () => {
+              disabled={loadingPromoCode || !!selectedPromoCode?.id}
+              onClick={() => {
+                if (!selectedBuyer) return toast({ type: "warning", t, description: "Pick buyer first" });
                 if (!data.packageId) return toast({ type: "warning", t, description: "Pick package first" });
                 if (!data.promoCodeCode) return toast({ type: "warning", t, description: "Fill out the Promo Code first" });
-                setLoadingPromoCode(true);
-                const res = await checkPromoCode({ code: data.promoCodeCode });
-                setLoadingPromoCode(false);
-                if (!res.data) return toast({ type: "error", t, description: "Promo Code is expired or doesn't exist" });
-                setSelectedPromoCode(res.data);
-                setValue("promoCodeId", res.data.id);
-                toast({ type: "success", t, description: "Promo Code applied" });
+                checkPromoCode({ code: data.promoCodeCode, birthDate: selectedBuyer.birthDate });
               }}
               size="m"
               className="h-full"
@@ -284,7 +296,7 @@ export default function CreatePackageTransactionForm({ createData, checkPromoCod
             ) : null}
 
             <section className="flex flex-col justify-center items-center gap-6 mt-6">
-              <Logo className="aspect-video w-full md:w-[70%]" />
+              <Logo className="aspect-video w-[50%]" />
               <section className="flex justify-center flex-col gap-1 text-center">
                 <h6>HIDDEN GYM</h6>
                 <small className="text-balance">

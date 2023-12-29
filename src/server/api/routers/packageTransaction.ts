@@ -14,6 +14,7 @@ import {
 } from "@/trpc/shared";
 import { type NonUndefined } from "react-hook-form";
 import { z } from "zod";
+import { updateTotalSpending } from "./other";
 
 const packageTransactionSelect = {
   select: {
@@ -94,6 +95,8 @@ export const packageTransactionRouter = createTRPCRouter({
         promoCodeId: promoCode?.id ? promoCode.id : null,
       },
     });
+
+    await updateTotalSpending(input.buyerId);
 
     return THROW_OK("CREATED");
   }),

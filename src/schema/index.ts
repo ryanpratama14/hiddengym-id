@@ -8,6 +8,7 @@ export const regex = {
 export class schema {
   // enums
   static role = z.enum(["OWNER", "ADMIN", "TRAINER", "VISITOR"]).default("VISITOR");
+  static promoCodeType = z.enum(["REGULAR", "STUDENT"]);
   static gender = z.enum(["MALE", "FEMALE"]);
   static packageType = z.enum(["MEMBER", "VISIT", "SESSIONS"]);
   static tokenType = z.enum(["VERIFY_EMAIL", "FORGOT_PASSWORD"]);
@@ -56,6 +57,7 @@ export class schema {
           fullName: schema.fullName,
           phoneNumber: schema.phoneNumber,
           gender: schema.gender,
+          birthDate: schema.dateOptional,
         })
         .refine(
           ({ email }) => {
@@ -99,7 +101,7 @@ export class schema {
         phoneNumber: z.string().optional(),
         email: z.string().optional(),
         gender: schema.gender.optional(),
-        totalSpending: z.number(),
+        totalSpending: z.number().optional(),
       }),
     });
   };
@@ -180,6 +182,7 @@ export class schema {
     static create = z.object({
       code: schema.promoCodeCode,
       discountPrice: z.number().min(1),
+      type: schema.promoCodeType,
       isActive: z.boolean().default(true),
     });
   };

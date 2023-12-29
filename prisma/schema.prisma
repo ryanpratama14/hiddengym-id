@@ -8,15 +8,18 @@ datasource db {
 }
 
 model User {
-    id          String    @id @default(auto()) @map("_id") @db.ObjectId
-    phoneNumber String    @unique
-    email       String?
-    fullName    String
-    birthDate   DateTime?
-    credential  String // used for signin
-    gender      Gender
-    role        Role      @default(VISITOR)
-    isActive    Boolean   @default(true)
+    id                   String    @id @default(auto()) @map("_id") @db.ObjectId
+    phoneNumber          String    @unique
+    email                String?
+    fullName             String
+    birthDate            DateTime?
+    credential           String // used for signin
+    gender               Gender
+    role                 Role      @default(VISITOR)
+    isActive             Boolean   @default(true)
+    totalSpendingPackage Int       @default(0)
+    totalSpendingProduct Int       @default(0)
+    totalSpending        Int       @default(0)
 
     // relations
     packageTransactions PackageTransaction[]
@@ -65,6 +68,7 @@ model PromoCode {
 
     // relations
     packagePruchases PackageTransaction[]
+    type             PromoCodeType
 
     createdDate DateTime @default(now())
 }
@@ -262,6 +266,11 @@ enum Role {
 enum TokenType {
     VERIFY_EMAIL
     FORGOT_PASSWORD
+}
+
+enum PromoCodeType {
+    REGULAR
+    STUDENT
 }
 
 // admin can only today's sales (limited)

@@ -229,9 +229,10 @@ export default function VisitorsTable({ data, searchParams, lang, loading }: Pro
         {
           align: "right",
           title: "Total Spending",
-          key: "totalSpending.total",
+          key: "totalSpending",
+          dataIndex: "totalSpending",
           ...getTableFilter({ name: "totalSpending", icon: ICONS.payment_method }),
-          render: (_, item) => formatCurrency(item.spending.total),
+          render: (text: number) => formatCurrency(text),
         },
       ]}
     />
