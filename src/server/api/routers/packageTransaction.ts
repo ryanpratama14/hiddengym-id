@@ -20,8 +20,10 @@ import { updateTotalSpending } from "./other";
 const packageTransactionSelect = {
   select: {
     ...prismaExclude("PackageTransaction", []),
-    buyer: { select: { ...prismaExclude("User", ["credential"]), image: true } },
-    package: true,
+    buyer: {
+      select: { ...prismaExclude("User", ["credential", "trainerPackageIDs", "trainerPackageIDs", "scheduleIDs"]), image: true },
+    },
+    package: { select: { ...prismaExclude("Package", ["placeIDs", "sportIDs", "trainerIDs"]) } },
     promoCode: true,
     paymentMethod: true,
   },
@@ -78,7 +80,7 @@ export const packageTransactionRouter = createTRPCRouter({
     await ctx.db.packageTransaction.create({
       data: {
         totalPrice: promoCode ? selectedPackage.price - promoCode.discountPrice : selectedPackage.price,
-        startDate: getStartDate(input.transactionDate),
+        startDate: selectedPackage.validityInDays ? getStartDate(input.transactionDate) : null,
         expiryDate: selectedPackage.validityInDays
           ? getExpiryDateFromDate({
               days: selectedPackage.validityInDays,

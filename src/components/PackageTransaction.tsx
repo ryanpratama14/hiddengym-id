@@ -84,7 +84,7 @@ export default function PackageTransaction({ data }: Props) {
                   <p className="font-semibold">{data.package.approvedSessions} session(s)</p>
                 </section>
                 <section className="flex flex-col text-right w-fit">
-                  <p className="font-semibold">{data.remainingSessions} sessions(s)</p>
+                  <p className="font-semibold">{data.remainingSessions} session(s)</p>
                 </section>
               </section>
             </section>

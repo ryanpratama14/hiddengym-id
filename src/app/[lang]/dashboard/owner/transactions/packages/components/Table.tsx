@@ -232,21 +232,27 @@ export default function PackageTransactionsTable({ data, searchParams, lang, loa
             key: "status",
             dataIndex: "expiryDate",
             render: (text: Date, item) => {
-              if (item.remainingSessions)
-                return (
-                  <p className="px-2 py-0.5 rounded-md shadow bg-purple-600 text-center text-cream w-fit">
-                    {item.remainingSessions} session(s)
-                  </p>
-                );
+              const sharedClassName = "h-7 flex items-center w-fit text-cream shadow px-2 rounded-md";
+              const expiredClassName = cn(sharedClassName, "bg-red");
 
-              if (isDateExpired(text))
-                return <p className="px-2 py-0.5 rounded-md shadow bg-red text-center text-cream w-fit">Expired</p>;
+              if (item.package.type === "SESSIONS") {
+                if (item.remainingSessions) {
+                  if (!text) return <p className={cn(sharedClassName, "bg-purple-600")}>{item.remainingSessions} session(s)</p>;
+                  return (
+                    <section className="flex gap-2">
+                      <p className={cn(sharedClassName, "bg-purple-600")}>{item.remainingSessions} session(s)</p>
+                      <p className={cn(sharedClassName, "bg-emerald")}>{getRemainingDays({ expiryDate: text })} days</p>
+                    </section>
+                  );
+                }
+                if (!text) return <p className={expiredClassName}>Expired</p>;
+              }
 
-              if (isDateToday(text))
-                return <p className="px-2 py-0.5 rounded-md shadow bg-yellow-600 text-center text-cream w-fit">Today</p>;
+              if (isDateExpired(text)) return <p className={expiredClassName}>Expired</p>;
+              if (isDateToday(text)) return <p className={cn(sharedClassName, "bg-yellow-600")}>Today</p>;
 
               return (
-                <p className="px-2 rounded-md shadow bg-emerald text-center text-cream w-fit">
+                <p className={cn(sharedClassName, "bg-emerald")}>
                   {getRemainingDays({ expiryDate: text, isVisit: item.package.type === "VISIT" })} days
                 </p>
               );
