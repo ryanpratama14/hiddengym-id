@@ -3,7 +3,7 @@
 import Button from "@/components/Button";
 import Iconify from "@/components/Iconify";
 import Input from "@/components/Input";
-import { toast } from "@/components/Toast";
+import { toastError, toastSuccess } from "@/components/Toast";
 import { GENDERS, ICONS } from "@/lib/constants";
 import { type Dictionary } from "@/lib/dictionary";
 import { formatDate, removeFormatPhoneNumber } from "@/lib/utils";
@@ -46,8 +46,8 @@ export default function ProfileForm({ user, setIsEdit, updateUser, t }: Props) {
     const res = await updateUser(data);
     setLoading(false);
     setIsEdit(false);
-    if (!res.status) return toast({ type: "error", t, description: "An error occurred" });
-    toast({ type: "success", t, description: "Your profile has been updated" });
+    if (!res.status) return toastError({ t, description: "An error occurred" });
+    toastSuccess({ t, description: "Your profile has been updated" });
   };
 
   return (

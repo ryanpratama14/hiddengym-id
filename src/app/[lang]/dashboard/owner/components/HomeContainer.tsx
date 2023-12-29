@@ -5,7 +5,7 @@ import Iconify from "@/components/Iconify";
 import Img from "@/components/Img";
 import Logo from "@/components/Logo";
 import NavigatorX from "@/components/NavigatorX";
-import { toast } from "@/components/Toast";
+import { toastError, toastSuccess } from "@/components/Toast";
 import { type Locale } from "@/i18n.config";
 import { DETERMINE_GENDER, GENDERS } from "@/lib/constants";
 import { type Dictionary } from "@/lib/dictionary";
@@ -35,10 +35,9 @@ export default function HomeContainer({ lang, user, updateUser, refreshUser, t }
       await uploadFiles("uploadUserImage", { files: [file] });
       await refreshUser();
     },
-    onSuccess: () =>
-      toast({ t, type: "success", description: "Uploaded successfully, your profile picture should be changed in seconds..." }),
+    onSuccess: () => toastSuccess({ t, description: "Uploaded successfully, your profile picture should be changed in seconds..." }),
     onError: (error) => {
-      toast({ t, type: "error", description: "Can't upload image, try again later" });
+      toastError({ t, description: "Can't upload image, try again later" });
       console.error(error);
     },
   });
@@ -47,7 +46,7 @@ export default function HomeContainer({ lang, user, updateUser, refreshUser, t }
     const file = e.target.files?.[0];
     if (file && isFileSizeAllowed("1MB", file.size)) {
       uploadImage(file);
-    } else toast({ t, type: "error", description: "Please pick a picture that under 1MB" });
+    } else toastError({ t, description: "Please pick a picture that under 1MB" });
   };
 
   return (

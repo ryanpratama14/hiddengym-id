@@ -2,7 +2,7 @@
 
 import Button from "@/components/Button";
 import Input from "@/components/Input";
-import { toast } from "@/components/Toast";
+import { toastError, toastSuccess } from "@/components/Toast";
 import { type Locale } from "@/i18n.config";
 import { EMAIL_VISITOR_READONLY, USER_REDIRECT } from "@/lib/constants";
 import { type Dictionary } from "@/lib/dictionary";
@@ -42,10 +42,10 @@ export default function SignInVisitor({ callbackUrl, t, lang }: Props) {
       });
       if (!res?.error) {
         reset();
-        toast({ t, description: t.login.correct, type: "success" });
+        toastSuccess({ t, description: t.login.correct });
         router.push(callbackUrl ? `/${lang}${callbackUrl}` : USER_REDIRECT.VISITOR({ lang, href: "" }));
       } else {
-        toast({ t, description: t.login.incorrectPhoneNumber, type: "error" });
+        toastError({ t, description: t.login.incorrectPhoneNumber });
         resetField("credential");
       }
     },
