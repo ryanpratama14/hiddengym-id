@@ -184,14 +184,7 @@ export default function CreatePackageForm({ option, createData, t, lang }: Props
         {...register("description", { setValueAs: (v: string) => (v ? v : null) })}
       />
       <section className="flex justify-center items-center">
-        <Button
-          onClick={() => console.log(watch())}
-          className="md:w-fit w-full"
-          loading={loading}
-          type="submit"
-          color="success"
-          size="xl"
-        >
+        <Button className="md:w-fit w-full" loading={loading} type="submit" color="success" size="xl">
           Create Package
         </Button>
       </section>

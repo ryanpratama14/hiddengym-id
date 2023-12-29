@@ -6,7 +6,6 @@ import {
   getPaginationData,
   insensitiveMode,
   prismaExclude,
-  THROW_ERROR,
   THROW_OK,
   THROW_TRPC_ERROR,
   type RouterInputs,
@@ -70,7 +69,7 @@ export const packageTransactionRouter = createTRPCRouter({
     const selectedPackage = await ctx.db.package.findFirst({ where: { id: input.packageId } });
     const promoCode = input?.promoCodeId ? await ctx.db.promoCode.findFirst({ where: { id: input.promoCodeId } }) : null;
 
-    if (!selectedPackage) return THROW_ERROR("NOT_FOUND");
+    if (!selectedPackage) return THROW_TRPC_ERROR("NOT_FOUND");
 
     const isSessions = selectedPackage.type === "SESSIONS";
 
@@ -98,7 +97,7 @@ export const packageTransactionRouter = createTRPCRouter({
 
     await updateTotalSpending(input.buyerId);
 
-    return THROW_OK("CREATED");
+    return THROW_OK("CREATED", "Package transaction has been created.");
   }),
 });
 

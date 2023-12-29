@@ -16,7 +16,6 @@ import {
   getInputDate,
   getNewDate,
   getStartDate,
-  getUserAge,
   isDateExpired,
   isDateToday,
   localizePhoneNumber,
@@ -25,11 +24,9 @@ import { schema } from "@/schema";
 import { type PackageList } from "@/server/api/routers/package";
 import { type PackageTransactionCreateInput } from "@/server/api/routers/packageTransaction";
 import { type PaymentMethodList } from "@/server/api/routers/paymentMethod";
-import { type PromoCodeCheck, type PromoCodeCheckInput } from "@/server/api/routers/promoCode";
 import { type UserListVisitor } from "@/server/api/routers/user";
 import { inputVariants } from "@/styles/variants";
 import { api } from "@/trpc/react";
-import { type TRPC_RESPONSE } from "@/trpc/shared";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type Package, type PaymentMethod, type PromoCode, type User } from "@prisma/client";
 import { useRouter } from "next/navigation";
@@ -37,15 +34,13 @@ import { useState } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 
 type Props = {
-  createData: (data: PackageTransactionCreateInput) => Promise<TRPC_RESPONSE>;
   lang: Locale;
   t: Dictionary;
   option: { packages: PackageList; paymentMethods: PaymentMethodList; visitors: UserListVisitor };
 };
 
-export default function CreatePackageTransactionForm({ createData, lang, t, option }: Props) {
+export default function CreatePackageTransactionForm({ lang, t, option }: Props) {
   const router = useRouter();
-  const [loading, setLoading] = useState<boolean>(false);
   const [selectedBuyer, setSelectedBuyer] = useState<User | null>();
   const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<PaymentMethod | null>(null);
@@ -56,7 +51,6 @@ export default function CreatePackageTransactionForm({ createData, lang, t, opti
     handleSubmit,
     control,
     formState: { errors },
-    reset,
     setValue,
     watch,
     clearErrors,
@@ -66,15 +60,7 @@ export default function CreatePackageTransactionForm({ createData, lang, t, opti
     defaultValues: { transactionDate: getInputDate(), paymentMethodId: "", buyerId: "", packageId: "" },
   });
 
-  const onSubmit: SubmitHandler<PackageTransactionCreateInput> = async (data) => {
-    setLoading(true);
-    const res = await createData(data);
-    setLoading(false);
-    if (!res.status) return toast({ t, type: "error", description: "Please try again" });
-    reset();
-    toast({ t, type: "success", description: "Package transaction has been created" });
-    router.push(USER_REDIRECT.OWNER({ lang, href: "/transactions/packages" }));
-  };
+  const onSubmit: SubmitHandler<PackageTransactionCreateInput> = (data) => createData(data);
 
   const data = {
     transactionDate: watch("transactionDate"),
@@ -83,16 +69,21 @@ export default function CreatePackageTransactionForm({ createData, lang, t, opti
     promoCodeId: watch("promoCodeId"),
   };
 
+  const { mutate: createData, isLoading: loading } = api.packageTransaction.create.useMutation({
+    onSuccess: (res) => {
+      toast({ t, type: "success", description: res.message });
+      router.push(USER_REDIRECT.OWNER({ lang, href: "/transactions/packages" }));
+    },
+    onError: (err) => toast({ t, type: "error", description: err.message }),
+  });
+
   const { mutate: checkPromoCode, isLoading: loadingPromoCode } = api.promoCode.checkPromoCode.useMutation({
     onSuccess: (res) => {
       setSelectedPromoCode(res);
       setValue("promoCodeId", res.id);
       toast({ type: "success", t, description: "Promo Code applied" });
     },
-    onError: (err) => {
-      if (err.data?.code === "NOT_FOUND") return toast({ type: "error", t, description: err.message });
-      if (err.data?.code === "FORBIDDEN") return toast({ type: "error", t, description: err.message });
-    },
+    onError: (err) => toast({ type: "error", t, description: err.message }),
   });
 
   return (
@@ -310,18 +301,7 @@ export default function CreatePackageTransactionForm({ createData, lang, t, opti
       ) : null}
 
       <section className="flex justify-center items-center">
-        <Button
-          onClick={() => {
-            console.log(watch());
-            const val = schema.packageTransaction.create.safeParse(watch());
-            if (!val.success) console.log(val.error);
-          }}
-          className="md:w-fit w-full"
-          loading={loading}
-          type="submit"
-          color="success"
-          size="xl"
-        >
+        <Button className="md:w-fit w-full" loading={loading} type="submit" color="success" size="xl">
           Create Package Transaction
         </Button>
       </section>

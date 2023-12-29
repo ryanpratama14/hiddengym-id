@@ -18,7 +18,6 @@ import {
   getInputDate,
   getNewDate,
   getStartDate,
-  getUserAge,
   isDateExpired,
   isDateToday,
   localizePhoneNumber,
@@ -27,9 +26,9 @@ import { schema } from "@/schema";
 import { type PackageList } from "@/server/api/routers/package";
 import { type PackageTransactionCreateInput } from "@/server/api/routers/packageTransaction";
 import { type PaymentMethodList } from "@/server/api/routers/paymentMethod";
-import { type PromoCodeCheck, type PromoCodeCheckInput } from "@/server/api/routers/promoCode";
-import { type UserCreateVisitor, type UserCreateVisitorInput } from "@/server/api/routers/user";
+import { type UserCreateVisitorInput } from "@/server/api/routers/user";
 import { inputVariants } from "@/styles/variants";
+import { api } from "@/trpc/react";
 import { type TRPC_RESPONSE } from "@/trpc/shared";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type Package, type PaymentMethod, type PromoCode } from "@prisma/client";
@@ -38,18 +37,14 @@ import { Fragment, useState } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 
 type Props = {
-  createVisitor: (data: UserCreateVisitorInput) => Promise<UserCreateVisitor>;
-  checkPromoCode: (data: PromoCodeCheckInput) => Promise<PromoCodeCheck>;
   createPackageTransaction: (data: PackageTransactionCreateInput) => Promise<TRPC_RESPONSE>;
   lang: Locale;
   t: Dictionary;
   option: { packages: PackageList; paymentMethods: PaymentMethodList };
 };
 
-export default function CreateVisitorForm({ createVisitor, checkPromoCode, lang, t, option, createPackageTransaction }: Props) {
+export default function CreateVisitorForm({ lang, t, option, createPackageTransaction }: Props) {
   const router = useRouter();
-  const [loading, setLoading] = useState<boolean>(false);
-  const [loadingPromoCode, setLoadingPromoCode] = useState<boolean>(false);
   const [isAddingTransaction, setIsAddingTransaction] = useState<boolean>(false);
   const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<PaymentMethod | null>(null);
@@ -61,11 +56,12 @@ export default function CreateVisitorForm({ createVisitor, checkPromoCode, lang,
     handleSubmit,
     control,
     formState: { errors },
-    reset,
+
     setValue,
     watch,
     clearErrors,
     resetField,
+    getValues,
   } = useForm<UserCreateVisitorInput>({
     resolver: zodResolver(schema.user.createVisitor),
     defaultValues: { visitorData: { gender: "MALE" } },
@@ -82,28 +78,32 @@ export default function CreateVisitorForm({ createVisitor, checkPromoCode, lang,
     promoCodeId: watch("packageData.promoCodeId"),
   };
 
-  const onSubmit: SubmitHandler<UserCreateVisitorInput> = async (data) => {
-    setLoading(true);
-    const res = await createVisitor(data);
-    setLoading(false);
-    if (!res.visitorId) return toast({ t, type: "error", description: "Visitor with this phone number / email already exists" });
+  const onSubmit: SubmitHandler<UserCreateVisitorInput> = async (data) => createVisitor(data);
 
-    if (data.packageData) {
+  const { mutate: createVisitor, isLoading: loading } = api.user.createVisitor.useMutation({
+    onSuccess: async (res) => {
       const packageTransaction: PackageTransactionCreateInput = {
-        packageId: data.packageData?.packageId,
-        paymentMethodId: data.packageData?.paymentMethodId,
-        transactionDate: data.packageData?.transactionDate,
-        promoCodeId: data.packageData?.promoCodeId,
+        packageId: getValues("packageData.packageId"),
+        paymentMethodId: getValues("packageData.paymentMethodId"),
+        transactionDate: getValues("packageData.transactionDate"),
+        promoCodeId: getValues("packageData.promoCodeId"),
         buyerId: res.visitorId,
       };
-
       await createPackageTransaction(packageTransaction);
-    }
+      toast({ t, type: "success", description: res.message });
+      router.push(USER_REDIRECT.OWNER({ lang, href: "/visitors" }));
+    },
+    onError: (err) => toast({ type: "error", t, description: err.message }),
+  });
 
-    reset();
-    toast({ t, type: "success", description: "Visitor has been created" });
-    router.push(USER_REDIRECT.OWNER({ lang, href: "/visitors" }));
-  };
+  const { mutate: checkPromoCode, isLoading: loadingPromoCode } = api.promoCode.checkPromoCode.useMutation({
+    onSuccess: (res) => {
+      setSelectedPromoCode(res);
+      setValue("packageData.promoCodeId", res.id);
+      toast({ type: "success", t, description: "Promo Code applied" });
+    },
+    onError: (err) => toast({ type: "error", t, description: err.message }),
+  });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full">
@@ -268,24 +268,7 @@ export default function CreateVisitorForm({ createVisitor, checkPromoCode, lang,
                       if (!data.birthDate) return toast({ type: "warning", t, description: "Pick date of birth first" });
                       if (!data.packageId) return toast({ type: "warning", t, description: "Pick package first" });
                       if (!data.promoCodeCode) return toast({ type: "warning", t, description: "Fill out the Promo Code first" });
-
-                      setLoadingPromoCode(true);
-                      const res = await checkPromoCode({ code: data.promoCodeCode, birthDate: data.birthDate });
-                      setLoadingPromoCode(false);
-
-                      if (res.code === "NOT_FOUND")
-                        return toast({ type: "error", t, description: "Promo Code is expired or doesn't exist" });
-                      if (res.code === "FORBIDDEN")
-                        return toast({
-                          type: "error",
-                          t,
-                          description: `Not eligible to use this promo code.\nAge: ${getUserAge(getNewDate(data.birthDate))}.`,
-                        });
-
-                      if (!res.data) return toast({ type: "error", t, description: "Promo Code doesn't exist" });
-                      setSelectedPromoCode(res.data);
-                      setValue("packageData.promoCodeId", res.data.id);
-                      toast({ type: "success", t, description: "Promo Code applied" });
+                      checkPromoCode({ code: data.promoCodeCode, birthDate: getNewDate(data.birthDate) });
                     }}
                     size="m"
                     className="h-full"
@@ -415,14 +398,7 @@ export default function CreateVisitorForm({ createVisitor, checkPromoCode, lang,
       ) : null}
 
       <section className="flex justify-center items-center">
-        <Button
-          onClick={() => console.log(watch())}
-          className="md:w-fit w-full"
-          loading={loading}
-          type="submit"
-          color="success"
-          size="xl"
-        >
+        <Button className="md:w-fit w-full" loading={loading} type="submit" color="success" size="xl">
           Create User
         </Button>
       </section>
