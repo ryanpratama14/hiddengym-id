@@ -49,8 +49,6 @@ export const packageTransactionRouter = createTRPCRouter({
       },
     };
 
-    console.log(whereQuery.where.transactionDate);
-
     const [data, totalData] = await ctx.db.$transaction([
       ctx.db.packageTransaction.findMany({
         ...getPagination(pagination),

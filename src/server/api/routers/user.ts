@@ -50,7 +50,7 @@ export const userRouter = createTRPCRouter({
 
   createVisitor: ownerAdminProcedure.input(schema.user.createVisitor).mutation(async ({ ctx, input }) => {
     const { visitorData } = input;
-    const data = await ctx.db.user.findUnique({ where: { phoneNumber: visitorData.phoneNumber } });
+    const data = await ctx.db.user.findUnique({ where: { phoneNumber: formatPhoneNumber(visitorData.phoneNumber) } });
     if (data) return { ...THROW_ERROR("CONFLICT"), visitorId: null };
 
     if (visitorData.email) {
