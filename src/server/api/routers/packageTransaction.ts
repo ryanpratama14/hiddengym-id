@@ -21,7 +21,7 @@ const packageTransactionSelect = {
   select: {
     ...prismaExclude("PackageTransaction", []),
     buyer: {
-      select: { ...prismaExclude("User", ["credential", "trainerPackageIDs", "trainerPackageIDs", "scheduleIDs"]), image: true },
+      select: { ...prismaExclude("User", ["credential", "trainerPackageIDs", "trainerSportIDs", "scheduleIDs"]), image: true },
     },
     package: { select: { ...prismaExclude("Package", ["placeIDs", "sportIDs", "trainerIDs"]) } },
     promoCode: true,

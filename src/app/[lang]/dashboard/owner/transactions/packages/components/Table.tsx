@@ -241,7 +241,11 @@ export default function PackageTransactionsTable({ data, searchParams, lang, loa
                   return (
                     <section className="flex gap-2">
                       <p className={cn(sharedClassName, "bg-purple-600")}>{item.remainingSessions} session(s)</p>
-                      <p className={cn(sharedClassName, "bg-emerald")}>{getRemainingDays({ expiryDate: text })} days</p>
+                      {isDateToday(text) ? (
+                        <p className={cn(sharedClassName, "bg-yellow-600")}>Today</p>
+                      ) : (
+                        <p className={cn(sharedClassName, "bg-emerald")}>{getRemainingDays({ expiryDate: text })} days</p>
+                      )}
                     </section>
                   );
                 }
