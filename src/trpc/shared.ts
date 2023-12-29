@@ -211,7 +211,7 @@ export const getSortingQuery = (sorting?: string) => {
       orderBy: [{ [name!]: value }],
     };
   }
-  return undefined;
+  return {};
 };
 
 export const transformer = SuperJSON;

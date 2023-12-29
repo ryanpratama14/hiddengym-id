@@ -56,7 +56,7 @@ export const packageTransactionRouter = createTRPCRouter({
         ...getPagination(pagination),
         ...packageTransactionSelect,
         ...whereQuery,
-        ...getSortingQuery(sorting),
+        orderBy: sorting ? getSortingQuery(sorting).orderBy : [{ transactionDate: "desc" }],
       }),
       ctx.db.packageTransaction.count(whereQuery),
     ]);
