@@ -91,6 +91,8 @@ export const ICONS = {
   validity: "game-icons:duration",
   url: "tabler:link",
   name: "mdi:rename-outline",
+  invoice: "iconamoon:invoice",
+  detail: "carbon:folder-details-reference",
 };
 
 export const GENDERS: {

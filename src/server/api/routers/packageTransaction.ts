@@ -1,4 +1,4 @@
-import { formatName, getExpiryDateFromDate, getLocalDate, getStartDate } from "@/lib/utils";
+import { formatName, getEndDate, getExpiryDateFromDate, getLocalDate, getStartDate } from "@/lib/utils";
 import { schema } from "@/schema";
 import { createTRPCRouter, ownerProcedure, protectedProcedure } from "@/server/api/trpc";
 import {
@@ -41,11 +41,15 @@ export const packageTransactionRouter = createTRPCRouter({
         package: { name: { contains: params?.package, ...insensitiveMode }, type: params?.packageType },
         paymentMethod: { name: { contains: params?.paymentMethod, ...insensitiveMode } },
         promoCodeId: params?.withPromoCode ? { not: null } : undefined,
-        totalPrice: {
-          gte: params?.totalPrice,
+        totalPrice: { gte: params?.totalPrice },
+        transactionDate: {
+          gte: params?.transactionDate && getStartDate(params.transactionDate),
+          lte: params?.transactionDate && getEndDate(params.transactionDate),
         },
       },
     };
+
+    console.log(whereQuery.where.transactionDate);
 
     const [data, totalData] = await ctx.db.$transaction([
       ctx.db.packageTransaction.findMany({

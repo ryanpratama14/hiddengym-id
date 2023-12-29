@@ -20,6 +20,7 @@ export default function TransactionsProductPage({ searchParams, params }: Props)
       limit: Number(searchParams.limit) || PAGINATION_LIMIT,
     },
     params: {
+      transactionDate: searchParams.transactionDate as string,
       packageType: searchParams.packageType as PackageType,
       package: searchParams.package as string,
       buyer: searchParams.buyer as string,

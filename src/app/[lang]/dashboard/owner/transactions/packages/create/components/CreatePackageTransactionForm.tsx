@@ -203,10 +203,10 @@ export default function CreatePackageTransactionForm({ createData, checkPromoCod
               </section>
             </section>
 
-            <section className="flex flex-col">
+            <section className="flex flex-col text-center">
               <p className="font-medium underline">{selectedBuyer.fullName}</p>
               <small>{localizePhoneNumber(selectedBuyer.phoneNumber)}</small>
-              <small>{selectedBuyer?.email}</small>
+              <small>{selectedBuyer.email}</small>
             </section>
 
             <section className="flex flex-col gap-1">
@@ -271,11 +271,11 @@ export default function CreatePackageTransactionForm({ createData, checkPromoCod
                   </section>
                 </section>
               ) : null}
-
-              {selectedPackage.totalPermittedSessions ? (
-                <small>Permitted sessions: {`${selectedPackage.totalPermittedSessions} session(s)`}</small>
-              ) : null}
             </section>
+
+            {selectedPackage.totalPermittedSessions ? (
+              <small className="text-left">Sessions given: {`${selectedPackage.totalPermittedSessions} session(s)`}</small>
+            ) : null}
 
             {selectedPaymentMethod ? (
               <section className="flex w-full bg-blue text-light justify-center text-lg py-1 font-medium shadow-lg">

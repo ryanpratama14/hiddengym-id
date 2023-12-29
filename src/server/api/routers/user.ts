@@ -57,13 +57,13 @@ export const userRouter = createTRPCRouter({
   }),
 
   createVisitor: ownerAdminProcedure.input(schema.user.createVisitor).mutation(async ({ ctx, input }) => {
-    const { packageData, visitorData } = input;
+    const { visitorData } = input;
     const data = await ctx.db.user.findUnique({ where: { phoneNumber: visitorData.phoneNumber } });
-    if (data) return THROW_ERROR("CONFLICT");
+    if (data) return { ...THROW_ERROR("CONFLICT"), visitorId: null };
 
     if (visitorData.email) {
       const data = await ctx.db.user.findFirst({ where: { email: visitorData.email } });
-      if (data) return THROW_ERROR("CONFLICT");
+      if (data) return { ...THROW_ERROR("CONFLICT"), visitorId: null };
     }
 
     const newVisitor = await ctx.db.user.create({
@@ -76,40 +76,7 @@ export const userRouter = createTRPCRouter({
       },
     });
 
-    if (packageData) {
-      const selectedPackage = await ctx.db.package.findFirst({ where: { id: packageData.packageId } });
-      const promoCode = input?.packageData?.promoCodeId
-        ? await ctx.db.promoCode.findFirst({ where: { id: input.packageData.promoCodeId } })
-        : null;
-
-      if (selectedPackage) {
-        const isSessions = selectedPackage.type === "SESSIONS";
-
-        await ctx.db.packageTransaction.create({
-          data: {
-            totalPrice: promoCode ? selectedPackage.price - promoCode.discountPrice : selectedPackage.price,
-            startDate: selectedPackage.type !== "SESSIONS" ? getStartDate(packageData.transactionDate) : null,
-            expiryDate:
-              selectedPackage.validityInDays && !isSessions
-                ? getExpiryDateFromDate({
-                    days: selectedPackage.validityInDays,
-                    isVisit: selectedPackage.type === "VISIT",
-                    dateString: packageData.transactionDate,
-                  })
-                : null,
-            remainingPermittedSessions:
-              isSessions && selectedPackage.totalPermittedSessions ? selectedPackage.totalPermittedSessions : null,
-            transactionDate: getLocalDate(packageData.transactionDate),
-            paymentMethodId: packageData.paymentMethodId,
-            packageId: selectedPackage.id,
-            buyerId: newVisitor.id,
-            promoCodeId: promoCode?.id ? promoCode.id : null,
-          },
-        });
-      }
-    }
-
-    return THROW_OK("CREATED");
+    return { ...THROW_OK("CREATED"), visitorId: newVisitor.id };
   }),
 
   detail: protectedProcedure.input(z.object({ id: z.string() })).query(async ({ ctx, input }) => {
@@ -206,6 +173,7 @@ export type UserList = RouterOutputs["user"]["list"];
 export type UserListVisitor = RouterOutputs["user"]["listVisitor"];
 export type UserListData = RouterOutputs["user"]["list"]["data"];
 export type UserListTrainer = RouterOutputs["user"]["listTrainer"];
+export type UserCreateVisitor = RouterOutputs["user"]["createVisitor"];
 
 // inputs
 export type UserCreateInput = RouterInputs["user"]["create"];

@@ -85,7 +85,7 @@ export default function PackageTransactionsTable({ data, searchParams, lang, loa
               key={name}
               defaultValue={searchParams[name]}
               name={name}
-              type={name === "totalPrice" ? "number" : "text"}
+              type={name === "totalPrice" ? "number" : name === "transactionDate" ? "date" : "text"}
               className={cn("text-base")}
             />
           )}
@@ -161,20 +161,23 @@ export default function PackageTransactionsTable({ data, searchParams, lang, loa
           {
             fixed: "left",
             align: "center",
-            title: "Action",
+            title: "Info",
             key: "id",
             width: 1,
             dataIndex: "id",
             render: (_, item) => (
-              <Button
-                onClick={() => {
-                  setSelectedTransaction(item);
-                  setShow(true);
-                }}
-                color="link"
-              >
-                View
-              </Button>
+              <section className="flex justify-center items-center">
+                <Iconify
+                  icon={ICONS.invoice}
+                  onClick={() => {
+                    setSelectedTransaction(item);
+                    setShow(true);
+                  }}
+                  width={25}
+                  className="p-1 bg-green text-cream rounded-md"
+                  color="link"
+                />
+              </section>
             ),
           },
           {
@@ -240,7 +243,7 @@ export default function PackageTransactionsTable({ data, searchParams, lang, loa
                 return <p className="px-2 py-0.5 rounded-md shadow bg-red text-center text-cream w-fit">Expired</p>;
 
               if (isDateToday(text))
-                return <p className="px-2 py-0.5 rounded-md shadow bg-indigo-600 text-center text-cream w-fit">Today</p>;
+                return <p className="px-2 py-0.5 rounded-md shadow bg-yellow-600 text-center text-cream w-fit">Today</p>;
 
               return (
                 <p className="px-2 rounded-md shadow bg-emerald text-center text-cream w-fit">
@@ -254,6 +257,7 @@ export default function PackageTransactionsTable({ data, searchParams, lang, loa
             key: "transactionDate",
             dataIndex: "transactionDate",
             render: (text: Date) => formatDateShort(text),
+            ...getTableFilter({ name: "transactionDate" }),
           },
           {
             title: "Promo Code",

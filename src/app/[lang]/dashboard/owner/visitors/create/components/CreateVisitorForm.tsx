@@ -24,9 +24,10 @@ import {
 } from "@/lib/utils";
 import { schema } from "@/schema";
 import { type PackageList } from "@/server/api/routers/package";
+import { type PackageTransactionCreateInput } from "@/server/api/routers/packageTransaction";
 import { type PaymentMethodList } from "@/server/api/routers/paymentMethod";
 import { type PromoCodeDetail, type PromoCodeDetailInput } from "@/server/api/routers/promoCode";
-import { type UserCreateVisitorInput } from "@/server/api/routers/user";
+import { type UserCreateVisitor, type UserCreateVisitorInput } from "@/server/api/routers/user";
 import { inputVariants } from "@/styles/variants";
 import { type TRPC_RESPONSE } from "@/trpc/shared";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -36,14 +37,15 @@ import { Fragment, useState } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 
 type Props = {
-  createVisitor: (data: UserCreateVisitorInput) => Promise<TRPC_RESPONSE>;
+  createVisitor: (data: UserCreateVisitorInput) => Promise<UserCreateVisitor>;
   checkPromoCode: (data: PromoCodeDetailInput) => Promise<PromoCodeDetail>;
+  createPackageTransaction: (data: PackageTransactionCreateInput) => Promise<TRPC_RESPONSE>;
   lang: Locale;
   t: Dictionary;
   option: { packages: PackageList; paymentMethods: PaymentMethodList };
 };
 
-export default function CreateVisitorForm({ createVisitor, checkPromoCode, lang, t, option }: Props) {
+export default function CreateVisitorForm({ createVisitor, checkPromoCode, lang, t, option, createPackageTransaction }: Props) {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
   const [loadingPromoCode, setLoadingPromoCode] = useState<boolean>(false);
@@ -69,16 +71,6 @@ export default function CreateVisitorForm({ createVisitor, checkPromoCode, lang,
     },
   });
 
-  const onSubmit: SubmitHandler<UserCreateVisitorInput> = async (data) => {
-    setLoading(true);
-    const res = await createVisitor(data);
-    setLoading(false);
-    if (!res.status) return toast({ t, type: "error", description: "Visitor with this phone number / email already exists" });
-    reset();
-    toast({ t, type: "success", description: "Visitor has been created" });
-    router.push(USER_REDIRECT.OWNER({ lang, href: "/visitors" }));
-  };
-
   const data = {
     transactionDate: watch("packageData.transactionDate"),
     fullName: watch("visitorData.fullName"),
@@ -86,6 +78,29 @@ export default function CreateVisitorForm({ createVisitor, checkPromoCode, lang,
     email: watch("visitorData.email"),
     promoCodeCode: watch("packageData.promoCodeCode"),
     packageId: watch("packageData.packageId"),
+  };
+
+  const onSubmit: SubmitHandler<UserCreateVisitorInput> = async (data) => {
+    setLoading(true);
+    const res = await createVisitor(data);
+    setLoading(false);
+    if (!res.visitorId) return toast({ t, type: "error", description: "Visitor with this phone number / email already exists" });
+
+    if (data.packageData) {
+      const packageTransaction: PackageTransactionCreateInput = {
+        packageId: data.packageData?.packageId,
+        paymentMethodId: data.packageData?.paymentMethodId,
+        transactionDate: data.packageData?.transactionDate,
+        promoCodeId: data.packageData?.promoCodeId,
+        buyerId: res.visitorId,
+      };
+
+      await createPackageTransaction(packageTransaction);
+    }
+
+    reset();
+    toast({ t, type: "success", description: "Visitor has been created" });
+    router.push(USER_REDIRECT.OWNER({ lang, href: "/visitors" }));
   };
 
   return (
@@ -287,11 +302,7 @@ export default function CreateVisitorForm({ createVisitor, checkPromoCode, lang,
             <section className="flex flex-col gap-1">
               <section className="flex justify-between items-center">
                 <section className="flex gap-2 items-center">
-                  <small className="font-semibold border-1 border-dark px-1">
-                    {`${selectedPackage.totalPermittedSessions ? `${selectedPackage.totalPermittedSessions} ` : ""}${
-                      selectedPackage.type
-                    }`}
-                  </small>
+                  <small className="font-semibold border-1 border-dark px-1">{selectedPackage.type}</small>
                   <small>{selectedPackage.name}</small>
                 </section>
                 <small>{formatCurrency(selectedPackage.price)}</small>
@@ -351,6 +362,10 @@ export default function CreateVisitorForm({ createVisitor, checkPromoCode, lang,
                 </section>
               ) : null}
             </section>
+
+            {selectedPackage.totalPermittedSessions ? (
+              <small className="text-left">Sessions given: {`${selectedPackage.totalPermittedSessions} session(s)`}</small>
+            ) : null}
 
             {selectedPaymentMethod ? (
               <section className="flex w-full bg-blue text-light justify-center text-lg py-1 font-medium shadow-lg">

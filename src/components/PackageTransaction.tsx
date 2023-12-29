@@ -32,9 +32,7 @@ export default function PackageTransaction({ data }: Props) {
         <section className="flex flex-col gap-1">
           <section className="flex justify-between items-center">
             <section className="flex gap-2 items-center">
-              <small className="font-semibold border-1 border-dark px-1">
-                {`${data.package.totalPermittedSessions ? `${data.package.totalPermittedSessions} ` : ""}${data.package.type}`}
-              </small>
+              <small className="font-semibold border-1 border-dark px-1">{data.package.type}</small>
               <small>{data.package.name}</small>
             </section>
             <small>{formatCurrency(data.package.price)}</small>
@@ -77,6 +75,10 @@ export default function PackageTransaction({ data }: Props) {
           ) : null}
 
           {data.package.totalPermittedSessions ? (
+            <small className="text-left">Sessions given: {`${data.package.totalPermittedSessions} session(s)`}</small>
+          ) : null}
+
+          {data.remainingPermittedSessions ? (
             <small className="text-left">Sessions left: {`${data.remainingPermittedSessions} session(s)`}</small>
           ) : null}
         </section>

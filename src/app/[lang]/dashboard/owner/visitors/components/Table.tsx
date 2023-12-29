@@ -163,14 +163,16 @@ export default function VisitorsTable({ data, searchParams, lang, loading }: Pro
         {
           fixed: "left",
           align: "center",
-          title: "Action",
+          title: "Info",
           key: "id",
           width: 1,
           dataIndex: "id",
           render: (id: string) => (
-            <Navigator color="link" href={USER_REDIRECT.OWNER({ lang, href: `/visitors/detail/${id}` })}>
-              View
-            </Navigator>
+            <section className="flex justify-center items-center">
+              <Navigator color="none" size="none" href={USER_REDIRECT.OWNER({ lang, href: `/visitors/detail/${id}` })}>
+                <Iconify icon={ICONS.detail} width={25} className="p-1 bg-blue text-cream rounded-md" color="link" />
+              </Navigator>
+            </section>
           ),
         },
         {

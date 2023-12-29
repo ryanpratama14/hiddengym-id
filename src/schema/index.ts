@@ -30,6 +30,7 @@ export class schema {
 
   static date = z.string().min(1, "Pick a date");
   static dateNullable = z.string().nullable();
+  static dateOptional = z.string().optional();
   static promoCodeCode = z
     .string()
     .min(4, "At least 4 characters")
@@ -207,6 +208,7 @@ export class schema {
           paymentMethod: z.string().optional(),
           withPromoCode: z.boolean().optional(),
           totalPrice: z.number().optional(),
+          transactionDate: schema.dateOptional,
         })
         .optional(),
     });
