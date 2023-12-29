@@ -144,6 +144,11 @@ export const ADD_BUTTON_ITEMS_TO_REMOVE: Record<Role, string[]> = {
 
 export const ADD_BUTTON_ITEMS = (role: Role, lang: Locale) => [
   {
+    label: "Payment Method",
+    icon: ICONS.payment_method,
+    href: USER_REDIRECT[role]({ lang, href: "/payment-methods/create" }),
+  },
+  {
     label: "Promo Code",
     icon: ICONS.promo_codes,
     href: USER_REDIRECT[role]({ lang, href: "/promo-codes/create" }),

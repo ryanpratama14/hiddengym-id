@@ -10,8 +10,8 @@ export default function PackageTransaction({ data }: Props) {
   if (!data) return null;
 
   return (
-    <section className="flex justify-center items-center">
-      <section className="md:w-[30rem] w-full flex flex-col gap-4 p-3 lg:p-6 shadow bg-light text-dark">
+    <section className="flex justify-center items-center relative z-0 bg-light">
+      <section className="md:w-[30rem] w-full flex flex-col gap-4 p-3 lg:p-6 shadow text-dark">
         <section className="flex justify-between w-full">
           <section className="flex flex-col text-left">
             <h6>Package TXN</h6>
@@ -22,13 +22,11 @@ export default function PackageTransaction({ data }: Props) {
             <h6 className="w-fit px-2 text-light bg-orange">{formatCurrency(data.totalPrice)}</h6>
           </section>
         </section>
-
         <section className="flex flex-col">
           <p className="font-medium underline">{data.buyer.fullName}</p>
           <small>{localizePhoneNumber(data.buyer.phoneNumber)}</small>
           <small>{data.buyer?.email}</small>
         </section>
-
         <section className="flex flex-col gap-1">
           <section className="flex justify-between items-center">
             <section className="flex gap-2 items-center">
@@ -48,7 +46,6 @@ export default function PackageTransaction({ data }: Props) {
             </section>
           ) : null}
         </section>
-
         <section className="flex flex-col">
           {data.expiryDate && data.startDate ? (
             <section className="flex flex-col">
@@ -83,10 +80,10 @@ export default function PackageTransaction({ data }: Props) {
           ) : null}
         </section>
 
-        <section className="flex w-full bg-blue text-light justify-center text-lg py-1 font-medium shadow-lg">
-          PAID BY {data.paymentMethod.name.toUpperCase()}
+        <section className="px-4 py-1 shadow-lg text-light bg-blue flex flex-col">
+          <section className="text-lg font-medium">PAID BY {data.paymentMethod.name.toUpperCase()}</section>
+          <small className="!text-xs">txn. {data.id}</small>
         </section>
-
         <section className="flex flex-col justify-center items-center gap-6 mt-6">
           <Logo className="aspect-video w-full md:w-[70%]" />
           <section className="flex justify-center flex-col gap-1 text-center">

@@ -164,6 +164,10 @@ export class schema {
     static create = z.object({ name: schema.names });
   };
 
+  static paymentMethod = class {
+    static create = z.object({ name: schema.names });
+  };
+
   static place = class {
     static create = z.object({
       name: schema.names,
