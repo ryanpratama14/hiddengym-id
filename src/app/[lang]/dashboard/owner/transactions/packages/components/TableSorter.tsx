@@ -3,7 +3,7 @@
 import Button from "@/components/Button";
 import Iconify from "@/components/Iconify";
 import { type Locale } from "@/i18n.config";
-import { ICONS, USER_LIST_SORTERERS, USER_REDIRECT } from "@/lib/constants";
+import { ICONS, PACKAGE_TRANSACTION_SORTERERS, USER_REDIRECT } from "@/lib/constants";
 import { cn, createUrl, getSorterSlug } from "@/lib/utils";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -17,7 +17,7 @@ export default function TableSorter({ lang }: Props) {
   const newParams = new URLSearchParams(newSearchParams.toString());
 
   const redirectTable = (newParams: URLSearchParams) => {
-    router.push(createUrl(USER_REDIRECT.OWNER({ lang, href: "/visitors" }), newParams));
+    router.push(createUrl(USER_REDIRECT.OWNER({ lang, href: "/transactions/packages" }), newParams));
   };
 
   return (
@@ -38,7 +38,7 @@ export default function TableSorter({ lang }: Props) {
         ) : null}
       </section>
       <section className="flex flex-col gap-1">
-        {USER_LIST_SORTERERS.map((opt) => {
+        {PACKAGE_TRANSACTION_SORTERERS.map((opt) => {
           const sort = getSorterSlug(newParams.get("sort"));
           const active = sort?.name === opt.name;
           return (

@@ -4,7 +4,7 @@ import Button from "@/components/Button";
 import Input from "@/components/Input";
 import InputSelect from "@/components/InputSelect";
 import InputTextArea from "@/components/InputTextArea";
-import { toast } from "@/components/Toast";
+import { toastError, toastSuccess } from "@/components/Toast";
 import { type Locale } from "@/i18n.config";
 import { ICONS, PACKAGE_TYPES, USER_REDIRECT } from "@/lib/constants";
 import { type Dictionary } from "@/lib/dictionary";
@@ -13,11 +13,10 @@ import { type PackageCreateInput } from "@/server/api/routers/package";
 import { type PlaceList } from "@/server/api/routers/place";
 import { type SportList } from "@/server/api/routers/sport";
 import { type UserListTrainer } from "@/server/api/routers/user";
-import { type TRPC_RESPONSE } from "@/trpc/shared";
+import { api } from "@/trpc/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type PackageType } from "@prisma/client";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 
 const initialData: PackageCreateInput = {
@@ -33,14 +32,12 @@ const initialData: PackageCreateInput = {
 };
 
 type Props = {
-  createData: (data: PackageCreateInput) => Promise<TRPC_RESPONSE>;
   option: { places: PlaceList; sports: SportList; trainers: UserListTrainer };
   t: Dictionary;
   lang: Locale;
 };
 
-export default function CreatePackageForm({ option, createData, t, lang }: Props) {
-  const [loading, setLoading] = useState(false);
+export default function CreatePackageForm({ option, t, lang }: Props) {
   const router = useRouter();
 
   const {
@@ -48,7 +45,7 @@ export default function CreatePackageForm({ option, createData, t, lang }: Props
     handleSubmit,
     formState: { errors },
     watch,
-    reset,
+
     control,
     resetField,
     setValue,
@@ -57,15 +54,15 @@ export default function CreatePackageForm({ option, createData, t, lang }: Props
     defaultValues: initialData,
   });
 
-  const onSubmit: SubmitHandler<PackageCreateInput> = async (data) => {
-    setLoading(true);
-    const res = await createData(data);
-    setLoading(false);
-    reset();
-    if (!res.status) return toast({ t, type: "error", description: "A payment method with this name already exists" });
-    toast({ t, type: "success", description: "Package has been created" });
-    router.push(USER_REDIRECT.OWNER({ lang, href: "/packages" }));
-  };
+  const onSubmit: SubmitHandler<PackageCreateInput> = async (data) => createData(data);
+
+  const { mutate: createData, isLoading: loading } = api.package.create.useMutation({
+    onSuccess: (res) => {
+      toastSuccess({ t, description: res.message });
+      router.push(USER_REDIRECT.OWNER({ lang, href: "/packages" }));
+    },
+    onError: (res) => toastError({ t, description: res.message }),
+  });
 
   const data = {
     type: watch("type"),

@@ -5,7 +5,7 @@ import Iconify from "@/components/Iconify";
 import Input from "@/components/Input";
 import InputSelect from "@/components/InputSelect";
 import Logo from "@/components/Logo";
-import { toast } from "@/components/Toast";
+import { toastError, toastSuccess, toastWarning } from "@/components/Toast";
 import { type Locale } from "@/i18n.config";
 import { GENDERS, ICONS, USER_REDIRECT } from "@/lib/constants";
 import { type Dictionary } from "@/lib/dictionary";
@@ -90,19 +90,19 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
         buyerId: res.visitorId,
       };
       await createPackageTransaction(packageTransaction);
-      toast({ t, type: "success", description: res.message });
+      toastSuccess({ t, description: res.message });
       router.push(USER_REDIRECT.OWNER({ lang, href: "/visitors" }));
     },
-    onError: (err) => toast({ type: "error", t, description: err.message }),
+    onError: (res) => toastError({ t, description: res.message }),
   });
 
   const { mutate: checkPromoCode, isLoading: loadingPromoCode } = api.promoCode.checkPromoCode.useMutation({
     onSuccess: (res) => {
-      setSelectedPromoCode(res);
-      setValue("packageData.promoCodeId", res.id);
-      toast({ type: "success", t, description: "Promo Code applied" });
+      setSelectedPromoCode(res.data);
+      setValue("packageData.promoCodeId", res.data.id);
+      toastSuccess({ t, description: res.message });
     },
-    onError: (err) => toast({ type: "error", t, description: err.message }),
+    onError: (res) => toastError({ t, description: res.message }),
   });
 
   return (
@@ -265,9 +265,9 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
                     loading={loadingPromoCode}
                     disabled={loadingPromoCode || !!selectedPromoCode?.id}
                     onClick={async () => {
-                      if (!data.birthDate) return toast({ type: "warning", t, description: "Pick date of birth first" });
-                      if (!data.packageId) return toast({ type: "warning", t, description: "Pick package first" });
-                      if (!data.promoCodeCode) return toast({ type: "warning", t, description: "Fill out the Promo Code first" });
+                      if (!data.birthDate) return toastWarning({ t, description: "Pick date of birth first" });
+                      if (!data.packageId) return toastWarning({ t, description: "Pick package first" });
+                      if (!data.promoCodeCode) return toastWarning({ t, description: "Fill out the Promo Code first" });
                       checkPromoCode({ code: data.promoCodeCode, birthDate: getNewDate(data.birthDate) });
                     }}
                     size="m"

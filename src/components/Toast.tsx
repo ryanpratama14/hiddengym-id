@@ -34,3 +34,8 @@ export const toast = ({ type, description, t }: { type: ToastType; description: 
     icon: <Iconify icon={toastIcons[type].icon} width={25} color={toastIcons[type].color} />,
   });
 };
+
+export const toastError = ({ t, description }: { t: Dictionary; description: string }) => toast({ t, description, type: "error" });
+export const toastSuccess = ({ t, description }: { t: Dictionary; description: string }) => toast({ t, description, type: "success" });
+export const toastWarning = ({ t, description }: { t: Dictionary; description: string }) => toast({ t, description, type: "warning" });
+export const toastInfo = ({ t, description }: { t: Dictionary; description: string }) => toast({ t, description, type: "info" });

@@ -93,6 +93,9 @@ export const THROW_CODE = (code: TRPC_CODE_KEY, message?: string): TRPC_RESPONSE
       : (ERROR_MESSAGES as Record<TRPC_CODE_KEY, string>)[code],
 });
 
+export const getConflictMessage = (thing: string, field: string) => `A ${thing} with this ${field} already exists.`;
+export const getCreatedMessage = (thing: string) => `A ${thing} has been created.`;
+
 export const prismaExclude = <T extends Entity, K extends Keys<T>>(type: T, omit: K[]) => {
   type Key = Exclude<Keys<T>, K>;
   type TMap = Record<Key, true>;

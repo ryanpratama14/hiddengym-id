@@ -1,9 +1,9 @@
 import { type Locale } from "@/i18n.config";
 import { COLORS } from "@/styles/theme";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
-import { type Gender, type PackageType, type PromoCodeType, type Role } from "@prisma/client";
+import { PackageTransaction, type Gender, type PackageType, type PromoCodeType, type Role, type User } from "@prisma/client";
 
-export const USER_LIST_SORTERERS = [
+export const USER_LIST_SORTERERS: { name: keyof User; title: string }[] = [
   {
     name: "fullName",
     title: "Name",
@@ -23,6 +23,37 @@ export const USER_LIST_SORTERERS = [
   {
     name: "totalSpending",
     title: "Total Spending",
+  },
+];
+
+export const PACKAGE_TRANSACTION_SORTERERS: { name: keyof PackageTransaction; title: string }[] = [
+  {
+    name: "transactionDate",
+    title: "Transaction Date",
+  },
+  {
+    name: "packageId",
+    title: "Package",
+  },
+  {
+    name: "paymentMethodId",
+    title: "Payment Method",
+  },
+  {
+    name: "expiryDate",
+    title: "Expiry Date",
+  },
+  {
+    name: "remainingPermittedSessions",
+    title: "Remaining Sessions",
+  },
+  {
+    name: "promoCodeId",
+    title: "Promo Code",
+  },
+  {
+    name: "buyerId",
+    title: "Buyer",
   },
 ];
 

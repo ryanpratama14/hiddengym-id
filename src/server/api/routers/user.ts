@@ -2,12 +2,13 @@ import { formatName, formatPhoneNumber, getNewDate } from "@/lib/utils";
 import { schema } from "@/schema";
 import { createTRPCRouter, ownerAdminProcedure, ownerProcedure, protectedProcedure, publicProcedure } from "@/server/api/trpc";
 import {
+  getConflictMessage,
+  getCreatedMessage,
   getPagination,
   getPaginationData,
   getSortingQuery,
   insensitiveMode,
   prismaExclude,
-  THROW_ERROR,
   THROW_OK,
   THROW_TRPC_ERROR,
   type RouterInputs,
@@ -25,19 +26,19 @@ const userSelect = {
     totalSpending: true,
     totalSpendingPackage: true,
     totalSpendingProduct: true,
-    // visits: true,
-    // schedules: true,
-    // files: true,
-    // trainerSports: true,
-    // trainerPackages: true,
-    // trainerSchedules: true,
+    visits: true,
+    schedules: true,
+    files: true,
+    trainerSports: true,
+    trainerPackages: true,
+    trainerSchedules: true,
   },
 };
 
 export const userRouter = createTRPCRouter({
   create: publicProcedure.input(schema.user.create).mutation(async ({ ctx, input }) => {
     const data = await ctx.db.user.findFirst({ where: { email: input.email } });
-    if (data) return THROW_ERROR("CONFLICT");
+    if (data) return THROW_TRPC_ERROR("CONFLICT");
     await ctx.db.user.create({
       data: {
         email: input.email.toLowerCase(),
@@ -54,11 +55,11 @@ export const userRouter = createTRPCRouter({
   createVisitor: ownerAdminProcedure.input(schema.user.createVisitor).mutation(async ({ ctx, input }) => {
     const { visitorData } = input;
     const data = await ctx.db.user.findUnique({ where: { phoneNumber: formatPhoneNumber(visitorData.phoneNumber) } });
-    if (data) return THROW_TRPC_ERROR("CONFLICT");
+    if (data) return THROW_TRPC_ERROR("CONFLICT", getConflictMessage("visitor", "phone number"));
 
     if (visitorData.email) {
       const data = await ctx.db.user.findFirst({ where: { email: visitorData.email } });
-      if (data) return THROW_TRPC_ERROR("CONFLICT");
+      if (data) return THROW_TRPC_ERROR("CONFLICT", getConflictMessage("visitor", "email"));
     }
 
     const newVisitor = await ctx.db.user.create({
@@ -72,7 +73,7 @@ export const userRouter = createTRPCRouter({
       },
     });
 
-    return { ...THROW_OK("CREATED"), visitorId: newVisitor.id };
+    return { ...THROW_OK("CREATED", getCreatedMessage("new visitor")), visitorId: newVisitor.id };
   }),
 
   detail: protectedProcedure.input(z.object({ id: z.string() })).query(async ({ ctx, input }) => {

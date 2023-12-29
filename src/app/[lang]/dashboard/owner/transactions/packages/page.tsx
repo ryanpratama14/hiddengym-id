@@ -7,6 +7,7 @@ import { PAGINATION_LIMIT } from "@/trpc/shared";
 import { type SearchParams } from "@/types";
 import { type PackageType } from "@prisma/client";
 import Table from "./components/Table";
+import TableSorter from "./components/TableSorter";
 
 type Props = {
   searchParams: SearchParams;
@@ -27,6 +28,7 @@ export default function TransactionsProductPage({ searchParams, params }: Props)
       totalPrice: searchParams.totalPrice ? Number(searchParams.totalPrice) : undefined,
       paymentMethod: searchParams.paymentMethod as string,
     },
+    sorting: searchParams.sort as string,
   };
 
   const { data, isLoading: loading } = api.packageTransaction.list.useQuery(query);
@@ -36,6 +38,7 @@ export default function TransactionsProductPage({ searchParams, params }: Props)
       <section className="flex flex-col gap-6 md:col-span-4">
         <Table loading={loading} lang={params.lang} data={data} searchParams={searchParams} />
       </section>
+      <TableSorter lang={params.lang} />
     </section>
   );
 }

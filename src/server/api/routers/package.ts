@@ -1,6 +1,14 @@
 import { schema } from "@/schema";
 import { createTRPCRouter, ownerProcedure, publicProcedure } from "@/server/api/trpc";
-import { prismaExclude, THROW_ERROR, THROW_OK, THROW_TRPC_ERROR, type RouterInputs, type RouterOutputs } from "@/trpc/shared";
+import {
+  getConflictMessage,
+  getCreatedMessage,
+  prismaExclude,
+  THROW_OK,
+  THROW_TRPC_ERROR,
+  type RouterInputs,
+  type RouterOutputs,
+} from "@/trpc/shared";
 import { z } from "zod";
 
 const packageSelect = {
@@ -13,9 +21,9 @@ const packageSelect = {
 };
 
 export const packageRouter = createTRPCRouter({
-  create: ownerProcedure.input(schema.package.create).query(async ({ ctx, input }) => {
+  create: ownerProcedure.input(schema.package.create).mutation(async ({ ctx, input }) => {
     const data = await ctx.db.package.findFirst({ where: { name: input.name } });
-    if (data) return THROW_ERROR("CONFLICT");
+    if (data) return THROW_TRPC_ERROR("CONFLICT", getConflictMessage("package", "name"));
 
     await ctx.db.package.create({
       data: {
@@ -30,7 +38,7 @@ export const packageRouter = createTRPCRouter({
         trainerIDs: input.trainerIDs,
       },
     });
-    return THROW_OK("CREATED");
+    return THROW_OK("CREATED", getCreatedMessage("package"));
   }),
 
   detail: publicProcedure.input(z.object({ id: z.string() })).query(async ({ ctx, input }) => {

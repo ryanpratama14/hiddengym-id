@@ -2,8 +2,10 @@ import { formatName, getEndDate, getExpiryDateFromDate, getLocalDate, getStartDa
 import { schema } from "@/schema";
 import { createTRPCRouter, ownerProcedure, protectedProcedure } from "@/server/api/trpc";
 import {
+  getCreatedMessage,
   getPagination,
   getPaginationData,
+  getSortingQuery,
   insensitiveMode,
   prismaExclude,
   THROW_OK,
@@ -54,7 +56,7 @@ export const packageTransactionRouter = createTRPCRouter({
         ...getPagination(pagination),
         ...packageTransactionSelect,
         ...whereQuery,
-        orderBy: params?.totalPrice ? [{ totalPrice: "asc" }] : [{ transactionDate: "desc" }],
+        ...getSortingQuery(sorting),
       }),
       ctx.db.packageTransaction.count(whereQuery),
     ]);
@@ -96,8 +98,7 @@ export const packageTransactionRouter = createTRPCRouter({
     });
 
     await updateTotalSpending(input.buyerId);
-
-    return THROW_OK("CREATED", "Package transaction has been created.");
+    return THROW_OK("CREATED", getCreatedMessage("package transaction"));
   }),
 });
 
