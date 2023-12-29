@@ -25,7 +25,7 @@ export const promoCodeRouter = createTRPCRouter({
 
       if (data.type === "STUDENT") {
         if (!input.birthDate) return THROW_TRPC_ERROR("FORBIDDEN", "Not eligible to use this promo code.\nNo birth date set.");
-        if (getUserAge(input.birthDate) > 18)
+        if (getUserAge(input.birthDate) > 22)
           return THROW_TRPC_ERROR(
             "FORBIDDEN",
             `Not eligible to use this promo code.${`\nBirth date: ${formatDateShort(input.birthDate)}.\nAge: ${getUserAge(

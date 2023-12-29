@@ -8,6 +8,7 @@ import { toastError, toastSuccess } from "@/components/Toast";
 import { type Locale } from "@/i18n.config";
 import { ICONS, PACKAGE_TYPES, USER_REDIRECT } from "@/lib/constants";
 import { type Dictionary } from "@/lib/dictionary";
+import { cn } from "@/lib/utils";
 import { schema } from "@/schema";
 import { type PackageCreateInput } from "@/server/api/routers/package";
 import { type PlaceList } from "@/server/api/routers/place";
@@ -24,10 +25,10 @@ const initialData: PackageCreateInput = {
   name: "",
   description: null,
   price: 0,
+  validityInDays: null,
   placeIDs: [],
   sportIDs: [],
-  validityInDays: null,
-  totalPermittedSessions: null,
+  approvedSessions: null,
   isUnlimitedSessions: true,
 };
 
@@ -84,7 +85,7 @@ export default function CreatePackageForm({ option, t, lang }: Props) {
               const value = e as PackageType;
               setValue("type", value);
               if (value !== "SESSIONS") {
-                resetField("totalPermittedSessions");
+                resetField("approvedSessions");
                 resetField("trainerIDs");
               } else resetField("validityInDays");
             }}
@@ -103,25 +104,25 @@ export default function CreatePackageForm({ option, t, lang }: Props) {
         />
       </section>
       <section className="grid md:grid-cols-2 gap-6">
-        {data.type === "SESSIONS" ? (
-          <Input
-            disabled={data.isUnlimitedSessions && data.type !== "SESSIONS"}
-            error={errors.totalPermittedSessions?.message}
-            {...register("totalPermittedSessions", { setValueAs: (v: string) => (!v ? null : parseInt(v)) })}
-            type="number"
-            icon={ICONS.session}
-            label="Total Sessions"
-          />
-        ) : (
+        <section className={cn("grid gap-6", { "grid-cols-2": data.type === "SESSIONS" })}>
+          {data.type === "SESSIONS" ? (
+            <Input
+              disabled={data.isUnlimitedSessions && data.type !== "SESSIONS"}
+              error={errors.approvedSessions?.message}
+              {...register("approvedSessions", { setValueAs: (v: string) => (!v ? null : parseInt(v)) })}
+              type="number"
+              icon={ICONS.session}
+              label="Approved Sessions"
+            />
+          ) : null}
           <Input
             error={errors.validityInDays?.message}
             icon={ICONS.validity}
             type="number"
             label="Validity In Days"
-            min={1}
             {...register("validityInDays", { setValueAs: (v: string) => (!v ? null : parseInt(v)) })}
           />
-        )}
+        </section>
 
         <Controller
           control={control}

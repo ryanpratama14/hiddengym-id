@@ -232,52 +232,50 @@ export default function CreatePackageTransactionForm({ lang, t, option }: Props)
               ) : null}
             </section>
 
-            <section className="flex flex-col">
-              {selectedPackage.validityInDays && data.transactionDate ? (
-                <section className="flex flex-col">
-                  <section className="flex justify-between">
-                    <small>Start</small>
-                    <small>Expiry</small>
+            {selectedPackage.validityInDays && data.transactionDate ? (
+              <section className="flex flex-col">
+                <section className="flex justify-between">
+                  <small>Start</small>
+                  <small>Expiry</small>
+                </section>
+                <section className="flex justify-between items-center gap-6">
+                  <section className="flex flex-col w-fit">
+                    <p className="font-semibold">{formatDateShort(getStartDate(data.transactionDate))}</p>
                   </section>
-                  <section className="flex justify-between items-center gap-6">
-                    <section className="flex flex-col w-fit">
-                      <p className="font-semibold">{formatDateShort(getStartDate(data.transactionDate))}</p>
-                    </section>
-                    <div className="w-[50%] h-0.5 bg-dark" />
-                    <section className="flex flex-col text-right w-fit">
-                      <p className="font-semibold">
-                        {isDateToday(
-                          getExpiryDateFromDate({
-                            days: selectedPackage.validityInDays,
-                            dateString: data.transactionDate,
-                            isVisit: selectedPackage.type === "VISIT",
-                          }),
-                        )
-                          ? "Today"
-                          : isDateExpired(
-                                getExpiryDateFromDate({
-                                  days: selectedPackage.validityInDays,
-                                  dateString: data.transactionDate,
-                                  isVisit: selectedPackage.type === "VISIT",
-                                }),
-                              )
-                            ? "Expired"
-                            : formatDateShort(
-                                getExpiryDateFromDate({
-                                  days: selectedPackage.validityInDays,
-                                  dateString: data.transactionDate,
-                                  isVisit: selectedPackage.type === "VISIT",
-                                }),
-                              )}
-                      </p>
-                    </section>
+                  <div className="w-[50%] h-0.5 bg-dark" />
+                  <section className="flex flex-col text-right w-fit">
+                    <p className="font-semibold">
+                      {isDateToday(
+                        getExpiryDateFromDate({
+                          days: selectedPackage.validityInDays,
+                          dateString: data.transactionDate,
+                          isVisit: selectedPackage.type === "VISIT",
+                        }),
+                      )
+                        ? "Today"
+                        : isDateExpired(
+                              getExpiryDateFromDate({
+                                days: selectedPackage.validityInDays,
+                                dateString: data.transactionDate,
+                                isVisit: selectedPackage.type === "VISIT",
+                              }),
+                            )
+                          ? "Expired"
+                          : formatDateShort(
+                              getExpiryDateFromDate({
+                                days: selectedPackage.validityInDays,
+                                dateString: data.transactionDate,
+                                isVisit: selectedPackage.type === "VISIT",
+                              }),
+                            )}
+                    </p>
                   </section>
                 </section>
-              ) : null}
-            </section>
+              </section>
+            ) : null}
 
-            {selectedPackage.totalPermittedSessions ? (
-              <small className="text-left">Sessions given: {`${selectedPackage.totalPermittedSessions} session(s)`}</small>
+            {selectedPackage.approvedSessions ? (
+              <small className="text-left">Approved sessions: {`${selectedPackage.approvedSessions} session(s)`}</small>
             ) : null}
 
             {selectedPaymentMethod ? (

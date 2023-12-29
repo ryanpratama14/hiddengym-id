@@ -1,4 +1,4 @@
-import { formatCurrency, formatDateShort, isDateExpired, isDateToday, localizePhoneNumber } from "@/lib/utils";
+import { cn, formatCurrency, formatDateShort, isDateExpired, isDateToday, localizePhoneNumber } from "@/lib/utils";
 import { type PackageTransactionDetail } from "@/server/api/routers/packageTransaction";
 import Logo from "./Logo";
 
@@ -24,7 +24,7 @@ export default function PackageTransaction({ data }: Props) {
         </section>
         <section className="flex flex-col">
           <p className="font-medium underline">{data.buyer.fullName}</p>
-          <small>{localizePhoneNumber(data.buyer.phoneNumber)}</small>
+          <p>{localizePhoneNumber(data.buyer.phoneNumber)}</p>
           <small>{data.buyer?.email}</small>
         </section>
         <section className="flex flex-col gap-1">
@@ -46,18 +46,19 @@ export default function PackageTransaction({ data }: Props) {
             </section>
           ) : null}
         </section>
-        <section className="flex flex-col">
+        <section className="flex flex-col gap-4">
           {data.expiryDate && data.startDate ? (
             <section className="flex flex-col">
               <section className="flex justify-between">
                 <small>Start</small>
                 <small>Expiry</small>
               </section>
-              <section className="flex justify-between items-center gap-6">
+              <section className="flex justify-between items-center gap-6 relative">
+                <div className="absolute centered w-36 h-0.5 bg-dark" />
                 <section className="flex flex-col w-fit">
                   <p className="font-semibold">{formatDateShort(data.startDate)}</p>
                 </section>
-                <div className="w-[50%] h-0.5 bg-dark" />
+
                 <section className="flex flex-col text-right w-fit">
                   <p className="font-semibold">
                     {isDateToday(data.expiryDate)
@@ -71,18 +72,28 @@ export default function PackageTransaction({ data }: Props) {
             </section>
           ) : null}
 
-          {data.package.totalPermittedSessions ? (
-            <small className="text-left">Sessions given: {`${data.package.totalPermittedSessions} session(s)`}</small>
-          ) : null}
-
-          {data.remainingPermittedSessions ? (
-            <small className="text-left">Sessions left: {`${data.remainingPermittedSessions} session(s)`}</small>
+          {data.package.approvedSessions && data.remainingSessions ? (
+            <section className="flex flex-col">
+              <section className="flex justify-between">
+                <small>Approved</small>
+                <small>Remaining</small>
+              </section>
+              <section className="flex justify-between items-center gap-6 relative">
+                <div className="absolute centered w-36 h-0.5 bg-dark" />
+                <section className="flex flex-col w-fit">
+                  <p className="font-semibold">{data.package.approvedSessions} session(s)</p>
+                </section>
+                <section className="flex flex-col text-right w-fit">
+                  <p className="font-semibold">{data.remainingSessions} sessions(s)</p>
+                </section>
+              </section>
+            </section>
           ) : null}
         </section>
 
         <section className="px-4 py-1 shadow-lg text-light bg-blue flex flex-col">
           <section className="text-lg font-medium">PAID BY {data.paymentMethod.name.toUpperCase()}</section>
-          <small className="!text-xs">txn. {data.id}</small>
+          <small className={cn("text-xs")}>txn. {data.id}</small>
         </section>
         <section className="flex flex-col justify-center items-center gap-6 mt-6">
           <Logo className="aspect-video w-[50%]" />

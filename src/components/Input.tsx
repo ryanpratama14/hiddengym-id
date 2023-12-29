@@ -37,7 +37,6 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               inputMode={type === "number" || isPhoneNumber ? "numeric" : undefined}
               type={type ? type : "text"}
               className={cn("pr-3", inputVariants({ size, color, className }), {
-                "border-red focus:border-red": error,
                 "pl-10": icon,
                 "pl-[4.2rem]": isPhoneNumber,
                 "border-dark/30": disabled,
@@ -55,7 +54,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               </section>
             ) : null}
           </section>
-          {error ? <small className={cn("text-red  text-xs mt-0.5")}>{error}</small> : null}
+          {error ? <small className={cn("text-red text-xs mt-0.5")}>{error}</small> : null}
         </section>
       );
     }
@@ -80,13 +79,6 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             <Iconify width={inputIconSize} icon={ICONS.password} className="absolute centered-left translate-x-3 text-dark" />
           ) : null}
 
-          {/* <Iconify
-            width={inputIconSize}
-            icon={showPassword ? "mdi:eye-off" : "mdi:eye"}
-            onClick={() => setShowPassword(!showPassword)}
-            className="absolute centered-right -translate-x-2 text-dark"
-          /> */}
-
           <section
             className="absolute centered-right -translate-x-3 text-dark cursor-pointer text-xl"
             onClick={() => setShowPassword(!showPassword)}
@@ -94,7 +86,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             {showPassword ? <EyeOutlined /> : <EyeInvisibleOutlined />}
           </section>
         </section>
-        {error ? <small className={cn("text-red  text-xs mt-0.5")}>{error}</small> : null}
+        {error ? <small className={cn("text-red text-xs mt-0.5")}>{error}</small> : null}
       </section>
     );
   },

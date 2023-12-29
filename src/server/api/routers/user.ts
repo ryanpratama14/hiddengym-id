@@ -134,7 +134,7 @@ export const userRouter = createTRPCRouter({
     };
 
     const [data, totalData] = await ctx.db.$transaction([
-      ctx.db.user.findMany({ ...getSortingQuery(sorting), ...getPagination(pagination), ...whereQuery, ...userSelect }),
+      ctx.db.user.findMany({ orderBy: getSortingQuery(sorting).orderBy, ...getPagination(pagination), ...whereQuery, ...userSelect }),
       ctx.db.user.count(whereQuery),
     ]);
 

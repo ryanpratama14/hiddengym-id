@@ -4,6 +4,13 @@
   padding-left: 2.5rem !important;
   padding-top: 0.25rem !important;
   padding-bottom: 0.25rem !important;
+  transition-property: all !important;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition-duration: 300ms !important;
+}
+
+.ant-select-selector:hover {
+  border-color: #2121294d !important;
 }
 
 .ant-select-selection-search {

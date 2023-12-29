@@ -113,7 +113,7 @@ export class schema {
         description: z.string().nullable(),
         price: z.number().min(1),
         validityInDays: z.number().nullable(),
-        totalPermittedSessions: z.number().nullable(),
+        approvedSessions: z.number().nullable(),
         type: schema.packageType,
         sportIDs: z.array(z.string()).min(1, "Pick at least 1 sport type"),
         placeIDs: z.array(z.string()).min(1, "Pick at least 1 place"),
@@ -121,33 +121,23 @@ export class schema {
         isUnlimitedSessions: z.boolean(),
       })
       .refine(
-        ({ type, validityInDays }) => {
-          if (type !== "SESSIONS" && !validityInDays) return false;
-          return true;
-        },
-        {
-          message: "Validity is required",
-          path: ["validityInDays"],
-        },
-      )
-      .refine(
-        ({ type, totalPermittedSessions }) => {
-          if (type === "SESSIONS" && !totalPermittedSessions) return false;
+        ({ type, approvedSessions }) => {
+          if (type === "SESSIONS" && !approvedSessions) return false;
           return true;
         },
         {
           message: "This field is required since the type is Sessions",
-          path: ["totalPermittedSessions"],
+          path: ["approvedSessions"],
         },
       )
       .refine(
-        ({ isUnlimitedSessions, totalPermittedSessions }) => {
-          if (!isUnlimitedSessions && !totalPermittedSessions) return false;
+        ({ isUnlimitedSessions, approvedSessions }) => {
+          if (!isUnlimitedSessions && !approvedSessions) return false;
           return true;
         },
         {
           message: "This field is required since you unchecked unlimited sessions",
-          path: ["totalPermittedSessions"],
+          path: ["approvedSessions"],
         },
       )
       .refine(

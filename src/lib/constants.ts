@@ -44,7 +44,7 @@ export const PACKAGE_TRANSACTION_SORTERERS: { name: keyof PackageTransaction; ti
     title: "Expiry Date",
   },
   {
-    name: "remainingPermittedSessions",
+    name: "remainingSessions",
     title: "Remaining Sessions",
   },
   {

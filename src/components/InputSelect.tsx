@@ -21,6 +21,7 @@ const InputSelect = forwardRef<
     error?: string;
     multiple?: boolean;
     showSearch?: boolean;
+    className?: string;
   }
 >(function InputSelect(props, ref) {
   const id = useId();

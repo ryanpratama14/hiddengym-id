@@ -74,13 +74,13 @@ model PromoCode {
 }
 
 model Package {
-    id                     String  @id @default(auto()) @map("_id") @db.ObjectId
-    name                   String  @unique
-    description            String?
-    price                  Int
-    validityInDays         Int?
-    totalPermittedSessions Int?
-    isActive               Boolean @default(true)
+    id               String  @id @default(auto()) @map("_id") @db.ObjectId
+    name             String  @unique
+    description      String?
+    price            Int
+    validityInDays   Int?
+    approvedSessions Int?
+    isActive         Boolean @default(true)
 
     // relations
     type         PackageType
@@ -186,12 +186,12 @@ model ProductTransaction {
 }
 
 model PackageTransaction {
-    id                         String    @id @default(auto()) @map("_id") @db.ObjectId
-    totalPrice                 Int
-    startDate                  DateTime? @default(now())
-    expiryDate                 DateTime?
-    remainingPermittedSessions Int?
-    transactionDate            DateTime  @default(now())
+    id                String    @id @default(auto()) @map("_id") @db.ObjectId
+    totalPrice        Int
+    startDate         DateTime? @default(now())
+    expiryDate        DateTime?
+    remainingSessions Int?
+    transactionDate   DateTime  @default(now())
 
     // relations
     paymentMethod   PaymentMethod @relation(fields: [paymentMethodId], references: [id])

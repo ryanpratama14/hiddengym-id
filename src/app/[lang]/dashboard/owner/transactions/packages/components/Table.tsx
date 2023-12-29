@@ -232,10 +232,10 @@ export default function PackageTransactionsTable({ data, searchParams, lang, loa
             key: "status",
             dataIndex: "expiryDate",
             render: (text: Date, item) => {
-              if (item.remainingPermittedSessions)
+              if (item.remainingSessions)
                 return (
                   <p className="px-2 py-0.5 rounded-md shadow bg-purple-600 text-center text-cream w-fit">
-                    {item.remainingPermittedSessions} session(s)
+                    {item.remainingSessions} session(s)
                   </p>
                 );
 

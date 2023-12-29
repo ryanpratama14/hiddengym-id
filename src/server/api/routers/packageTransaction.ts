@@ -56,7 +56,7 @@ export const packageTransactionRouter = createTRPCRouter({
         ...getPagination(pagination),
         ...packageTransactionSelect,
         ...whereQuery,
-        orderBy: sorting ? getSortingQuery(sorting).orderBy : [{ transactionDate: "desc" }],
+        orderBy: sorting ? getSortingQuery(sorting).orderBy : { transactionDate: "desc" },
       }),
       ctx.db.packageTransaction.count(whereQuery),
     ]);
@@ -78,17 +78,15 @@ export const packageTransactionRouter = createTRPCRouter({
     await ctx.db.packageTransaction.create({
       data: {
         totalPrice: promoCode ? selectedPackage.price - promoCode.discountPrice : selectedPackage.price,
-        startDate: selectedPackage.type !== "SESSIONS" ? getStartDate(input.transactionDate) : null,
-        expiryDate:
-          selectedPackage.validityInDays && !isSessions
-            ? getExpiryDateFromDate({
-                days: selectedPackage.validityInDays,
-                isVisit: selectedPackage.type === "VISIT",
-                dateString: input.transactionDate,
-              })
-            : null,
-        remainingPermittedSessions:
-          isSessions && selectedPackage.totalPermittedSessions ? selectedPackage.totalPermittedSessions : null,
+        startDate: getStartDate(input.transactionDate),
+        expiryDate: selectedPackage.validityInDays
+          ? getExpiryDateFromDate({
+              days: selectedPackage.validityInDays,
+              isVisit: selectedPackage.type === "VISIT",
+              dateString: input.transactionDate,
+            })
+          : null,
+        remainingSessions: isSessions && selectedPackage.approvedSessions ? selectedPackage.approvedSessions : null,
         transactionDate: getLocalDate(input.transactionDate),
         paymentMethodId: input.paymentMethodId,
         packageId: input.packageId,

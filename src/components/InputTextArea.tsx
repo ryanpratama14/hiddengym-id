@@ -36,7 +36,7 @@ const InputTextArea = forwardRef<HTMLTextAreaElement, InputProps>(
           />
           {icon ? <Iconify width={inputIconSize} icon={icon} className="absolute centered-left translate-x-3 text-dark" /> : null}
         </section>
-        {error ? <small className={cn("text-red  text-xs mt-0.5")}>{error}</small> : null}
+        {error ? <small className={cn("text-red mt-0.5")}>{error}</small> : null}
       </section>
     );
   },

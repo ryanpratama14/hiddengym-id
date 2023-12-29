@@ -129,7 +129,7 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
           {...register("visitorData.email")}
         />
         <section className="flex flex-col gap-6">
-          <section className="grid grid-cols-2 gap-6">
+          <section className="grid md:grid-cols-2 gap-6">
             <Input
               error={errors.visitorData?.birthDate?.message}
               label="Date of Birth (Optional)"
@@ -305,8 +305,8 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
 
             <section className="flex flex-col text-center">
               <p className="font-medium underline">{data.fullName}</p>
-              <small>{localizePhoneNumber(formatPhoneNumber(data.phoneNumber))}</small>
-              <small>{data.email}</small>
+              <p>{localizePhoneNumber(formatPhoneNumber(data.phoneNumber))}</p>
+              <p>{data.email}</p>
             </section>
 
             <section className="flex flex-col gap-1">
@@ -373,8 +373,8 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
               ) : null}
             </section>
 
-            {selectedPackage.totalPermittedSessions ? (
-              <small className="text-left">Sessions given: {`${selectedPackage.totalPermittedSessions} session(s)`}</small>
+            {selectedPackage.approvedSessions ? (
+              <small className="text-left">Approved sessions: {`${selectedPackage.approvedSessions} session(s)`}</small>
             ) : null}
 
             {selectedPaymentMethod ? (

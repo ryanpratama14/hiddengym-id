@@ -30,7 +30,7 @@ export const packageRouter = createTRPCRouter({
         name: input.name,
         description: input.description,
         validityInDays: input.validityInDays,
-        totalPermittedSessions: input.totalPermittedSessions,
+        approvedSessions: input.approvedSessions,
         price: input.price,
         type: input.type,
         placeIDs: input.placeIDs,
@@ -38,6 +38,7 @@ export const packageRouter = createTRPCRouter({
         trainerIDs: input.trainerIDs,
       },
     });
+
     return THROW_OK("CREATED", getCreatedMessage("package"));
   }),
 
