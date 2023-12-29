@@ -33,6 +33,13 @@ const enforceIsOwnerAuthed = t.middleware(({ ctx, next }) => {
   return next({ ctx: { session: { ...ctx.session, user: ctx.session.user } } });
 });
 
+const enforceIsOwnerAdminAuthed = t.middleware(({ ctx, next }) => {
+  if (!ctx.session || (ctx.session.user.role !== "OWNER" && ctx.session.user.role !== "ADMIN")) {
+    return THROW_TRPC_ERROR("UNAUTHORIZED");
+  }
+  return next({ ctx: { session: { ...ctx.session, user: ctx.session.user } } });
+});
+
 const enforceIsTrainerAuthed = t.middleware(({ ctx, next }) => {
   if (!ctx.session || ctx.session.user.role !== "TRAINER") return THROW_TRPC_ERROR("UNAUTHORIZED");
   return next({ ctx: { session: { ...ctx.session, user: ctx.session.user } } });
@@ -43,4 +50,5 @@ export const publicProcedure = t.procedure;
 export const protectedProcedure = t.procedure.use(enforceIsAuthed);
 export const adminProcedure = t.procedure.use(enforceIsAdminAuthed);
 export const ownerProcedure = t.procedure.use(enforceIsOwnerAuthed);
+export const ownerAdminProcedure = t.procedure.use(enforceIsOwnerAdminAuthed);
 export const trainerProcedure = t.procedure.use(enforceIsTrainerAuthed);

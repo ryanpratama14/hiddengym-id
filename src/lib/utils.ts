@@ -67,6 +67,12 @@ export const getNewDate = (dateString?: string): Date => {
   return new Date();
 };
 
+export const getLocalDate = (dateString?: string): Date => {
+  const date = dateString ? new Date(dateString) : new Date();
+  date.setHours(0, 0, 0, 0);
+  return date;
+};
+
 export const getStartDate = (dateString: string): Date => {
   const updatedDate = getNewDate(dateString);
   updatedDate.setHours(0, 0, 0, 0);

@@ -1,6 +1,14 @@
-import { accumulateValue, formatName, formatPhoneNumber, getExpiryDateFromDate, getNewDate, getStartDate } from "@/lib/utils";
+import {
+  accumulateValue,
+  formatName,
+  formatPhoneNumber,
+  getExpiryDateFromDate,
+  getLocalDate,
+  getNewDate,
+  getStartDate,
+} from "@/lib/utils";
 import { schema } from "@/schema";
-import { createTRPCRouter, ownerProcedure, protectedProcedure, publicProcedure } from "@/server/api/trpc";
+import { createTRPCRouter, ownerAdminProcedure, ownerProcedure, protectedProcedure, publicProcedure } from "@/server/api/trpc";
 import {
   getPagination,
   getPaginationData,
@@ -48,7 +56,7 @@ export const userRouter = createTRPCRouter({
     return THROW_OK("CREATED");
   }),
 
-  createVisitor: publicProcedure.input(schema.user.createVisitor).mutation(async ({ ctx, input }) => {
+  createVisitor: ownerAdminProcedure.input(schema.user.createVisitor).mutation(async ({ ctx, input }) => {
     const { packageData, visitorData } = input;
     const data = await ctx.db.user.findUnique({ where: { phoneNumber: visitorData.phoneNumber } });
     if (data) return THROW_ERROR("CONFLICT");
@@ -58,7 +66,7 @@ export const userRouter = createTRPCRouter({
       if (data) return THROW_ERROR("CONFLICT");
     }
 
-    const newData = await ctx.db.user.create({
+    const newVisitor = await ctx.db.user.create({
       data: {
         fullName: formatName(visitorData.fullName),
         email: visitorData?.email ? visitorData.email.toLowerCase() : null,
@@ -75,22 +83,26 @@ export const userRouter = createTRPCRouter({
         : null;
 
       if (selectedPackage) {
+        const isSessions = selectedPackage.type === "SESSIONS";
+
         await ctx.db.packageTransaction.create({
           data: {
             totalPrice: promoCode ? selectedPackage.price - promoCode.discountPrice : selectedPackage.price,
-            startDate: packageData.transactionDate ? getStartDate(packageData.transactionDate) : null,
-            expiryDate: selectedPackage.validityInDays
-              ? getExpiryDateFromDate({
-                  days: selectedPackage.validityInDays,
-                  isVisit: selectedPackage.type === "VISIT",
-                  dateString: packageData.transactionDate,
-                })
-              : null,
-            remainingPermittedSessions: selectedPackage.totalPermittedSessions,
-            transactionDate: getStartDate(packageData.transactionDate),
+            startDate: selectedPackage.type !== "SESSIONS" ? getStartDate(packageData.transactionDate) : null,
+            expiryDate:
+              selectedPackage.validityInDays && !isSessions
+                ? getExpiryDateFromDate({
+                    days: selectedPackage.validityInDays,
+                    isVisit: selectedPackage.type === "VISIT",
+                    dateString: packageData.transactionDate,
+                  })
+                : null,
+            remainingPermittedSessions:
+              isSessions && selectedPackage.totalPermittedSessions ? selectedPackage.totalPermittedSessions : null,
+            transactionDate: getLocalDate(packageData.transactionDate),
             paymentMethodId: packageData.paymentMethodId,
-            packageId: packageData.packageId,
-            buyerId: newData.id,
+            packageId: selectedPackage.id,
+            buyerId: newVisitor.id,
             promoCodeId: promoCode?.id ? promoCode.id : null,
           },
         });

@@ -69,7 +69,7 @@ export default function CreatePackageTransactionForm({ createData, checkPromoCod
     setLoading(true);
     const res = await createData(data);
     setLoading(false);
-    if (!res.status) return toast({ t, type: "error", description: "Visitor with this phone number / email already exists" });
+    if (!res.status) return toast({ t, type: "error", description: "Please try again" });
     reset();
     toast({ t, type: "success", description: "Package transaction has been created" });
     router.push(USER_REDIRECT.OWNER({ lang, href: "/transactions/packages" }));

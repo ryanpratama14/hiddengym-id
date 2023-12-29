@@ -113,7 +113,7 @@ export default function CreatePackageForm({ option, createData, t, lang }: Props
             {...register("totalPermittedSessions", { setValueAs: (v: string) => (!v ? null : parseInt(v)) })}
             type="number"
             icon={ICONS.session}
-            label="Total Permitted Sessions"
+            label="Total Sessions"
           />
         ) : (
           <Input

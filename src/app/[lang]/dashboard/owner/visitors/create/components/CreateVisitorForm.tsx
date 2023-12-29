@@ -287,7 +287,11 @@ export default function CreateVisitorForm({ createVisitor, checkPromoCode, lang,
             <section className="flex flex-col gap-1">
               <section className="flex justify-between items-center">
                 <section className="flex gap-2 items-center">
-                  <small className="font-semibold border-1 border-dark px-1">{selectedPackage.type}</small>
+                  <small className="font-semibold border-1 border-dark px-1">
+                    {`${selectedPackage.totalPermittedSessions ? `${selectedPackage.totalPermittedSessions} ` : ""}${
+                      selectedPackage.type
+                    }`}
+                  </small>
                   <small>{selectedPackage.name}</small>
                 </section>
                 <small>{formatCurrency(selectedPackage.price)}</small>
@@ -345,10 +349,6 @@ export default function CreateVisitorForm({ createVisitor, checkPromoCode, lang,
                     </section>
                   </section>
                 </section>
-              ) : null}
-
-              {selectedPackage.totalPermittedSessions ? (
-                <small>Permitted sessions: {`${selectedPackage.totalPermittedSessions} session(s)`}</small>
               ) : null}
             </section>
 
