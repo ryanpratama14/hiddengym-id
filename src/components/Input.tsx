@@ -3,6 +3,7 @@
 import { COUNTRY_CODE, ICONS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { inputVariants } from "@/styles/variants";
+import { EyeInvisibleOutlined, EyeOutlined } from "@ant-design/icons";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import { forwardRef, useId, useState, type ComponentProps } from "react";
 import { type VariantProps } from "tailwind-variants";
@@ -79,12 +80,19 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             <Iconify width={inputIconSize} icon={ICONS.password} className="absolute centered-left translate-x-3 text-dark" />
           ) : null}
 
-          <Iconify
+          {/* <Iconify
             width={inputIconSize}
             icon={showPassword ? "mdi:eye-off" : "mdi:eye"}
             onClick={() => setShowPassword(!showPassword)}
             className="absolute centered-right -translate-x-2 text-dark"
-          />
+          /> */}
+
+          <section
+            className="absolute centered-right -translate-x-3 text-dark cursor-pointer text-xl"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            {showPassword ? <EyeOutlined /> : <EyeInvisibleOutlined />}
+          </section>
         </section>
         {error ? <small className={cn("text-red  text-xs mt-0.5")}>{error}</small> : null}
       </section>
