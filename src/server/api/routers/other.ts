@@ -1,4 +1,4 @@
-import { accumulateValue } from "@/lib/utils";
+import { accumulateValue } from "@/lib/functions";
 import { db } from "@/server/db";
 import { prismaExclude, THROW_TRPC_ERROR } from "@/trpc/shared";
 

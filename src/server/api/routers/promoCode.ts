@@ -1,4 +1,4 @@
-import { formatDateShort, getUserAge } from "@/lib/utils";
+import { formatDateShort, getUserAge } from "@/lib/functions";
 import { schema } from "@/schema";
 import { createTRPCRouter, ownerProcedure } from "@/server/api/trpc";
 import { THROW_OK, THROW_TRPC_ERROR, type RouterInputs, type RouterOutputs } from "@/trpc/shared";

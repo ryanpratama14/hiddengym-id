@@ -1,6 +1,6 @@
-import { type Locale } from "@/i18n.config";
 import { USER_PATHNAMES } from "@/lib/constants";
 import { useDictionary } from "@/lib/dictionary";
+import { type Locale } from "@/lib/internationalization";
 import { getServerAuthSession } from "@/server/auth";
 import { type SearchParams } from "@/types";
 // components

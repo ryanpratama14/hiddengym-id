@@ -1,6 +1,6 @@
 import "@/styles/globals.css";
 import AntdProvider from "@/components/AntdProvider";
-import { type Locale } from "@/i18n.config";
+import { type Locale } from "@/lib/internationalization";
 import { TRPCReactProvider } from "@/trpc/react";
 import { type Metadata } from "next";
 import { cookies } from "next/headers";

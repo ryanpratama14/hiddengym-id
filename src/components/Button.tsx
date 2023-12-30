@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/functions";
 import { COLORS } from "@/styles/theme";
 import { buttonVariants } from "@/styles/variants";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";

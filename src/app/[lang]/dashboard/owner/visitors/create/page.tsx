@@ -1,5 +1,5 @@
-import { type Locale } from "@/i18n.config";
 import { useDictionary } from "@/lib/dictionary";
+import { type Locale } from "@/lib/internationalization";
 import { type PackageTransactionCreateInput } from "@/server/api/routers/packageTransaction";
 import { api } from "@/trpc/server";
 import { revalidatePath } from "next/cache";

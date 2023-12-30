@@ -1,9 +1,9 @@
-import { z } from "zod";
+import { i18n } from "@/lib/internationalization";
+import { match } from "@formatjs/intl-localematcher";
+import Negotiator from "negotiator";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import Negotiator from "negotiator";
-import { i18n } from "@/i18n.config";
-import { match } from "@formatjs/intl-localematcher";
+import { z } from "zod";
 
 const getLocaleFromPathname = (pathname: string) => {
   const lang = pathname.split("/")[1];

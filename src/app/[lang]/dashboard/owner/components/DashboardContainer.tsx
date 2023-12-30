@@ -3,8 +3,8 @@
 import DashboardLayout from "@/components/DashboardLayout";
 import DashboardNavigator from "@/components/DashboardNavigator";
 import Iconify from "@/components/Iconify";
-import { type Locale } from "@/i18n.config";
 import { ICONS } from "@/lib/constants";
+import { type Locale } from "@/lib/internationalization";
 import { type User } from "@/server/api/routers/user";
 import { type ItemType, type MenuItemType } from "antd/es/menu/hooks/useItems";
 

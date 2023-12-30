@@ -1,9 +1,9 @@
 "use client";
 
 import Iconify from "@/components/Iconify";
-import { type Locale } from "@/i18n.config";
 import { ADD_BUTTON_ITEMS, ADD_BUTTON_ITEMS_TO_REMOVE, ICONS } from "@/lib/constants";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/functions";
+import { type Locale } from "@/lib/internationalization";
 import { Menu, Transition } from "@headlessui/react";
 import { type Role } from "@prisma/client";
 import { useRouter } from "next/navigation";

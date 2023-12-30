@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/functions";
 import { Icon, type IconifyIcon } from "@iconify/react";
 
 type Props = {

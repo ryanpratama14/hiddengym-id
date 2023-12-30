@@ -1,5 +1,5 @@
-import { type Locale } from "@/i18n.config";
 import { useDictionary } from "@/lib/dictionary";
+import { type Locale } from "@/lib/internationalization";
 import CreatePlaceForm from "./components/CreatePlaceForm";
 
 type Props = {

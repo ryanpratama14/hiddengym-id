@@ -3,9 +3,9 @@
 import Button from "@/components/Button";
 import Iconify from "@/components/Iconify";
 import Input from "@/components/Input";
-import { type Locale } from "@/i18n.config";
 import { ICONS, USER_REDIRECT } from "@/lib/constants";
-import { createUrl } from "@/lib/utils";
+import { createUrl } from "@/lib/functions";
+import { type Locale } from "@/lib/internationalization";
 import { type UserListInput } from "@/server/api/routers/user";
 import { useRouter, useSearchParams } from "next/navigation";
 

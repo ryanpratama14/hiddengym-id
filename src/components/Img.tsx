@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/functions";
 import { type StaticImport } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { type Locale } from "@/i18n.config";
+import { type Locale } from "@/lib/internationalization";
 import { type UserListInput } from "@/server/api/routers/user";
 import { api } from "@/trpc/react";
 import { PAGINATION_LIMIT } from "@/trpc/shared";

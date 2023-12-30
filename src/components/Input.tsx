@@ -1,7 +1,7 @@
 "use client";
 
 import { COUNTRY_CODE, ICONS } from "@/lib/constants";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/functions";
 import { inputVariants } from "@/styles/variants";
 import { EyeInvisibleOutlined, EyeOutlined } from "@ant-design/icons";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";

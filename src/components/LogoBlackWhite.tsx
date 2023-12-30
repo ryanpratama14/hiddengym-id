@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/functions";
 import { type ComponentProps } from "react";
 
 interface LogoProps extends Omit<ComponentProps<"section">, "className">, Required<Pick<ComponentProps<"section">, "className">> {}

@@ -1,4 +1,4 @@
-import { type Locale } from "@/i18n.config";
+import { type Locale } from "@/lib/internationalization";
 import { COLORS } from "@/styles/theme";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import { type Gender, type PackageTransaction, type PackageType, type PromoCodeType, type Role, type User } from "@prisma/client";

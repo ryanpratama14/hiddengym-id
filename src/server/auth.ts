@@ -1,6 +1,6 @@
 import { env } from "@/env";
 import { EMAIL_VISITOR_READONLY } from "@/lib/constants";
-import { formatPhoneNumber } from "@/lib/utils";
+import { formatPhoneNumber } from "@/lib/functions";
 import { schema } from "@/schema";
 import { db } from "@/server/db";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";

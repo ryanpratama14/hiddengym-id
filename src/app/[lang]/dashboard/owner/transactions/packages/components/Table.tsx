@@ -4,7 +4,6 @@ import Img from "@/components/Img";
 import Input from "@/components/Input";
 import { Modal } from "@/components/Modal";
 import PackageTransaction from "@/components/PackageTransaction";
-import { type Locale } from "@/i18n.config";
 import { DETERMINE_GENDER, ICONS, PACKAGE_TYPES, USER_REDIRECT } from "@/lib/constants";
 import {
   cn,
@@ -15,7 +14,8 @@ import {
   isDateExpired,
   isDateToday,
   textEllipsis,
-} from "@/lib/utils";
+} from "@/lib/functions";
+import { type Locale } from "@/lib/internationalization";
 import {
   type PackageTransactionDetail,
   type PackageTransactionList,

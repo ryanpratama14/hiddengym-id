@@ -3,8 +3,8 @@
 import AddButton from "@/components/AddButton";
 import DashboardProfileDropdown from "@/components/DashboardProfileDropdown";
 import Logo from "@/components/Logo";
-import { type Locale } from "@/i18n.config";
-import { cn, getSelectedMenu } from "@/lib/utils";
+import { cn, getSelectedMenu } from "@/lib/functions";
+import { type Locale } from "@/lib/internationalization";
 import { type User } from "@/server/api/routers/user";
 import { COLORS } from "@/styles/theme";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";

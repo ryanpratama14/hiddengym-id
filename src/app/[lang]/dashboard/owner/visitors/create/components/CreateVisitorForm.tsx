@@ -6,7 +6,6 @@ import Input from "@/components/Input";
 import InputSelect from "@/components/InputSelect";
 import Logo from "@/components/Logo";
 import { toastError, toastSuccess, toastWarning } from "@/components/Toast";
-import { type Locale } from "@/i18n.config";
 import { GENDERS, ICONS, USER_REDIRECT } from "@/lib/constants";
 import { type Dictionary } from "@/lib/dictionary";
 import {
@@ -21,7 +20,8 @@ import {
   isDateExpired,
   isDateToday,
   localizePhoneNumber,
-} from "@/lib/utils";
+} from "@/lib/functions";
+import { type Locale } from "@/lib/internationalization";
 import { schema } from "@/schema";
 import { type PackageList } from "@/server/api/routers/package";
 import { type PackageTransactionCreateInput } from "@/server/api/routers/packageTransaction";

@@ -1,5 +1,5 @@
 import { DETERMINE_GENDER, ICONS } from "@/lib/constants";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/functions";
 import { type User } from "@/server/api/routers/user";
 import { Menu, Transition } from "@headlessui/react";
 import { signOut } from "next-auth/react";

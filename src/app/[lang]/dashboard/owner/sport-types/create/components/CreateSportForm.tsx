@@ -3,9 +3,9 @@
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import { toastError, toastSuccess } from "@/components/Toast";
-import { type Locale } from "@/i18n.config";
 import { ICONS, USER_REDIRECT } from "@/lib/constants";
 import { type Dictionary } from "@/lib/dictionary";
+import { type Locale } from "@/lib/internationalization";
 import { schema } from "@/schema";
 import { type SportCreateInput } from "@/server/api/routers/sport";
 import { api } from "@/trpc/react";

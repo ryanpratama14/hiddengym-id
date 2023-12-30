@@ -1,5 +1,5 @@
-import { type Locale } from "@/i18n.config";
 import { COUNTRY_CODE, DASHBOARD_MENUS, DASHBOARD_SUB_MENUS, USER_PATHNAMES, USER_REDIRECT } from "@/lib/constants";
+import { type Locale } from "@/lib/internationalization";
 import { type Role } from "@prisma/client";
 import { clsx, type ClassValue } from "clsx";
 import { type ReadonlyURLSearchParams } from "next/navigation";
@@ -46,18 +46,18 @@ export const formatName = (name: string): string => {
   return convertedName;
 };
 
-export const getInputDate = (dateString?: Date): string => {
-  const date = dateString ? new Date(dateString) : new Date();
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
+export const getInputDate = (date?: Date): string => {
+  const dateString = date ?? getNewDate();
+  const year = dateString.getFullYear();
+  const month = String(dateString.getMonth() + 1).padStart(2, "0");
+  const day = String(dateString.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
 };
 
-export const getTodayDateLong = (locale: Locale): string => {
+export const getTodayDate = ({ locale, style }: { locale: Locale; style: "short" | "long" }): string => {
   return getNewDate().toLocaleDateString(locale, {
     year: "numeric",
-    month: "long",
+    month: style === "long" ? "long" : "numeric",
     day: "numeric",
   });
 };
@@ -169,25 +169,10 @@ export const isDateToday = (date: Date): boolean => {
   );
 };
 
-export const formatDate = (date: Date): string => {
-  const year = date.getUTCFullYear();
-  const month = String(date.getUTCMonth() + 1).padStart(2, "0");
-  const day = String(date.getUTCDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-};
-
-export const formatDateLong = (date: Date, locale?: Locale): string => {
+export const formatDate = ({ date, locale, style }: { date: Date; locale: Locale; style: "short" | "long" }): string => {
   return date.toLocaleDateString(locale ?? ["id-ID"], {
     year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-};
-
-export const formatDateShort = (date: Date, locale?: Locale): string => {
-  return date.toLocaleDateString(locale ?? ["id-ID"], {
-    year: "numeric",
-    month: "numeric",
+    month: style === "long" ? "long" : "numeric",
     day: "numeric",
   });
 };

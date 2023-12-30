@@ -1,5 +1,5 @@
-import { type Locale } from "@/i18n.config";
 import { USER_PATHNAMES } from "@/lib/constants";
+import { type Locale } from "@/lib/internationalization";
 import { getServerAuthSession } from "@/server/auth";
 import { redirect } from "next/navigation";
 

@@ -1,4 +1,4 @@
-import { formatName, formatPhoneNumber, getNewDate } from "@/lib/utils";
+import { formatName, formatPhoneNumber, getNewDate } from "@/lib/functions";
 import { schema } from "@/schema";
 import { createTRPCRouter, ownerAdminProcedure, ownerProcedure, protectedProcedure, publicProcedure } from "@/server/api/trpc";
 import {

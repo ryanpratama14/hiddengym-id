@@ -1,4 +1,4 @@
-import { formatName } from "@/lib/utils";
+import { formatName } from "@/lib/functions";
 import { schema } from "@/schema";
 import { createTRPCRouter, ownerProcedure } from "@/server/api/trpc";
 import {

@@ -1,6 +1,6 @@
-import { type Locale } from "@/i18n.config";
 import { USER_REDIRECT } from "@/lib/constants";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/functions";
+import { type Locale } from "@/lib/internationalization";
 import { type Role } from "@prisma/client";
 import Link from "next/link";
 

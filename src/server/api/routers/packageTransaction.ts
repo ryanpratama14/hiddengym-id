@@ -1,4 +1,4 @@
-import { formatName, getEndDate, getExpiryDateFromDate, getLocalDate, getStartDate } from "@/lib/utils";
+import { formatName, getEndDate, getExpiryDateFromDate, getLocalDate, getStartDate } from "@/lib/functions";
 import { schema } from "@/schema";
 import { createTRPCRouter, ownerProcedure, protectedProcedure } from "@/server/api/trpc";
 import {

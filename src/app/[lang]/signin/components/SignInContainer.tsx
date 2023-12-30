@@ -1,8 +1,8 @@
 "use client";
 
 import Logo from "@/components/Logo";
-import { type Locale } from "@/i18n.config";
 import { type Dictionary } from "@/lib/dictionary";
+import { type Locale } from "@/lib/internationalization";
 import { useState } from "react";
 import SignIn from "./SignIn";
 

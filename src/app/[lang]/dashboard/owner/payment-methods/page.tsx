@@ -1,5 +1,5 @@
 import Navigator from "@/components/Navigator";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/functions";
 import { api } from "@/trpc/server";
 
 export default async function PaymentMethodsPage() {

@@ -1,5 +1,5 @@
 import { ICONS } from "@/lib/constants";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/functions";
 import { type MouseEvent } from "@/types";
 import React, { forwardRef, useId, type ComponentProps } from "react";
 import Iconify from "./Iconify";
