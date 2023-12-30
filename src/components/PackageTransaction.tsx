@@ -54,7 +54,7 @@ export default function PackageTransaction({ data }: Props) {
                 <small>Expiry</small>
               </section>
               <section className="flex justify-between items-center gap-6 relative">
-                <div className="absolute centered w-36 h-0.5 bg-dark" />
+                <div className="absolute centered w-[25%] h-0.5 bg-dark" />
                 <section className="flex flex-col w-fit">
                   <p className="font-semibold">{formatDateShort(data.startDate)}</p>
                 </section>
@@ -79,7 +79,7 @@ export default function PackageTransaction({ data }: Props) {
                 <small>Remaining</small>
               </section>
               <section className="flex justify-between items-center gap-6 relative">
-                <div className="absolute centered w-36 h-0.5 bg-dark" />
+                <div className="absolute centered w-[25%] h-0.5 bg-dark" />
                 <section className="flex flex-col w-fit">
                   <p className="font-semibold">{data.package.approvedSessions} session(s)</p>
                 </section>

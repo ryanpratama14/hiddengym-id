@@ -242,7 +242,7 @@ export default function CreatePackageTransactionForm({ lang, t, option }: Props)
                   <section className="flex flex-col w-fit">
                     <p className="font-semibold">{formatDateShort(getStartDate(data.transactionDate))}</p>
                   </section>
-                  <div className="w-[50%] h-0.5 bg-dark" />
+                  <div className="w-[25%] h-0.5 bg-dark" />
                   <section className="flex flex-col text-right w-fit">
                     <p className="font-semibold">
                       {isDateToday(

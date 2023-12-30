@@ -1,7 +1,7 @@
 import { type Locale } from "@/i18n.config";
 import { COLORS } from "@/styles/theme";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
-import { PackageTransaction, type Gender, type PackageType, type PromoCodeType, type Role, type User } from "@prisma/client";
+import { type Gender, type PackageTransaction, type PackageType, type PromoCodeType, type Role, type User } from "@prisma/client";
 
 export const USER_LIST_SORTERERS: { name: keyof User; title: string }[] = [
   {

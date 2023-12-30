@@ -11,6 +11,7 @@ model User {
     id                   String    @id @default(auto()) @map("_id") @db.ObjectId
     phoneNumber          String    @unique
     email                String?
+    emailVerified        DateTime?
     fullName             String
     birthDate            DateTime?
     credential           String // used for signin
