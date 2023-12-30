@@ -8,7 +8,7 @@ import NavigatorX from "@/components/NavigatorX";
 import { toastError, toastSuccess } from "@/components/Toast";
 import { DETERMINE_GENDER, GENDERS } from "@/lib/constants";
 import { type Dictionary } from "@/lib/dictionary";
-import { formatDateLong, formatName, isFileSizeAllowed, localizePhoneNumber } from "@/lib/functions";
+import { formatDate, formatName, isFileSizeAllowed, localizePhoneNumber } from "@/lib/functions";
 import { type Locale } from "@/lib/internationalization";
 import { uploadFiles } from "@/lib/uploadthing";
 import { type User, type UserUpdateInput } from "@/server/api/routers/user";
@@ -136,7 +136,7 @@ export default function HomeContainer({ lang, user, updateUser, refreshUser, t }
                   </section>
                   <section className="flex flex-col">
                     <p className="label">Date of Birth</p>
-                    <p>{user?.birthDate ? formatDateLong(user?.birthDate, lang) : "-"}</p>
+                    <p>{user?.birthDate ? formatDate({ date: user?.birthDate, locale: lang, style: "long" }) : "-"}</p>
                   </section>
                 </section>
               </Fragment>
