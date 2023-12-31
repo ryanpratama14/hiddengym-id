@@ -6,7 +6,6 @@ import InputSelect from "@/components/InputSelect";
 import Logo from "@/components/Logo";
 import { toastError, toastSuccess, toastWarning } from "@/components/Toast";
 import { ICONS, USER_REDIRECT } from "@/lib/constants";
-import { type Dictionary } from "@/lib/dictionary";
 import {
   cn,
   formatCurrency,
@@ -19,7 +18,6 @@ import {
   isDateToday,
   localizePhoneNumber,
 } from "@/lib/functions";
-import { type Locale } from "@/lib/internationalization";
 import { schema } from "@/schema";
 import { type PackageList } from "@/server/api/routers/package";
 import { type PackageTransactionCreateInput } from "@/server/api/routers/packageTransaction";
@@ -27,6 +25,7 @@ import { type PaymentMethodList } from "@/server/api/routers/paymentMethod";
 import { type UserListVisitor } from "@/server/api/routers/user";
 import { inputVariants } from "@/styles/variants";
 import { api } from "@/trpc/react";
+import { type Dictionary, type Lang } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type Package, type PaymentMethod, type PromoCode, type User } from "@prisma/client";
 import { useRouter } from "next/navigation";
@@ -34,7 +33,7 @@ import { useState } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 
 type Props = {
-  lang: Locale;
+  lang: Lang;
   t: Dictionary;
   option: { packages: PackageList; paymentMethods: PaymentMethodList; visitors: UserListVisitor };
 };

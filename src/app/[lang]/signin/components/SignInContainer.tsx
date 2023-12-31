@@ -1,15 +1,14 @@
 "use client";
 
 import Logo from "@/components/Logo";
-import { type Dictionary } from "@/lib/dictionary";
-import { type Locale } from "@/lib/internationalization";
+import { type Dictionary, type Lang } from "@/types";
 import { useState } from "react";
 import SignIn from "./SignIn";
 
 type Props = {
   callbackUrl?: string;
   t: Dictionary;
-  lang: Locale;
+  lang: Lang;
 };
 
 export default function SignInPageContainer({ callbackUrl, t, lang }: Props) {

@@ -4,11 +4,11 @@ import Button from "@/components/Button";
 import Iconify from "@/components/Iconify";
 import { ICONS, USER_LIST_SORTERERS, USER_REDIRECT } from "@/lib/constants";
 import { cn, createUrl, getSorterSlug } from "@/lib/functions";
-import { type Locale } from "@/lib/internationalization";
+import { type Lang } from "@/types";
 import { useRouter, useSearchParams } from "next/navigation";
 
 type Props = {
-  lang: Locale;
+  lang: Lang;
 };
 
 export default function TableSorter({ lang }: Props) {

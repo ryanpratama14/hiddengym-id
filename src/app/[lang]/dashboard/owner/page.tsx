@@ -1,15 +1,15 @@
 import { USER_PATHNAMES } from "@/lib/constants";
 import { useDictionary } from "@/lib/dictionary";
-import { type Locale } from "@/lib/internationalization";
 import { type UserUpdateInput } from "@/server/api/routers/user";
 import { getServerAuthSession } from "@/server/auth";
 import { api } from "@/trpc/server";
+import { type Lang } from "@/types";
 import HomeContainer from "@owner/components/HomeContainer";
 import { type Role } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-type Props = { params: { lang: Locale } };
+type Props = { params: { lang: Lang } };
 
 export default async function DashboardOwnerPage({ params }: Props) {
   const session = await getServerAuthSession();

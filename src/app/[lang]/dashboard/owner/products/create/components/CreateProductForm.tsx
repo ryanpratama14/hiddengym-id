@@ -4,17 +4,16 @@ import Button from "@/components/Button";
 import Input from "@/components/Input";
 import { toastError, toastSuccess } from "@/components/Toast";
 import { ICONS, USER_REDIRECT } from "@/lib/constants";
-import { type Dictionary } from "@/lib/dictionary";
-import { type Locale } from "@/lib/internationalization";
 import { schema } from "@/schema";
 import { type ProductCreateInput } from "@/server/api/routers/product";
 import { api } from "@/trpc/react";
+import { type Dictionary, type Lang } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm, type SubmitHandler } from "react-hook-form";
 
 type Props = {
-  lang: Locale;
+  lang: Lang;
   t: Dictionary;
 };
 

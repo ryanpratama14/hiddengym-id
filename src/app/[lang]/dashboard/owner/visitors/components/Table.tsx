@@ -8,10 +8,9 @@ import Navigator from "@/components/Navigator";
 import NavigatorX from "@/components/NavigatorX";
 import { DETERMINE_GENDER, GENDERS, ICONS, USER_REDIRECT } from "@/lib/constants";
 import { cn, createUrl, formatCurrency, localizePhoneNumber, textEllipsis } from "@/lib/functions";
-import { type Locale } from "@/lib/internationalization";
 import { type UserList, type UserListInputParams } from "@/server/api/routers/user";
 import { PAGINATION_LIMIT } from "@/trpc/shared";
-import { type SearchParams } from "@/types";
+import { type Lang, type SearchParams } from "@/types";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import { Table } from "antd";
 import { type FilterDropdownProps } from "antd/es/table/interface";
@@ -20,7 +19,7 @@ import { redirect, useRouter, useSearchParams } from "next/navigation";
 type Props = {
   data?: UserList;
   searchParams: SearchParams;
-  lang: Locale;
+  lang: Lang;
   loading: boolean;
 };
 

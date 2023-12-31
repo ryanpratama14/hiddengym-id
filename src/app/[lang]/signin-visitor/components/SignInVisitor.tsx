@@ -4,9 +4,8 @@ import Button from "@/components/Button";
 import Input from "@/components/Input";
 import { toastError, toastSuccess } from "@/components/Toast";
 import { EMAIL_VISITOR_READONLY, USER_REDIRECT } from "@/lib/constants";
-import { type Dictionary } from "@/lib/dictionary";
-import { type Locale } from "@/lib/internationalization";
 import { schema, type LoginVisitor } from "@/schema";
+import { type Dictionary, type Lang } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { signIn } from "next-auth/react";
@@ -16,7 +15,7 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 type Props = {
   callbackUrl?: string;
   t: Dictionary;
-  lang: Locale;
+  lang: Lang;
 };
 
 export default function SignInVisitor({ callbackUrl, t, lang }: Props) {

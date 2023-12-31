@@ -1,7 +1,7 @@
 import "@/styles/globals.css";
 import AntdProvider from "@/components/AntdProvider";
-import { type Locale } from "@/lib/internationalization";
 import { TRPCReactProvider } from "@/trpc/react";
+import { type Lang } from "@/types";
 import { type Metadata } from "next";
 import { cookies } from "next/headers";
 
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
-type Props = { children: React.ReactNode; params: { lang: Locale } };
+type Props = { children: React.ReactNode; params: { lang: Lang } };
 
 export default function RootLayout({ children, params }: Props) {
   return (

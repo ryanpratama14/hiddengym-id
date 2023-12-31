@@ -7,10 +7,10 @@ import InputSelect from "@/components/InputSelect";
 import Logo from "@/components/Logo";
 import { toastError, toastSuccess, toastWarning } from "@/components/Toast";
 import { GENDERS, ICONS, USER_REDIRECT } from "@/lib/constants";
-import { type Dictionary } from "@/lib/dictionary";
 import {
   cn,
   formatCurrency,
+  formatDate,
   formatDateShort,
   formatPhoneNumber,
   getExpiryDateFromDate,
@@ -21,7 +21,6 @@ import {
   isDateToday,
   localizePhoneNumber,
 } from "@/lib/functions";
-import { type Locale } from "@/lib/internationalization";
 import { schema } from "@/schema";
 import { type PackageList } from "@/server/api/routers/package";
 import { type PackageTransactionCreateInput } from "@/server/api/routers/packageTransaction";
@@ -30,6 +29,7 @@ import { type UserCreateVisitorInput } from "@/server/api/routers/user";
 import { inputVariants } from "@/styles/variants";
 import { api } from "@/trpc/react";
 import { type TRPC_RESPONSE } from "@/trpc/shared";
+import { type Dictionary, type Lang } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type Package, type PaymentMethod, type PromoCode } from "@prisma/client";
 import { useRouter } from "next/navigation";
@@ -38,7 +38,7 @@ import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 
 type Props = {
   createPackageTransaction: (data: PackageTransactionCreateInput) => Promise<TRPC_RESPONSE>;
-  lang: Locale;
+  lang: Lang;
   t: Dictionary;
   option: { packages: PackageList; paymentMethods: PaymentMethodList };
 };
@@ -358,13 +358,14 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
                               }),
                             )
                           ? "Expired"
-                          : formatDateShort(
-                              getExpiryDateFromDate({
+                          : formatDate({
+                              date: getExpiryDateFromDate({
                                 days: selectedPackage.validityInDays,
                                 dateString: data.transactionDate,
                                 isVisit: selectedPackage.type === "VISIT",
                               }),
-                            )}
+                              style: "short",
+                            })}
                     </p>
                   </section>
                 </section>

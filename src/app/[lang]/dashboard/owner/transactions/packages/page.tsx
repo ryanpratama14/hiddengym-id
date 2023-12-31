@@ -1,17 +1,16 @@
 "use client";
 
-import { type Locale } from "@/lib/internationalization";
 import { type PackageTransactionListInput } from "@/server/api/routers/packageTransaction";
 import { api } from "@/trpc/react";
 import { PAGINATION_LIMIT } from "@/trpc/shared";
-import { type SearchParams } from "@/types";
+import { type Lang, type SearchParams } from "@/types";
 import { type PackageType } from "@prisma/client";
 import Table from "./components/Table";
 import TableSorter from "./components/TableSorter";
 
 type Props = {
   searchParams: SearchParams;
-  params: { lang: Locale };
+  params: { lang: Lang };
 };
 
 export default function TransactionsProductPage({ searchParams, params }: Props) {

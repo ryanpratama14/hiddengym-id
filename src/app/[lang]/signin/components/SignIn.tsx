@@ -4,10 +4,9 @@ import Button from "@/components/Button";
 import Input from "@/components/Input";
 import { toastError, toastSuccess } from "@/components/Toast";
 import { ICONS, USER_REDIRECT } from "@/lib/constants";
-import { type Dictionary } from "@/lib/dictionary";
-import { type Locale } from "@/lib/internationalization";
 import { schema, type Login } from "@/schema";
 import { COLORS } from "@/styles/theme";
+import { type Dictionary, type Lang } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { getSession, signIn } from "next-auth/react";
@@ -19,7 +18,7 @@ type Props = {
   callbackUrl?: string;
   setIsForgotPassword: React.Dispatch<React.SetStateAction<boolean>>;
   t: Dictionary;
-  lang: Locale;
+  lang: Lang;
 };
 
 export default function Login({ callbackUrl, t, lang }: Props) {

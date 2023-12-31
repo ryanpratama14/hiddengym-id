@@ -1,11 +1,11 @@
 import { USER_PATHNAMES } from "@/lib/constants";
-import { type Locale } from "@/lib/internationalization";
 import { getServerAuthSession } from "@/server/auth";
 import { api } from "@/trpc/server";
+import { type Lang } from "@/types";
 import DashboardContainer from "@owner/components/DashboardContainer";
 import { redirect } from "next/navigation";
 
-type Props = { children: React.ReactNode; params: { lang: Locale } };
+type Props = { children: React.ReactNode; params: { lang: Lang } };
 
 export default async function DashboardOwnerLayout({ children, params }: Props) {
   const session = await getServerAuthSession();

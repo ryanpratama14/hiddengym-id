@@ -1,7 +1,7 @@
 import Iconify from "@/components/Iconify";
 import { ICONS } from "@/lib/constants";
-import { type Dictionary } from "@/lib/dictionary";
 import { COLORS } from "@/styles/theme";
+import { type Dictionary } from "@/types";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import { notification } from "antd";
 

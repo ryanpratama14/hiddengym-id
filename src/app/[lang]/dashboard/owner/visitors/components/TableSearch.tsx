@@ -5,13 +5,13 @@ import Iconify from "@/components/Iconify";
 import Input from "@/components/Input";
 import { ICONS, USER_REDIRECT } from "@/lib/constants";
 import { createUrl } from "@/lib/functions";
-import { type Locale } from "@/lib/internationalization";
 import { type UserListInput } from "@/server/api/routers/user";
+import { type Lang } from "@/types";
 import { useRouter, useSearchParams } from "next/navigation";
 
 type Props = {
   query: UserListInput;
-  lang: Locale;
+  lang: Lang;
   loading: boolean;
 };
 

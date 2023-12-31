@@ -1,9 +1,9 @@
 import { useDictionary } from "@/lib/dictionary";
-import { type Locale } from "@/lib/internationalization";
+import { type Lang } from "@/types";
 import CreatePaymentMethodForm from "./components/CreatePaymentMethodForm";
 
 type Props = {
-  params: { lang: Locale };
+  params: { lang: Lang };
 };
 
 export default async function SportTypeCreatePage({ params }: Props) {

@@ -7,20 +7,18 @@ import Logo from "@/components/Logo";
 import NavigatorX from "@/components/NavigatorX";
 import { toastError, toastSuccess } from "@/components/Toast";
 import { DETERMINE_GENDER, GENDERS } from "@/lib/constants";
-import { type Dictionary } from "@/lib/dictionary";
-import { formatDate, formatName, isFileSizeAllowed, localizePhoneNumber } from "@/lib/functions";
-import { type Locale } from "@/lib/internationalization";
+import { formatDateLong, formatName, isFileSizeAllowed, localizePhoneNumber } from "@/lib/functions";
 import { uploadFiles } from "@/lib/uploadthing";
 import { type User, type UserUpdateInput } from "@/server/api/routers/user";
 import { type TRPC_RESPONSE } from "@/trpc/shared";
-import { type ChangeEvent } from "@/types";
+import { type ChangeEvent, type Dictionary, type Lang } from "@/types";
 import { CloudUploadOutlined } from "@ant-design/icons";
 import ProfileForm from "@owner/components/ProfileForm";
 import { useMutation } from "@tanstack/react-query";
 import { Fragment, useState } from "react";
 
 type Props = {
-  lang: Locale;
+  lang: Lang;
   user: User;
   updateUser: (data: UserUpdateInput) => Promise<TRPC_RESPONSE>;
   refreshUser: () => Promise<void>;
@@ -136,7 +134,7 @@ export default function HomeContainer({ lang, user, updateUser, refreshUser, t }
                   </section>
                   <section className="flex flex-col">
                     <p className="label">Date of Birth</p>
-                    <p>{user?.birthDate ? formatDate({ date: user?.birthDate, locale: lang, style: "long" }) : "-"}</p>
+                    <p>{user?.birthDate ? formatDateLong(user?.birthDate, lang) : "-"}</p>
                   </section>
                 </section>
               </Fragment>

@@ -1,12 +1,12 @@
 import { useDictionary } from "@/lib/dictionary";
-import { type Locale } from "@/lib/internationalization";
 import { type PackageTransactionCreateInput } from "@/server/api/routers/packageTransaction";
 import { api } from "@/trpc/server";
+import { type Lang } from "@/types";
 import { revalidatePath } from "next/cache";
 import CreateVisitorForm from "./components/CreateVisitorForm";
 
 type Props = {
-  params: { lang: Locale };
+  params: { lang: Lang };
 };
 
 export default async function CustomerCreatePage({ params }: Props) {

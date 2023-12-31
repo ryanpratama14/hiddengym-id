@@ -1,5 +1,5 @@
-import { type Locale } from "@/lib/internationalization";
 import { COLORS } from "@/styles/theme";
+import { type Lang } from "@/types";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import { type Gender, type PackageTransaction, type PackageType, type PromoCodeType, type Role, type User } from "@prisma/client";
 
@@ -91,10 +91,10 @@ export const USER_PATHNAMES: Record<Role, string> = {
 };
 
 export const USER_REDIRECT = {
-  VISITOR: ({ lang, href }: { lang: Locale; href: string }) => `/${lang}${USER_PATHNAMES.VISITOR}${href}`,
-  ADMIN: ({ lang, href }: { lang: Locale; href: string }) => `/${lang}${USER_PATHNAMES.ADMIN}${href}`,
-  OWNER: ({ lang, href }: { lang: Locale; href: string }) => `/${lang}${USER_PATHNAMES.OWNER}${href}`,
-  TRAINER: ({ lang, href }: { lang: Locale; href: string }) => `/${lang}${USER_PATHNAMES.TRAINER}${href}`,
+  VISITOR: ({ lang, href }: { lang: Lang; href: string }) => `/${lang}${USER_PATHNAMES.VISITOR}${href}`,
+  ADMIN: ({ lang, href }: { lang: Lang; href: string }) => `/${lang}${USER_PATHNAMES.ADMIN}${href}`,
+  OWNER: ({ lang, href }: { lang: Lang; href: string }) => `/${lang}${USER_PATHNAMES.OWNER}${href}`,
+  TRAINER: ({ lang, href }: { lang: Lang; href: string }) => `/${lang}${USER_PATHNAMES.TRAINER}${href}`,
 };
 
 export const EMAIL_VISITOR_READONLY = "readonly@hiddengym-id.com";
@@ -188,7 +188,7 @@ export const ADD_BUTTON_ITEMS_TO_REMOVE: Record<Role, string[]> = {
   ADMIN: [],
 };
 
-export const ADD_BUTTON_ITEMS = (role: Role, lang: Locale) => [
+export const ADD_BUTTON_ITEMS = (role: Role, lang: Lang) => [
   {
     label: "Payment Method",
     icon: ICONS.payment_method,

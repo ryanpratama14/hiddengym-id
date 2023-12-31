@@ -1,9 +1,9 @@
 import { USER_PATHNAMES } from "@/lib/constants";
-import { type Locale } from "@/lib/internationalization";
 import { getServerAuthSession } from "@/server/auth";
+import { type Lang } from "@/types";
 import { redirect } from "next/navigation";
 
-type Props = { params: { lang: Locale } };
+type Props = { params: { lang: Lang } };
 
 export default async function DashboardPageRedirector({ params }: Props) {
   const session = await getServerAuthSession();

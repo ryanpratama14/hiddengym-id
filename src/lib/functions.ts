@@ -1,5 +1,5 @@
 import { COUNTRY_CODE, DASHBOARD_MENUS, DASHBOARD_SUB_MENUS, USER_PATHNAMES, USER_REDIRECT } from "@/lib/constants";
-import { type Locale } from "@/lib/internationalization";
+import { type Lang } from "@/types";
 import { type Role } from "@prisma/client";
 import { clsx, type ClassValue } from "clsx";
 import { type ReadonlyURLSearchParams } from "next/navigation";
@@ -54,7 +54,7 @@ export const getInputDate = (date?: Date): string => {
   return `${year}-${month}-${day}`;
 };
 
-export const getTodayDate = ({ locale, style }: { locale: Locale; style: "short" | "long" }): string => {
+export const getTodayDate = ({ locale, style }: { locale: Lang; style: "short" | "long" }): string => {
   return getNewDate().toLocaleDateString(locale, {
     year: "numeric",
     month: style === "long" ? "long" : "numeric",
@@ -169,10 +169,26 @@ export const isDateToday = (date: Date): boolean => {
   );
 };
 
-export const formatDate = ({ date, locale, style }: { date: Date; locale: Locale; style: "short" | "long" }): string => {
-  return date.toLocaleDateString(locale ?? ["id-ID"], {
+export const formatDate = ({ date, lang, style }: { date: Date; lang?: Lang; style: "short" | "long" }): string => {
+  return date.toLocaleDateString(lang ?? ["id-ID"], {
     year: "numeric",
     month: style === "long" ? "long" : "numeric",
+    day: "numeric",
+  });
+};
+
+export const formatDateShort = (date: Date, lang?: Lang): string => {
+  return date.toLocaleDateString(lang ?? ["id-ID"], {
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+  });
+};
+
+export const formatDateLong = (date: Date, lang?: Lang): string => {
+  return date.toLocaleDateString(lang ?? ["id-ID"], {
+    year: "numeric",
+    month: "long",
     day: "numeric",
   });
 };
@@ -262,7 +278,7 @@ export const getDashboardPathname = (pathname: string, role: Role): string[] => 
   }
 };
 
-export const getSelectedMenu = ({ pathname, role, lang }: { pathname: string; role: Role; lang: Locale }) => {
+export const getSelectedMenu = ({ pathname, role, lang }: { pathname: string; role: Role; lang: Lang }) => {
   const selectedMenu = {
     name: "",
     href: "",

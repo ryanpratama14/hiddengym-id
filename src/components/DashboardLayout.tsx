@@ -4,9 +4,9 @@ import AddButton from "@/components/AddButton";
 import DashboardProfileDropdown from "@/components/DashboardProfileDropdown";
 import Logo from "@/components/Logo";
 import { cn, getSelectedMenu } from "@/lib/functions";
-import { type Locale } from "@/lib/internationalization";
 import { type User } from "@/server/api/routers/user";
 import { COLORS } from "@/styles/theme";
+import { type Lang } from "@/types";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import { type ItemType, type MenuItemType } from "antd/es/menu/hooks/useItems";
@@ -17,8 +17,8 @@ import { Fragment, useEffect, useState } from "react";
 type Props = {
   children: React.ReactNode;
   user: User;
-  getDashboardItems: (collapsed: boolean, lang: Locale) => ItemType<MenuItemType>[];
-  lang: Locale;
+  getDashboardItems: (collapsed: boolean, lang: Lang) => ItemType<MenuItemType>[];
+  lang: Lang;
 };
 
 export default function DashboardLayout({ children, getDashboardItems, user, lang }: Props) {

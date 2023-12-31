@@ -1,6 +1,6 @@
 import { USER_REDIRECT } from "@/lib/constants";
 import { cn } from "@/lib/functions";
-import { type Locale } from "@/lib/internationalization";
+import { type Lang } from "@/types";
 import { type Role } from "@prisma/client";
 import Link from "next/link";
 
@@ -20,7 +20,7 @@ const DashboardNavigator = ({
   newTab?: boolean;
   target?: React.HTMLAttributeAnchorTarget;
   role: Role;
-  lang: Locale;
+  lang: Lang;
 }) => {
   return (
     <Link

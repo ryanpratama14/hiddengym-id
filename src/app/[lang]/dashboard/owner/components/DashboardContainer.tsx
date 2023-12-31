@@ -4,17 +4,17 @@ import DashboardLayout from "@/components/DashboardLayout";
 import DashboardNavigator from "@/components/DashboardNavigator";
 import Iconify from "@/components/Iconify";
 import { ICONS } from "@/lib/constants";
-import { type Locale } from "@/lib/internationalization";
 import { type User } from "@/server/api/routers/user";
+import { type Lang } from "@/types";
 import { type ItemType, type MenuItemType } from "antd/es/menu/hooks/useItems";
 
 type Props = {
   children: React.ReactNode;
   user: User;
-  lang: Locale;
+  lang: Lang;
 };
 
-const getDashboardItems = (collapsed: boolean, lang: Locale): ItemType<MenuItemType>[] => [
+const getDashboardItems = (collapsed: boolean, lang: Lang): ItemType<MenuItemType>[] => [
   {
     key: "/",
     label: (

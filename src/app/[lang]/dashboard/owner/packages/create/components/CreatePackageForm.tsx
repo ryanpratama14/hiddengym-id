@@ -6,15 +6,14 @@ import InputSelect from "@/components/InputSelect";
 import InputTextArea from "@/components/InputTextArea";
 import { toastError, toastSuccess } from "@/components/Toast";
 import { ICONS, PACKAGE_TYPES, USER_REDIRECT } from "@/lib/constants";
-import { type Dictionary } from "@/lib/dictionary";
 import { cn } from "@/lib/functions";
-import { type Locale } from "@/lib/internationalization";
 import { schema } from "@/schema";
 import { type PackageCreateInput } from "@/server/api/routers/package";
 import { type PlaceList } from "@/server/api/routers/place";
 import { type SportList } from "@/server/api/routers/sport";
 import { type UserListTrainer } from "@/server/api/routers/user";
 import { api } from "@/trpc/react";
+import { type Dictionary, type Lang } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type PackageType } from "@prisma/client";
 import { useRouter } from "next/navigation";
@@ -35,7 +34,7 @@ const initialData: PackageCreateInput = {
 type Props = {
   option: { places: PlaceList; sports: SportList; trainers: UserListTrainer };
   t: Dictionary;
-  lang: Locale;
+  lang: Lang;
 };
 
 export default function CreatePackageForm({ option, t, lang }: Props) {

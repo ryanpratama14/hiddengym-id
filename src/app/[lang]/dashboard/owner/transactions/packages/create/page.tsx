@@ -1,10 +1,10 @@
 import { useDictionary } from "@/lib/dictionary";
-import { type Locale } from "@/lib/internationalization";
 import { api } from "@/trpc/server";
+import { type Lang } from "@/types";
 import CreatePackageTransactionForm from "./components/CreatePackageTransactionForm";
 
 type Props = {
-  params: { lang: Locale };
+  params: { lang: Lang };
 };
 
 export default async function PackageTransactionCreatePage({ params }: Props) {

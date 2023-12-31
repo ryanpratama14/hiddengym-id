@@ -3,7 +3,7 @@
 import Iconify from "@/components/Iconify";
 import { ADD_BUTTON_ITEMS, ADD_BUTTON_ITEMS_TO_REMOVE, ICONS } from "@/lib/constants";
 import { cn } from "@/lib/functions";
-import { type Locale } from "@/lib/internationalization";
+import { type Lang } from "@/types";
 import { Menu, Transition } from "@headlessui/react";
 import { type Role } from "@prisma/client";
 import { useRouter } from "next/navigation";
@@ -11,7 +11,7 @@ import { Fragment } from "react";
 
 type Props = {
   role: Role;
-  lang: Locale;
+  lang: Lang;
   handleCollapse: React.MouseEventHandler<HTMLElement>;
 };
 

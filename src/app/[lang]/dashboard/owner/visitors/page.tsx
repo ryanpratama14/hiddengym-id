@@ -1,10 +1,9 @@
 "use client";
 
-import { type Locale } from "@/lib/internationalization";
 import { type UserListInput } from "@/server/api/routers/user";
 import { api } from "@/trpc/react";
 import { PAGINATION_LIMIT } from "@/trpc/shared";
-import { type SearchParams } from "@/types";
+import { type Lang, type SearchParams } from "@/types";
 import Table from "@owner/visitors/components/Table";
 import TableSearch from "@owner/visitors/components/TableSearch";
 import TableSorter from "@owner/visitors/components/TableSorter";
@@ -12,7 +11,7 @@ import { type Gender } from "@prisma/client";
 
 type Props = {
   searchParams: SearchParams;
-  params: { lang: Locale };
+  params: { lang: Lang };
 };
 
 export default function VisitorsPage({ searchParams, params }: Props) {

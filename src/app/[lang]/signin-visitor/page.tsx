@@ -1,8 +1,7 @@
 import { USER_PATHNAMES } from "@/lib/constants";
 import { useDictionary } from "@/lib/dictionary";
-import { type Locale } from "@/lib/internationalization";
 import { getServerAuthSession } from "@/server/auth";
-import { type SearchParams } from "@/types";
+import { type Lang, type SearchParams } from "@/types";
 // components
 import SignInVisitor from "~/signin-visitor/components/SignInVisitor";
 import SignInVisitorHeader from "~/signin-visitor/components/SignInVisitorHeader";
@@ -10,7 +9,7 @@ import { redirect } from "next/navigation";
 
 type Props = {
   searchParams: SearchParams;
-  params: { lang: Locale };
+  params: { lang: Lang };
 };
 
 export default async function SignInVisitorPage({ searchParams, params }: Props) {

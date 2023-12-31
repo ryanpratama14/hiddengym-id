@@ -15,7 +15,6 @@ import {
   isDateToday,
   textEllipsis,
 } from "@/lib/functions";
-import { type Locale } from "@/lib/internationalization";
 import {
   type PackageTransactionDetail,
   type PackageTransactionList,
@@ -23,7 +22,7 @@ import {
 } from "@/server/api/routers/packageTransaction";
 import { inputVariants } from "@/styles/variants";
 import { PAGINATION_LIMIT } from "@/trpc/shared";
-import { type SearchParams } from "@/types";
+import { type Lang, type SearchParams } from "@/types";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import { Table } from "antd";
 import { type FilterDropdownProps } from "antd/es/table/interface";
@@ -33,7 +32,7 @@ import { Fragment, useState } from "react";
 type Props = {
   data?: PackageTransactionList;
   searchParams: SearchParams;
-  lang: Locale;
+  lang: Lang;
   loading: boolean;
 };
 

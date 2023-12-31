@@ -1,14 +1,13 @@
 import { USER_PATHNAMES } from "@/lib/constants";
 import { useDictionary } from "@/lib/dictionary";
-import { type Locale } from "@/lib/internationalization";
 import { getServerAuthSession } from "@/server/auth";
-import { type SearchParams } from "@/types";
+import { type Lang, type SearchParams } from "@/types";
 import SignInContainer from "~/signin/components/SignInContainer";
 import { redirect } from "next/navigation";
 
 type Props = {
   searchParams: SearchParams;
-  params: { lang: Locale };
+  params: { lang: Lang };
 };
 
 export default async function SignInPage({ searchParams, params }: Props) {
