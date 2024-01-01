@@ -1,11 +1,9 @@
 "use client";
 
 import { type AppRouter } from "@/server/api/root";
-import { antdTheme } from "@/styles/theme";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { loggerLink, unstable_httpBatchStreamLink } from "@trpc/client";
 import { createTRPCReact } from "@trpc/react-query";
-import { ConfigProvider } from "antd";
 import { useState } from "react";
 import { getUrl, transformer } from "./shared";
 
@@ -32,7 +30,7 @@ export function TRPCReactProvider(props: { children: React.ReactNode; cookies: s
   return (
     <QueryClientProvider client={queryClient}>
       <api.Provider client={trpcClient} queryClient={queryClient}>
-        <ConfigProvider theme={antdTheme}>{props.children}</ConfigProvider>
+        {props.children}
       </api.Provider>
     </QueryClientProvider>
   );

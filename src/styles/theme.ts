@@ -17,14 +17,12 @@ export const COLORS = {
   light: "#fafafa",
 };
 
-export const antdTheme: ThemeConfig = {
+export const theme: ThemeConfig = {
   token: {
-    fontFamily: "",
-    colorBgElevated: "",
-    colorPrimary: "",
-    colorLinkHover: "",
-    colorLinkActive: "",
-    colorLink: "",
+    fontFamily: "Poppins",
+    colorBgElevated: COLORS.light,
+    colorPrimary: COLORS.dark,
+    colorLinkHover: COLORS.blue2,
   },
   components: {
     Select: {
