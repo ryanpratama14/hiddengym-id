@@ -20,7 +20,7 @@ export default async function CustomerCreatePage({ params }: Props) {
   };
 
   const option = {
-    packages: await api.package.list.query(),
+    packages: await api.package.list.query({}),
     paymentMethods: await api.paymentMethod.list.query(),
   };
 

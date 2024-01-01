@@ -115,7 +115,7 @@ export default function PackagesTable({ data, loading, lang, searchParams }: Pro
           align: "center",
           width: 1,
           ...getTableFilter({ name: "type", icon: ICONS.package }),
-          render: (text: PackageType) => <p className="px-4 border-2 border-dark">{text}</p>,
+          render: (text: PackageType) => <p className="font-semibold border-1 border-dark px-2 select-none">{text}</p>,
         },
         {
           title: "Name",
