@@ -1,4 +1,5 @@
 import Button from "@/components/Button";
+import FilterIcon from "@/components/FilterIcon";
 import Iconify from "@/components/Iconify";
 import Img from "@/components/Img";
 import Input from "@/components/Input";
@@ -112,15 +113,7 @@ export default function PackageTransactionsTable({ data, searchParams, lang, loa
         </form>
       );
     },
-    filterIcon: () => (
-      <section
-        className={cn("aspect-square w-7 text-cream hover:text-dark hover:bg-cream relative rounded-full hover:shadow-lg animate", {
-          "bg-cream text-dark": Object.keys(searchParams).includes(name),
-        })}
-      >
-        <Iconify icon={ICONS.search} width={22} className="absolute centered" />
-      </section>
-    ),
+    filterIcon: () => <FilterIcon name={name} searchParams={searchParams} />,
   });
 
   return (

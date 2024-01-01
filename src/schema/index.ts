@@ -107,6 +107,13 @@ export class schema {
   };
 
   static package = class {
+    static list = z.object({
+      name: z.string().optional(),
+      type: schema.packageType.optional(),
+      price: z.number().optional(),
+      totalTransactions: z.number().optional(),
+    });
+
     static create = z
       .object({
         name: z.string().min(4),

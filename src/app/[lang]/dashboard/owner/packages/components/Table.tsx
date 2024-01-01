@@ -1,0 +1,160 @@
+import Button from "@/components/Button";
+import FilterIcon from "@/components/FilterIcon";
+import Input from "@/components/Input";
+import { ICONS, PACKAGE_TYPES, USER_REDIRECT } from "@/lib/constants";
+import { cn, createUrl, formatCurrency } from "@/lib/functions";
+import { type PackageList, type PackageListInput } from "@/server/api/routers/package";
+import { inputVariants } from "@/styles/variants";
+import { type Lang, type SearchParams } from "@/types";
+import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
+import { type PackageTransaction, type PackageType } from "@prisma/client";
+import { Table } from "antd";
+import { type FilterDropdownProps } from "antd/es/table/interface";
+import { useRouter, useSearchParams } from "next/navigation";
+
+type Props = {
+  data?: PackageList;
+  lang: Lang;
+  loading: boolean;
+  searchParams: SearchParams;
+};
+
+export default function PackagesTable({ data, loading, lang, searchParams }: Props) {
+  const newSearchParams = useSearchParams();
+  const newParams = new URLSearchParams(newSearchParams.toString());
+  const router = useRouter();
+
+  console.log(data);
+
+  const redirectTable = (newParams: URLSearchParams) => {
+    router.push(createUrl(USER_REDIRECT.OWNER({ lang, href: "/packages" }), newParams));
+  };
+
+  const getTableFilter = ({
+    name,
+    icon,
+    type,
+  }: {
+    name: keyof PackageListInput;
+    icon?: IconifyIcon | string;
+    type?: React.HTMLInputTypeAttribute;
+  }) => ({
+    filterDropdown: ({ confirm }: FilterDropdownProps) => {
+      return (
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            const val = e.target as HTMLFormElement;
+            const value = val[name] as HTMLInputElement;
+            if (value.value) {
+              newParams.set(name, value.value);
+            } else newParams.delete(name);
+            confirm();
+            redirectTable(newParams);
+          }}
+          className="flex flex-col gap-2 w-52 bg-light p-2 rounded-md shadow"
+        >
+          {name === "type" ? (
+            <select className={inputVariants()} name={name} defaultValue={searchParams[name]} key={name}>
+              <option value="">All</option>
+              {PACKAGE_TYPES.map((type) => (
+                <option key={type.value} value={type.value}>
+                  {type.label}
+                </option>
+              ))}
+            </select>
+          ) : (
+            <Input
+              icon={icon}
+              key={name}
+              defaultValue={searchParams[name]}
+              name={name}
+              type={type ? type : "text"}
+              className={cn("text-base")}
+            />
+          )}
+          <section className="grid grid-cols-2 gap-2">
+            <Button color="success" type="submit">
+              Search
+            </Button>
+            <Button
+              color="expired"
+              onClick={(e) => {
+                const form = e.currentTarget.form!;
+                if (form) {
+                  form.reset();
+                  if (!searchParams[name]) return;
+                }
+                newParams.delete(name);
+                newParams.delete("page");
+                confirm();
+                redirectTable(newParams);
+              }}
+            >
+              Reset
+            </Button>
+          </section>
+        </form>
+      );
+    },
+    filterIcon: () => <FilterIcon name={name} searchParams={searchParams} />,
+  });
+
+  return (
+    <Table
+      dataSource={data}
+      loading={loading}
+      pagination={false}
+      rowKey="id"
+      scroll={{ x: "max-content" }}
+      columns={[
+        {
+          title: "Type",
+          key: "type",
+          dataIndex: "type",
+          align: "center",
+          width: 1,
+          ...getTableFilter({ name: "type", icon: ICONS.package }),
+          render: (text: PackageType) => <p className="px-4 border-2 border-dark">{text}</p>,
+        },
+        {
+          title: "Name",
+          key: "name",
+          dataIndex: "name",
+          ...getTableFilter({ name: "name", icon: ICONS.name }),
+        },
+        {
+          title: "Validity",
+          key: "validityInDays",
+          dataIndex: "validityInDays",
+          render: (text: number, item) => {
+            const sharedClassName = "h-7 flex items-center w-fit text-cream shadow px-2 rounded-md";
+            if (item.type === "SESSIONS") {
+              return (
+                <section className="flex gap-2">
+                  <p className={cn(sharedClassName, "bg-purple-600")}>{item.approvedSessions} sessions(s)</p>
+                  {text ? <p className={cn(sharedClassName, "bg-emerald")}>{text} day(s)</p> : null}
+                </section>
+              );
+            }
+            return <p className={cn(sharedClassName, "bg-emerald")}>{text} day(s)</p>;
+          },
+        },
+        {
+          title: "Price",
+          key: "price",
+          dataIndex: "price",
+          ...getTableFilter({ name: "price", icon: ICONS.payment_method, type: "number" }),
+          render: (text: number) => formatCurrency(text),
+        },
+        {
+          title: "Total Transactions",
+          key: "transactions",
+          dataIndex: "transactions",
+          ...getTableFilter({ name: "totalTransactions", type: "number" }),
+          render: (text: PackageTransaction[]) => text.length,
+        },
+      ]}
+    />
+  );
+}

@@ -3,6 +3,7 @@ import { createTRPCRouter, ownerProcedure, publicProcedure } from "@/server/api/
 import {
   getConflictMessage,
   getCreatedMessage,
+  insensitiveMode,
   prismaExclude,
   THROW_OK,
   THROW_TRPC_ERROR,
@@ -17,6 +18,7 @@ const packageSelect = {
     trainers: true,
     places: true,
     sports: true,
+    transactions: true,
   },
 };
 
@@ -48,8 +50,17 @@ export const packageRouter = createTRPCRouter({
     return data;
   }),
 
-  list: publicProcedure.query(async ({ ctx }) => {
-    const data = await ctx.db.package.findMany({ ...packageSelect });
+  list: publicProcedure.input(schema.package.list).query(async ({ ctx, input }) => {
+    let data = await ctx.db.package.findMany({
+      ...packageSelect,
+      where: {
+        name: { contains: input.name, ...insensitiveMode },
+        type: input.type,
+        price: { gte: input.price },
+      },
+      orderBy: { type: "asc" },
+    });
+    if (input.totalTransactions) data = data.filter((item) => item.transactions.length >= input.totalTransactions!);
     return data;
   }),
 });
@@ -59,3 +70,4 @@ export type PackageList = RouterOutputs["package"]["list"];
 
 // inputs
 export type PackageCreateInput = RouterInputs["package"]["create"];
+export type PackageListInput = RouterInputs["package"]["list"];

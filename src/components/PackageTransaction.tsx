@@ -93,7 +93,7 @@ export default function PackageTransaction({ data }: Props) {
 
         <section className="px-4 py-1 shadow-lg text-light bg-blue flex flex-col">
           <section className="text-lg font-medium">PAID BY {data.paymentMethod.name.toUpperCase()}</section>
-          <small className={cn("text-xs")}>txn. {data.id}</small>
+          <small className={cn("text-xs")}>{data.id}</small>
         </section>
         <section className="flex flex-col justify-center items-center gap-6 mt-6">
           <Logo className="aspect-video w-[50%]" />

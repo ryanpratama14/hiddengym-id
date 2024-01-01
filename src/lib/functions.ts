@@ -15,24 +15,10 @@ export const consoleError = (error: string) => {
   );
 };
 
-export const createUrl = (pathname: string, params: URLSearchParams | ReadonlyURLSearchParams) => {
-  const paramsString = params.toString();
+export const createUrl = (pathname: string, searchParams: URLSearchParams | ReadonlyURLSearchParams) => {
+  const paramsString = searchParams.toString();
   const queryString = `${paramsString.length ? "?" : ""}${paramsString}`;
   return `${pathname}${queryString}`;
-};
-
-export const createSearchParams = (params: Record<string, string | string[]>, newParams?: URLSearchParams): URLSearchParams => {
-  const updatedParams = new URLSearchParams(newParams);
-  for (const [key, values] of Object.entries(params)) {
-    if (Array.isArray(values)) {
-      for (const value of values) {
-        updatedParams.append(key, value);
-      }
-    } else {
-      updatedParams.append(key, values);
-    }
-  }
-  return updatedParams;
 };
 
 export const formatName = (name: string): string => {
