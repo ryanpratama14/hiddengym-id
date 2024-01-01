@@ -1,7 +1,7 @@
 import "@/styles/globals.css";
-import AntdProvider from "@/components/AntdProvider";
 import { TRPCReactProvider } from "@/trpc/react";
 import { type Lang } from "@/types";
+import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { type Metadata } from "next";
 import { cookies } from "next/headers";
 
@@ -18,9 +18,9 @@ export default function RootLayout({ children, params }: Props) {
     <html lang={params.lang}>
       <body>
         <TRPCReactProvider cookies={cookies().toString()}>
-          <AntdProvider>
+          <AntdRegistry>
             <main>{children}</main>
-          </AntdProvider>
+          </AntdRegistry>
         </TRPCReactProvider>
       </body>
     </html>
