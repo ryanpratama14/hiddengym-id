@@ -3,6 +3,7 @@
 import AddButton from "@/components/AddButton";
 import DashboardProfileDropdown from "@/components/DashboardProfileDropdown";
 import Logo from "@/components/Logo";
+import { USER_REDIRECT } from "@/lib/constants";
 import { cn, getSelectedMenu } from "@/lib/functions";
 import { type User } from "@/server/api/routers/user";
 import { COLORS } from "@/styles/theme";
@@ -11,7 +12,7 @@ import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import { type ItemType, type MenuItemType } from "antd/es/menu/hooks/useItems";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Fragment, useEffect, useState } from "react";
 
 type Props = {
@@ -23,6 +24,7 @@ type Props = {
 
 export default function DashboardLayout({ children, getDashboardItems, user, lang }: Props) {
   const pathname = usePathname();
+  const router = useRouter();
   const [collapsed, setCollapsed] = useState(true);
   const [selectedMenu, setSelectedMenu] = useState(getSelectedMenu({ pathname, role: user.role, lang }));
   const handleCollapse = () => (collapsed ? undefined : setCollapsed(true));
@@ -53,7 +55,10 @@ export default function DashboardLayout({ children, getDashboardItems, user, lan
               </button>
               <Menu
                 color={COLORS.cream}
-                onClick={handleCollapse}
+                onClick={(e) => {
+                  router.push(USER_REDIRECT[user.role]({ lang, href: e.key }));
+                  handleCollapse();
+                }}
                 selectedKeys={selectedMenu.keys}
                 mode="inline"
                 items={getDashboardItems(collapsed, lang).map((item) => ({ ...item, title: "" })) as ItemType<MenuItemType>[]}

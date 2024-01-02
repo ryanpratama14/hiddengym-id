@@ -24,8 +24,6 @@ export default function PackagesTable({ data, loading, lang, searchParams }: Pro
   const newParams = new URLSearchParams(newSearchParams.toString());
   const router = useRouter();
 
-  console.log(data);
-
   const redirectTable = (newParams: URLSearchParams) => {
     router.push(createUrl(USER_REDIRECT.OWNER({ lang, href: "/packages" }), newParams));
   };

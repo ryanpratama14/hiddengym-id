@@ -14,127 +14,75 @@ type Props = {
   lang: Lang;
 };
 
-const getDashboardItems = (collapsed: boolean, lang: Lang): ItemType<MenuItemType>[] => [
+const getDashboardItems = (collapsed: boolean): ItemType<MenuItemType>[] => [
   {
     key: "/",
-    label: (
-      <DashboardNavigator href="/" role="OWNER" lang={lang}>
-        Home
-      </DashboardNavigator>
-    ),
+    label: <DashboardNavigator>Home</DashboardNavigator>,
     icon: <Iconify icon={ICONS.home} width={25} collapsed={collapsed} />,
   },
   {
     key: "/visitors",
-    label: (
-      <DashboardNavigator href="/visitors" role="OWNER" lang={lang}>
-        Visitors
-      </DashboardNavigator>
-    ),
+    label: <DashboardNavigator>Visitors</DashboardNavigator>,
     icon: <Iconify icon={ICONS.visitor} width={25} collapsed={collapsed} />,
   },
   {
     key: "/trainers",
-    label: (
-      <DashboardNavigator href="/trainers" role="OWNER" lang={lang}>
-        Trainers
-      </DashboardNavigator>
-    ),
+    label: <DashboardNavigator>Trainers</DashboardNavigator>,
     icon: <Iconify icon={ICONS.trainer} width={25} collapsed={collapsed} />,
   },
   {
     key: "/packages",
-    label: (
-      <DashboardNavigator href="/packages" role="OWNER" lang={lang}>
-        Packages
-      </DashboardNavigator>
-    ),
+    label: <DashboardNavigator>Packages</DashboardNavigator>,
     icon: <Iconify icon={ICONS.package} width={25} collapsed={collapsed} />,
   },
   {
     key: "/products",
-    label: (
-      <DashboardNavigator href="/products" role="OWNER" lang={lang}>
-        Products
-      </DashboardNavigator>
-    ),
+    label: <DashboardNavigator>Products</DashboardNavigator>,
     icon: <Iconify icon={ICONS.product} width={25} collapsed={collapsed} />,
   },
   {
     key: "/transactions",
-    label: <p className="select-none font-medium">Transactions</p>,
+    label: <DashboardNavigator>Transactions</DashboardNavigator>,
     icon: <Iconify icon={ICONS.transaction} width={25} collapsed={collapsed} />,
     children: [
       {
         key: "/transactions/packages",
-        label: (
-          <DashboardNavigator isChildren href="/transactions/packages" role="OWNER" lang={lang}>
-            Packages
-          </DashboardNavigator>
-        ),
+        label: <DashboardNavigator isChildren>Packages</DashboardNavigator>,
       },
       {
         key: "/transactions/products",
-        label: (
-          <DashboardNavigator isChildren href="/transactions/products" role="OWNER" lang={lang}>
-            Products
-          </DashboardNavigator>
-        ),
+        label: <DashboardNavigator isChildren>Products</DashboardNavigator>,
       },
     ],
   },
   {
     key: "/visits",
-    label: (
-      <DashboardNavigator href="/visits" role="OWNER" lang={lang}>
-        Visits
-      </DashboardNavigator>
-    ),
+    label: <DashboardNavigator>Visits</DashboardNavigator>,
     icon: <Iconify icon={ICONS.visit} width={25} collapsed={collapsed} />,
   },
   {
     key: "/schedules",
-    label: (
-      <DashboardNavigator href="/schedules" role="OWNER" lang={lang}>
-        Schedules
-      </DashboardNavigator>
-    ),
+    label: <DashboardNavigator>Schedules</DashboardNavigator>,
     icon: <Iconify icon={ICONS.schedule} width={25} collapsed={collapsed} />,
   },
   {
     key: "/promo-codes",
-    label: (
-      <DashboardNavigator href="/promo-codes" role="OWNER" lang={lang}>
-        Promo Codes
-      </DashboardNavigator>
-    ),
+    label: <DashboardNavigator>Promo Codes</DashboardNavigator>,
     icon: <Iconify icon={ICONS.promo_codes} width={25} collapsed={collapsed} />,
   },
   {
     key: "/sport-types",
-    label: (
-      <DashboardNavigator href="/sport-types" role="OWNER" lang={lang}>
-        Sport Types
-      </DashboardNavigator>
-    ),
+    label: <DashboardNavigator>Sport Types</DashboardNavigator>,
     icon: <Iconify icon={ICONS.sport} width={25} collapsed={collapsed} />,
   },
   {
     key: "/places",
-    label: (
-      <DashboardNavigator href="/places" role="OWNER" lang={lang}>
-        Places
-      </DashboardNavigator>
-    ),
+    label: <DashboardNavigator>Places</DashboardNavigator>,
     icon: <Iconify icon={ICONS.place} width={25} collapsed={collapsed} />,
   },
   {
     key: "/payment-methods",
-    label: (
-      <DashboardNavigator href="/payment-methods" role="OWNER" lang={lang}>
-        Payment Methods
-      </DashboardNavigator>
-    ),
+    label: <DashboardNavigator>Payment Methods</DashboardNavigator>,
     icon: <Iconify icon={ICONS.payment_method} width={25} collapsed={collapsed} />,
   },
 ];
