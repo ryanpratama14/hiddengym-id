@@ -175,7 +175,7 @@ export default function PackageTransactionsTable({ data, searchParams, lang, loa
           {
             title: "Type",
             key: "package.type",
-            render: (_, item) => item.package.type,
+            render: (_, item) => <p className="font-semibold border-1 border-dark px-2 select-none">{item.package.type}</p>,
             ...getTableFilter({ name: "packageType" }),
           },
           {
@@ -236,7 +236,7 @@ export default function PackageTransactionsTable({ data, searchParams, lang, loa
                       {isDateToday(text) ? (
                         <p className={cn(sharedClassName, "bg-yellow-600")}>Today</p>
                       ) : (
-                        <p className={cn(sharedClassName, "bg-emerald")}>{getRemainingDays({ expiryDate: text })} days</p>
+                        <p className={cn(sharedClassName, "bg-emerald")}>{getRemainingDays({ expiryDate: text })} day(s)</p>
                       )}
                     </section>
                   );
