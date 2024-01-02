@@ -34,3 +34,11 @@
 .ant-select-selector:hover {
   border-color: #2121294d !important;
 }
+
+.ant-select-focused .ant-select-selector,
+.ant-select-selector:focus,
+.ant-select-selector:active,
+.ant-select-open .ant-select-selector {
+  border-color: #0078cc !important;
+  box-shadow: none !important;
+}

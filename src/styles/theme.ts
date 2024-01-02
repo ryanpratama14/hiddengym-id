@@ -26,9 +26,12 @@ export const theme: ThemeConfig = {
     colorLinkHover: COLORS.blue2,
   },
   components: {
+    Pagination: {
+      fontWeightStrong: 500,
+    },
     Select: {
       colorBgElevated: COLORS.light,
-      selectorBg: COLORS.cream,
+      selectorBg: COLORS.light,
       colorBorder: COLORS.dark,
       optionSelectedBg: COLORS.blue2,
       optionSelectedColor: COLORS.cream,
