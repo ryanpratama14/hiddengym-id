@@ -13,6 +13,7 @@ export const metadata: Metadata = {
   title: "Hidden Gym",
   description: "Hidden Gym",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
+  manifest: "/manifest.json",
 };
 
 const poppins = Poppins({
