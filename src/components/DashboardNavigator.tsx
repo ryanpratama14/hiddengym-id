@@ -11,7 +11,11 @@ const DashboardNavigator = ({
   newTab?: boolean;
   target?: React.HTMLAttributeAnchorTarget;
 }) => {
-  return <p className={cn(`text-base select-none font-medium ${className}`, { "ml-3 text-sm": isChildren })}>{children}</p>;
+  return (
+    <p className={cn(`text-base select-none font-medium h-full flex items-center ${className}`, { "ml-3 text-sm": isChildren })}>
+      {children}
+    </p>
+  );
 };
 
 export default DashboardNavigator;

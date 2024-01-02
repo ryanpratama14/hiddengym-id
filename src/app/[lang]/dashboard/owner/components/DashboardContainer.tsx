@@ -14,7 +14,7 @@ type Props = {
   lang: Lang;
 };
 
-const getDashboardItems = (collapsed: boolean): ItemType<MenuItemType>[] => [
+const getDashboardItems = (collapsed: boolean, lang: Lang): ItemType<MenuItemType>[] => [
   {
     key: "/",
     label: <DashboardNavigator>Home</DashboardNavigator>,
@@ -42,7 +42,7 @@ const getDashboardItems = (collapsed: boolean): ItemType<MenuItemType>[] => [
   },
   {
     key: "/transactions",
-    label: <DashboardNavigator>Transactions</DashboardNavigator>,
+    label: <DashboardNavigator className="select-none font-medium">Transactions</DashboardNavigator>,
     icon: <Iconify icon={ICONS.transaction} width={25} collapsed={collapsed} />,
     children: [
       {
