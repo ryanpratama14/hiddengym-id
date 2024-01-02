@@ -13,19 +13,20 @@ import { Layout, Menu } from "antd";
 import { type ItemType, type MenuItemType } from "antd/es/menu/hooks/useItems";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 
 type Props = {
   children: React.ReactNode;
   user: User;
-  getDashboardItems: (collapsed: boolean) => ItemType<MenuItemType>[];
+  items: ItemType<MenuItemType>[];
   lang: Lang;
+  collapsed: boolean;
+  setCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function DashboardLayout({ children, getDashboardItems, user, lang }: Props) {
+export default function DashboardLayout({ children, items, user, lang, collapsed, setCollapsed }: Props) {
   const pathname = usePathname();
   const router = useRouter();
-  const [collapsed, setCollapsed] = useState(true);
   const [selectedMenu, setSelectedMenu] = useState(getSelectedMenu({ pathname, role: user.role, lang }));
   const handleCollapse = () => (collapsed ? undefined : setCollapsed(true));
 
@@ -53,16 +54,7 @@ export default function DashboardLayout({ children, getDashboardItems, user, lan
               >
                 {!collapsed ? <MenuFoldOutlined style={{ fontSize: "30px" }} /> : <MenuUnfoldOutlined style={{ fontSize: "30px" }} />}
               </button>
-              <Menu
-                color={COLORS.cream}
-                onClick={(e) => {
-                  router.push(USER_REDIRECT[user.role]({ lang, href: e.key }));
-                  handleCollapse();
-                }}
-                selectedKeys={selectedMenu.keys}
-                mode="inline"
-                items={getDashboardItems(collapsed).map((item) => ({ ...item, title: "" })) as ItemType<MenuItemType>[]}
-              />
+              <Menu color={COLORS.cream} onClick={handleCollapse} selectedKeys={selectedMenu.keys} mode="inline" items={items} />
             </nav>
             {collapsed ? null : (
               <section className="w-full flex flex-col gap-4 text-cream items-center justify-center">
