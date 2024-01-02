@@ -81,5 +81,5 @@ export default withTV({
       },
     },
   },
-  plugins: [],
+  plugins: [require("tailwindcss-animate")],
 }) satisfies Config;

@@ -27,6 +27,22 @@ export default function DashboardContainer({ children, user, lang }: Props) {
     },
     {
       title: "",
+      key: "/transactions",
+      label: <DashboardNavigator>Transactions</DashboardNavigator>,
+      icon: <Iconify icon={ICONS.transaction} width={25} collapsed={collapsed} />,
+      children: [
+        {
+          key: "/transactions/packages",
+          label: <DashboardNavigator isChildren>Packages</DashboardNavigator>,
+        },
+        {
+          key: "/transactions/products",
+          label: <DashboardNavigator isChildren>Products</DashboardNavigator>,
+        },
+      ],
+    },
+    {
+      title: "",
       key: "/visitors",
       label: <DashboardNavigator>Visitors</DashboardNavigator>,
       icon: <Iconify icon={ICONS.visitor} width={25} collapsed={collapsed} />,
@@ -48,22 +64,6 @@ export default function DashboardContainer({ children, user, lang }: Props) {
       key: "/products",
       label: <DashboardNavigator>Products</DashboardNavigator>,
       icon: <Iconify icon={ICONS.product} width={25} collapsed={collapsed} />,
-    },
-    {
-      title: "",
-      key: "/transactions",
-      label: <DashboardNavigator>Transactions</DashboardNavigator>,
-      icon: <Iconify icon={ICONS.transaction} width={25} collapsed={collapsed} />,
-      children: [
-        {
-          key: "/transactions/packages",
-          label: <DashboardNavigator isChildren>Packages</DashboardNavigator>,
-        },
-        {
-          key: "/transactions/products",
-          label: <DashboardNavigator isChildren>Products</DashboardNavigator>,
-        },
-      ],
     },
     {
       title: "",

@@ -38,7 +38,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               type={type ? type : "text"}
               className={cn("pr-3", inputVariants({ size, color, className }), {
                 "pl-10": icon,
-                "pl-[4.2rem]": isPhoneNumber,
+                "pl-[4.4rem]": isPhoneNumber,
                 "border-dark/30": disabled,
               })}
               ref={ref}
@@ -48,7 +48,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             />
             {icon ? <Iconify width={inputIconSize} icon={icon} className="absolute centered-left translate-x-3 text-dark" /> : null}
             {isPhoneNumber ? (
-              <section className="flex items-center absolute centered-left translate-x-3">
+              <section className="flex gap-1 items-center absolute centered-left translate-x-3">
                 <Iconify width={inputIconSize} icon={ICONS.phone} className="text-dark" />
                 <p className="font-semibold">{COUNTRY_CODE}</p>
               </section>

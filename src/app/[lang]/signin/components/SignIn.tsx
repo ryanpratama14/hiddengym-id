@@ -21,7 +21,7 @@ type Props = {
   lang: Lang;
 };
 
-export default function Login({ callbackUrl, t, lang }: Props) {
+export default function SignIn({ callbackUrl, t, lang }: Props) {
   const router = useRouter();
 
   const {
