@@ -10,9 +10,9 @@ const DashboardNavigator = ({
   className?: string;
 }) => {
   return (
-    <p className={cn(`text-base select-none font-medium h-full flex items-center ${className}`, { "ml-3 text-sm": isChildren })}>
+    <button type="button" className={cn(`text-base select-none font-medium ${className}`, { "ml-3 text-sm": isChildren })}>
       {children}
-    </p>
+    </button>
   );
 };
 
