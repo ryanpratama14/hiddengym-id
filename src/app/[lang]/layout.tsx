@@ -1,4 +1,5 @@
-import "@/styles/globals.css";
+import "@/styles/tailwind.css";
+import "@/styles/stylesheet.css";
 import { theme } from "@/styles/theme";
 import { TRPCReactProvider } from "@/trpc/react";
 import { type Lang } from "@/types";
