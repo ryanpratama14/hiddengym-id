@@ -106,6 +106,14 @@
   }
 }
 
+.ant-select-focused .ant-select-selector,
+.ant-select-selector:focus,
+.ant-select-selector:active,
+.ant-select-open .ant-select-selector {
+  border-color: #0078cc !important;
+  box-shadow: none !important;
+}
+
 .ant-menu-item {
   color: #f9f7ea !important;
 }
@@ -126,12 +134,4 @@
 body,
 .ant-notification {
   font-family: "Poppins", sans-serif !important;
-}
-
-.ant-select-focused .ant-select-selector,
-.ant-select-selector:focus,
-.ant-select-selector:active,
-.ant-select-open .ant-select-selector {
-  border-color: #0078cc !important;
-  box-shadow: none !important;
 }

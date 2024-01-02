@@ -17,10 +17,10 @@ export default withTV({
         red2: "#9e2424",
         blue: "#0091f7",
         blue2: "#0078cc",
-
         dark: "#212129",
         dark2: "#141417",
         light: "#fafafa",
+        light2: "#e8e8ed",
       },
       skew: {
         20: "20deg",

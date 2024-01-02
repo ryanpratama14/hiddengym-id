@@ -15,6 +15,7 @@ export const COLORS = {
   dark: "#212129",
   dark2: "#141417",
   light: "#fafafa",
+  light2: "#e8e8ed",
 };
 
 export const theme: ThemeConfig = {
@@ -53,12 +54,12 @@ export const theme: ThemeConfig = {
       headerColor: COLORS.cream,
       headerSortHoverBg: COLORS.dark2,
       headerSplitColor: COLORS.cream,
-      borderColor: "#e8e8ed",
+      borderColor: COLORS.light2,
       headerSortActiveBg: COLORS.orange,
       headerBorderRadius: 6,
       colorBgContainer: COLORS.light,
       cellPaddingBlock: 5,
-      rowHoverBg: "#e8e8ed",
+      rowHoverBg: COLORS.light2,
     },
   },
 };

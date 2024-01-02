@@ -9,10 +9,6 @@
   transition-duration: 300ms !important;
 }
 
-.ant-select-selector:hover {
-  border-color: #2121294d !important;
-}
-
 .ant-select-selection-search {
   padding-left: 1.75rem !important;
 }
@@ -33,4 +29,8 @@
 
 .ant-select-selection-search {
   margin-inline-start: 0px !important;
+}
+
+.ant-select-selector:hover {
+  border-color: #2121294d !important;
 }
