@@ -14,7 +14,7 @@ type Props = {
   lang: Lang;
 };
 
-const getDashboardItems = (collapsed: boolean, lang: Lang): ItemType<MenuItemType>[] => [
+const getDashboardItems = (collapsed: boolean): ItemType<MenuItemType>[] => [
   {
     key: "/",
     label: <DashboardNavigator>Home</DashboardNavigator>,

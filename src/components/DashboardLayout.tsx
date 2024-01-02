@@ -18,7 +18,7 @@ import { Fragment, useEffect, useState } from "react";
 type Props = {
   children: React.ReactNode;
   user: User;
-  getDashboardItems: (collapsed: boolean, lang: Lang) => ItemType<MenuItemType>[];
+  getDashboardItems: (collapsed: boolean) => ItemType<MenuItemType>[];
   lang: Lang;
 };
 
@@ -61,7 +61,7 @@ export default function DashboardLayout({ children, getDashboardItems, user, lan
                 }}
                 selectedKeys={selectedMenu.keys}
                 mode="inline"
-                items={getDashboardItems(collapsed, lang).map((item) => ({ ...item, title: "" })) as ItemType<MenuItemType>[]}
+                items={getDashboardItems(collapsed).map((item) => ({ ...item, title: "" })) as ItemType<MenuItemType>[]}
               />
             </nav>
             {collapsed ? null : (
