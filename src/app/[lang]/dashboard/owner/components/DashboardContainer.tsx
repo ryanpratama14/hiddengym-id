@@ -23,7 +23,7 @@ export default function DashboardContainer({ children, user, lang }: Props) {
       title: "",
       key: "/",
       label: (
-        <DashboardNavigator href="/" role="OWNER" lang={lang}>
+        <DashboardNavigator href="/" role={user.role} lang={lang}>
           Home
         </DashboardNavigator>
       ),
@@ -33,7 +33,7 @@ export default function DashboardContainer({ children, user, lang }: Props) {
       title: "",
       key: "/visitors",
       label: (
-        <DashboardNavigator href="/visitors" role="OWNER" lang={lang}>
+        <DashboardNavigator href="/visitors" role={user.role} lang={lang}>
           Visitors
         </DashboardNavigator>
       ),
@@ -43,7 +43,7 @@ export default function DashboardContainer({ children, user, lang }: Props) {
       title: "",
       key: "/trainers",
       label: (
-        <DashboardNavigator href="/trainers" role="OWNER" lang={lang}>
+        <DashboardNavigator href="/trainers" role={user.role} lang={lang}>
           Trainers
         </DashboardNavigator>
       ),
@@ -53,7 +53,7 @@ export default function DashboardContainer({ children, user, lang }: Props) {
       title: "",
       key: "/packages",
       label: (
-        <DashboardNavigator href="/packages" role="OWNER" lang={lang}>
+        <DashboardNavigator href="/packages" role={user.role} lang={lang}>
           Packages
         </DashboardNavigator>
       ),
@@ -63,7 +63,7 @@ export default function DashboardContainer({ children, user, lang }: Props) {
       title: "",
       key: "/products",
       label: (
-        <DashboardNavigator href="/products" role="OWNER" lang={lang}>
+        <DashboardNavigator href="/products" role={user.role} lang={lang}>
           Products
         </DashboardNavigator>
       ),
@@ -78,7 +78,7 @@ export default function DashboardContainer({ children, user, lang }: Props) {
         {
           key: "/transactions/packages",
           label: (
-            <DashboardNavigator isChildren href="/transactions/packages" role="OWNER" lang={lang}>
+            <DashboardNavigator isChildren href="/transactions/packages" role={user.role} lang={lang}>
               Packages
             </DashboardNavigator>
           ),
@@ -86,7 +86,7 @@ export default function DashboardContainer({ children, user, lang }: Props) {
         {
           key: "/transactions/products",
           label: (
-            <DashboardNavigator isChildren href="/transactions/products" role="OWNER" lang={lang}>
+            <DashboardNavigator isChildren href="/transactions/products" role={user.role} lang={lang}>
               Products
             </DashboardNavigator>
           ),
@@ -97,7 +97,7 @@ export default function DashboardContainer({ children, user, lang }: Props) {
       title: "",
       key: "/visits",
       label: (
-        <DashboardNavigator href="/visits" role="OWNER" lang={lang}>
+        <DashboardNavigator href="/visits" role={user.role} lang={lang}>
           Visits
         </DashboardNavigator>
       ),
@@ -107,7 +107,7 @@ export default function DashboardContainer({ children, user, lang }: Props) {
       title: "",
       key: "/schedules",
       label: (
-        <DashboardNavigator href="/schedules" role="OWNER" lang={lang}>
+        <DashboardNavigator href="/schedules" role={user.role} lang={lang}>
           Schedules
         </DashboardNavigator>
       ),
@@ -117,7 +117,7 @@ export default function DashboardContainer({ children, user, lang }: Props) {
       title: "",
       key: "/promo-codes",
       label: (
-        <DashboardNavigator href="/promo-codes" role="OWNER" lang={lang}>
+        <DashboardNavigator href="/promo-codes" role={user.role} lang={lang}>
           Promo Codes
         </DashboardNavigator>
       ),
@@ -127,7 +127,7 @@ export default function DashboardContainer({ children, user, lang }: Props) {
       title: "",
       key: "/sport-types",
       label: (
-        <DashboardNavigator href="/sport-types" role="OWNER" lang={lang}>
+        <DashboardNavigator href="/sport-types" role={user.role} lang={lang}>
           Sport Types
         </DashboardNavigator>
       ),
@@ -137,7 +137,7 @@ export default function DashboardContainer({ children, user, lang }: Props) {
       title: "",
       key: "/places",
       label: (
-        <DashboardNavigator href="/places" role="OWNER" lang={lang}>
+        <DashboardNavigator href="/places" role={user.role} lang={lang}>
           Places
         </DashboardNavigator>
       ),
@@ -147,7 +147,7 @@ export default function DashboardContainer({ children, user, lang }: Props) {
       title: "",
       key: "/payment-methods",
       label: (
-        <DashboardNavigator href="/payment-methods" role="OWNER" lang={lang}>
+        <DashboardNavigator href="/payment-methods" role={user.role} lang={lang}>
           Payment Methods
         </DashboardNavigator>
       ),

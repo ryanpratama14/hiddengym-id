@@ -3,7 +3,6 @@
 import AddButton from "@/components/AddButton";
 import DashboardProfileDropdown from "@/components/DashboardProfileDropdown";
 import Logo from "@/components/Logo";
-import { USER_REDIRECT } from "@/lib/constants";
 import { cn, getSelectedMenu } from "@/lib/functions";
 import { type User } from "@/server/api/routers/user";
 import { COLORS } from "@/styles/theme";
@@ -12,7 +11,7 @@ import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import { type ItemType, type MenuItemType } from "antd/es/menu/hooks/useItems";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import React, { Fragment, useEffect, useState } from "react";
 
 type Props = {
@@ -26,7 +25,6 @@ type Props = {
 
 export default function DashboardLayout({ children, items, user, lang, collapsed, setCollapsed }: Props) {
   const pathname = usePathname();
-  const router = useRouter();
   const [selectedMenu, setSelectedMenu] = useState(getSelectedMenu({ pathname, role: user.role, lang }));
   const handleCollapse = () => (collapsed ? undefined : setCollapsed(true));
 
