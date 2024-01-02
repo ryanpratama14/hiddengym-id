@@ -3,6 +3,7 @@
 import AddButton from "@/components/AddButton";
 import DashboardProfileDropdown from "@/components/DashboardProfileDropdown";
 import Logo from "@/components/Logo";
+import { USER_REDIRECT } from "@/lib/constants";
 import { cn, getSelectedMenu } from "@/lib/functions";
 import { type User } from "@/server/api/routers/user";
 import { COLORS } from "@/styles/theme";
@@ -11,7 +12,7 @@ import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import { type ItemType, type MenuItemType } from "antd/es/menu/hooks/useItems";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React, { Fragment, useEffect, useState } from "react";
 
 type Props = {
@@ -25,6 +26,7 @@ type Props = {
 
 export default function DashboardLayout({ children, items, user, lang, collapsed, setCollapsed }: Props) {
   const pathname = usePathname();
+  const router = useRouter();
   const [selectedMenu, setSelectedMenu] = useState(getSelectedMenu({ pathname, role: user.role, lang }));
   const handleCollapse = () => (collapsed ? undefined : setCollapsed(true));
 
@@ -52,7 +54,16 @@ export default function DashboardLayout({ children, items, user, lang, collapsed
               >
                 {!collapsed ? <MenuFoldOutlined style={{ fontSize: "30px" }} /> : <MenuUnfoldOutlined style={{ fontSize: "30px" }} />}
               </button>
-              <Menu color={COLORS.cream} onClick={handleCollapse} selectedKeys={selectedMenu.keys} mode="inline" items={items} />
+              <Menu
+                color={COLORS.cream}
+                onClick={(e) => {
+                  router.push(USER_REDIRECT[user.role]({ lang, href: e.key }));
+                  handleCollapse();
+                }}
+                selectedKeys={selectedMenu.keys}
+                mode="inline"
+                items={items}
+              />
             </nav>
             {collapsed ? null : (
               <section className="w-full flex flex-col gap-4 text-cream items-center justify-center">

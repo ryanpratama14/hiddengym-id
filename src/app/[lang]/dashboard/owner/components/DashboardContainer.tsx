@@ -22,135 +22,83 @@ export default function DashboardContainer({ children, user, lang }: Props) {
     {
       title: "",
       key: "/",
-      label: (
-        <DashboardNavigator href="/" role={user.role} lang={lang}>
-          Home
-        </DashboardNavigator>
-      ),
+      label: <DashboardNavigator>Home</DashboardNavigator>,
       icon: <Iconify icon={ICONS.home} width={25} collapsed={collapsed} />,
     },
     {
       title: "",
       key: "/visitors",
-      label: (
-        <DashboardNavigator href="/visitors" role={user.role} lang={lang}>
-          Visitors
-        </DashboardNavigator>
-      ),
+      label: <DashboardNavigator>Visitors</DashboardNavigator>,
       icon: <Iconify icon={ICONS.visitor} width={25} collapsed={collapsed} />,
     },
     {
       title: "",
       key: "/trainers",
-      label: (
-        <DashboardNavigator href="/trainers" role={user.role} lang={lang}>
-          Trainers
-        </DashboardNavigator>
-      ),
+      label: <DashboardNavigator>Trainers</DashboardNavigator>,
       icon: <Iconify icon={ICONS.trainer} width={25} collapsed={collapsed} />,
     },
     {
       title: "",
       key: "/packages",
-      label: (
-        <DashboardNavigator href="/packages" role={user.role} lang={lang}>
-          Packages
-        </DashboardNavigator>
-      ),
+      label: <DashboardNavigator>Packages</DashboardNavigator>,
       icon: <Iconify icon={ICONS.package} width={25} collapsed={collapsed} />,
     },
     {
       title: "",
       key: "/products",
-      label: (
-        <DashboardNavigator href="/products" role={user.role} lang={lang}>
-          Products
-        </DashboardNavigator>
-      ),
+      label: <DashboardNavigator>Products</DashboardNavigator>,
       icon: <Iconify icon={ICONS.product} width={25} collapsed={collapsed} />,
     },
     {
       title: "",
       key: "/transactions",
-      label: <p className="select-none font-medium">Transactions</p>,
+      label: <DashboardNavigator>Transactions</DashboardNavigator>,
       icon: <Iconify icon={ICONS.transaction} width={25} collapsed={collapsed} />,
       children: [
         {
           key: "/transactions/packages",
-          label: (
-            <DashboardNavigator isChildren href="/transactions/packages" role={user.role} lang={lang}>
-              Packages
-            </DashboardNavigator>
-          ),
+          label: <DashboardNavigator isChildren>Packages</DashboardNavigator>,
         },
         {
           key: "/transactions/products",
-          label: (
-            <DashboardNavigator isChildren href="/transactions/products" role={user.role} lang={lang}>
-              Products
-            </DashboardNavigator>
-          ),
+          label: <DashboardNavigator isChildren>Products</DashboardNavigator>,
         },
       ],
     },
     {
       title: "",
       key: "/visits",
-      label: (
-        <DashboardNavigator href="/visits" role={user.role} lang={lang}>
-          Visits
-        </DashboardNavigator>
-      ),
+      label: <DashboardNavigator>Visits</DashboardNavigator>,
       icon: <Iconify icon={ICONS.visit} width={25} collapsed={collapsed} />,
     },
     {
       title: "",
       key: "/schedules",
-      label: (
-        <DashboardNavigator href="/schedules" role={user.role} lang={lang}>
-          Schedules
-        </DashboardNavigator>
-      ),
+      label: <DashboardNavigator>Schedules</DashboardNavigator>,
       icon: <Iconify icon={ICONS.schedule} width={25} collapsed={collapsed} />,
     },
     {
       title: "",
       key: "/promo-codes",
-      label: (
-        <DashboardNavigator href="/promo-codes" role={user.role} lang={lang}>
-          Promo Codes
-        </DashboardNavigator>
-      ),
+      label: <DashboardNavigator>Promo Codes</DashboardNavigator>,
       icon: <Iconify icon={ICONS.promo_codes} width={25} collapsed={collapsed} />,
     },
     {
       title: "",
       key: "/sport-types",
-      label: (
-        <DashboardNavigator href="/sport-types" role={user.role} lang={lang}>
-          Sport Types
-        </DashboardNavigator>
-      ),
+      label: <DashboardNavigator>Sport Types</DashboardNavigator>,
       icon: <Iconify icon={ICONS.sport} width={25} collapsed={collapsed} />,
     },
     {
       title: "",
       key: "/places",
-      label: (
-        <DashboardNavigator href="/places" role={user.role} lang={lang}>
-          Places
-        </DashboardNavigator>
-      ),
+      label: <DashboardNavigator>Places</DashboardNavigator>,
       icon: <Iconify icon={ICONS.place} width={25} collapsed={collapsed} />,
     },
     {
       title: "",
       key: "/payment-methods",
-      label: (
-        <DashboardNavigator href="/payment-methods" role={user.role} lang={lang}>
-          Payment Methods
-        </DashboardNavigator>
-      ),
+      label: <DashboardNavigator>Payment Methods</DashboardNavigator>,
       icon: <Iconify icon={ICONS.payment_method} width={25} collapsed={collapsed} />,
     },
   ];
