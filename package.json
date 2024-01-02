@@ -49,6 +49,7 @@
     "react-spinners": "^0.13.8",
     "resend": "^2.1.0",
     "server-only": "^0.0.1",
+    "sharp": "^0.33.1",
     "superjson": "^2.2.1",
     "tailwind-merge": "^2.2.0",
     "tailwind-variants": "^0.1.19",

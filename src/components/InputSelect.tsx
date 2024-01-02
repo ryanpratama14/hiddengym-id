@@ -5,7 +5,7 @@ import { Select } from "antd";
 import { type DefaultOptionType } from "antd/es/cascader";
 import { type BaseOptionType, type SelectProps } from "antd/es/select";
 import { type BaseSelectRef } from "rc-select";
-import React, { forwardRef, useId } from "react";
+import { forwardRef, useId } from "react";
 import Iconify from "./Iconify";
 import { inputIconSize } from "./Input";
 
