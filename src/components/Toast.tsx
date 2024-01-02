@@ -31,6 +31,7 @@ export const toast = ({ type, description, t }: { type: ToastType; description: 
     description,
     message: t.toast[type],
     duration: 3,
+    style: { backgroundColor: COLORS.light },
     icon: <Iconify icon={toastIcons[type].icon} width={25} color={toastIcons[type].color} />,
   });
 };
