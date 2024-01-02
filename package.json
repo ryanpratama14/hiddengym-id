@@ -16,7 +16,6 @@
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
     "@ant-design/nextjs-registry": "^1.0.0",
-    "@ctrl/tinycolor": "^4.0.2",
     "@formatjs/intl-localematcher": "^0.5.2",
     "@headlessui/react": "^1.7.17",
     "@hookform/resolvers": "^3.3.3",
@@ -34,7 +33,7 @@
     "@types/negotiator": "^0.6.3",
     "@types/next-pwa": "^5.6.9",
     "@uploadthing/react": "^6.0.2",
-    "antd": "^5.12.6",
+    "antd": "^5.12.7",
     "argon2": "^0.31.2",
     "clsx": "^2.1.0",
     "fetch-ponyfill": "^7.1.0",

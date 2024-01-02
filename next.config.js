@@ -4,7 +4,6 @@ await import("./src/env.js");
 
 /** @type {import("next").NextConfig} */
 const config = {
-  transpilePackages: ["@ctrl/tinycolor"],
   images: {
     remotePatterns: [{ protocol: "https", hostname: "utfs.io" }],
   },
