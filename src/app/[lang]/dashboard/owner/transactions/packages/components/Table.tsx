@@ -183,6 +183,7 @@ export default function PackageTransactionsTable({ data, searchParams, lang, loa
           {
             title: "Type",
             key: "package.type",
+            align: "center",
             render: (_, item) => <p className="font-semibold border-1 border-dark px-2 select-none">{item.package.type}</p>,
             ...getTableFilter({ name: "packageType" }),
           },
