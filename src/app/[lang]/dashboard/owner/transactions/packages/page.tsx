@@ -33,7 +33,7 @@ export default function TransactionsProductPage({ searchParams, params }: Props)
   const { data, isLoading: loading } = api.packageTransaction.list.useQuery(query);
 
   return (
-    <section className="grid md:grid-cols-5 gap-12">
+    <section className="grid md:grid-cols-5 gap-6 lg:gap-x-12">
       <section className="flex flex-col gap-6 md:col-span-4">
         <Table loading={loading} lang={params.lang} data={data} searchParams={searchParams} />
       </section>

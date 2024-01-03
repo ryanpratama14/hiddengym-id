@@ -35,7 +35,7 @@ model User {
     imageId             String?              @db.ObjectId
     files               File[]
 
-    // for trainer only
+    // trainer's relations
     trainerSports     Sport[]    @relation(fields: [trainerSportIDs], references: [id])
     trainerSportIDs   String[]   @db.ObjectId
     trainerPackages   Package[]  @relation(fields: [trainerPackageIDs], references: [id])
@@ -92,7 +92,7 @@ model Package {
     sports       Sport[]              @relation(fields: [sportIDs], references: [id])
     sportIDs     String[]             @db.ObjectId
 
-    // for trainer
+    // trainer's relations
     trainers   User[]   @relation(fields: [trainerIDs], references: [id])
     trainerIDs String[] @db.ObjectId
 
@@ -127,7 +127,7 @@ model Visit {
     endDate     DateTime?
     isConfirmed Boolean   @default(false)
 
-    // relation 
+    // relations 
     activeVisitVisitor User[]
     visitor            User    @relation("userVisits", fields: [visitorId], references: [id])
     visitorId          String  @db.ObjectId
@@ -246,9 +246,9 @@ model Sport {
 }
 
 enum PackageType {
-    MEMBER // validity
-    VISIT // validity
-    SESSIONS // no validity
+    MEMBER
+    VISIT
+    SESSIONS
 }
 
 enum Gender {
@@ -272,5 +272,3 @@ enum PromoCodeType {
     REGULAR
     STUDENT
 }
-
-// admin can only today's sales (limited)

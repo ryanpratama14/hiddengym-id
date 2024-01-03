@@ -19,7 +19,7 @@ export default function PakcagesPage({ params, searchParams }: Props) {
   });
 
   return (
-    <section className="grid md:grid-cols-5 gap-12">
+    <section className="grid md:grid-cols-5 gap-6 lg:gap-x-12">
       <section className="flex flex-col gap-6 md:col-span-4">
         <Table data={data} lang={params.lang} loading={loading} searchParams={searchParams} />
       </section>

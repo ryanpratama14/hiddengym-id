@@ -34,7 +34,7 @@ export default function VisitorsPage({ searchParams, params }: Props) {
   const { data, isLoading: loading } = api.user.list.useQuery(query);
 
   return (
-    <section className="grid grid-cols-1 md:grid-cols-5 gap-12">
+    <section className="grid grid-cols-1 md:grid-cols-5 gap-6 lg:gap-x-12">
       <section className="flex flex-col gap-6 md:col-span-4">
         <TableSearch loading={loading} lang={params.lang} query={query} />
         <Table loading={loading} lang={params.lang} data={data} searchParams={searchParams} />

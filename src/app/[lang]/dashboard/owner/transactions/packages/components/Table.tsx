@@ -54,7 +54,15 @@ export default function PackageTransactionsTable({ data, searchParams, lang, loa
     router.push(createUrl(USER_REDIRECT.OWNER({ lang, href: "/transactions/packages" }), newParams));
   };
 
-  const getTableFilter = ({ name, icon }: { name: keyof PackageTransactionListInputParams; icon?: IconifyIcon | string }) => ({
+  const getTableFilter = ({
+    name,
+    icon,
+    type,
+  }: {
+    name: keyof PackageTransactionListInputParams;
+    icon?: IconifyIcon | string;
+    type?: React.HTMLInputTypeAttribute;
+  }) => ({
     filterDropdown: ({ confirm }: FilterDropdownProps) => {
       return (
         <form
@@ -85,7 +93,7 @@ export default function PackageTransactionsTable({ data, searchParams, lang, loa
               key={name}
               defaultValue={searchParams[name]}
               name={name}
-              type={name === "totalPrice" ? "number" : name === "transactionDate" ? "date" : "text"}
+              type={type ? type : "text"}
               className={cn("text-base")}
             />
           )}
@@ -190,7 +198,7 @@ export default function PackageTransactionsTable({ data, searchParams, lang, loa
             align: "right",
             dataIndex: "totalPrice",
             render: (text: number) => formatCurrency(text),
-            ...getTableFilter({ name: "totalPrice" }),
+            ...getTableFilter({ name: "totalPrice", type: "number" }),
           },
           {
             title: "Paid By",
@@ -259,7 +267,7 @@ export default function PackageTransactionsTable({ data, searchParams, lang, loa
             key: "transactionDate",
             dataIndex: "transactionDate",
             render: (text: Date) => formatDateShort(text),
-            ...getTableFilter({ name: "transactionDate" }),
+            ...getTableFilter({ name: "transactionDate", type: "date" }),
           },
           {
             title: "Promo Code",

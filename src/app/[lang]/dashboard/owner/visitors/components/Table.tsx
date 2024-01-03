@@ -39,7 +39,15 @@ export default function VisitorsTable({ data, searchParams, lang, loading }: Pro
     router.push(createUrl(USER_REDIRECT.OWNER({ lang, href: "/visitors" }), newParams));
   };
 
-  const getTableFilter = ({ name, icon }: { name: keyof UserListInputParams; icon?: IconifyIcon | string }) => ({
+  const getTableFilter = ({
+    name,
+    icon,
+    type,
+  }: {
+    name: keyof UserListInputParams;
+    icon?: IconifyIcon | string;
+    type?: React.HTMLInputTypeAttribute;
+  }) => ({
     filterDropdown: ({ confirm }: FilterDropdownProps) => {
       return (
         <form
@@ -89,7 +97,7 @@ export default function VisitorsTable({ data, searchParams, lang, loading }: Pro
               defaultValue={searchParams[name]}
               isPhoneNumber={name === "phoneNumber"}
               name={name}
-              type={name === "totalSpending" ? "number" : "text"}
+              type={type ? type : "text"}
               className={cn("text-base")}
             />
           )}
@@ -223,7 +231,7 @@ export default function VisitorsTable({ data, searchParams, lang, loading }: Pro
           title: "Total Spending",
           key: "totalSpending",
           dataIndex: "totalSpending",
-          ...getTableFilter({ name: "totalSpending", icon: ICONS.payment_method }),
+          ...getTableFilter({ name: "totalSpending", icon: ICONS.payment_method, type: "number" }),
           render: (text: number) => formatCurrency(text),
         },
       ]}
