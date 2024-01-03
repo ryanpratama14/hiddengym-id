@@ -75,8 +75,8 @@ export default function DashboardLayout({ children, items, user, lang, collapsed
         </Layout.Sider>
       </Layout>
 
-      <nav onClick={handleCollapse} className="fixed flex items-center w-full top-0 h-14 bg-dark text-cream z-10">
-        <section className="px-shorter ml-[3.1rem] flex items-center justify-between w-full">
+      <nav onClick={handleCollapse} className="sticky flex items-center w-full top-0 h-14 bg-dark text-cream z-10">
+        <section className={cn("px-shorter ml-[3.1rem] flex items-center justify-between w-full animate", { "xl:ml-56": !collapsed })}>
           <section className="flex gap-2">
             <Link href={selectedMenu.href} className="font-medium px-3 py-0.5 rounded-md border-2 select-none border-cream shadow-lg">
               {selectedMenu.name}
@@ -91,7 +91,10 @@ export default function DashboardLayout({ children, items, user, lang, collapsed
         </section>
       </nav>
 
-      <article onClick={handleCollapse} className="min-h-screen p-shorter bg-cream ml-[3.1rem] mt-14">
+      <article
+        onClick={handleCollapse}
+        className={cn("animate min-h-screen p-shorter bg-cream ml-[3.1rem] mt-14", { "xl:ml-56": !collapsed })}
+      >
         {children}
       </article>
 
