@@ -20,13 +20,12 @@ type Props = {
   user: User;
   items: ItemType<MenuItemType>[];
   lang: Lang;
-  collapsed: boolean;
-  setCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function DashboardLayout({ children, items, user, lang, collapsed, setCollapsed }: Props) {
+export default function DashboardMenu({ children, items, user, lang, }: Props) {
   const pathname = usePathname();
   const router = useRouter();
+  const [collapsed, setCollapsed] = useState(true)
   const [selectedMenu, setSelectedMenu] = useState(getSelectedMenu({ pathname, role: user.role, lang }));
   const handleCollapse = () => (collapsed ? undefined : setCollapsed(true));
 
