@@ -2,29 +2,27 @@ import "@/styles/ant-select.css";
 import { cn } from "@/lib/functions";
 import { COLORS } from "@/styles/theme";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
-import { ConfigProvider, Select } from "antd";
-import { type DefaultOptionType } from "antd/es/cascader";
-import { type BaseOptionType, type SelectProps } from "antd/es/select";
+import { ConfigProvider } from "antd";
+import Select, { type BaseOptionType, type DefaultOptionType, type SelectProps } from "antd/es/select";
 import { type BaseSelectRef } from "rc-select";
-import { forwardRef, useId } from "react";
+import React, { useId } from "react";
 import Iconify from "./Iconify";
 import { inputIconSize } from "./Input";
 
 type ValueType = unknown;
 type OptionType = BaseOptionType | DefaultOptionType;
 
-const InputSelect = forwardRef<
-  BaseSelectRef,
-  SelectProps<ValueType, OptionType> & {
-    children?: React.ReactNode;
-    icon?: IconifyIcon | string;
-    label?: string;
-    error?: string;
-    multiple?: boolean;
-    showSearch?: boolean;
-    className?: string;
-  }
->(function InputSelect(props, ref) {
+type InputSelectProps = SelectProps<ValueType, OptionType> & {
+  children?: React.ReactNode;
+  icon?: IconifyIcon | string;
+  label?: string;
+  error?: string;
+  multiple?: boolean;
+  showSearch?: boolean;
+  className?: string;
+};
+
+const InputSelect = React.forwardRef<BaseSelectRef, InputSelectProps>((props, ref) => {
   const id = useId();
 
   return (
@@ -41,9 +39,9 @@ const InputSelect = forwardRef<
         {props.label ? <label htmlFor={id}>{props.label}</label> : null}
         <section className="relative">
           <Select
+            ref={ref}
             {...props}
             id={id}
-            ref={ref}
             optionFilterProp="children"
             filterOption={(input, option) => ((option?.label as string) ?? "").toLowerCase().includes(input.toLowerCase())}
             style={{ width: "100%", height: "100%" }}
