@@ -37,8 +37,12 @@ const userSelect = {
 
 export const userRouter = createTRPCRouter({
   create: publicProcedure.input(schema.user.create).mutation(async ({ ctx, input }) => {
-    const data = await ctx.db.user.findFirst({ where: { email: input.email } });
-    if (data) return THROW_TRPC_ERROR("CONFLICT");
+    const dataByEmail = await ctx.db.user.findFirst({ where: { email: input.email } });
+    if (dataByEmail) return THROW_TRPC_ERROR("CONFLICT", getConflictMessage("user", "email"));
+
+    const dataByPhoneNumber = await ctx.db.user.findUnique({ where: { phoneNumber: formatPhoneNumber(input.phoneNumber) } });
+    if (dataByPhoneNumber) return THROW_TRPC_ERROR("CONFLICT", getConflictMessage("user", "phone number"));
+
     await ctx.db.user.create({
       data: {
         email: input.email.toLowerCase(),
@@ -54,13 +58,14 @@ export const userRouter = createTRPCRouter({
 
   createVisitor: ownerAdminProcedure.input(schema.user.createVisitor).mutation(async ({ ctx, input }) => {
     const { visitorData } = input;
-    const data = await ctx.db.user.findUnique({ where: { phoneNumber: formatPhoneNumber(visitorData.phoneNumber) } });
-    if (data) return THROW_TRPC_ERROR("CONFLICT", getConflictMessage("visitor", "phone number"));
 
     if (visitorData.email) {
-      const data = await ctx.db.user.findFirst({ where: { email: visitorData.email } });
-      if (data) return THROW_TRPC_ERROR("CONFLICT", getConflictMessage("visitor", "email"));
+      const dataByEmail = await ctx.db.user.findFirst({ where: { email: visitorData.email } });
+      if (dataByEmail) return THROW_TRPC_ERROR("CONFLICT", getConflictMessage("visitor", "email"));
     }
+
+    const dataByPhoneNumber = await ctx.db.user.findUnique({ where: { phoneNumber: formatPhoneNumber(visitorData.phoneNumber) } });
+    if (dataByPhoneNumber) return THROW_TRPC_ERROR("CONFLICT", getConflictMessage("visitor", "phone number"));
 
     const newVisitor = await ctx.db.user.create({
       data: {

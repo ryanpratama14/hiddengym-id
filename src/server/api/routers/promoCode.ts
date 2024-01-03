@@ -6,7 +6,7 @@ import { z } from "zod";
 
 export const promoCodeRouter = createTRPCRouter({
   create: ownerProcedure.input(schema.promoCode.create).mutation(async ({ ctx, input }) => {
-    const data = await ctx.db.promoCode.findFirst({ where: { code: input.code } });
+    const data = await ctx.db.promoCode.findUnique({ where: { code: input.code } });
     if (data) return THROW_TRPC_ERROR("CONFLICT", "A promo code with this name already exists.");
     await ctx.db.promoCode.create({ data: { code: input.code, discountPrice: input.discountPrice, type: input.type } });
     return THROW_OK("CREATED", "A promo code has been created.");
