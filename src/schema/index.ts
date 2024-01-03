@@ -210,7 +210,7 @@ export class schema {
           package: z.string().optional(),
           packageType: schema.packageType.optional(),
           paymentMethod: z.string().optional(),
-          withPromoCode: z.boolean().optional(),
+          promoCodeCode: z.string().optional(),
           totalPrice: z.number().optional(),
           transactionDate: schema.dateOptional,
         })

@@ -26,6 +26,7 @@ export default function TransactionsProductPage({ searchParams, params }: Props)
       buyer: searchParams.buyer as string,
       totalPrice: searchParams.totalPrice ? Number(searchParams.totalPrice) : undefined,
       paymentMethod: searchParams.paymentMethod as string,
+      promoCodeCode: searchParams.promoCodeCode as string,
     },
     sorting: searchParams.sort as string,
   };

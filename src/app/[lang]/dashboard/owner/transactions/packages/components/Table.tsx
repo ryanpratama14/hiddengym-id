@@ -273,6 +273,7 @@ export default function PackageTransactionsTable({ data, searchParams, lang, loa
             title: "Promo Code",
             key: "promoCode",
             render: (_, item) => <code>{item.promoCode ? item.promoCode.code : "-"}</code>,
+            ...getTableFilter({ name: "promoCodeCode" }),
           },
         ]}
       />

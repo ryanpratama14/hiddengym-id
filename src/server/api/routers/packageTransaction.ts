@@ -41,10 +41,10 @@ export const packageTransactionRouter = createTRPCRouter({
 
     const whereQuery = {
       where: {
+        ...(params?.promoCodeCode ? { promoCode: { code: { contains: params?.promoCodeCode, ...insensitiveMode } } } : undefined),
         buyer: { fullName: { contains: params?.buyer && formatName(params?.buyer), ...insensitiveMode } },
         package: { name: { contains: params?.package, ...insensitiveMode }, type: params?.packageType },
         paymentMethod: { name: { contains: params?.paymentMethod, ...insensitiveMode } },
-        promoCodeId: params?.withPromoCode ? { not: null } : undefined,
         totalPrice: { gte: params?.totalPrice },
         transactionDate: {
           gte: params?.transactionDate && getStartDate(params.transactionDate),
