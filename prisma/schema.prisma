@@ -26,8 +26,8 @@ model User {
     packageTransactions PackageTransaction[]
     productTransactions ProductTransaction[]
     visits              Visit[]              @relation("userVisits")
-    activeVisit         Visit?               @relation(fields: [visitId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-    activeVisidId       String?              @db.ObjectId
+    activeVisit         Visit?               @relation(fields: [activeVisitId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+    activeVisitId       String?              @db.ObjectId
     schedules           Schedule[]           @relation("scheduleVisitors", fields: [scheduleIDs], references: [id])
     scheduleIDs         String[]             @db.ObjectId
     tokens              Token[]
@@ -43,7 +43,6 @@ model User {
     trainerSchedules  Schedule[] @relation("trainerSchedules")
 
     createdDate DateTime @default(now())
-    visitId     String?  @db.ObjectId
 
     @@index(fields: [fullName(sort: Asc)])
 }
