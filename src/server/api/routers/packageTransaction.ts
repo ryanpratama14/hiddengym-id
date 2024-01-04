@@ -1,4 +1,4 @@
-import { formatName, getEndDate, getExpiryDateFromDate, getLocalDate, getStartDate } from "@/lib/functions";
+import { formatName, getEndDate, getExpiryDateFromDate, getNewDate, getStartDate } from "@/lib/functions";
 import { schema } from "@/schema";
 import { createTRPCRouter, ownerProcedure, protectedProcedure } from "@/server/api/trpc";
 import {
@@ -88,7 +88,7 @@ export const packageTransactionRouter = createTRPCRouter({
             })
           : null,
         remainingSessions: isSessions && selectedPackage.approvedSessions ? selectedPackage.approvedSessions : null,
-        transactionDate: getLocalDate(input.transactionDate),
+        transactionDate: getNewDate(input.transactionDate),
         paymentMethodId: input.paymentMethodId,
         packageId: input.packageId,
         buyerId: input.buyerId,
