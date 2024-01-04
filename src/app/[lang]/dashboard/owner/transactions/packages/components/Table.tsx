@@ -252,7 +252,7 @@ export default function PackageTransactionsTable({ data, searchParams, lang, loa
               if (isDateExpired(text)) return <p className={expiredClassName}>Expired</p>;
               if (isDateToday(text)) return <p className={cn(sharedClassName, "bg-yellow-600")}>Today</p>;
 
-              return <p className={cn(sharedClassName, "bg-emerald")}>{getRemainingDays(text)}</p>;
+              return <p className={cn(sharedClassName, "bg-emerald")}>{getRemainingDays(text)} day(s)</p>;
             },
           },
           {
