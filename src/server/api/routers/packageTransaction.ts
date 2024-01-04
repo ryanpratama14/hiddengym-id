@@ -1,4 +1,4 @@
-import { formatName, getEndDate, getExpiryDateFromDate, getNewDate, getStartDate } from "@/lib/functions";
+import { formatName, getEndDate, getExpiryDate, getNewDate, getStartDate } from "@/lib/functions";
 import { schema } from "@/schema";
 import { createTRPCRouter, ownerProcedure, protectedProcedure } from "@/server/api/trpc";
 import {
@@ -82,11 +82,7 @@ export const packageTransactionRouter = createTRPCRouter({
         totalPrice: promoCode ? selectedPackage.price - promoCode.discountPrice : selectedPackage.price,
         startDate: selectedPackage.validityInDays ? getStartDate(input.transactionDate) : null,
         expiryDate: selectedPackage.validityInDays
-          ? getExpiryDateFromDate({
-              days: selectedPackage.validityInDays,
-              isVisit: selectedPackage.type === "VISIT",
-              dateString: input.transactionDate,
-            })
+          ? getExpiryDate({ days: selectedPackage.validityInDays, dateString: input.transactionDate })
           : null,
         remainingSessions: isSessions && selectedPackage.approvedSessions ? selectedPackage.approvedSessions : null,
         transactionDate: getNewDate(input.transactionDate),

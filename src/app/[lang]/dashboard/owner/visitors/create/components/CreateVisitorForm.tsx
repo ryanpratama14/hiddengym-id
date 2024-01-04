@@ -13,7 +13,7 @@ import {
   formatDate,
   formatDateShort,
   formatPhoneNumber,
-  getExpiryDateFromDate,
+  getExpiryDate,
   getInputDate,
   getNewDate,
   getStartDate,
@@ -343,26 +343,23 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
                   <section className="flex flex-col text-right w-fit">
                     <p className="font-semibold">
                       {isDateToday(
-                        getExpiryDateFromDate({
+                        getExpiryDate({
                           days: selectedPackage.validityInDays,
                           dateString: data.transactionDate,
-                          isVisit: selectedPackage.type === "VISIT",
                         }),
                       )
                         ? "Today"
                         : isDateExpired(
-                              getExpiryDateFromDate({
+                              getExpiryDate({
                                 days: selectedPackage.validityInDays,
                                 dateString: data.transactionDate,
-                                isVisit: selectedPackage.type === "VISIT",
                               }),
                             )
                           ? "Expired"
                           : formatDate({
-                              date: getExpiryDateFromDate({
+                              date: getExpiryDate({
                                 days: selectedPackage.validityInDays,
                                 dateString: data.transactionDate,
-                                isVisit: selectedPackage.type === "VISIT",
                               }),
                               style: "short",
                             })}

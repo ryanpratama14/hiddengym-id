@@ -242,11 +242,7 @@ export default function PackageTransactionsTable({ data, searchParams, lang, loa
                   return (
                     <section className="flex gap-2">
                       <p className={cn(sharedClassName, "bg-purple-600")}>{item.remainingSessions} session(s)</p>
-                      {isDateToday(text) ? (
-                        <p className={cn(sharedClassName, "bg-yellow-600")}>Today</p>
-                      ) : (
-                        <p className={cn(sharedClassName, "bg-emerald")}>{getRemainingDays({ expiryDate: text })} day(s)</p>
-                      )}
+                      <p className={cn(sharedClassName, "bg-emerald")}>{getRemainingDays(text)} day(s)</p>
                     </section>
                   );
                 }
@@ -256,11 +252,7 @@ export default function PackageTransactionsTable({ data, searchParams, lang, loa
               if (isDateExpired(text)) return <p className={expiredClassName}>Expired</p>;
               if (isDateToday(text)) return <p className={cn(sharedClassName, "bg-yellow-600")}>Today</p>;
 
-              return (
-                <p className={cn(sharedClassName, "bg-emerald")}>
-                  {getRemainingDays({ expiryDate: text, isVisit: item.package.type === "VISIT" })} days
-                </p>
-              );
+              return <p className={cn(sharedClassName, "bg-emerald")}>{getRemainingDays(text)} days</p>;
             },
           },
           {

@@ -67,22 +67,23 @@ export const getNewDate = (dateString?: string): Date => {
   return new Date();
 };
 
-export const getLocalDate = (dateString?: string): Date => {
-  const date = dateString ? new Date(dateString) : new Date();
-  date.setHours(0, 0, 0, 0);
-  return date;
+export const getEndDate = (dateString: string): Date => {
+  const updatedDate = getNewDate(dateString);
+  updatedDate.setHours(23, 59, 59, 999);
+  return updatedDate;
 };
 
 export const getStartDate = (dateString: string): Date => {
-  const updatedDate = new Date(dateString);
+  const updatedDate = getNewDate(dateString);
   updatedDate.setHours(0, 0, 0, 0);
   return updatedDate;
 };
 
-export const getEndDate = (dateString: string): Date => {
-  const updatedDate = new Date(dateString);
-  updatedDate.setHours(23, 59, 59, 999);
-  return updatedDate;
+export const getExpiryDate = ({ days, dateString }: { days: number; dateString: string }): Date => {
+  const date = getNewDate(dateString);
+  date.setDate(date.getDate() + days - 1);
+  date.setHours(23, 59, 59, 999);
+  return date;
 };
 
 export const getUserAge = (birthDate: Date): number => {
@@ -99,74 +100,25 @@ export const getUserAge = (birthDate: Date): number => {
   return age;
 };
 
-export const getTokenExpiryDate = (): Date => new Date(getNewDate().getTime() + 3600000); // 1 hour;
-
-export const getExpiryDate = ({ days, isVisit = false }: { days: number; isVisit?: boolean }): Date => {
-  const date = getNewDate();
-  date.setDate(date.getDate() + days - (isVisit ? 1 : 0));
-  date.setHours(23, 59, 59, 999);
-  return date;
-};
-
-export const getExpiryDateFromDate = ({
-  days,
-  dateString,
-  isVisit = false,
-}: {
-  days: number;
-  isVisit?: boolean;
-  dateString: string;
-}): Date => {
-  const date = new Date(dateString);
-  date.setDate(date.getDate() + days - (isVisit ? 1 : 0));
-  date.setHours(23, 59, 59, 999);
-  return date;
-};
-
-// export const getExpiryDateFromDate = (dateString: string): Date => {
-//   const date = getNewDate(dateString);
-//   date.setHours(23, 59, 59, 999);
-//   return date;
-// };
-
-export const getTodayExpiryDate = (): Date => {
-  const date = getNewDate();
-  date.setHours(23, 59, 59, 999);
-  return date;
-};
-
-export const getRemainingDays = ({ expiryDate, isVisit = false }: { expiryDate: Date; isVisit?: boolean }): number => {
-  const currentDate = new Date();
-
-  const currentYear = currentDate.getFullYear();
-  const currentMonth = currentDate.getMonth();
-  const currentDay = currentDate.getDate();
-
-  const targetYear = expiryDate.getFullYear();
-  const targetMonth = expiryDate.getMonth();
-  const targetDay = expiryDate.getDate() + (isVisit ? 1 : 0);
-
-  let remainingDays = 0;
-
-  if (currentYear === targetYear && currentMonth === targetMonth) {
-    remainingDays = targetDay - currentDay;
-  } else {
-    const lastMonthDays = new Date(targetYear, targetMonth, 0).getDate();
-    remainingDays = lastMonthDays - currentDay + targetDay;
-  }
-
+export const getRemainingDays = (targetDate: Date): number => {
+  const currentDate = getNewDate();
+  const timeDifference = targetDate.getTime() - currentDate.getTime();
+  const remainingDays = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
   return remainingDays;
 };
 
-export const isDateExpired = (expiryDate: Date): boolean => expiryDate <= getNewDate();
+export const getTokenExpiryDate = (): Date => new Date(getNewDate().getTime() + 3600000); // 1 hour;
+
+export const isDateExpired = (expiryDate: Date): boolean => {
+  const remainingDays = getRemainingDays(expiryDate);
+  if (!remainingDays) return true;
+  return false;
+};
 
 export const isDateToday = (date: Date): boolean => {
-  const currentDate = getNewDate();
-  return (
-    date.getDate() === currentDate.getDate() &&
-    date.getMonth() === currentDate.getMonth() &&
-    date.getFullYear() === currentDate.getFullYear()
-  );
+  const remainingDays = getRemainingDays(date);
+  if (remainingDays === 1) return true;
+  return false;
 };
 
 export const formatDate = ({ date, lang, style }: { date: Date; lang?: Lang; style: "short" | "long" }): string => {
