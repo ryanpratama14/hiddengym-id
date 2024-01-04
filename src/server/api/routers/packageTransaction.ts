@@ -6,6 +6,7 @@ import {
   getPagination,
   getPaginationData,
   getSortingQuery,
+  insensitiveMode,
   prismaExclude,
   THROW_OK,
   THROW_TRPC_ERROR,
@@ -40,10 +41,10 @@ export const packageTransactionRouter = createTRPCRouter({
 
     const whereQuery = {
       where: {
-        ...(params?.promoCodeCode ? { promoCode: { code: { contains: params?.promoCodeCode } } } : undefined),
-        buyer: { fullName: { contains: params?.buyer && formatName(params?.buyer) } },
-        package: { name: { contains: params?.package }, type: params?.packageType },
-        paymentMethod: { name: { contains: params?.paymentMethod } },
+        ...(params?.promoCodeCode ? { promoCode: { code: { contains: params?.promoCodeCode, ...insensitiveMode } } } : undefined),
+        buyer: { fullName: { contains: params?.buyer && formatName(params?.buyer), ...insensitiveMode } },
+        package: { name: { contains: params?.package, ...insensitiveMode }, type: params?.packageType },
+        paymentMethod: { name: { contains: params?.paymentMethod, ...insensitiveMode } },
         totalPrice: { gte: params?.totalPrice },
         transactionDate: {
           gte: params?.transactionDate && getStartDate(params.transactionDate),

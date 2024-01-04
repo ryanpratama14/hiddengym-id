@@ -252,21 +252,13 @@ export default function CreatePackageTransactionForm({ lang, t, option }: Props)
                         }),
                       )
                         ? "Today"
-                        : isDateExpired(
-                              getExpiryDateFromDate({
-                                days: selectedPackage.validityInDays,
-                                dateString: data.transactionDate,
-                                isVisit: selectedPackage.type === "VISIT",
-                              }),
-                            )
-                          ? "Expired"
-                          : formatDateShort(
-                              getExpiryDateFromDate({
-                                days: selectedPackage.validityInDays,
-                                dateString: data.transactionDate,
-                                isVisit: selectedPackage.type === "VISIT",
-                              }),
-                            )}
+                        : formatDateShort(
+                            getExpiryDateFromDate({
+                              days: selectedPackage.validityInDays,
+                              dateString: data.transactionDate,
+                              isVisit: selectedPackage.type === "VISIT",
+                            }),
+                          )}
                     </p>
                   </section>
                 </section>

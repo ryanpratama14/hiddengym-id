@@ -15,10 +15,24 @@ export const consoleError = (error: string) => {
   );
 };
 
-export const createUrl = (pathname: string, searchParams: URLSearchParams | ReadonlyURLSearchParams) => {
-  const paramsString = searchParams.toString();
+export const createUrl = (pathname: string, params: URLSearchParams | ReadonlyURLSearchParams) => {
+  const paramsString = params.toString();
   const queryString = `${paramsString.length ? "?" : ""}${paramsString}`;
   return `${pathname}${queryString}`;
+};
+
+export const createSearchParams = (params: Record<string, string | string[]>, newParams?: URLSearchParams): URLSearchParams => {
+  const updatedParams = new URLSearchParams(newParams);
+  for (const [key, values] of Object.entries(params)) {
+    if (Array.isArray(values)) {
+      for (const value of values) {
+        updatedParams.append(key, value);
+      }
+    } else {
+      updatedParams.append(key, values);
+    }
+  }
+  return updatedParams;
 };
 
 export const formatName = (name: string): string => {
@@ -61,13 +75,13 @@ export const getLocalDate = (dateString?: string): Date => {
 
 export const getStartDate = (dateString: string): Date => {
   const updatedDate = getNewDate(dateString);
-  updatedDate.setUTCHours(0, 0, 0, 0);
+  updatedDate.setHours(0, 0, 0, 0);
   return updatedDate;
 };
 
 export const getEndDate = (dateString: string): Date => {
   const updatedDate = getNewDate(dateString);
-  updatedDate.setUTCHours(23, 59, 59, 999);
+  updatedDate.setHours(23, 59, 59, 999);
   return updatedDate;
 };
 
@@ -89,8 +103,8 @@ export const getTokenExpiryDate = (): Date => new Date(getNewDate().getTime() + 
 
 export const getExpiryDate = ({ days, isVisit = false }: { days: number; isVisit?: boolean }): Date => {
   const date = getNewDate();
-  date.setUTCDate(date.getDate() + days - (isVisit ? 1 : 0));
-  date.setUTCHours(23, 59, 59, 999);
+  date.setDate(date.getDate() + days - (isVisit ? 1 : 0));
+  date.setHours(23, 59, 59, 999);
   return date;
 };
 
@@ -104,8 +118,8 @@ export const getExpiryDateFromDate = ({
   dateString: string;
 }): Date => {
   const date = new Date(dateString);
-  date.setUTCDate(date.getDate() + days - (isVisit ? 1 : 0));
-  date.setUTCHours(23, 59, 59, 999);
+  date.setDate(date.getDate() + days - (isVisit ? 1 : 0));
+  date.setHours(23, 59, 59, 999);
   return date;
 };
 
@@ -117,7 +131,7 @@ export const getExpiryDateFromDate = ({
 
 export const getTodayExpiryDate = (): Date => {
   const date = getNewDate();
-  date.setUTCHours(23, 59, 59, 999);
+  date.setHours(23, 59, 59, 999);
   return date;
 };
 
