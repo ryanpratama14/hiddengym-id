@@ -69,20 +69,20 @@ export const getNewDate = (dateString?: string): Date => {
 
 export const getEndDate = (dateString: string): Date => {
   const updatedDate = getNewDate(dateString);
-  updatedDate.setHours(23, 59, 59, 999);
+  updatedDate.setUTCHours(23, 59, 59, 999);
   return updatedDate;
 };
 
 export const getStartDate = (dateString: string): Date => {
   const updatedDate = getNewDate(dateString);
-  updatedDate.setHours(0, 0, 0, 0);
+  updatedDate.setUTCHours(0, 0, 0, 0);
   return updatedDate;
 };
 
 export const getExpiryDate = ({ days, dateString }: { days: number; dateString: string }): Date => {
   const date = getNewDate(dateString);
   date.setDate(date.getDate() + days - 1);
-  date.setHours(23, 59, 59, 999);
+  date.setUTCHours(23, 59, 59, 999);
   return date;
 };
 
