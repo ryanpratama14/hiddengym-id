@@ -132,7 +132,7 @@ export const formatDate = ({ date, lang, style }: { date: Date; lang?: Lang; sty
 export const formatDateShort = (date: Date, lang?: Lang): string => {
   return date.toLocaleDateString(lang ?? ["id-ID"], {
     year: "numeric",
-    month: "numeric",
+    month: "short",
     day: "numeric",
   });
 };
