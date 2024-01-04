@@ -7,7 +7,6 @@ import {
   getPagination,
   getPaginationData,
   getSortingQuery,
-  insensitiveMode,
   prismaExclude,
   THROW_OK,
   THROW_TRPC_ERROR,
@@ -19,7 +18,7 @@ import { z } from "zod";
 
 const userSelect = {
   select: {
-    ...prismaExclude("User", ["credential", "scheduleIDs", "trainerPackageIDs", "trainerSportIDs"]),
+    ...prismaExclude("User", ["credential"]),
     image: true,
     packageTransactions: true,
     productTransactions: true,
@@ -131,9 +130,9 @@ export const userRouter = createTRPCRouter({
         role: params?.role,
         isActive: true,
         phoneNumber: { contains: params?.phoneNumber },
-        email: { contains: params?.email, ...insensitiveMode },
+        email: { contains: params?.email },
         gender: params?.gender,
-        fullName: { contains: params?.fullName && formatName(params?.fullName), ...insensitiveMode },
+        fullName: { contains: params?.fullName && formatName(params?.fullName) },
         totalSpending: { gte: params?.totalSpending },
       },
     };

@@ -6,7 +6,6 @@ import {
   getPagination,
   getPaginationData,
   getSortingQuery,
-  insensitiveMode,
   prismaExclude,
   THROW_OK,
   THROW_TRPC_ERROR,
@@ -21,9 +20,9 @@ const packageTransactionSelect = {
   select: {
     ...prismaExclude("PackageTransaction", []),
     buyer: {
-      select: { ...prismaExclude("User", ["credential", "trainerPackageIDs", "trainerSportIDs", "scheduleIDs"]), image: true },
+      select: { ...prismaExclude("User", ["credential"]), image: true },
     },
-    package: { select: { ...prismaExclude("Package", ["placeIDs", "sportIDs", "trainerIDs"]) } },
+    package: { select: { ...prismaExclude("Package", []) } },
     promoCode: true,
     paymentMethod: true,
   },
@@ -41,10 +40,10 @@ export const packageTransactionRouter = createTRPCRouter({
 
     const whereQuery = {
       where: {
-        ...(params?.promoCodeCode ? { promoCode: { code: { contains: params?.promoCodeCode, ...insensitiveMode } } } : undefined),
-        buyer: { fullName: { contains: params?.buyer && formatName(params?.buyer), ...insensitiveMode } },
-        package: { name: { contains: params?.package, ...insensitiveMode }, type: params?.packageType },
-        paymentMethod: { name: { contains: params?.paymentMethod, ...insensitiveMode } },
+        ...(params?.promoCodeCode ? { promoCode: { code: { contains: params?.promoCodeCode } } } : undefined),
+        buyer: { fullName: { contains: params?.buyer && formatName(params?.buyer) } },
+        package: { name: { contains: params?.package }, type: params?.packageType },
+        paymentMethod: { name: { contains: params?.paymentMethod } },
         totalPrice: { gte: params?.totalPrice },
         transactionDate: {
           gte: params?.transactionDate && getStartDate(params.transactionDate),

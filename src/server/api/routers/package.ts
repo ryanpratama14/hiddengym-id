@@ -3,7 +3,6 @@ import { createTRPCRouter, ownerProcedure, publicProcedure } from "@/server/api/
 import {
   getConflictMessage,
   getCreatedMessage,
-  insensitiveMode,
   prismaExclude,
   THROW_OK,
   THROW_TRPC_ERROR,
@@ -14,7 +13,7 @@ import { z } from "zod";
 
 const packageSelect = {
   select: {
-    ...prismaExclude("Package", ["placeIDs", "sportIDs", "trainerIDs"]),
+    ...prismaExclude("Package", []),
     trainers: true,
     places: true,
     sports: true,
@@ -35,9 +34,9 @@ export const packageRouter = createTRPCRouter({
         approvedSessions: input.approvedSessions,
         price: input.price,
         type: input.type,
-        placeIDs: input.placeIDs,
-        sportIDs: input.sportIDs,
-        trainerIDs: input.trainerIDs,
+        places: { create: input.placeIDs.map((id) => ({ place: { connect: { id } } })) },
+        sports: { create: input.sportIDs.map((id) => ({ sport: { connect: { id } } })) },
+        ...(input.trainerIDs ? { trainers: { create: input.trainerIDs.map((id) => ({ trainer: { connect: { id } } })) } } : undefined),
       },
     });
 
@@ -54,7 +53,7 @@ export const packageRouter = createTRPCRouter({
     let data = await ctx.db.package.findMany({
       ...packageSelect,
       where: {
-        name: { contains: input.name, ...insensitiveMode },
+        name: { contains: input.name },
         type: input.type,
         price: { gte: input.price },
       },

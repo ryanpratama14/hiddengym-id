@@ -3,12 +3,13 @@ generator client {
 }
 
 datasource db {
-    provider = "mongodb"
-    url      = env("DATABASE_URL")
+    provider     = "mysql"
+    url          = env("DATABASE_URL")
+    relationMode = "prisma"
 }
 
 model User {
-    id                   String    @id @default(auto()) @map("_id") @db.ObjectId
+    id                   String    @id @default(nanoid())
     phoneNumber          String    @unique
     email                String?
     emailVerified        DateTime?
@@ -27,41 +28,42 @@ model User {
     productTransactions ProductTransaction[]
     visits              Visit[]              @relation("userVisits")
     activeVisit         Visit?               @relation(fields: [activeVisitId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-    activeVisitId       String?              @db.ObjectId
-    schedules           Schedule[]           @relation("scheduleVisitors", fields: [scheduleIDs], references: [id])
-    scheduleIDs         String[]             @db.ObjectId
+    activeVisitId       String?
     tokens              Token[]
-    image               File?                @relation("userImage", fields: [imageId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-    imageId             String?              @db.ObjectId
+    image               File?                @relation("userImage", fields: [imageId], references: [id])
+    imageId             String?
     files               File[]
+    trainerSchedules    Schedule[]           @relation("trainerSchedules")
 
-    // trainer's relations
-    trainerSports     Sport[]    @relation(fields: [trainerSportIDs], references: [id])
-    trainerSportIDs   String[]   @db.ObjectId
-    trainerPackages   Package[]  @relation(fields: [trainerPackageIDs], references: [id])
-    trainerPackageIDs String[]   @db.ObjectId
-    trainerSchedules  Schedule[] @relation("trainerSchedules")
+    // m-m
+    schedules       VisitorSchedule[]
+    trainerSports   TrainerSport[]
+    trainerPackages PackageTrainer[]
 
     createdDate DateTime @default(now())
 
     @@index(fields: [fullName(sort: Asc)])
+    @@index([imageId])
+    @@index([activeVisitId])
 }
 
 model File {
-    id   String @id @default(auto()) @map("_id") @db.ObjectId
+    id   String @id @default(nanoid())
     url  String
     name String
 
     // relations
     imageOwner User[]  @relation("userImage")
     owner      User?   @relation(fields: [ownerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-    ownerId    String? @db.ObjectId
+    ownerId    String?
 
     createdDate DateTime @default(now())
+
+    @@index([ownerId])
 }
 
 model PromoCode {
-    id            String  @id @default(auto()) @map("_id") @db.ObjectId
+    id            String  @id @default(nanoid())
     code          String  @unique
     discountPrice Int
     isActive      Boolean @default(true)
@@ -74,7 +76,7 @@ model PromoCode {
 }
 
 model Package {
-    id               String  @id @default(auto()) @map("_id") @db.ObjectId
+    id               String  @id @default(nanoid())
     name             String
     description      String?
     price            Int
@@ -87,14 +89,11 @@ model Package {
     transactions PackageTransaction[]
     visits       Visit[]
     schedules    Schedule[]
-    places       Place[]              @relation(fields: [placeIDs], references: [id])
-    placeIDs     String[]             @db.ObjectId
-    sports       Sport[]              @relation(fields: [sportIDs], references: [id])
-    sportIDs     String[]             @db.ObjectId
 
-    // trainer's relations
-    trainers   User[]   @relation(fields: [trainerIDs], references: [id])
-    trainerIDs String[] @db.ObjectId
+    // m-m
+    places   PackagePlace[]
+    trainers PackageTrainer[]
+    sports   PackageSport[]
 
     createdDate DateTime @default(now())
 
@@ -102,45 +101,50 @@ model Package {
 }
 
 model Schedule {
-    id          String    @id @default(auto()) @map("_id") @db.ObjectId
+    id          String    @id @default(nanoid())
     description String
     startDate   DateTime  @default(now())
     endDate     DateTime?
     isConfirmed Boolean   @default(false)
 
     // relations
-    package    Package  @relation(fields: [packageId], references: [id])
-    packageId  String   @db.ObjectId
-    visitors   User[]   @relation("scheduleVisitors", fields: [visitorIDs], references: [id])
-    visitorIDs String[] @db.ObjectId
-    trainer    User     @relation("trainerSchedules", fields: [trainerId], references: [id])
-    trainerId  String   @db.ObjectId
+    package   Package @relation(fields: [packageId], references: [id])
+    packageId String
+    trainer   User    @relation("trainerSchedules", fields: [trainerId], references: [id])
+    trainerId String
 
     createdDate DateTime @default(now())
 
+    // m-m
+    visitors VisitorSchedule[]
+
     @@index(fields: [startDate(sort: Desc)])
+    @@index([packageId])
+    @@index([trainerId])
 }
 
 model Visit {
-    id          String    @id @default(auto()) @map("_id") @db.ObjectId
+    id          String    @id @default(nanoid())
     startDate   DateTime  @default(now())
     endDate     DateTime?
     isConfirmed Boolean   @default(false)
 
-    // relations 
+    // relations
     activeVisitVisitor User[]
     visitor            User    @relation("userVisits", fields: [visitorId], references: [id])
-    visitorId          String  @db.ObjectId
+    visitorId          String
     package            Package @relation(fields: [packageId], references: [id])
-    packageId          String  @db.ObjectId
+    packageId          String
 
     createdDate DateTime @default(now())
 
     @@index(fields: [startDate(sort: Desc)])
+    @@index([visitorId])
+    @@index([packageId])
 }
 
 model Product {
-    id    String @id @default(auto()) @map("_id") @db.ObjectId
+    id    String @id @default(nanoid())
     name  String
     price Int
 
@@ -153,20 +157,19 @@ model Product {
 }
 
 model Place {
-    id      String @id @default(auto()) @map("_id") @db.ObjectId
+    id      String @id @default(nanoid())
     name    String
     address String
     url     String
 
     // relations
-    packages   Package[] @relation(fields: [packageIDs], references: [id])
-    packageIDs String[]  @db.ObjectId
+    packages PackagePlace[]
 
     createdDate DateTime @default(now())
 }
 
 model ProductTransaction {
-    id              String   @id @default(auto()) @map("_id") @db.ObjectId
+    id              String   @id @default(nanoid())
     quantity        Int
     unitPrice       Int
     totalPrice      Int
@@ -174,19 +177,22 @@ model ProductTransaction {
 
     // relations
     paymentMethod   PaymentMethod @relation(fields: [paymentMethodId], references: [id])
-    paymentMethodId String        @db.ObjectId
+    paymentMethodId String
     product         Product       @relation(fields: [productId], references: [id]) // bisa banyak produk
-    productId       String        @db.ObjectId
+    productId       String
     buyer           User          @relation(fields: [buyerId], references: [id])
-    buyerId         String        @db.ObjectId
+    buyerId         String
 
     createdDate DateTime @default(now())
 
     @@index(fields: [transactionDate(sort: Desc)])
+    @@index([paymentMethodId])
+    @@index([productId])
+    @@index([buyerId])
 }
 
 model PackageTransaction {
-    id                String    @id @default(auto()) @map("_id") @db.ObjectId
+    id                String    @id @default(nanoid())
     totalPrice        Int
     startDate         DateTime? @default(now())
     expiryDate        DateTime?
@@ -195,21 +201,25 @@ model PackageTransaction {
 
     // relations
     paymentMethod   PaymentMethod @relation(fields: [paymentMethodId], references: [id])
-    paymentMethodId String        @db.ObjectId
+    paymentMethodId String
     package         Package       @relation(fields: [packageId], references: [id])
-    packageId       String        @db.ObjectId
+    packageId       String
     buyer           User          @relation(fields: [buyerId], references: [id])
-    buyerId         String        @db.ObjectId
+    buyerId         String
     promoCode       PromoCode?    @relation(fields: [promoCodeId], references: [id])
-    promoCodeId     String?       @db.ObjectId
+    promoCodeId     String?
 
     createdDate DateTime @default(now())
 
     @@index(fields: [transactionDate(sort: Desc)])
+    @@index([paymentMethodId])
+    @@index([packageId])
+    @@index([buyerId])
+    @@index([promoCodeId])
 }
 
 model PaymentMethod {
-    id   String @id @default(auto()) @map("_id") @db.ObjectId
+    id   String @id @default(nanoid())
     name String
 
     // relations
@@ -220,27 +230,27 @@ model PaymentMethod {
 }
 
 model Token {
-    id         String   @id @default(auto()) @map("_id") @db.ObjectId
+    id         String   @id @default(nanoid())
     token      String   @unique
     expiryDate DateTime
 
     // relations
     user   User      @relation(fields: [userId], references: [id])
-    userId String    @db.ObjectId
+    userId String
     type   TokenType
 
     createdDate DateTime @default(now())
+
+    @@index([userId])
 }
 
 model Sport {
-    id   String @id @default(auto()) @map("_id") @db.ObjectId
+    id   String @id @default(nanoid())
     name String
 
-    // relations
-    trainers   User[]    @relation(fields: [trainerIDs], references: [id])
-    trainerIDs String[]  @db.ObjectId
-    packages   Package[] @relation(fields: [packageIDs], references: [id])
-    packageIDs String[]  @db.ObjectId
+    // m-m
+    trainers TrainerSport[]
+    packages PackageSport[]
 
     createdDate DateTime @default(now())
 }
@@ -271,4 +281,65 @@ enum TokenType {
 enum PromoCodeType {
     REGULAR
     STUDENT
+}
+
+// many to many
+model VisitorSchedule {
+    visitor     User     @relation(fields: [visitorId], references: [id])
+    visitorId   String
+    schedule    Schedule @relation(fields: [scheduleId], references: [id])
+    scheduleId  String
+    createdDate DateTime @default(now())
+
+    @@id([visitorId, scheduleId])
+    @@index([visitorId])
+    @@index([scheduleId])
+}
+
+model TrainerSport {
+    trainer     User     @relation(fields: [trainerId], references: [id])
+    trainerId   String
+    sport       Sport    @relation(fields: [sportId], references: [id])
+    sportId     String
+    createdDate DateTime @default(now())
+
+    @@id([trainerId, sportId])
+    @@index([trainerId])
+    @@index([sportId])
+}
+
+model PackageTrainer {
+    trainer     User     @relation(fields: [trainerId], references: [id])
+    trainerId   String
+    package     Package  @relation(fields: [packageId], references: [id])
+    packageId   String
+    createdDate DateTime @default(now())
+
+    @@id([trainerId, packageId])
+    @@index([trainerId])
+    @@index([packageId])
+}
+
+model PackagePlace {
+    package     Package  @relation(fields: [packageId], references: [id])
+    packageId   String
+    place       Place    @relation(fields: [placeId], references: [id])
+    placeId     String
+    createdDate DateTime @default(now())
+
+    @@id([packageId, placeId])
+    @@index([packageId])
+    @@index([placeId])
+}
+
+model PackageSport {
+    package     Package  @relation(fields: [packageId], references: [id])
+    packageId   String
+    sport       Sport    @relation(fields: [sportId], references: [id])
+    sportId     String
+    createdDate DateTime @default(now())
+
+    @@id([packageId, sportId])
+    @@index([packageId])
+    @@index([sportId])
 }
