@@ -74,13 +74,13 @@ export const getLocalDate = (dateString?: string): Date => {
 };
 
 export const getStartDate = (dateString: string): Date => {
-  const updatedDate = getNewDate(dateString);
+  const updatedDate = new Date(dateString);
   updatedDate.setHours(0, 0, 0, 0);
   return updatedDate;
 };
 
 export const getEndDate = (dateString: string): Date => {
-  const updatedDate = getNewDate(dateString);
+  const updatedDate = new Date(dateString);
   updatedDate.setHours(23, 59, 59, 999);
   return updatedDate;
 };
