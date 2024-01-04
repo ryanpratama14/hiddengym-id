@@ -21,7 +21,7 @@ import {
   type PackageTransactionList,
   type PackageTransactionListInputParams,
 } from "@/server/api/routers/packageTransaction";
-import { inputVariants } from "@/styles/variants";
+import { inputVariants, statusVariants } from "@/styles/variants";
 import { PAGINATION_LIMIT } from "@/trpc/shared";
 import { type Lang, type SearchParams } from "@/types";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
@@ -233,26 +233,23 @@ export default function PackageTransactionsTable({ data, searchParams, lang, loa
             key: "status",
             dataIndex: "expiryDate",
             render: (text: Date, item) => {
-              const sharedClassName = "h-7 flex items-center w-fit text-cream shadow px-2 rounded-md";
-              const expiredClassName = cn(sharedClassName, "bg-red");
-
               if (item.package.type === "SESSIONS") {
                 if (item.remainingSessions) {
-                  if (!text) return <p className={cn(sharedClassName, "bg-purple-600")}>{item.remainingSessions} session(s)</p>;
+                  if (!text) return <p className={statusVariants({ status: "session" })}>{item.remainingSessions} session(s)</p>;
                   return (
                     <section className="flex gap-2">
-                      <p className={cn(sharedClassName, "bg-purple-600")}>{item.remainingSessions} session(s)</p>
-                      <p className={cn(sharedClassName, "bg-emerald")}>{getRemainingDays(text)} day(s)</p>
+                      <p className={statusVariants({ status: "session" })}>{item.remainingSessions} session(s)</p>
+                      <p className={statusVariants({ status: "active" })}>{getRemainingDays(text)} day(s)</p>
                     </section>
                   );
                 }
-                if (!text) return <p className={expiredClassName}>Expired</p>;
+                if (!text) return <p className={statusVariants({ status: "expired" })}>Expired</p>;
               }
 
-              if (isDateExpired(text)) return <p className={expiredClassName}>Expired</p>;
-              if (isDateToday(text)) return <p className={cn(sharedClassName, "bg-yellow-600")}>Today</p>;
+              if (isDateExpired(text)) return <p className={statusVariants({ status: "expired" })}>Expired</p>;
+              if (isDateToday(text)) return <p className={statusVariants({ status: "today" })}>Today</p>;
 
-              return <p className={cn(sharedClassName, "bg-emerald")}>{getRemainingDays(text)} day(s)</p>;
+              return <p className={statusVariants({ status: "active" })}>{getRemainingDays(text)} day(s)</p>;
             },
           },
           {

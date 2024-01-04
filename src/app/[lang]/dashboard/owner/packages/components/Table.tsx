@@ -4,7 +4,7 @@ import Input from "@/components/Input";
 import { ICONS, PACKAGE_TYPES, USER_REDIRECT } from "@/lib/constants";
 import { cn, createUrl, formatCurrency } from "@/lib/functions";
 import { type PackageList, type PackageListInput } from "@/server/api/routers/package";
-import { inputVariants } from "@/styles/variants";
+import { inputVariants, statusVariants } from "@/styles/variants";
 import { type Lang, type SearchParams } from "@/types";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import { type PackageTransaction, type PackageType } from "@prisma/client";
@@ -126,16 +126,15 @@ export default function PackagesTable({ data, loading, lang, searchParams }: Pro
           key: "validityInDays",
           dataIndex: "validityInDays",
           render: (text: number, item) => {
-            const sharedClassName = "h-7 flex items-center w-fit text-cream shadow px-2 rounded-md";
             if (item.type === "SESSIONS") {
               return (
                 <section className="flex gap-2">
-                  <p className={cn(sharedClassName, "bg-purple-600")}>{item.approvedSessions} sessions(s)</p>
-                  {text ? <p className={cn(sharedClassName, "bg-emerald")}>{text} day(s)</p> : null}
+                  <p className={statusVariants({ status: "session" })}>{item.approvedSessions} sessions(s)</p>
+                  {text ? <p className={statusVariants({ status: "active" })}>{text} day(s)</p> : null}
                 </section>
               );
             }
-            return <p className={cn(sharedClassName, "bg-emerald")}>{text} day(s)</p>;
+            return <p className={statusVariants({ status: "active" })}>{text} day(s)</p>;
           },
         },
         {

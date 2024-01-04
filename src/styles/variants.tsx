@@ -62,6 +62,18 @@ export const inputVariants = tv({
   },
 });
 
+export const statusVariants = tv({
+  base: "h-7 font-medium flex items-center w-fit text-cream shadow px-2 rounded-md",
+  variants: {
+    status: {
+      active: "bg-emerald",
+      expired: "bg-red",
+      session: "bg-purple-600",
+      today: "bg-yellow-600",
+    },
+  },
+});
+
 export const notificationVariants = tv({
   base: "text-dark font-poppins bg-cream",
   variants: {
