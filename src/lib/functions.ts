@@ -61,13 +61,13 @@ export const getLocalDate = (dateString?: string): Date => {
 
 export const getStartDate = (dateString: string): Date => {
   const updatedDate = getNewDate(dateString);
-  updatedDate.setHours(0, 0, 0, 0);
+  updatedDate.setUTCHours(0, 0, 0, 0);
   return updatedDate;
 };
 
 export const getEndDate = (dateString: string): Date => {
   const updatedDate = getNewDate(dateString);
-  updatedDate.setHours(23, 59, 59, 999);
+  updatedDate.setUTCHours(23, 59, 59, 999);
   return updatedDate;
 };
 
@@ -89,8 +89,8 @@ export const getTokenExpiryDate = (): Date => new Date(getNewDate().getTime() + 
 
 export const getExpiryDate = ({ days, isVisit = false }: { days: number; isVisit?: boolean }): Date => {
   const date = getNewDate();
-  date.setDate(date.getDate() + days - (isVisit ? 1 : 0));
-  date.setHours(23, 59, 59, 999);
+  date.setUTCDate(date.getDate() + days - (isVisit ? 1 : 0));
+  date.setUTCHours(23, 59, 59, 999);
   return date;
 };
 
@@ -104,8 +104,8 @@ export const getExpiryDateFromDate = ({
   dateString: string;
 }): Date => {
   const date = new Date(dateString);
-  date.setDate(date.getDate() + days - (isVisit ? 1 : 0));
-  date.setHours(23, 59, 59, 999);
+  date.setUTCDate(date.getDate() + days - (isVisit ? 1 : 0));
+  date.setUTCHours(23, 59, 59, 999);
   return date;
 };
 
@@ -117,7 +117,7 @@ export const getExpiryDateFromDate = ({
 
 export const getTodayExpiryDate = (): Date => {
   const date = getNewDate();
-  date.setHours(23, 59, 59, 999);
+  date.setUTCHours(23, 59, 59, 999);
   return date;
 };
 
