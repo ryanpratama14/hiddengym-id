@@ -28,8 +28,6 @@ type Props = {
 export default function UpdatePackageForm({ option, t, lang, data }: Props) {
   const router = useRouter();
 
-  console.log(data)
-
   const {
     register,
     handleSubmit,

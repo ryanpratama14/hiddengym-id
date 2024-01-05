@@ -1,5 +1,6 @@
-import { USER_PATHNAMES } from "@/lib/constants";
+import { USER_REDIRECT } from "@/lib/constants";
 import { cn } from "@/lib/functions";
+import { type Lang } from "@/types";
 import { type Role } from "@prisma/client";
 import Link from "next/link";
 
@@ -10,6 +11,7 @@ const DashboardNavigator = ({
   role,
   isChildren,
   children,
+  lang,
 }: {
   href: string;
   isChildren?: boolean;
@@ -18,13 +20,14 @@ const DashboardNavigator = ({
   newTab?: boolean;
   target?: React.HTMLAttributeAnchorTarget;
   role: Role;
+  lang: Lang;
 }) => {
   return (
     <Link
       target={newTab ? "_blank" : undefined}
       rel={newTab ? "noopener noreferrer" : undefined}
       className={cn(`text-base select-none font-medium ${className}`, { "ml-3 text-sm": isChildren })}
-      href={`${USER_PATHNAMES[role]}${href}`}
+      href={USER_REDIRECT[role]({ lang, href })}
     >
       {children}
     </Link>
