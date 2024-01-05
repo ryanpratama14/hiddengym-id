@@ -1,3 +1,4 @@
+import { PAGINATION_LIMIT } from "@/trpc/shared";
 import { z } from "zod";
 
 export const regex = {
@@ -15,7 +16,7 @@ export class schema {
   static order = z.enum(["asc", "desc"]).optional();
 
   static names = z.string().min(3, "At least 3 characters");
-  static pagination = z.object({ page: z.number().min(1), limit: z.number().min(1) });
+  static pagination = z.object({ page: z.number().positive().default(1), limit: z.number().positive().default(PAGINATION_LIMIT) });
   static email = z.string().email("Provide a valid email");
   static fullName = z
     .string()
@@ -39,6 +40,13 @@ export class schema {
   static password = z.string().min(10, "At least 10 characters");
   static loginVisitor = z.object({ credential: schema.phoneNumber });
   static login = z.object({ email: schema.email, credential: schema.password }); // also for next-auth
+
+  static searchParams = {
+    pagination: z.object({
+      page: z.coerce.number().positive().optional().default(1),
+      limit: z.coerce.number().positive().optional().default(PAGINATION_LIMIT),
+    }),
+  };
 
   static user = class {
     static create = z.object({

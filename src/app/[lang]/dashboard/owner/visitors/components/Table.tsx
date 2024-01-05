@@ -28,7 +28,7 @@ export default function VisitorsTable({ data, searchParams, lang, loading }: Pro
   const newSearchParams = useSearchParams();
   const newParams = new URLSearchParams(newSearchParams.toString());
 
-  if (data?.isInvalidPage) {
+  if (data?.isPaginationInvalid) {
     newParams.delete("page");
     redirect(createUrl(USER_REDIRECT.OWNER({ lang, href: "/visitors" }), newParams));
   }

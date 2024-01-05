@@ -1,8 +1,9 @@
 "use client";
 
+import { schema } from "@/schema";
 import { api } from "@/trpc/react";
 import { type Lang, type SearchParams } from "@/types";
-import { type PackageType } from "@prisma/client";
+import { z } from "zod";
 import Table from "./components/Table";
 
 type Props = {
@@ -11,12 +12,14 @@ type Props = {
 };
 
 export default function PakcagesPage({ params, searchParams }: Props) {
-  const { data, isLoading: loading } = api.package.list.useQuery({
-    name: searchParams?.name as string,
-    type: searchParams?.type as PackageType,
-    price: searchParams?.price ? Number(searchParams.price) : undefined,
-    totalTransactions: searchParams?.totalTransactions ? Number(searchParams.totalTransactions) : undefined,
+  const searchParamsSchema = z.object({
+    name: z.string().optional(),
+    type: schema.packageType.optional(),
+    price: z.coerce.number().optional(),
+    totalTransaction: z.coerce.number().optional(),
   });
+
+  const { data, isLoading: loading } = api.package.list.useQuery(searchParamsSchema.parse(searchParams));
 
   return (
     <section className="grid md:grid-cols-5 gap-6 lg:gap-x-12">

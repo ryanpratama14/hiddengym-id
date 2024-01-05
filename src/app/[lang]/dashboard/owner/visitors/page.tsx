@@ -1,13 +1,13 @@
 "use client";
 
+import { schema } from "@/schema";
 import { type UserListInput } from "@/server/api/routers/user";
 import { api } from "@/trpc/react";
-import { PAGINATION_LIMIT } from "@/trpc/shared";
 import { type Lang, type SearchParams } from "@/types";
 import Table from "@owner/visitors/components/Table";
 import TableSearch from "@owner/visitors/components/TableSearch";
 import TableSorter from "@owner/visitors/components/TableSorter";
-import { type Gender } from "@prisma/client";
+import { z } from "zod";
 
 type Props = {
   searchParams: SearchParams;
@@ -15,18 +15,30 @@ type Props = {
 };
 
 export default function VisitorsPage({ searchParams, params }: Props) {
+  const searchParamsSchema = z.object({
+    ...schema.searchParams.pagination.shape,
+    q: z.string().optional(),
+    phoneNumber: z.string().optional(),
+    email: z.string().optional(),
+    gender: schema.gender.optional(),
+    totalSpending: z.coerce.number().optional(),
+    sorting: z.string().optional(),
+  });
+
+  const filter = searchParamsSchema.parse(searchParams);
+
   const query: UserListInput = {
     pagination: {
-      page: Number(searchParams.page) || 1,
-      limit: Number(searchParams.limit) || PAGINATION_LIMIT,
+      page: filter.page,
+      limit: filter.limit,
     },
     params: {
-      fullName: searchParams.q as string,
-      phoneNumber: searchParams.phoneNumber as string,
-      email: searchParams.email as string,
-      gender: searchParams.gender as Gender,
+      fullName: filter.q,
+      phoneNumber: filter.phoneNumber,
+      email: filter.email,
+      gender: filter.gender,
       role: "VISITOR",
-      totalSpending: searchParams.totalSpending ? Number(searchParams.totalSpending) : undefined,
+      totalSpending: filter.totalSpending,
     },
     sorting: searchParams.sort as string,
   };

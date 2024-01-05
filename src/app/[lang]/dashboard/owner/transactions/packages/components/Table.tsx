@@ -43,7 +43,7 @@ export default function PackageTransactionsTable({ data, searchParams, lang, loa
   const [selectedTransaction, setSelectedTransaction] = useState<PackageTransactionDetail | null>(null);
   const [show, setShow] = useState(false);
 
-  if (data?.isInvalidPage) {
+  if (data?.isPaginationInvalid) {
     newParams.delete("page");
     redirect(createUrl(USER_REDIRECT.OWNER({ lang, href: "/transactions/packages" }), newParams));
   }

@@ -198,7 +198,7 @@ export const getPaginationData = ({ totalData, limit, page }: Pagination & { tot
     totalPages,
     hasNextPage: end < totalData,
     hasPrevPage: start > 0,
-    isInvalidPage: page > totalPages || page < 1,
+    isPaginationInvalid: page > totalPages || page < 1 || limit < 1,
   };
 };
 
