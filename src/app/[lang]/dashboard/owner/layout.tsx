@@ -30,6 +30,30 @@ export default async function DashboardOwnerLayout({ children, params }: Props) 
     },
     {
       title: "",
+      key: "/transactions",
+      label: <p className="select-none font-medium">Transactions</p>,
+      icon: <Iconify icon={ICONS.transaction} width={25} />,
+      children: [
+        {
+          key: "/transactions/packages",
+          label: (
+            <DashboardNavigator isChildren href="/transactions/packages" role="OWNER" lang={lang}>
+              Packages
+            </DashboardNavigator>
+          ),
+        },
+        {
+          key: "/transactions/products",
+          label: (
+            <DashboardNavigator isChildren href="/transactions/products" role="OWNER" lang={lang}>
+              Products
+            </DashboardNavigator>
+          ),
+        },
+      ],
+    },
+    {
+      title: "",
       key: "/visitors",
       label: (
         <DashboardNavigator href="/visitors" role="OWNER" lang={lang}>
@@ -67,30 +91,6 @@ export default async function DashboardOwnerLayout({ children, params }: Props) 
         </DashboardNavigator>
       ),
       icon: <Iconify icon={ICONS.product} width={25} />,
-    },
-    {
-      title: "",
-      key: "/transactions",
-      label: <p className="select-none font-medium">Transactions</p>,
-      icon: <Iconify icon={ICONS.transaction} width={25} />,
-      children: [
-        {
-          key: "/transactions/packages",
-          label: (
-            <DashboardNavigator isChildren href="/transactions/packages" role="OWNER" lang={lang}>
-              Packages
-            </DashboardNavigator>
-          ),
-        },
-        {
-          key: "/transactions/products",
-          label: (
-            <DashboardNavigator isChildren href="/transactions/products" role="OWNER" lang={lang}>
-              Products
-            </DashboardNavigator>
-          ),
-        },
-      ],
     },
     {
       title: "",
