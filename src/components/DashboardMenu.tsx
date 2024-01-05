@@ -65,7 +65,7 @@ export default function DashboardMenu({ children, items, user, lang }: Props) {
 
       <nav onClick={handleCollapse} className="fixed flex items-center w-full top-0 h-14 bg-dark text-cream z-10">
         <section
-          className={cn("px-shorter ml-[3.1rem] flex items-center justify-between w-full animate", { "xl:ml-[14.5rem]": !collapsed })}
+          className={cn("px-shorter ml-[3.1rem] flex items-center justify-between w-full animate", { "xl:ml-64": !collapsed })}
         >
           <section className="flex gap-2">
             <Link href={selectedMenu.href} className="font-medium px-3 py-0.5 rounded-md border-2 select-none border-cream shadow-lg">
@@ -83,7 +83,7 @@ export default function DashboardMenu({ children, items, user, lang }: Props) {
 
       <article
         onClick={handleCollapse}
-        className={cn("animate min-h-screen p-shorter bg-cream ml-[3.1rem] mt-14", { "xl:ml-[14.5rem]": !collapsed })}
+        className={cn("animate min-h-screen p-shorter bg-cream ml-[3.1rem] mt-14", { "xl:ml-64": !collapsed })}
       >
         {children}
       </article>

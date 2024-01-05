@@ -10,6 +10,7 @@ import NavigatorX from "@/components/NavigatorX";
 import { DETERMINE_GENDER, GENDERS, ICONS, USER_REDIRECT } from "@/lib/constants";
 import { cn, createUrl, formatCurrency, localizePhoneNumber, textEllipsis } from "@/lib/functions";
 import { type UserList, type UserListInputParams } from "@/server/api/routers/user";
+import { actionVariants } from "@/styles/variants";
 import { PAGINATION_LIMIT } from "@/trpc/shared";
 import { type Lang, type SearchParams } from "@/types";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
@@ -159,14 +160,14 @@ export default function VisitorsTable({ data, searchParams, lang, loading }: Pro
         {
           fixed: "left",
           align: "center",
-          title: "Info",
+          title: "Action",
           key: "id",
           width: 1,
           dataIndex: "id",
           render: (id: string) => (
             <section className="flex justify-center items-center">
               <Navigator color="none" size="none" href={USER_REDIRECT.OWNER({ lang, href: `/visitors/detail/${id}` })}>
-                <Iconify icon={ICONS.detail} width={25} className="p-1 bg-blue text-cream rounded-md" color="link" />
+                <Iconify icon={ICONS.detail} width={25} className={actionVariants({ color: "blue" })} />
               </Navigator>
             </section>
           ),
@@ -177,7 +178,7 @@ export default function VisitorsTable({ data, searchParams, lang, loading }: Pro
           dataIndex: "fullName",
           render: (text: string, user) => (
             <section className="flex gap-2 items-center">
-              <section className="w-8 aspect-square bg-cream rounded-full relative shadow border-1 border-dotted border-dark">
+              <section className="w-7 aspect-square bg-cream rounded-full relative shadow border-1 border-dotted border-dark">
                 {user?.image?.url ? (
                   <Img src={user.image.url} alt={text} className="absolute centered object-cover w-full h-full rounded-full" />
                 ) : (

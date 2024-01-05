@@ -1,10 +1,11 @@
 import Button from "@/components/Button";
 import FilterIcon from "@/components/FilterIcon";
+import Iconify from "@/components/Iconify";
 import Input from "@/components/Input";
 import { ICONS, PACKAGE_TYPES, USER_REDIRECT } from "@/lib/constants";
 import { cn, createUrl, formatCurrency } from "@/lib/functions";
 import { type PackageList, type PackageListInput } from "@/server/api/routers/package";
-import { inputVariants, statusVariants } from "@/styles/variants";
+import { actionVariants, inputVariants, statusVariants } from "@/styles/variants";
 import { type Lang, type SearchParams } from "@/types";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import { type PackageTransaction, type PackageType } from "@prisma/client";
@@ -106,6 +107,19 @@ export default function PackagesTable({ data, loading, lang, searchParams }: Pro
       rowKey="id"
       scroll={{ x: "max-content" }}
       columns={[
+        {
+          fixed: "left",
+          align: "center",
+          key: "id",
+          dataIndex: "id",
+          title: "Action",
+          width: 1,
+          render: (_) => (
+            <section className="flex justify-center items-center">
+              <Iconify icon={ICONS.edit} width={25} className={actionVariants({ color: "yellow" })} color="link" />
+            </section>
+          ),
+        },
         {
           title: "Type",
           key: "type",

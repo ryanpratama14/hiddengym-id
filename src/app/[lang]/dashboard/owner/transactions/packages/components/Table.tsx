@@ -21,7 +21,7 @@ import {
   type PackageTransactionList,
   type PackageTransactionListInputParams,
 } from "@/server/api/routers/packageTransaction";
-import { inputVariants, statusVariants } from "@/styles/variants";
+import { actionVariants, inputVariants, statusVariants } from "@/styles/variants";
 import { PAGINATION_LIMIT } from "@/trpc/shared";
 import { type Lang, type SearchParams } from "@/types";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
@@ -161,7 +161,7 @@ export default function PackageTransactionsTable({ data, searchParams, lang, loa
           {
             fixed: "left",
             align: "center",
-            title: "Info",
+            title: "Action",
             key: "id",
             width: 1,
             dataIndex: "id",
@@ -174,7 +174,7 @@ export default function PackageTransactionsTable({ data, searchParams, lang, loa
                     setShow(true);
                   }}
                   width={25}
-                  className="p-1 bg-green text-cream rounded-md"
+                  className={actionVariants({ color: "green" })}
                   color="link"
                 />
               </section>
@@ -212,7 +212,7 @@ export default function PackageTransactionsTable({ data, searchParams, lang, loa
             key: "buyer.fullName",
             render: (_, item) => (
               <section className="flex gap-2 items-center">
-                <section className="w-8 aspect-square bg-cream rounded-full relative shadow border-1 border-dotted border-dark">
+                <section className="w-7 aspect-square bg-cream rounded-full relative shadow border-1 border-dotted border-dark">
                   {item.buyer?.image?.url ? (
                     <Img
                       src={item.buyer.image.url}

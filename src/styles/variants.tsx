@@ -74,6 +74,21 @@ export const statusVariants = tv({
   },
 });
 
+export const actionVariants = tv({
+  base: "p-1 text-cream rounded-md",
+  variants: {
+    color: {
+      green: "bg-green",
+      yellow: "bg-yellow-600",
+      purple: "bg-purple-600",
+      orange: "bg-orange",
+      red: "bg-red",
+      blue: "bg-blue",
+    },
+  },
+  defaultVariants: { color: "green" },
+});
+
 export const notificationVariants = tv({
   base: "text-dark font-poppins bg-cream",
   variants: {

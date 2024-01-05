@@ -1,4 +1,5 @@
 import { ICONS } from "@/lib/constants";
+import { cn } from "@/lib/functions";
 import { Dialog, Transition } from "@headlessui/react";
 import React, { Fragment } from "react";
 import Iconify from "./Iconify";
@@ -7,9 +8,10 @@ type Props = {
   closeModal: () => void;
   show: boolean;
   children: React.ReactNode;
+  classNameDiv?: string;
 };
 
-export const Modal = ({ show, closeModal, children }: Props) => {
+export const Modal = ({ show, closeModal, children, classNameDiv }: Props) => {
   return (
     <Transition appear show={show} as={Fragment}>
       <Dialog as="div" className="relative z-[100]" onClose={closeModal}>
@@ -37,7 +39,7 @@ export const Modal = ({ show, closeModal, children }: Props) => {
               leaveTo="opacity-0 scale-95"
             >
               <Dialog.Panel>
-                <section className="w-fit p-6 rounded-md bg-white">
+                <section className={cn("w-fit p-6 rounded-md bg-white", classNameDiv)}>
                   <button
                     type="submit"
                     onClick={closeModal}

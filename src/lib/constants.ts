@@ -139,6 +139,7 @@ export const ICONS = {
   name: "mdi:rename-outline",
   invoice: "iconamoon:invoice",
   detail: "carbon:folder-details-reference",
+  edit: "basil:edit-outline",
 };
 
 export const GENDERS: {

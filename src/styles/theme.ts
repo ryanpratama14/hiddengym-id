@@ -61,7 +61,7 @@ export const theme: ThemeConfig = {
       headerSortActiveBg: COLORS.orange,
       headerBorderRadius: 6,
       colorBgContainer: COLORS.light,
-      cellPaddingBlock: 5,
+      cellPaddingBlock: 5.5,
       rowHoverBg: COLORS.light2,
     },
   },
