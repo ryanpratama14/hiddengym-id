@@ -1,3 +1,4 @@
+import { type DASHBOARD_MENUS, type DASHBOARD_SUB_MENUS } from "@/lib/constants";
 import { type useDictionary } from "@/lib/dictionary";
 import { type internationalization } from "@/lib/internationalization";
 
@@ -8,3 +9,6 @@ export type MouseEvent = React.MouseEventHandler<HTMLButtonElement>;
 export type ChangeEvent = React.ChangeEvent<HTMLInputElement>;
 export type Lang = (typeof internationalization)["locales"][number];
 export type Dictionary = UnwrapPromise<ReturnType<typeof useDictionary>>;
+export type DashboardMenuKey = keyof typeof DASHBOARD_MENUS;
+export type DashboardSubMenuKey = (typeof DASHBOARD_SUB_MENUS)[number];
+export type DashboardMenuLabel = (typeof DASHBOARD_MENUS)[keyof typeof DASHBOARD_MENUS];

@@ -1,5 +1,5 @@
 import { COLORS } from "@/styles/theme";
-import { type Lang } from "@/types";
+import { type DashboardMenuKey, type Lang } from "@/types";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import { type Gender, type PackageTransaction, type PackageType, type PromoCodeType, type Role, type User } from "@prisma/client";
 
@@ -100,6 +100,8 @@ export const USER_REDIRECT = {
 export const EMAIL_VISITOR_READONLY = "readonly@hiddengym-id.com";
 
 export const COUNTRY_CODE = "+62";
+
+export const MENU_ICON_SIZE = 25;
 
 export const REFETCH_INTERVAL = 10_000;
 
@@ -244,12 +246,13 @@ export const ADD_BUTTON_ITEMS = (role: Role, lang: Lang) => [
   },
 ];
 
-export const DASHBOARD_MENUS: Record<string, string> = {
+export const DASHBOARD_MENUS = {
   "/": "Home",
   "/visitors": "Visitors",
   "/trainers": "Trainers",
   "/packages": "Packages",
   "/products": "Products",
+  "/transactions": "Transactions",
   "/transactions/packages": "Package Transactions",
   "/transactions/products": "Product Transactions",
   "/visits": "Visits",
@@ -258,6 +261,13 @@ export const DASHBOARD_MENUS: Record<string, string> = {
   "/sport-types": "Sport Types",
   "/places": "Places",
   "/payment-methods": "Payment Methods",
+} as const;
+
+export const DASHBOARD_MENUS_TO_REMOVE: Record<Role, DashboardMenuKey[]> = {
+  ADMIN: [],
+  OWNER: [],
+  VISITOR: [],
+  TRAINER: [],
 };
 
-export const DASHBOARD_SUB_MENUS = ["Detail", "Update", "Create"];
+export const DASHBOARD_SUB_MENUS = ["Detail", "Update", "Create"] as const;

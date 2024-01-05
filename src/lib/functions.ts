@@ -1,5 +1,5 @@
 import { COUNTRY_CODE, DASHBOARD_MENUS, DASHBOARD_SUB_MENUS, USER_PATHNAMES, USER_REDIRECT } from "@/lib/constants";
-import { type Lang } from "@/types";
+import { type DashboardMenuKey, type DashboardMenuLabel, type DashboardSubMenuKey, type Lang } from "@/types";
 import { type Role } from "@prisma/client";
 import { clsx, type ClassValue } from "clsx";
 import { type ReadonlyURLSearchParams } from "next/navigation";
@@ -212,7 +212,7 @@ export const textEllipsis = (text: string, length: number) => {
   return text.length < length ? `${text}` : `${text?.substring(0, length - 3)}...`;
 };
 
-export const getDashboardPathname = (pathname: string, role: Role): string[] => {
+export const getDashboardPathname = (pathname: string, role: Role): DashboardMenuKey[] => {
   const substring = USER_PATHNAMES[role];
   const startIndex = pathname.indexOf(substring);
 
@@ -221,7 +221,7 @@ export const getDashboardPathname = (pathname: string, role: Role): string[] => 
     const parts = extractedString.split("/").filter((part) => part !== "");
     const result = parts.map((_, index) => `/${parts.slice(0, index + 1).join("/")}`);
     if (result.length > 0) {
-      return result;
+      return result as DashboardMenuKey[];
     } else {
       return ["/"];
     }
@@ -230,16 +230,24 @@ export const getDashboardPathname = (pathname: string, role: Role): string[] => 
   }
 };
 
-export const getSelectedMenu = ({ pathname, role, lang }: { pathname: string; role: Role; lang: Lang }) => {
-  const selectedMenu = {
-    name: "",
+type SelectedMenu = {
+  label: DashboardMenuLabel | "";
+  href: string;
+  subName?: DashboardSubMenuKey;
+  keys: DashboardMenuKey[];
+};
+
+export const getSelectedMenu = ({ pathname, role, lang }: { pathname: string; role: Role; lang: Lang }): SelectedMenu => {
+  const selectedMenu: SelectedMenu = {
+    label: "",
     href: "",
-    subName: DASHBOARD_SUB_MENUS.find((value) => pathname.includes(value.toLowerCase())) ?? "",
+    subName: DASHBOARD_SUB_MENUS.find((value) => pathname.includes(value.toLowerCase())),
     keys: getDashboardPathname(pathname, role),
   };
+
   for (const path of selectedMenu.keys) {
     if (DASHBOARD_MENUS[path]) {
-      selectedMenu.name = DASHBOARD_MENUS[path] ?? "";
+      selectedMenu.label = DASHBOARD_MENUS[path];
       selectedMenu.href = USER_REDIRECT[role]({ lang, href: path });
     }
   }

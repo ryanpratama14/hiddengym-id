@@ -1,7 +1,6 @@
 "use client";
 
 import AddButton from "@/components/AddButton";
-import DashboardProfileDropdown from "@/components/DashboardProfileDropdown";
 import Logo from "@/components/Logo";
 import { cn, getSelectedMenu } from "@/lib/functions";
 import { type User } from "@/server/api/routers/user";
@@ -13,6 +12,7 @@ import { type ItemType, type MenuItemType } from "antd/es/menu/hooks/useItems";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Fragment, useEffect, useState } from "react";
+import DashboardProfileDropdown from "./DashboardProfileDropdown";
 
 type Props = {
   children: React.ReactNode;
@@ -64,12 +64,10 @@ export default function DashboardMenu({ children, items, user, lang }: Props) {
       </Layout>
 
       <nav onClick={handleCollapse} className="fixed flex items-center w-full top-0 h-14 bg-dark text-cream z-10">
-        <section
-          className={cn("px-shorter ml-[3.1rem] flex items-center justify-between w-full animate", { "xl:ml-64": !collapsed })}
-        >
+        <section className={cn("px-shorter ml-[3.1rem] flex items-center justify-between w-full animate", { "xl:ml-64": !collapsed })}>
           <section className="flex gap-2">
             <Link href={selectedMenu.href} className="font-medium px-3 py-0.5 rounded-md border-2 select-none border-cream shadow-lg">
-              {selectedMenu.name}
+              {selectedMenu.label}
             </Link>
             {selectedMenu.subName ? (
               <p className="font-medium px-3 py-0.5 rounded-md border-2 select-none bg-light border-light shadow-lg text-dark">

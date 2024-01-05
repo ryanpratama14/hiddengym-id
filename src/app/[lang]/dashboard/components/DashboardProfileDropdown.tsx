@@ -4,9 +4,9 @@ import { type User } from "@/server/api/routers/user";
 import { Menu, Transition } from "@headlessui/react";
 import { signOut } from "next-auth/react";
 import { Fragment } from "react";
-import Button from "./Button";
-import Iconify from "./Iconify";
-import Img from "./Img";
+import Button from "../../../../components/Button";
+import Iconify from "../../../../components/Iconify";
+import Img from "../../../../components/Img";
 
 type Props = {
   user: User;
