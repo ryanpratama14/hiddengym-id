@@ -165,6 +165,11 @@ export class schema {
           path: ["trainerIDs"],
         },
       );
+
+    static update = z.object({
+      id: z.string(),
+      body: this.create,
+    });
   };
 
   static sport = class {

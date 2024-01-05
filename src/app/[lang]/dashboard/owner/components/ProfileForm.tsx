@@ -47,7 +47,7 @@ export default function ProfileForm({ user, setIsEdit, updateUser, t }: Props) {
     setLoading(false);
     setIsEdit(false);
     if (!res.status) return toastError({ t, description: "An error occurred" });
-    toastSuccess({ t, description: "Your profile has been updated" });
+    toastSuccess({ t, description: res.message });
   };
 
   return (

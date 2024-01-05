@@ -23,6 +23,25 @@ const packageSelect = {
 };
 
 export const packageRouter = createTRPCRouter({
+  update: ownerProcedure.input(schema.package.update).mutation(async ({ ctx, input }) => {
+    const { body, id } = input;
+    await ctx.db.package.update({
+      where: { id },
+      data: {
+        name: body.name,
+        description: body.description,
+        validityInDays: body.validityInDays,
+        approvedSessions: body.approvedSessions,
+        price: body.price,
+        type: body.type,
+        placeIDs: body.placeIDs,
+        sportIDs: body.sportIDs,
+        trainerIDs: body.trainerIDs,
+      },
+    });
+
+    return THROW_OK("OK", "Package has been updated.");
+  }),
   create: ownerProcedure.input(schema.package.create).mutation(async ({ ctx, input }) => {
     const data = await ctx.db.package.findFirst({ where: { name: input.name } });
     if (data) return THROW_TRPC_ERROR("CONFLICT", getConflictMessage("package", "name"));

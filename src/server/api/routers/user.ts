@@ -111,7 +111,7 @@ export const userRouter = createTRPCRouter({
         gender: body.gender,
       },
     });
-    return THROW_OK("OK");
+    return THROW_OK("OK", "Your profile has been updated.");
   }),
 
   listTrainer: ownerProcedure.query(async ({ ctx }) => {
