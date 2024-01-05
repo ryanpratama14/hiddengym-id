@@ -22,7 +22,7 @@ import {
   type PackageTransactionList,
   type PackageTransactionListInputParams,
 } from "@/server/api/routers/packageTransaction";
-import { actionVariants, inputVariants, statusVariants } from "@/styles/variants";
+import { inputVariants, statusVariants } from "@/styles/variants";
 import { PAGINATION_LIMIT } from "@/trpc/shared";
 import { type Lang, type SearchParams } from "@/types";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
