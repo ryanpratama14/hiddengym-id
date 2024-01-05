@@ -136,6 +136,13 @@ export default function PackagesTable({ data, loading, lang, searchParams }: Pro
           ...getTableFilter({ name: "name", icon: ICONS.name }),
         },
         {
+          title: "Price",
+          key: "price",
+          dataIndex: "price",
+          ...getTableFilter({ name: "price", icon: ICONS.payment_method, type: "number" }),
+          render: (text: number) => formatCurrency(text),
+        },
+        {
           title: "Validity",
           key: "validityInDays",
           dataIndex: "validityInDays",
@@ -143,20 +150,13 @@ export default function PackagesTable({ data, loading, lang, searchParams }: Pro
             if (item.type === "SESSIONS") {
               return (
                 <section className="flex gap-2">
-                  <p className={statusVariants({ status: "session" })}>{item.approvedSessions} sessions(s)</p>
+                  <p className={statusVariants({ status: "session" })}>{item.approvedSessions} session(s)</p>
                   {text ? <p className={statusVariants({ status: "active" })}>{text} day(s)</p> : null}
                 </section>
               );
             }
             return <p className={statusVariants({ status: "active" })}>{text} day(s)</p>;
           },
-        },
-        {
-          title: "Price",
-          key: "price",
-          dataIndex: "price",
-          ...getTableFilter({ name: "price", icon: ICONS.payment_method, type: "number" }),
-          render: (text: number) => formatCurrency(text),
         },
         {
           title: "Total Transactions",
