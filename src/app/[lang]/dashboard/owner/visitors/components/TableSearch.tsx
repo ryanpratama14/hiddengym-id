@@ -5,17 +5,16 @@ import Iconify from "@/components/Iconify";
 import Input from "@/components/Input";
 import { ICONS, USER_REDIRECT } from "@/lib/constants";
 import { createUrl } from "@/lib/functions";
-import { type UserListInput } from "@/server/api/routers/user";
-import { type Lang } from "@/types";
+import { type Lang, type SearchParams } from "@/types";
 import { useRouter, useSearchParams } from "next/navigation";
 
 type Props = {
-  query: UserListInput;
+  searchParams: SearchParams;
   lang: Lang;
   loading: boolean;
 };
 
-export default function TableSearch({ query, lang, loading }: Props) {
+export default function TableSearch({ searchParams, lang, loading }: Props) {
   const router = useRouter();
   const newSearchParams = useSearchParams();
   const newParams = new URLSearchParams(newSearchParams.toString());
@@ -36,8 +35,8 @@ export default function TableSearch({ query, lang, loading }: Props) {
     >
       <section className="relative w-[80%] group">
         <Input
-          key={query.params?.fullName}
-          defaultValue={query.params?.fullName}
+          key={searchParams.q as string}
+          defaultValue={searchParams.q}
           name="fullName"
           autoComplete="off"
           placeholder="Search by full name..."

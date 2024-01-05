@@ -1,7 +1,6 @@
 "use client";
 
 import { schema } from "@/schema";
-import { type UserListInput } from "@/server/api/routers/user";
 import { api } from "@/trpc/react";
 import { type Lang, type SearchParams } from "@/types";
 import Table from "@owner/visitors/components/Table";
@@ -22,33 +21,31 @@ export default function VisitorsPage({ searchParams, params }: Props) {
     email: z.string().optional(),
     gender: schema.gender.optional(),
     totalSpending: z.coerce.number().optional(),
-    sorting: z.string().optional(),
+    sort: z.string().optional(),
   });
 
-  const filter = searchParamsSchema.parse(searchParams);
+  const query = searchParamsSchema.parse(searchParams);
 
-  const query: UserListInput = {
+  const { data, isLoading: loading } = api.user.list.useQuery({
     pagination: {
-      page: filter.page,
-      limit: filter.limit,
+      page: query.page,
+      limit: query.limit,
     },
     params: {
-      fullName: filter.q,
-      phoneNumber: filter.phoneNumber,
-      email: filter.email,
-      gender: filter.gender,
+      fullName: query.q,
+      phoneNumber: query.phoneNumber,
+      email: query.email,
+      gender: query.gender,
       role: "VISITOR",
-      totalSpending: filter.totalSpending,
+      totalSpending: query.totalSpending,
     },
-    sorting: searchParams.sort as string,
-  };
-
-  const { data, isLoading: loading } = api.user.list.useQuery(query);
+    sorting: query.sort,
+  });
 
   return (
     <section className="grid grid-cols-1 md:grid-cols-5 gap-6 lg:gap-x-12">
       <section className="flex flex-col gap-6 md:col-span-4">
-        <TableSearch loading={loading} lang={params.lang} query={query} />
+        <TableSearch loading={loading} lang={params.lang} searchParams={searchParams} />
         <Table loading={loading} lang={params.lang} data={data} searchParams={searchParams} />
       </section>
       <TableSorter lang={params.lang} />

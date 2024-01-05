@@ -1,7 +1,6 @@
 "use client";
 
 import { schema } from "@/schema";
-import { type PackageTransactionListInput } from "@/server/api/routers/packageTransaction";
 import { api } from "@/trpc/react";
 import { type Lang, type SearchParams } from "@/types";
 import { z } from "zod";
@@ -23,29 +22,27 @@ export default function TransactionsProductPage({ searchParams, params }: Props)
     buyer: z.string().optional(),
     paymentMethod: z.string().optional(),
     promoCodeCode: z.string().optional(),
-    sorting: z.string().optional(),
+    sort: z.string().optional(),
   });
 
-  const filter = searchParamsSchema.parse(searchParams);
+  const query = searchParamsSchema.parse(searchParams);
 
-  const query: PackageTransactionListInput = {
+  const { data, isLoading: loading } = api.packageTransaction.list.useQuery({
     pagination: {
-      page: filter.page,
-      limit: filter.limit,
+      page: query.page,
+      limit: query.limit,
     },
     params: {
-      transactionDate: filter.transactionDate,
-      packageType: filter.packageType,
-      package: filter.package,
-      buyer: filter.buyer,
-      totalPrice: filter.totalPrice,
-      paymentMethod: filter.paymentMethod,
-      promoCodeCode: filter.promoCodeCode,
+      transactionDate: query.transactionDate,
+      packageType: query.packageType,
+      package: query.package,
+      buyer: query.buyer,
+      totalPrice: query.totalPrice,
+      paymentMethod: query.paymentMethod,
+      promoCodeCode: query.promoCodeCode,
     },
-    sorting: filter.sorting,
-  };
-
-  const { data, isLoading: loading } = api.packageTransaction.list.useQuery(query);
+    sorting: query.sort,
+  });
 
   return (
     <section className="grid md:grid-cols-5 gap-6 lg:gap-x-12">

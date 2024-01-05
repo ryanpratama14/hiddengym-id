@@ -132,24 +132,20 @@ export default function VisitorsTable({ data, searchParams, lang, loading }: Pro
     <Table
       loading={loading}
       className="drop-shadow"
-      pagination={
-        searchParams.totalSpending
-          ? false
-          : {
-              current: data?.page,
-              pageSize: data?.limit,
-              total: data?.totalData,
-              showSizeChanger: true,
-              pageSizeOptions: [String(PAGINATION_LIMIT), "75", "100"],
-              onChange: (_, limit) => {
-                if (limit === PAGINATION_LIMIT) {
-                  newParams.delete("limit");
-                } else newParams.set("limit", String(limit));
-                redirectTable(newParams);
-              },
-              showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} visitors`,
-            }
-      }
+      pagination={{
+        current: data?.page,
+        pageSize: data?.limit,
+        total: data?.totalData,
+        showSizeChanger: true,
+        pageSizeOptions: [String(PAGINATION_LIMIT), "75", "100"],
+        onChange: (_, limit) => {
+          if (limit === PAGINATION_LIMIT) {
+            newParams.delete("limit");
+          } else newParams.set("limit", String(limit));
+          redirectTable(newParams);
+        },
+        showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} visitors`,
+      }}
       onChange={(pagination) => {
         if (pagination.current === 1) {
           newParams.delete("page");
