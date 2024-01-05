@@ -1,3 +1,4 @@
+import ActionButton from "@/components/ActionButton";
 import Button from "@/components/Button";
 import FilterIcon from "@/components/FilterIcon";
 import Iconify from "@/components/Iconify";
@@ -116,7 +117,7 @@ export default function PackagesTable({ data, loading, lang, searchParams }: Pro
           width: 1,
           render: (_) => (
             <section className="flex justify-center items-center">
-              <Iconify icon={ICONS.edit} width={25} className={actionVariants({ color: "yellow" })} color="link" />
+              <ActionButton icon={ICONS.edit} color="yellow" title="Edit" />
             </section>
           ),
         },

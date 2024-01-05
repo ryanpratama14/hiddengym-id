@@ -1,3 +1,4 @@
+import ActionButton from "@/components/ActionButton";
 import Button from "@/components/Button";
 import FilterIcon from "@/components/FilterIcon";
 import Iconify from "@/components/Iconify";
@@ -167,15 +168,14 @@ export default function PackageTransactionsTable({ data, searchParams, lang, loa
             dataIndex: "id",
             render: (_, item) => (
               <section className="flex justify-center items-center">
-                <Iconify
-                  icon={ICONS.invoice}
+                <ActionButton
                   onClick={() => {
                     setSelectedTransaction(item);
                     setShow(true);
                   }}
-                  width={25}
-                  className={actionVariants({ color: "green" })}
-                  color="link"
+                  title="Invoice"
+                  icon={ICONS.invoice}
+                  color="green"
                 />
               </section>
             ),

@@ -1,21 +1,21 @@
 "use client";
 
+import ActionButton from "@/components/ActionButton";
 import Button from "@/components/Button";
 import FilterIcon from "@/components/FilterIcon";
 import Iconify from "@/components/Iconify";
 import Img from "@/components/Img";
 import Input from "@/components/Input";
-import Navigator from "@/components/Navigator";
 import NavigatorX from "@/components/NavigatorX";
 import { DETERMINE_GENDER, GENDERS, ICONS, USER_REDIRECT } from "@/lib/constants";
 import { cn, createUrl, formatCurrency, localizePhoneNumber, textEllipsis } from "@/lib/functions";
 import { type UserList, type UserListInputParams } from "@/server/api/routers/user";
-import { actionVariants } from "@/styles/variants";
 import { PAGINATION_LIMIT } from "@/trpc/shared";
 import { type Lang, type SearchParams } from "@/types";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import { Table } from "antd";
 import { type FilterDropdownProps } from "antd/es/table/interface";
+import Link from "next/link";
 import { redirect, useRouter, useSearchParams } from "next/navigation";
 
 type Props = {
@@ -166,9 +166,9 @@ export default function VisitorsTable({ data, searchParams, lang, loading }: Pro
           dataIndex: "id",
           render: (id: string) => (
             <section className="flex justify-center items-center">
-              <Navigator color="none" size="none" href={USER_REDIRECT.OWNER({ lang, href: `/visitors/detail/${id}` })}>
-                <Iconify icon={ICONS.detail} width={25} className={actionVariants({ color: "blue" })} />
-              </Navigator>
+              <Link href={USER_REDIRECT.OWNER({ lang, href: `/visitors/detail/${id}` })} className="flex items-center">
+                <ActionButton title="Detail" icon={ICONS.detail} color="blue" />
+              </Link>
             </section>
           ),
         },
