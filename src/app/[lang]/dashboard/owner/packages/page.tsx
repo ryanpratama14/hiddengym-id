@@ -1,5 +1,6 @@
 "use client";
 
+import { REFETCH_INTERVAL } from "@/lib/constants";
 import { schema } from "@/schema";
 import { api } from "@/trpc/react";
 import { type Lang, type SearchParams } from "@/types";
@@ -19,7 +20,9 @@ export default function PakcagesPage({ params, searchParams }: Props) {
     totalTransaction: z.coerce.number().optional(),
   });
 
-  const { data, isLoading: loading } = api.package.list.useQuery(searchParamsSchema.parse(searchParams));
+  const { data, isLoading: loading } = api.package.list.useQuery(searchParamsSchema.parse(searchParams), {
+    refetchInterval: REFETCH_INTERVAL,
+  });
 
   return (
     <section className="grid md:grid-cols-5 gap-6 lg:gap-x-12">

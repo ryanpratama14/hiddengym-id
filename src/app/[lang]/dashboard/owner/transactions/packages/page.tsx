@@ -1,5 +1,6 @@
 "use client";
 
+import { REFETCH_INTERVAL } from "@/lib/constants";
 import { schema } from "@/schema";
 import { api } from "@/trpc/react";
 import { type Lang, type SearchParams } from "@/types";
@@ -27,22 +28,25 @@ export default function TransactionsProductPage({ searchParams, params }: Props)
 
   const query = searchParamsSchema.parse(searchParams);
 
-  const { data, isLoading: loading } = api.packageTransaction.list.useQuery({
-    pagination: {
-      page: query.page,
-      limit: query.limit,
+  const { data, isLoading: loading } = api.packageTransaction.list.useQuery(
+    {
+      pagination: {
+        page: query.page,
+        limit: query.limit,
+      },
+      params: {
+        transactionDate: query.transactionDate,
+        packageType: query.packageType,
+        package: query.package,
+        buyer: query.buyer,
+        totalPrice: query.totalPrice,
+        paymentMethod: query.paymentMethod,
+        promoCodeCode: query.promoCodeCode,
+      },
+      sorting: query.sort,
     },
-    params: {
-      transactionDate: query.transactionDate,
-      packageType: query.packageType,
-      package: query.package,
-      buyer: query.buyer,
-      totalPrice: query.totalPrice,
-      paymentMethod: query.paymentMethod,
-      promoCodeCode: query.promoCodeCode,
-    },
-    sorting: query.sort,
-  });
+    { refetchInterval: REFETCH_INTERVAL },
+  );
 
   return (
     <section className="grid md:grid-cols-5 gap-6 lg:gap-x-12">

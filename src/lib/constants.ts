@@ -101,6 +101,8 @@ export const EMAIL_VISITOR_READONLY = "readonly@hiddengym-id.com";
 
 export const COUNTRY_CODE = "+62";
 
+export const REFETCH_INTERVAL = 10_000;
+
 export const ICONS = {
   search: "material-symbols:search",
   searchName: "icon-park-outline:edit-name",

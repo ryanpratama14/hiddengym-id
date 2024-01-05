@@ -1,5 +1,6 @@
 "use client";
 
+import { REFETCH_INTERVAL } from "@/lib/constants";
 import { schema } from "@/schema";
 import { api } from "@/trpc/react";
 import { type Lang, type SearchParams } from "@/types";
@@ -26,21 +27,24 @@ export default function VisitorsPage({ searchParams, params }: Props) {
 
   const query = searchParamsSchema.parse(searchParams);
 
-  const { data, isLoading: loading } = api.user.list.useQuery({
-    pagination: {
-      page: query.page,
-      limit: query.limit,
+  const { data, isLoading: loading } = api.user.list.useQuery(
+    {
+      pagination: {
+        page: query.page,
+        limit: query.limit,
+      },
+      params: {
+        fullName: query.q,
+        phoneNumber: query.phoneNumber,
+        email: query.email,
+        gender: query.gender,
+        role: "VISITOR",
+        totalSpending: query.totalSpending,
+      },
+      sorting: query.sort,
     },
-    params: {
-      fullName: query.q,
-      phoneNumber: query.phoneNumber,
-      email: query.email,
-      gender: query.gender,
-      role: "VISITOR",
-      totalSpending: query.totalSpending,
-    },
-    sorting: query.sort,
-  });
+    { refetchInterval: REFETCH_INTERVAL },
+  );
 
   return (
     <section className="grid grid-cols-1 md:grid-cols-5 gap-6 lg:gap-x-12">
