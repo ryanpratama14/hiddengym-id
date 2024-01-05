@@ -212,15 +212,11 @@ export default function PackageTransactionsTable({ data, searchParams, lang, loa
             key: "buyer.fullName",
             render: (_, item) => (
               <section className="flex gap-2 items-center">
-                <section className="w-7 aspect-square bg-cream rounded-full relative shadow border-1 border-dotted border-dark">
+                <section className="size-7 bg-cream rounded-full relative shadow border-1 border-dotted border-dark flex items-center justify-center p-0.5">
                   {item.buyer?.image?.url ? (
-                    <Img
-                      src={item.buyer.image.url}
-                      alt={item.buyer.fullName}
-                      className="absolute centered object-cover w-full h-full rounded-full"
-                    />
+                    <Img src={item.buyer.image.url} alt={item.buyer.fullName} className="object-cover w-full h-full rounded-full" />
                   ) : (
-                    <Iconify icon={DETERMINE_GENDER[item.buyer.gender].picture} className="absolute centered text-dark" width={22} />
+                    <Iconify icon={DETERMINE_GENDER[item.buyer.gender].picture} className="absolute centered text-dark" width={20} />
                   )}
                 </section>
                 {textEllipsis(item.buyer.fullName, 27)}

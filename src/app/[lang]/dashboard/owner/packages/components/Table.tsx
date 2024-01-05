@@ -1,12 +1,11 @@
 import ActionButton from "@/components/ActionButton";
 import Button from "@/components/Button";
 import FilterIcon from "@/components/FilterIcon";
-import Iconify from "@/components/Iconify";
 import Input from "@/components/Input";
 import { ICONS, PACKAGE_TYPES, USER_REDIRECT } from "@/lib/constants";
 import { cn, createUrl, formatCurrency } from "@/lib/functions";
 import { type PackageList, type PackageListInput } from "@/server/api/routers/package";
-import { actionVariants, inputVariants, statusVariants } from "@/styles/variants";
+import { inputVariants, statusVariants } from "@/styles/variants";
 import { type Lang, type SearchParams } from "@/types";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import { type PackageTransaction, type PackageType } from "@prisma/client";
