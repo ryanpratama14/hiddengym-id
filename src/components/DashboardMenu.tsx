@@ -3,7 +3,6 @@
 import AddButton from "@/components/AddButton";
 import DashboardProfileDropdown from "@/components/DashboardProfileDropdown";
 import Logo from "@/components/Logo";
-import { USER_REDIRECT } from "@/lib/constants";
 import { cn, getSelectedMenu } from "@/lib/functions";
 import { type User } from "@/server/api/routers/user";
 import { COLORS } from "@/styles/theme";
@@ -12,8 +11,8 @@ import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import { type ItemType, type MenuItemType } from "antd/es/menu/hooks/useItems";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import React, { Fragment, useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import { Fragment, useEffect, useState } from "react";
 
 type Props = {
   children: React.ReactNode;
@@ -22,10 +21,9 @@ type Props = {
   lang: Lang;
 };
 
-export default function DashboardMenu({ children, items, user, lang, }: Props) {
+export default function DashboardMenu({ children, items, user, lang }: Props) {
   const pathname = usePathname();
-  const router = useRouter();
-  const [collapsed, setCollapsed] = useState(true)
+  const [collapsed, setCollapsed] = useState(true);
   const [selectedMenu, setSelectedMenu] = useState(getSelectedMenu({ pathname, role: user.role, lang }));
   const handleCollapse = () => (collapsed ? undefined : setCollapsed(true));
 
@@ -53,16 +51,7 @@ export default function DashboardMenu({ children, items, user, lang, }: Props) {
               >
                 {!collapsed ? <MenuFoldOutlined style={{ fontSize: "30px" }} /> : <MenuUnfoldOutlined style={{ fontSize: "30px" }} />}
               </button>
-              <Menu
-                color={COLORS.cream}
-                onClick={(e) => {
-                  router.push(USER_REDIRECT[user.role]({ lang, href: e.key }));
-                  handleCollapse();
-                }}
-                selectedKeys={selectedMenu.keys}
-                mode="inline"
-                items={items}
-              />
+              <Menu color={COLORS.cream} onClick={handleCollapse} selectedKeys={selectedMenu.keys} mode="inline" items={items} />
             </nav>
             {collapsed ? null : (
               <section className="w-full flex flex-col gap-4 text-cream items-center justify-center">
@@ -75,7 +64,9 @@ export default function DashboardMenu({ children, items, user, lang, }: Props) {
       </Layout>
 
       <nav onClick={handleCollapse} className="fixed flex items-center w-full top-0 h-14 bg-dark text-cream z-10">
-        <section className={cn("px-shorter ml-[3.1rem] flex items-center justify-between w-full animate", { "xl:ml-[14.5rem]": !collapsed })}>
+        <section
+          className={cn("px-shorter ml-[3.1rem] flex items-center justify-between w-full animate", { "xl:ml-[14.5rem]": !collapsed })}
+        >
           <section className="flex gap-2">
             <Link href={selectedMenu.href} className="font-medium px-3 py-0.5 rounded-md border-2 select-none border-cream shadow-lg">
               {selectedMenu.name}
