@@ -86,6 +86,7 @@ export const packageRouter = createTRPCRouter({
 
 // ouputs
 export type PackageList = RouterOutputs["package"]["list"];
+export type PackageDetail = RouterOutputs["package"]["detail"];
 
 // inputs
 export type PackageCreateInput = RouterInputs["package"]["create"];

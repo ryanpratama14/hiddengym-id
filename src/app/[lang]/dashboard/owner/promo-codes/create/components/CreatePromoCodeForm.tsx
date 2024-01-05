@@ -42,7 +42,7 @@ export default function CreatePromoCodeForm({ lang, t }: Props) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full">
-      <section className="grid md:grid-cols-2 gap-6">
+      <section className="grid md:grid-cols-2 gap-4 md:gap-6">
         <Input icon={ICONS.promo_codes} error={errors.code?.message} label="Code" {...register("code")} />
         <Input
           type="number"

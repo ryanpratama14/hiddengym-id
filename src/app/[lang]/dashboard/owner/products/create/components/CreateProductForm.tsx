@@ -40,7 +40,7 @@ export default function CreateProductForm({ lang, t }: Props) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full">
-      <section className="grid md:grid-cols-2 gap-6">
+      <section className="grid md:grid-cols-2 gap-4 md:gap-6">
         <Input icon={ICONS.name} error={errors.name?.message} label="Product Name" {...register("name")} />
         <Input
           type="number"

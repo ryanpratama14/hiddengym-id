@@ -5,57 +5,55 @@ import Input from "@/components/Input";
 import InputSelect from "@/components/InputSelect";
 import InputTextArea from "@/components/InputTextArea";
 import { toastError, toastSuccess } from "@/components/Toast";
-import { ICONS, PACKAGE_TYPES, USER_REDIRECT } from "@/lib/constants";
+import { ICONS, USER_REDIRECT } from "@/lib/constants";
 import { cn } from "@/lib/functions";
 import { schema } from "@/schema";
-import { type PackageCreateInput } from "@/server/api/routers/package";
+import { type PackageCreateInput, type PackageDetail } from "@/server/api/routers/package";
 import { type PlaceList } from "@/server/api/routers/place";
 import { type SportList } from "@/server/api/routers/sport";
 import { type UserListTrainer } from "@/server/api/routers/user";
 import { api } from "@/trpc/react";
 import { type Dictionary, type Lang } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { type PackageType } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
-
-const initialData: PackageCreateInput = {
-  type: "MEMBER",
-  name: "",
-  description: null,
-  price: 0,
-  validityInDays: null,
-  placeIDs: [],
-  sportIDs: [],
-  approvedSessions: null,
-};
 
 type Props = {
   option: { places: PlaceList; sports: SportList; trainers: UserListTrainer };
   t: Dictionary;
   lang: Lang;
+  data: PackageDetail;
 };
 
-export default function CreatePackageForm({ option, t, lang }: Props) {
+export default function UpdatePackageForm({ option, t, lang, data }: Props) {
   const router = useRouter();
+
+  console.log(data)
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     watch,
-
     control,
-    resetField,
-    setValue,
   } = useForm<PackageCreateInput>({
     resolver: zodResolver(schema.package.create),
-    defaultValues: initialData,
+    defaultValues: {
+      type: data.type,
+      name: data.name,
+      description: data.description,
+      price: data.price,
+      validityInDays: data.validityInDays,
+      placeIDs: data.placeIDs,
+      sportIDs: data.sportIDs,
+      trainerIDs: data.trainerIDs,
+      approvedSessions: data.approvedSessions,
+    },
   });
 
-  const onSubmit: SubmitHandler<PackageCreateInput> = async (data) => createData(data);
+  const onSubmit: SubmitHandler<PackageCreateInput> = async (updatedData) => updateData({ body: updatedData, id: data.id });
 
-  const { mutate: createData, isLoading: loading } = api.package.create.useMutation({
+  const { mutate: updateData, isLoading: loading } = api.package.update.useMutation({
     onSuccess: (res) => {
       toastSuccess({ t, description: res.message });
       router.push(USER_REDIRECT.OWNER({ lang, href: "/packages" }));
@@ -63,30 +61,11 @@ export default function CreatePackageForm({ option, t, lang }: Props) {
     onError: (res) => toastError({ t, description: res.message }),
   });
 
-  const data = { type: watch("type") };
+  const watchedData = { type: watch("type") };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full">
-      <Controller
-        control={control}
-        name="type"
-        render={({ field }) => (
-          <InputSelect
-            icon={ICONS.package}
-            {...field}
-            options={PACKAGE_TYPES}
-            label="Package Type"
-            onChange={(e) => {
-              const value = e as PackageType;
-              setValue("type", value);
-              if (value !== "SESSIONS") {
-                resetField("approvedSessions");
-                resetField("trainerIDs");
-              } else resetField("validityInDays");
-            }}
-          />
-        )}
-      />
+      <h6 className="px-2 border-1 border-dark w-fit">{watchedData.type}</h6>
 
       <section className="grid md:grid-cols-2 gap-4 md:gap-6">
         <Input error={errors.name?.message} {...register("name")} icon={ICONS.name} label="Name" />
@@ -99,10 +78,10 @@ export default function CreatePackageForm({ option, t, lang }: Props) {
         />
       </section>
       <section className="grid md:grid-cols-2 gap-4 md:gap-6">
-        <section className={cn("grid gap-6", { "grid-cols-2": data.type === "SESSIONS" })}>
-          {data.type === "SESSIONS" ? (
+        <section className={cn("grid gap-6", { "grid-cols-2": watchedData.type === "SESSIONS" })}>
+          {watchedData.type === "SESSIONS" ? (
             <Input
-              disabled={data.type !== "SESSIONS"}
+              disabled={watchedData.type !== "SESSIONS"}
               error={errors.approvedSessions?.message}
               {...register("approvedSessions", { setValueAs: (v: string) => (!v ? null : parseInt(v)) })}
               type="number"
@@ -153,7 +132,7 @@ export default function CreatePackageForm({ option, t, lang }: Props) {
         )}
       />
 
-      {data.type === "SESSIONS" ? (
+      {watchedData.type === "SESSIONS" ? (
         <Controller
           control={control}
           name="trainerIDs"
@@ -178,7 +157,7 @@ export default function CreatePackageForm({ option, t, lang }: Props) {
       />
       <section className="flex justify-center items-center">
         <Button className="md:w-fit w-full" loading={loading} type="submit" color="success" size="xl">
-          Create Package
+          Update Package
         </Button>
       </section>
     </form>

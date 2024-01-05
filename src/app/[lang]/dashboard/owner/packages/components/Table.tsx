@@ -115,9 +115,14 @@ export default function PackagesTable({ data, loading, lang, searchParams }: Pro
           dataIndex: "id",
           title: "Action",
           width: 1,
-          render: (_) => (
+          render: (text: string) => (
             <section className="flex justify-center items-center">
-              <ActionButton icon={ICONS.edit} color="yellow" title="Edit" />
+              <ActionButton
+                onClick={() => router.push(USER_REDIRECT.OWNER({ lang, href: `/packages/update/${text}` }))}
+                icon={ICONS.edit}
+                color="yellow"
+                title="Update"
+              />
             </section>
           ),
         },

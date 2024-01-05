@@ -133,7 +133,6 @@ export class schema {
         sportIDs: z.array(z.string()).min(1, "Pick at least 1 sport type"),
         placeIDs: z.array(z.string()).min(1, "Pick at least 1 place"),
         trainerIDs: z.array(z.string()).optional(),
-        isUnlimitedSessions: z.boolean(),
       })
       .refine(
         ({ type, approvedSessions }) => {
@@ -142,16 +141,6 @@ export class schema {
         },
         {
           message: "This field is required since the type is Sessions",
-          path: ["approvedSessions"],
-        },
-      )
-      .refine(
-        ({ isUnlimitedSessions, approvedSessions }) => {
-          if (!isUnlimitedSessions && !approvedSessions) return false;
-          return true;
-        },
-        {
-          message: "This field is required since you unchecked unlimited sessions",
           path: ["approvedSessions"],
         },
       )
