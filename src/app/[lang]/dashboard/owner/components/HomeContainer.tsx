@@ -35,7 +35,7 @@ export default function HomeContainer({ lang, user, updateUser, refreshUser, t }
     },
     onSuccess: () => toastSuccess({ t, description: "Uploaded successfully, your profile picture should be changed in seconds..." }),
     onError: (error) => {
-      toastError({ t, description: "Can't upload image, try again later" });
+      toastError({ t, description: "Can't upload image, try again later." });
       console.error(error);
     },
   });

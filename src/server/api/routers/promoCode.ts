@@ -21,7 +21,7 @@ export const promoCodeRouter = createTRPCRouter({
     .input(z.object({ code: z.string(), birthDate: z.date().nullable() }))
     .mutation(async ({ ctx, input }) => {
       const data = await ctx.db.promoCode.findFirst({ where: { code: input.code } });
-      if (!data || !data.isActive) return THROW_TRPC_ERROR("NOT_FOUND", "Promo code is expired or doesn't exist");
+      if (!data || !data.isActive) return THROW_TRPC_ERROR("NOT_FOUND", "Promo code is expired or doesn't exist.");
 
       if (data.type === "STUDENT") {
         if (!input.birthDate) return THROW_TRPC_ERROR("FORBIDDEN", "Not eligible to use this promo code.\nNo birth date set.");
@@ -35,7 +35,7 @@ export const promoCodeRouter = createTRPCRouter({
           );
       }
 
-      return { data, ...THROW_OK("OK", "Promo code applied") };
+      return { data, ...THROW_OK("OK", "Promo code applied.") };
     }),
 
   detail: ownerProcedure.input(z.object({ id: z.string() })).mutation(async ({ ctx, input }) => {
