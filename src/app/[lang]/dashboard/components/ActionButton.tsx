@@ -1,9 +1,9 @@
+import Iconify from "@/components/Iconify";
 import { actionVariants } from "@/styles/variants";
 import { type MouseEvent } from "@/types";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import { Tooltip } from "antd";
 import { type VariantProps } from "tailwind-variants";
-import Iconify from "./Iconify";
 
 type Props = VariantProps<typeof actionVariants> & {
   icon: IconifyIcon | string;

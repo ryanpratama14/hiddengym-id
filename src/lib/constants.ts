@@ -1,5 +1,5 @@
 import { COLORS } from "@/styles/theme";
-import { type DashboardMenuKey, type Lang } from "@/types";
+import { type AddButtonLabel, type DashboardMenuKey, type Lang } from "@/types";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import { type Gender, type PackageTransaction, type PackageType, type PromoCodeType, type Role, type User } from "@prisma/client";
 
@@ -186,65 +186,58 @@ export const DETERMINE_GENDER: Record<
   },
 };
 
-export const ADD_BUTTON_ITEMS_TO_REMOVE: Record<Role, string[]> = {
-  VISITOR: ["Package", "Product", "Schedule", "Transaction", "Consumer"],
-  TRAINER: ["Package", "Product", "Transaction"],
-  OWNER: [],
-  ADMIN: [],
-};
-
-export const ADD_BUTTON_ITEMS = (role: Role, lang: Lang) => [
+export const ADD_BUTTON_ITEMS = [
   {
     label: "Payment Method",
     icon: ICONS.payment_method,
-    href: USER_REDIRECT[role]({ lang, href: "/payment-methods/create" }),
+    href: "/payment-methods/create",
   },
   {
     label: "Promo Code",
     icon: ICONS.promo_codes,
-    href: USER_REDIRECT[role]({ lang, href: "/promo-codes/create" }),
+    href: "/promo-codes/create",
   },
   {
     label: "Place",
     icon: ICONS.place,
-    href: USER_REDIRECT[role]({ lang, href: "/places/create" }),
+    href: "/places/create",
   },
   {
     label: "Sport Type",
     icon: ICONS.sport,
-    href: USER_REDIRECT[role]({ lang, href: "/sport-types/create" }),
+    href: "/sport-types/create",
   },
   {
     label: "Package",
     icon: ICONS.package,
-    href: USER_REDIRECT[role]({ lang, href: "/packages/create" }),
+    href: "/packages/create",
   },
   {
     label: "Product",
     icon: ICONS.product,
-    href: USER_REDIRECT[role]({ lang, href: "/products/create" }),
+    href: "/packages/create",
   },
   {
     label: "Visit",
     icon: ICONS.visit,
-    href: USER_REDIRECT[role]({ lang, href: "/visits/create" }),
+    href: "/visits/create",
   },
   {
     label: "Schedule",
     icon: ICONS.schedule,
-    href: USER_REDIRECT[role]({ lang, href: "/schedules/create" }),
+    href: "/schedules/create",
   },
   {
     label: "Transaction",
     icon: ICONS.transaction,
-    href: USER_REDIRECT[role]({ lang, href: "/transactions/create" }),
+    href: "/transactions/create",
   },
   {
     label: "Visitor",
     icon: ICONS.visitor,
-    href: USER_REDIRECT[role]({ lang, href: "/visitors/create" }),
+    href: "/visitors/create",
   },
-];
+] as const;
 
 export const DASHBOARD_MENUS = {
   "/": "Home",
@@ -268,6 +261,13 @@ export const DASHBOARD_MENUS_TO_REMOVE: Record<Role, DashboardMenuKey[]> = {
   OWNER: [],
   VISITOR: [],
   TRAINER: [],
+};
+
+export const ADD_BUTTON_ITEMS_TO_REMOVE: Record<Role, AddButtonLabel[]> = {
+  VISITOR: ["Package", "Product", "Schedule", "Transaction"],
+  TRAINER: ["Package", "Product", "Transaction"],
+  OWNER: [],
+  ADMIN: [],
 };
 
 export const DASHBOARD_SUB_MENUS = ["Detail", "Update", "Create"] as const;

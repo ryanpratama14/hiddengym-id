@@ -1,6 +1,5 @@
 "use client";
 
-import AddButton from "@/components/AddButton";
 import Logo from "@/components/Logo";
 import { cn, getSelectedMenu } from "@/lib/functions";
 import { type User } from "@/server/api/routers/user";
@@ -12,6 +11,7 @@ import { type ItemType, type MenuItemType } from "antd/es/menu/hooks/useItems";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Fragment, useEffect, useState } from "react";
+import AddButton from "../components/AddButton";
 import DashboardProfileDropdown from "./DashboardProfileDropdown";
 
 type Props = {

@@ -1,7 +1,7 @@
 "use client";
 
 import Iconify from "@/components/Iconify";
-import { ADD_BUTTON_ITEMS, ADD_BUTTON_ITEMS_TO_REMOVE, ICONS } from "@/lib/constants";
+import { ADD_BUTTON_ITEMS, ADD_BUTTON_ITEMS_TO_REMOVE, ICONS, USER_REDIRECT } from "@/lib/constants";
 import { cn } from "@/lib/functions";
 import { type Lang } from "@/types";
 import { Menu, Transition } from "@headlessui/react";
@@ -33,24 +33,22 @@ export default function AddButton({ role, lang, handleCollapse }: Props) {
           leaveTo="transform translate-y-2 opacity-0"
         >
           <Menu.Items className="active:outline-none w-48 focus:outline-none outline-none absolute bottom-14 right-0 origin-top-right p-0.5 mt-4 rounded-md  flex flex-col bg-light shadow-lg">
-            {ADD_BUTTON_ITEMS(role, lang)
-              .filter((obj) => !ADD_BUTTON_ITEMS_TO_REMOVE[role].includes(obj.label))
-              .map((item) => {
-                return (
-                  <Menu.Item key={item.icon}>
-                    <button
-                      type="button"
-                      onClick={() => router.push(item.href)}
-                      className={cn(
-                        "rounded-md text-sm font-medium flex gap-2 items-center justify-end px-4 h-8 bg-light hover:bg-orange hover:text-cream text-dark",
-                      )}
-                    >
-                      {item.label}
-                      <Iconify icon={item.icon} width={25} />
-                    </button>
-                  </Menu.Item>
-                );
-              })}
+            {ADD_BUTTON_ITEMS.filter((button) => !ADD_BUTTON_ITEMS_TO_REMOVE[role].includes(button.label)).map((item) => {
+              return (
+                <Menu.Item key={item.icon}>
+                  <button
+                    type="button"
+                    onClick={() => router.push(USER_REDIRECT[role]({ lang, href: item.href }))}
+                    className={cn(
+                      "rounded-md text-sm font-medium flex gap-2 items-center justify-end px-4 h-8 bg-light hover:bg-orange hover:text-cream text-dark",
+                    )}
+                  >
+                    {item.label}
+                    <Iconify icon={item.icon} width={25} />
+                  </button>
+                </Menu.Item>
+              );
+            })}
           </Menu.Items>
         </Transition>
       </Menu>

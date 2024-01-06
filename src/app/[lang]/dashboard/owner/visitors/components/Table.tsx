@@ -1,6 +1,6 @@
 "use client";
 
-import ActionButton from "@/components/ActionButton";
+import ActionButton from "@/app/[lang]/dashboard/components/ActionButton";
 import Button from "@/components/Button";
 import FilterIcon from "@/components/FilterIcon";
 import Iconify from "@/components/Iconify";

@@ -1,12 +1,12 @@
+import Button from "@/components/Button";
+import Iconify from "@/components/Iconify";
+import Img from "@/components/Img";
 import { DETERMINE_GENDER, ICONS } from "@/lib/constants";
 import { cn } from "@/lib/functions";
 import { type User } from "@/server/api/routers/user";
 import { Menu, Transition } from "@headlessui/react";
 import { signOut } from "next-auth/react";
 import { Fragment } from "react";
-import Button from "../../../../components/Button";
-import Iconify from "../../../../components/Iconify";
-import Img from "../../../../components/Img";
 
 type Props = {
   user: User;

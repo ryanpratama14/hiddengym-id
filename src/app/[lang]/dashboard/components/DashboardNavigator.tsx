@@ -1,6 +1,6 @@
 import { USER_REDIRECT } from "@/lib/constants";
 import { cn } from "@/lib/functions";
-import { type Lang } from "@/types";
+import { type DashboardMenuKey, type Lang } from "@/types";
 import { type Role } from "@prisma/client";
 import Link from "next/link";
 
@@ -13,7 +13,7 @@ const DashboardNavigator = ({
   children,
   lang,
 }: {
-  href: string;
+  href: DashboardMenuKey;
   isChildren?: boolean;
   children: React.ReactNode;
   className?: string;
