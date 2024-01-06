@@ -270,4 +270,7 @@ export const ADD_BUTTON_ITEMS_TO_REMOVE: Record<Role, AddButtonLabel[]> = {
   ADMIN: [],
 };
 
+export const FILTERED_ADD_BUTTONS_ITEMS = (role: Role) =>
+  ADD_BUTTON_ITEMS.filter((button) => !ADD_BUTTON_ITEMS_TO_REMOVE[role].includes(button.label));
+
 export const DASHBOARD_SUB_MENUS = ["Detail", "Update", "Create"] as const;

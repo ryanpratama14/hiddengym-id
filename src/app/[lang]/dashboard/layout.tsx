@@ -163,10 +163,7 @@ export default async function DashboardOwnerLayout({ children, params }: Props) 
     },
   ];
 
-  const filteredItems = items.filter((item) => {
-    const itemsToRemove = DASHBOARD_MENUS_TO_REMOVE[role];
-    return !itemsToRemove.includes(item.key);
-  });
+  const filteredItems = items.filter((item) => !DASHBOARD_MENUS_TO_REMOVE[role].includes(item.key));
 
   return (
     <DashboardMenu items={filteredItems} lang={lang} user={user}>

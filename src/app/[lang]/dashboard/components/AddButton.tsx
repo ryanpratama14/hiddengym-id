@@ -1,7 +1,7 @@
 "use client";
 
 import Iconify from "@/components/Iconify";
-import { ADD_BUTTON_ITEMS, ADD_BUTTON_ITEMS_TO_REMOVE, ICONS, USER_REDIRECT } from "@/lib/constants";
+import { FILTERED_ADD_BUTTONS_ITEMS, ICONS, USER_REDIRECT } from "@/lib/constants";
 import { cn } from "@/lib/functions";
 import { type Lang } from "@/types";
 import { Menu, Transition } from "@headlessui/react";
@@ -17,6 +17,7 @@ type Props = {
 
 export default function AddButton({ role, lang, handleCollapse }: Props) {
   const router = useRouter();
+
   return (
     <aside onClick={handleCollapse} className="fixed right-0 bottom-0 pr-shorter pb-shorter z-50">
       <Menu as="section" className="relative">
@@ -33,7 +34,7 @@ export default function AddButton({ role, lang, handleCollapse }: Props) {
           leaveTo="transform translate-y-2 opacity-0"
         >
           <Menu.Items className="active:outline-none w-48 focus:outline-none outline-none absolute bottom-14 right-0 origin-top-right p-0.5 mt-4 rounded-md  flex flex-col bg-light shadow-lg">
-            {ADD_BUTTON_ITEMS.filter((button) => !ADD_BUTTON_ITEMS_TO_REMOVE[role].includes(button.label)).map((item) => {
+            {FILTERED_ADD_BUTTONS_ITEMS(role).map((item) => {
               return (
                 <Menu.Item key={item.icon}>
                   <button
