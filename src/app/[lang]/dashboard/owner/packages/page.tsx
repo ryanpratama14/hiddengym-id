@@ -4,7 +4,6 @@ import { REFETCH_INTERVAL } from "@/lib/constants";
 import { schema } from "@/schema";
 import { api } from "@/trpc/react";
 import { type Lang, type SearchParams } from "@/types";
-import { z } from "zod";
 import Table from "./components/Table";
 
 type Props = {
@@ -13,16 +12,9 @@ type Props = {
 };
 
 export default function PakcagesPage({ params, searchParams }: Props) {
-  const searchParamsSchema = z.object({
-    name: z.string().optional(),
-    type: schema.packageType.optional(),
-    price: z.coerce.number().optional(),
-    totalTransaction: z.coerce.number().optional(),
-  });
+  const query = schema.package.list.parse(searchParams);
 
-  const { data, isLoading: loading } = api.package.list.useQuery(searchParamsSchema.parse(searchParams), {
-    refetchInterval: REFETCH_INTERVAL,
-  });
+  const { data, isLoading: loading } = api.package.list.useQuery(query, { refetchInterval: REFETCH_INTERVAL });
 
   return (
     <section className="grid md:grid-cols-5 gap-6 lg:gap-x-12">

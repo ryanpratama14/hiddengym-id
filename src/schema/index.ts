@@ -20,6 +20,7 @@ export class schema {
     page: z.coerce.number().positive().default(1),
     limit: z.coerce.number().positive().default(PAGINATION_LIMIT),
   });
+  static sorting = z.object({ sorting: z.string().optional() });
   static email = z.string().email("Provide a valid email");
   static fullName = z
     .string()
@@ -105,13 +106,13 @@ export class schema {
 
     static list = z.object({
       ...schema.pagination.shape,
+      ...schema.sorting.shape,
       role: schema.role,
       fullName: z.string().optional(),
       phoneNumber: z.string().optional(),
       email: z.string().optional(),
       gender: schema.gender.optional(),
       totalSpending: z.coerce.number().optional(),
-      sorting: z.string().optional(),
     });
   };
 
@@ -119,8 +120,8 @@ export class schema {
     static list = z.object({
       name: z.string().optional(),
       type: schema.packageType.optional(),
-      price: z.number().optional(),
-      totalTransactions: z.number().optional(),
+      price: z.coerce.number().optional(),
+      totalTransactions: z.coerce.number().optional(),
     });
 
     static create = z
@@ -205,19 +206,15 @@ export class schema {
     });
 
     static list = z.object({
-      pagination: schema.pagination,
-      sorting: z.string().optional(),
-      params: z
-        .object({
-          buyer: z.string().optional(),
-          package: z.string().optional(),
-          packageType: schema.packageType.optional(),
-          paymentMethod: z.string().optional(),
-          promoCodeCode: z.string().optional(),
-          totalPrice: z.number().optional(),
-          transactionDate: schema.dateOptional,
-        })
-        .optional(),
+      ...schema.pagination.shape,
+      ...schema.sorting.shape,
+      buyer: z.string().optional(),
+      package: z.string().optional(),
+      packageType: schema.packageType.optional(),
+      paymentMethod: z.string().optional(),
+      promoCodeCode: z.string().optional(),
+      totalPrice: z.coerce.number().optional(),
+      transactionDate: schema.dateOptional,
     });
   };
 }

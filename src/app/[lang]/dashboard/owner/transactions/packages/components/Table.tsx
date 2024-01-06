@@ -20,7 +20,7 @@ import {
 import {
   type PackageTransactionDetail,
   type PackageTransactionList,
-  type PackageTransactionListInputParams,
+  type PackageTransactionListInput,
 } from "@/server/api/routers/packageTransaction";
 import { inputVariants, statusVariants } from "@/styles/variants";
 import { PAGINATION_LIMIT } from "@/trpc/shared";
@@ -60,7 +60,7 @@ export default function PackageTransactionsTable({ data, searchParams, lang, loa
     icon,
     type,
   }: {
-    name: keyof PackageTransactionListInputParams;
+    name: keyof PackageTransactionListInput;
     icon?: IconifyIcon | string;
     type?: React.HTMLInputTypeAttribute;
   }) => ({

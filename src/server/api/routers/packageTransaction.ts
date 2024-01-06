@@ -13,7 +13,6 @@ import {
   type RouterInputs,
   type RouterOutputs,
 } from "@/trpc/shared";
-import { type NonUndefined } from "react-hook-form";
 import { z } from "zod";
 import { updateTotalSpending } from "./other";
 
@@ -37,18 +36,18 @@ export const packageTransactionRouter = createTRPCRouter({
   }),
 
   list: ownerProcedure.input(schema.packageTransaction.list).query(async ({ ctx, input }) => {
-    const { pagination, params, sorting } = input;
+    const pagination = { limit: input.limit, page: input.page };
 
     const whereQuery = {
       where: {
-        ...(params?.promoCodeCode ? { promoCode: { code: { contains: params?.promoCodeCode, ...insensitiveMode } } } : undefined),
-        buyer: { fullName: { contains: params?.buyer && formatName(params?.buyer), ...insensitiveMode } },
-        package: { name: { contains: params?.package, ...insensitiveMode }, type: params?.packageType },
-        paymentMethod: { name: { contains: params?.paymentMethod, ...insensitiveMode } },
-        totalPrice: { gte: params?.totalPrice },
+        ...(input?.promoCodeCode ? { promoCode: { code: { contains: input?.promoCodeCode, ...insensitiveMode } } } : undefined),
+        buyer: { fullName: { contains: input?.buyer && formatName(input?.buyer), ...insensitiveMode } },
+        package: { name: { contains: input?.package, ...insensitiveMode }, type: input?.packageType },
+        paymentMethod: { name: { contains: input?.paymentMethod, ...insensitiveMode } },
+        totalPrice: { gte: input?.totalPrice },
         transactionDate: {
-          gte: params?.transactionDate && getStartDate(params.transactionDate),
-          lte: params?.transactionDate && getEndDate(params.transactionDate),
+          gte: input?.transactionDate && getStartDate(input.transactionDate),
+          lte: input?.transactionDate && getEndDate(input.transactionDate),
         },
       },
     };
@@ -58,7 +57,7 @@ export const packageTransactionRouter = createTRPCRouter({
         ...getPagination(pagination),
         ...packageTransactionSelect,
         ...whereQuery,
-        orderBy: sorting ? getSortingQuery(sorting).orderBy : { transactionDate: "desc" },
+        orderBy: input.sorting ? getSortingQuery(input.sorting).orderBy : { transactionDate: "desc" },
       }),
       ctx.db.packageTransaction.count(whereQuery),
     ]);
@@ -104,5 +103,4 @@ export type PackageTransactionDetail = RouterOutputs["packageTransaction"]["deta
 
 // inputs
 export type PackageTransactionCreateInput = RouterInputs["packageTransaction"]["create"];
-export type PackageTransactionListInputParams = NonUndefined<RouterInputs["packageTransaction"]["list"]["params"]>;
 export type PackageTransactionListInput = RouterInputs["packageTransaction"]["list"];
