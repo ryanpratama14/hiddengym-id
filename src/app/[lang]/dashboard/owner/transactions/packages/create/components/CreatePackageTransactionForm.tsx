@@ -190,7 +190,9 @@ export default function CreatePackageTransactionForm({ lang, t, option }: Props)
             <section className="flex justify-between w-full">
               <section className="flex flex-col">
                 <h6>Package TXN</h6>
-                <p className="font-medium">Date: {data.transactionDate ? formatDateShort(getNewDate(data.transactionDate)) : null}</p>
+                <p className="font-medium">
+                  Date: {data.transactionDate ? formatDateShort({ date: getNewDate(data.transactionDate) }) : null}
+                </p>
               </section>
               <section className="flex flex-col items-end">
                 <p className="font-semibold">TOTAL AMOUNT</p>
@@ -238,14 +240,16 @@ export default function CreatePackageTransactionForm({ lang, t, option }: Props)
                 </section>
                 <section className="flex justify-between items-center gap-6">
                   <section className="flex flex-col w-fit">
-                    <p className="font-semibold">{formatDateShort(getStartDate(data.transactionDate))}</p>
+                    <p className="font-semibold">{formatDateShort({ date: getStartDate(data.transactionDate) })}</p>
                   </section>
                   <div className="w-[25%] h-0.5 bg-dark" />
                   <section className="flex flex-col text-right w-fit">
                     <p className="font-semibold">
                       {isDateToday(getExpiryDate({ days: selectedPackage.validityInDays, dateString: data.transactionDate }))
                         ? "Today"
-                        : formatDateShort(getExpiryDate({ days: selectedPackage.validityInDays, dateString: data.transactionDate }))}
+                        : formatDateShort({
+                            date: getExpiryDate({ days: selectedPackage.validityInDays, dateString: data.transactionDate }),
+                          })}
                     </p>
                   </section>
                 </section>

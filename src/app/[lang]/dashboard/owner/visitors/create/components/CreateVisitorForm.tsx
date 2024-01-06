@@ -289,7 +289,9 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
             <section className="flex justify-between w-full">
               <section className="flex flex-col">
                 <h6>Package TXN</h6>
-                <p className="font-medium">Date: {data.transactionDate ? formatDateShort(getNewDate(data.transactionDate)) : null}</p>
+                <p className="font-medium">
+                  Date: {data.transactionDate ? formatDateShort({ date: getNewDate(data.transactionDate) }) : null}
+                </p>
               </section>
               <section className="flex flex-col items-end">
                 <p className="font-semibold">TOTAL AMOUNT</p>
@@ -337,7 +339,7 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
                 </section>
                 <section className="flex justify-between items-center gap-6">
                   <section className="flex flex-col w-fit">
-                    <p className="font-semibold">{formatDateShort(getStartDate(data.transactionDate))}</p>
+                    <p className="font-semibold">{formatDateShort({ date: getStartDate(data.transactionDate) })}</p>
                   </section>
                   <div className="w-[25%] h-0.5 bg-dark" />
                   <section className="flex flex-col text-right w-fit">

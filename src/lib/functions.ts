@@ -121,27 +121,40 @@ export const isDateToday = (date: Date): boolean => {
   return false;
 };
 
-export const formatDate = ({ date, lang, style }: { date: Date; lang?: Lang; style: "short" | "long" }): string => {
+export const formatDate = ({
+  date,
+  lang,
+  style,
+  withTime,
+}: {
+  date: Date;
+  lang?: Lang;
+  style: "short" | "long";
+  withTime?: boolean;
+}): string => {
   return date.toLocaleDateString(lang ?? ["id-ID"], {
     year: "numeric",
     month: style === "long" ? "long" : "numeric",
     day: "numeric",
+    ...(withTime ? { minute: "2-digit", hour: "2-digit" } : undefined),
   });
 };
 
-export const formatDateShort = (date: Date, lang?: Lang): string => {
+export const formatDateShort = ({ date, lang, withTime }: { date: Date; lang?: Lang; withTime?: boolean }): string => {
   return date.toLocaleDateString(lang ?? ["id-ID"], {
     year: "numeric",
     month: "short",
     day: "numeric",
+    ...(withTime ? { minute: "2-digit", hour: "2-digit" } : undefined),
   });
 };
 
-export const formatDateLong = (date: Date, lang?: Lang): string => {
+export const formatDateLong = ({ date, lang, withTime }: { date: Date; lang?: Lang; withTime?: boolean }): string => {
   return date.toLocaleDateString(lang ?? ["id-ID"], {
     year: "numeric",
     month: "long",
     day: "numeric",
+    ...(withTime ? { minute: "2-digit", hour: "2-digit" } : undefined),
   });
 };
 

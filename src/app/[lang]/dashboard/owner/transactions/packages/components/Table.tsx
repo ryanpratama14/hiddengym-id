@@ -252,7 +252,7 @@ export default function PackageTransactionsTable({ data, searchParams, lang, loa
             title: "TXN Date",
             key: "transactionDate",
             dataIndex: "transactionDate",
-            render: (text: Date) => formatDateShort(text),
+            render: (date: Date) => formatDateShort({ date }),
             ...getTableFilter({ name: "transactionDate", type: "date" }),
           },
           {

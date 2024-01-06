@@ -134,7 +134,7 @@ export default function HomeContainer({ lang, user, updateUser, refreshUser, t }
                   </section>
                   <section className="flex flex-col">
                     <p className="label">Date of Birth</p>
-                    <p>{user?.birthDate ? formatDateLong(user?.birthDate, lang) : "-"}</p>
+                    <p>{user?.birthDate ? formatDateLong({ date: user?.birthDate, lang }) : "-"}</p>
                   </section>
                 </section>
               </Fragment>

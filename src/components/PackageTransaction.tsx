@@ -15,7 +15,7 @@ export default function PackageTransaction({ data }: Props) {
         <section className="flex justify-between w-full">
           <section className="flex flex-col text-left">
             <h6>Package TXN</h6>
-            <p className="font-medium">Date: {formatDateShort(data.transactionDate)}</p>
+            <p className="font-medium">Date: {formatDateShort({ date: data.transactionDate })}</p>
           </section>
           <section className="flex flex-col items-end">
             <p className="font-semibold">TOTAL AMOUNT</p>
@@ -56,7 +56,7 @@ export default function PackageTransaction({ data }: Props) {
               <section className="flex justify-between items-center gap-6 relative">
                 <div className="absolute centered w-[25%] h-0.5 bg-dark" />
                 <section className="flex flex-col w-fit">
-                  <p className="font-semibold">{formatDateShort(data.startDate)}</p>
+                  <p className="font-semibold">{formatDateShort({ date: data.startDate })}</p>
                 </section>
 
                 <section className="flex flex-col text-right w-fit">
@@ -65,7 +65,7 @@ export default function PackageTransaction({ data }: Props) {
                       ? "Today"
                       : isDateExpired(data.expiryDate)
                         ? "Expired"
-                        : formatDateShort(data.expiryDate)}
+                        : formatDateShort({ date: data.expiryDate })}
                   </p>
                 </section>
               </section>
