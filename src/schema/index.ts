@@ -16,7 +16,10 @@ export class schema {
   static order = z.enum(["asc", "desc"]).optional();
 
   static names = z.string().min(3, "At least 3 characters");
-  static pagination = z.object({ page: z.number().positive().default(1), limit: z.number().positive().default(PAGINATION_LIMIT) });
+  static pagination = z.object({
+    page: z.coerce.number().positive().default(1),
+    limit: z.coerce.number().positive().default(PAGINATION_LIMIT),
+  });
   static email = z.string().email("Provide a valid email");
   static fullName = z
     .string()
@@ -109,7 +112,7 @@ export class schema {
         phoneNumber: z.string().optional(),
         email: z.string().optional(),
         gender: schema.gender.optional(),
-        totalSpending: z.number().optional(),
+        totalSpending: z.coerce.number().optional(),
       }),
     });
   };

@@ -26,8 +26,8 @@ export default function TableSearch({ searchParams, lang, loading }: Props) {
         const val = e.target as HTMLFormElement;
         const search = val.fullName as HTMLInputElement;
         if (search.value) {
-          newParams.set("q", search.value);
-        } else newParams.delete("q");
+          newParams.set("fullName", search.value);
+        } else newParams.delete("fullName");
         newParams.delete("page");
         router.push(createUrl(USER_REDIRECT.OWNER({ lang, href: "/visitors" }), newParams));
       }}
@@ -35,8 +35,8 @@ export default function TableSearch({ searchParams, lang, loading }: Props) {
     >
       <section className="relative w-[80%] group">
         <Input
-          key={searchParams.q as string}
-          defaultValue={searchParams.q}
+          key={searchParams.fullName as string}
+          defaultValue={searchParams.fullName}
           name="fullName"
           autoComplete="off"
           placeholder="Search by full name..."

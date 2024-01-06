@@ -63,6 +63,7 @@ export const theme: ThemeConfig = {
       colorBgContainer: COLORS.light,
       cellPaddingBlock: 5.5,
       rowHoverBg: COLORS.light2,
+      headerFilterHoverBg: "",
     },
   },
 };
