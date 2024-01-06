@@ -124,26 +124,31 @@ export const userRouter = createTRPCRouter({
   }),
 
   list: ownerProcedure.input(schema.user.list).query(async ({ ctx, input }) => {
-    const { pagination, params, sorting } = input;
+    const pagination = { limit: input.limit, page: input.page };
 
     const whereQuery = {
       where: {
-        role: params?.role,
+        role: input?.role,
         isActive: true,
-        phoneNumber: { contains: params?.phoneNumber },
-        email: { contains: params?.email, ...insensitiveMode },
-        gender: params?.gender,
-        fullName: { contains: params?.fullName && formatName(params?.fullName), ...insensitiveMode },
-        totalSpending: { gte: params?.totalSpending },
+        phoneNumber: { contains: input?.phoneNumber },
+        email: { contains: input?.email, ...insensitiveMode },
+        gender: input?.gender,
+        fullName: { contains: input?.fullName && formatName(input?.fullName), ...insensitiveMode },
+        totalSpending: { gte: input?.totalSpending },
       },
     };
 
     const [data, totalData] = await ctx.db.$transaction([
-      ctx.db.user.findMany({ orderBy: getSortingQuery(sorting).orderBy, ...getPagination(pagination), ...whereQuery, ...userSelect }),
+      ctx.db.user.findMany({
+        orderBy: getSortingQuery(input.sorting).orderBy,
+        ...getPagination(pagination),
+        ...whereQuery,
+        ...userSelect,
+      }),
       ctx.db.user.count(whereQuery),
     ]);
 
-    return { data, ...getPaginationData({ page: pagination.page, limit: pagination.limit, totalData }) };
+    return { data, ...getPaginationData({ ...pagination, totalData }) };
   }),
 });
 
@@ -160,4 +165,3 @@ export type UserCreateInput = RouterInputs["user"]["create"];
 export type UserCreateVisitorInput = RouterInputs["user"]["createVisitor"];
 export type UserUpdateInput = RouterInputs["user"]["update"];
 export type UserListInput = RouterInputs["user"]["list"];
-export type UserListInputParams = RouterInputs["user"]["list"]["params"];

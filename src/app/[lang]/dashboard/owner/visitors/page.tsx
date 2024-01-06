@@ -7,7 +7,6 @@ import { type Lang, type SearchParams } from "@/types";
 import Table from "@owner/visitors/components/Table";
 import TableSearch from "@owner/visitors/components/TableSearch";
 import TableSorter from "@owner/visitors/components/TableSorter";
-import { z } from "zod";
 
 type Props = {
   searchParams: SearchParams;
@@ -15,36 +14,9 @@ type Props = {
 };
 
 export default function VisitorsPage({ searchParams, params }: Props) {
-  const searchParamsSchema = z.object({
-    ...schema.searchParams.pagination.shape,
-    q: z.string().optional(),
-    phoneNumber: z.string().optional(),
-    email: z.string().optional(),
-    gender: schema.gender.optional(),
-    totalSpending: z.coerce.number().optional(),
-    sort: z.string().optional(),
-  });
+  const query = schema.user.list.parse(searchParams);
 
-  const query = searchParamsSchema.parse(searchParams);
-
-  const { data, isLoading: loading } = api.user.list.useQuery(
-    {
-      pagination: {
-        page: query.page,
-        limit: query.limit,
-      },
-      params: {
-        fullName: query.q,
-        phoneNumber: query.phoneNumber,
-        email: query.email,
-        gender: query.gender,
-        role: "VISITOR",
-        totalSpending: query.totalSpending,
-      },
-      sorting: query.sort,
-    },
-    { refetchInterval: REFETCH_INTERVAL },
-  );
+  const { data, isLoading: loading } = api.user.list.useQuery({ ...query, role: "VISITOR" }, { refetchInterval: REFETCH_INTERVAL });
 
   return (
     <section className="grid grid-cols-1 md:grid-cols-5 gap-6 lg:gap-x-12">

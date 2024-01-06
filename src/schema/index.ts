@@ -104,16 +104,14 @@ export class schema {
     });
 
     static list = z.object({
-      pagination: schema.pagination,
+      ...schema.pagination.shape,
+      role: schema.role,
+      fullName: z.string().optional(),
+      phoneNumber: z.string().optional(),
+      email: z.string().optional(),
+      gender: schema.gender.optional(),
+      totalSpending: z.coerce.number().optional(),
       sorting: z.string().optional(),
-      params: z.object({
-        role: schema.role,
-        fullName: z.string().optional(),
-        phoneNumber: z.string().optional(),
-        email: z.string().optional(),
-        gender: schema.gender.optional(),
-        totalSpending: z.coerce.number().optional(),
-      }),
     });
   };
 

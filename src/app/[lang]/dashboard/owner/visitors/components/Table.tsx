@@ -9,7 +9,7 @@ import Input from "@/components/Input";
 import NavigatorX from "@/components/NavigatorX";
 import { DETERMINE_GENDER, GENDERS, ICONS, USER_REDIRECT } from "@/lib/constants";
 import { cn, createUrl, formatCurrency, localizePhoneNumber, textEllipsis } from "@/lib/functions";
-import { type UserList, type UserListInputParams } from "@/server/api/routers/user";
+import { type UserList, type UserListInput } from "@/server/api/routers/user";
 import { PAGINATION_LIMIT } from "@/trpc/shared";
 import { type Lang, type SearchParams } from "@/types";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
@@ -45,7 +45,7 @@ export default function VisitorsTable({ data, searchParams, lang, loading }: Pro
     icon,
     type,
   }: {
-    name: keyof UserListInputParams;
+    name: keyof UserListInput;
     icon?: IconifyIcon | string;
     type?: React.HTMLInputTypeAttribute;
   }) => ({
