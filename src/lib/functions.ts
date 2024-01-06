@@ -111,7 +111,7 @@ export const getTokenExpiryDate = (): Date => new Date(getNewDate().getTime() + 
 
 export const isDateExpired = (expiryDate: Date): boolean => {
   const remainingDays = getRemainingDays(expiryDate);
-  if (!remainingDays) return true;
+  if (remainingDays <= 0) return true;
   return false;
 };
 
