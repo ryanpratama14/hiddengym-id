@@ -1,11 +1,11 @@
 import { formatName, formatPhoneNumber, getNewDate } from "@/lib/functions";
-import { schema } from "@/schema";
+import { schema, type Pagination } from "@/schema";
 import { createTRPCRouter, ownerAdminProcedure, ownerProcedure, protectedProcedure, publicProcedure } from "@/server/api/trpc";
 import {
   getConflictMessage,
   getCreatedMessage,
-  getPagination,
   getPaginationData,
+  getPaginationQuery,
   getSortingQuery,
   insensitiveMode,
   prismaExclude,
@@ -124,7 +124,7 @@ export const userRouter = createTRPCRouter({
   }),
 
   list: ownerProcedure.input(schema.user.list).query(async ({ ctx, input }) => {
-    const pagination = { limit: input.limit, page: input.page };
+    const pagination: Pagination = { limit: input.limit, page: input.page };
 
     const whereQuery = {
       where: {
@@ -139,12 +139,7 @@ export const userRouter = createTRPCRouter({
     };
 
     const [data, totalData] = await ctx.db.$transaction([
-      ctx.db.user.findMany({
-        orderBy: getSortingQuery(input.sorting).orderBy,
-        ...getPagination(pagination),
-        ...whereQuery,
-        ...userSelect,
-      }),
+      ctx.db.user.findMany({ ...getSortingQuery(input.sorting), ...getPaginationQuery(pagination), ...whereQuery, ...userSelect }),
       ctx.db.user.count(whereQuery),
     ]);
 

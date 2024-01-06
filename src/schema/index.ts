@@ -45,13 +45,6 @@ export class schema {
   static loginVisitor = z.object({ credential: schema.phoneNumber });
   static login = z.object({ email: schema.email, credential: schema.password }); // also for next-auth
 
-  static searchParams = {
-    pagination: z.object({
-      page: z.coerce.number().positive().optional().default(1),
-      limit: z.coerce.number().positive().optional().default(PAGINATION_LIMIT),
-    }),
-  };
-
   static user = class {
     static create = z.object({
       email: schema.email,

@@ -1,10 +1,10 @@
 import { formatName, getEndDate, getExpiryDate, getNewDate, getStartDate } from "@/lib/functions";
-import { schema } from "@/schema";
+import { schema, type Pagination } from "@/schema";
 import { createTRPCRouter, ownerProcedure, protectedProcedure } from "@/server/api/trpc";
 import {
   getCreatedMessage,
-  getPagination,
   getPaginationData,
+  getPaginationQuery,
   getSortingQuery,
   insensitiveMode,
   prismaExclude,
@@ -36,7 +36,7 @@ export const packageTransactionRouter = createTRPCRouter({
   }),
 
   list: ownerProcedure.input(schema.packageTransaction.list).query(async ({ ctx, input }) => {
-    const pagination = { limit: input.limit, page: input.page };
+    const pagination: Pagination = { limit: input.limit, page: input.page };
 
     const whereQuery = {
       where: {
@@ -54,17 +54,17 @@ export const packageTransactionRouter = createTRPCRouter({
 
     const [data, totalData] = await ctx.db.$transaction([
       ctx.db.packageTransaction.findMany({
-        ...getPagination(pagination),
+        ...getPaginationQuery(pagination),
         ...packageTransactionSelect,
         ...whereQuery,
-        orderBy: input.sorting ? getSortingQuery(input.sorting).orderBy : { transactionDate: "desc" },
+        ...(input.sorting ? getSortingQuery(input.sorting) : { orderBy: { transactionDate: "desc" } }),
       }),
       ctx.db.packageTransaction.count(whereQuery),
     ]);
 
     return {
       data,
-      ...getPaginationData({ page: pagination.page, limit: pagination.limit, totalData }),
+      ...getPaginationData({ ...pagination, totalData }),
     };
   }),
 

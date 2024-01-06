@@ -182,10 +182,6 @@ export const getEnumKeys = <K extends string>(obj: Record<K, unknown>): K | unde
   if (keys[0]) return keys[0];
 };
 
-export const getPagination = ({ limit, page }: Pagination) => {
-  return { skip: (page - 1) * limit, take: limit };
-};
-
 export const getPaginationData = ({ totalData, limit, page }: Pagination & { totalData: number }) => {
   const totalPages = Math.ceil(totalData / limit) || 1;
   const start = (page - 1) * limit;
@@ -204,6 +200,10 @@ export const getPaginationData = ({ totalData, limit, page }: Pagination & { tot
 
 export const insensitiveMode = { mode: "insensitive" as Prisma.QueryMode };
 
+export const getPaginationQuery = ({ limit, page }: Pagination) => {
+  return { skip: (page - 1) * limit, take: limit };
+};
+
 export const getSortingQuery = (sorting?: string) => {
   if (sorting) {
     const [name, value] = sorting.split("-");
@@ -211,7 +211,7 @@ export const getSortingQuery = (sorting?: string) => {
       orderBy: [{ [name!]: value }],
     };
   }
-  return {};
+  return undefined;
 };
 
 export const transformer = SuperJSON;
