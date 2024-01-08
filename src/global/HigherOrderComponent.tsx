@@ -14,18 +14,14 @@ type Props = {
 };
 
 export default function HigherOrderComponent({ lang, session, children, isSessionExpired }: Props) {
+  if (session && isSessionExpired === false) signOut().catch((error) => console.error(error));
+
   const { setSession, setLang } = useZustand();
 
   useEffect(() => {
     if (session) setSession(session);
     if (lang) setLang(lang);
   }, [session, lang]);
-
-  useEffect(() => {
-    if (session && isSessionExpired === false) {
-      signOut().catch((error) => console.error(error));
-    }
-  }, [session, isSessionExpired]);
 
   return children;
 }
