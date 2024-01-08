@@ -8,10 +8,9 @@ import SignIn from "./SignIn";
 type Props = {
   callbackUrl?: string;
   t: Dictionary;
-  lang: Lang;
 };
 
-export default function SignInPageContainer({ callbackUrl, t, lang }: Props) {
+export default function SignInPageContainer({ callbackUrl, t }: Props) {
   const [isForgotPassword, setIsForgotPassword] = useState(false);
 
   return (
@@ -28,7 +27,7 @@ export default function SignInPageContainer({ callbackUrl, t, lang }: Props) {
         </section>
         <section className="md:shadow-lg gap-8 p-normal md:w-[50%] w-full  md:bg-light flex flex-col justify-center items-center aspect-square">
           <h4>{isForgotPassword ? "Reset Password" : t.login.welcomeBack}</h4>
-          <SignIn callbackUrl={callbackUrl} setIsForgotPassword={setIsForgotPassword} t={t} lang={lang} />
+          <SignIn callbackUrl={callbackUrl} setIsForgotPassword={setIsForgotPassword} t={t} />
         </section>
       </section>
     </article>

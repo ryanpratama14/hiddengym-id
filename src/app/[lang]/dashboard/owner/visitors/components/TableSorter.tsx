@@ -2,16 +2,13 @@
 
 import Button from "@/components/Button";
 import Iconify from "@/components/Iconify";
+import { useStore } from "@/global/store";
 import { ICONS, USER_LIST_SORTERERS, USER_REDIRECT } from "@/lib/constants";
 import { cn, createUrl, getSorterSlug } from "@/lib/functions";
-import { type Lang } from "@/types";
 import { useRouter, useSearchParams } from "next/navigation";
 
-type Props = {
-  lang: Lang;
-};
-
-export default function TableSorter({ lang }: Props) {
+export default function TableSorter() {
+  const { lang } = useStore();
   const router = useRouter();
   const newSearchParams = useSearchParams();
   const newParams = new URLSearchParams(newSearchParams.toString());

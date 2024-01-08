@@ -7,11 +7,12 @@ import Iconify from "@/components/Iconify";
 import Img from "@/components/Img";
 import Input from "@/components/Input";
 import NavigatorX from "@/components/NavigatorX";
+import { useStore } from "@/global/store";
 import { DETERMINE_GENDER, GENDERS, ICONS, USER_REDIRECT } from "@/lib/constants";
 import { cn, createUrl, formatCurrency, localizePhoneNumber, textEllipsis } from "@/lib/functions";
 import { type UserList, type UserListInput } from "@/server/api/routers/user";
 import { PAGINATION_LIMIT } from "@/trpc/shared";
-import { type Lang, type SearchParams } from "@/types";
+import { type SearchParams } from "@/types";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import { Table } from "antd";
 import { type FilterDropdownProps } from "antd/es/table/interface";
@@ -21,11 +22,11 @@ import { redirect, useRouter, useSearchParams } from "next/navigation";
 type Props = {
   data?: UserList;
   searchParams: SearchParams;
-  lang: Lang;
   loading: boolean;
 };
 
-export default function VisitorsTable({ data, searchParams, lang, loading }: Props) {
+export default function VisitorsTable({ data, searchParams, loading }: Props) {
+  const { lang } = useStore();
   const newSearchParams = useSearchParams();
   const newParams = new URLSearchParams(newSearchParams.toString());
 

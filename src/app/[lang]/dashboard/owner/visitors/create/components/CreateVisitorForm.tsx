@@ -161,13 +161,7 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
                         <div className="animate absolute centered w-[40%] aspect-square rounded-full bg-white has-[:checked]:scale-0" />
                       </button>
                       <label className="flex items-center" htmlFor={`gender_option_${index}`}>
-                        <Iconify
-                          className={cn("text-pink-500", {
-                            "text-blue": option.value === "MALE",
-                          })}
-                          width={25}
-                          icon={option.icon}
-                        />
+                        <Iconify color={option.color} width={25} icon={option.icon} />
                         {option.label}
                       </label>
                     </section>

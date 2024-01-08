@@ -1,5 +1,7 @@
 import "@/styles/tailwind.css";
 import "@/styles/stylesheet.css";
+import GlobalHelper from "@/global/GlobalHelper";
+import { getServerAuthSession } from "@/server/auth";
 import { theme } from "@/styles/theme";
 import { TRPCReactProvider } from "@/trpc/react";
 import { type Lang } from "@/types";
@@ -24,10 +26,13 @@ const poppins = Poppins({
 
 type Props = { children: React.ReactNode; params: { lang: Lang } };
 
-export default function RootLayout({ children, params }: Props) {
+export default async function RootLayout({ children, params }: Props) {
+  const session = await getServerAuthSession();
+
   return (
     <html lang={params.lang} className={poppins.variable}>
       <body>
+        <GlobalHelper lang={params.lang} session={session} />
         <TRPCReactProvider cookies={cookies().toString()}>
           <AntdRegistry>
             <ConfigProvider theme={theme}>

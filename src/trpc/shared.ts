@@ -68,7 +68,7 @@ export type TRPC_RESPONSE = {
 };
 
 export const THROW_TRPC_ERROR = (code: TRPC_ERROR_CODE_KEY, message?: string) => {
-  throw new TRPCError({ code, message: message ? message : ERROR_MESSAGES[code] });
+  throw new TRPCError({ code, message: message ?? ERROR_MESSAGES[code] });
 };
 
 export const THROW_OK = (code: TRPC_OK_CODE_KEY, message?: string): TRPC_RESPONSE => ({
