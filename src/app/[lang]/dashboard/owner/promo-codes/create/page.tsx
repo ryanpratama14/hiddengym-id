@@ -12,7 +12,7 @@ export default async function SportTypeCreatePage({ params }: Props) {
   return (
     <section className="main-create-padding">
       <h3>Create Promo Code</h3>
-      <CreatePromoCodeForm t={t} lang={params.lang} />
+      <CreatePromoCodeForm t={t} />
     </section>
   );
 }

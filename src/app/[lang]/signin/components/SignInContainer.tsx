@@ -1,7 +1,7 @@
 "use client";
 
 import Logo from "@/components/Logo";
-import { type Dictionary, type Lang } from "@/types";
+import { type Dictionary } from "@/types";
 import { useState } from "react";
 import SignIn from "./SignIn";
 

@@ -67,7 +67,7 @@ export const userRouter = createTRPCRouter({
     const dataByPhoneNumber = await ctx.db.user.findUnique({ where: { phoneNumber: formatPhoneNumber(visitorData.phoneNumber) } });
     if (dataByPhoneNumber) return THROW_TRPC_ERROR("CONFLICT", getConflictMessage("visitor", "phone number"));
 
-    const newVisitor = await ctx.db.user.create({
+    const newData = await ctx.db.user.create({
       data: {
         fullName: formatName(visitorData.fullName),
         email: visitorData?.email ? visitorData.email.toLowerCase() : null,
@@ -78,7 +78,7 @@ export const userRouter = createTRPCRouter({
       },
     });
 
-    return { ...THROW_OK("CREATED", getCreatedMessage("new visitor")), visitorId: newVisitor.id };
+    return { ...THROW_OK("CREATED", getCreatedMessage("new visitor")), visitorId: newData.id };
   }),
 
   detail: protectedProcedure.input(z.object({ id: z.string() })).query(async ({ ctx, input }) => {

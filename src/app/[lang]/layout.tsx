@@ -1,6 +1,6 @@
 import "@/styles/tailwind.css";
 import "@/styles/stylesheet.css";
-import GlobalHelper from "@/global/GlobalHelper";
+import HigherOrderComponent from "@/global/HigherOrderComponent";
 import { getServerAuthSession } from "@/server/auth";
 import { theme } from "@/styles/theme";
 import { TRPCReactProvider } from "@/trpc/react";
@@ -28,18 +28,22 @@ type Props = { children: React.ReactNode; params: { lang: Lang } };
 
 export default async function RootLayout({ children, params }: Props) {
   const session = await getServerAuthSession();
+  let isSessionExpired;
+
+  if (session) if (Date.now() >= session.user.exp) isSessionExpired = false;
 
   return (
     <html lang={params.lang} className={poppins.variable}>
       <body>
-        <GlobalHelper lang={params.lang} session={session} />
-        <TRPCReactProvider cookies={cookies().toString()}>
+        <HigherOrderComponent lang={params.lang} session={session} isSessionExpired={isSessionExpired}>
           <AntdRegistry>
             <ConfigProvider theme={theme}>
-              <main>{children}</main>
+              <TRPCReactProvider cookies={cookies().toString()}>
+                <main>{children}</main>
+              </TRPCReactProvider>
             </ConfigProvider>
           </AntdRegistry>
-        </TRPCReactProvider>
+        </HigherOrderComponent>
       </body>
     </html>
   );

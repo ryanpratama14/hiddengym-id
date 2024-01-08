@@ -19,7 +19,7 @@ export default async function PackageTransactionCreatePage({ params }: Props) {
   return (
     <section className="main-create-padding">
       <h3>Create Package Transaction</h3>
-      <CreatePackageTransactionForm option={option} t={t} lang={params.lang} />
+      <CreatePackageTransactionForm option={option} t={t} />
     </section>
   );
 }

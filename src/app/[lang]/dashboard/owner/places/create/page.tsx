@@ -12,7 +12,7 @@ export default async function PlaceCreatePage({ params }: Props) {
   return (
     <section className="main-create-padding">
       <h3>Create Place</h3>
-      <CreatePlaceForm t={t} lang={params.lang} />
+      <CreatePlaceForm t={t} />
     </section>
   );
 }

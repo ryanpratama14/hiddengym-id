@@ -4,21 +4,22 @@ import Button from "@/components/Button";
 import Input from "@/components/Input";
 import InputSelect from "@/components/InputSelect";
 import { toastError, toastSuccess } from "@/components/Toast";
+import { useStore } from "@/global/store";
 import { ICONS, PROMO_CODE_TYPES, USER_REDIRECT } from "@/lib/constants";
 import { schema } from "@/schema";
 import { api } from "@/trpc/react";
-import { type Dictionary, type Lang } from "@/types";
+import { type Dictionary } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type PromoCodeCreateInput } from "@router/promoCode";
 import { useRouter } from "next/navigation";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 
 type Props = {
-  lang: Lang;
   t: Dictionary;
 };
 
-export default function CreatePromoCodeForm({ lang, t }: Props) {
+export default function CreatePromoCodeForm({ t }: Props) {
+  const { lang } = useStore();
   const router = useRouter();
   const {
     register,

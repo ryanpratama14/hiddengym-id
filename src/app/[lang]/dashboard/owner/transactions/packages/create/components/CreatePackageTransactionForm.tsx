@@ -5,6 +5,7 @@ import Input from "@/components/Input";
 import InputSelect from "@/components/InputSelect";
 import Logo from "@/components/Logo";
 import { toastError, toastSuccess, toastWarning } from "@/components/Toast";
+import { useStore } from "@/global/store";
 import { ICONS, USER_REDIRECT } from "@/lib/constants";
 import {
   cn,
@@ -24,7 +25,7 @@ import { type PaymentMethodList } from "@/server/api/routers/paymentMethod";
 import { type UserListVisitor } from "@/server/api/routers/user";
 import { inputVariants } from "@/styles/variants";
 import { api } from "@/trpc/react";
-import { type Dictionary, type Lang } from "@/types";
+import { type Dictionary } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type Package, type PaymentMethod, type PromoCode, type User } from "@prisma/client";
 import { useRouter } from "next/navigation";
@@ -32,12 +33,12 @@ import { useState } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 
 type Props = {
-  lang: Lang;
   t: Dictionary;
   option: { packages: PackageList; paymentMethods: PaymentMethodList; visitors: UserListVisitor };
 };
 
-export default function CreatePackageTransactionForm({ lang, t, option }: Props) {
+export default function CreatePackageTransactionForm({ t, option }: Props) {
+  const { lang } = useStore();
   const router = useRouter();
   const [selectedBuyer, setSelectedBuyer] = useState<User | null>();
   const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);

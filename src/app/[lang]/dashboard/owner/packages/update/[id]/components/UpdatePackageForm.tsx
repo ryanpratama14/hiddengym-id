@@ -5,6 +5,7 @@ import Input from "@/components/Input";
 import InputSelect from "@/components/InputSelect";
 import InputTextArea from "@/components/InputTextArea";
 import { toastError, toastSuccess } from "@/components/Toast";
+import { useStore } from "@/global/store";
 import { ICONS, USER_REDIRECT } from "@/lib/constants";
 import { cn } from "@/lib/functions";
 import { schema } from "@/schema";
@@ -13,7 +14,7 @@ import { type PlaceList } from "@/server/api/routers/place";
 import { type SportList } from "@/server/api/routers/sport";
 import { type UserListTrainer } from "@/server/api/routers/user";
 import { api } from "@/trpc/react";
-import { type Dictionary, type Lang } from "@/types";
+import { type Dictionary } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
@@ -21,11 +22,12 @@ import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 type Props = {
   option: { places: PlaceList; sports: SportList; trainers: UserListTrainer };
   t: Dictionary;
-  lang: Lang;
+
   data: PackageDetail;
 };
 
-export default function UpdatePackageForm({ option, t, lang, data }: Props) {
+export default function UpdatePackageForm({ option, t, data }: Props) {
+  const { lang } = useStore();
   const router = useRouter();
 
   const {

@@ -3,21 +3,22 @@
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import { toastError, toastSuccess } from "@/components/Toast";
+import { useStore } from "@/global/store";
 import { ICONS, USER_REDIRECT } from "@/lib/constants";
 import { schema } from "@/schema";
 import { type PaymentMethodCreateInput } from "@/server/api/routers/paymentMethod";
 import { api } from "@/trpc/react";
-import { type Dictionary, type Lang } from "@/types";
+import { type Dictionary } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm, type SubmitHandler } from "react-hook-form";
 
 type Props = {
-  lang: Lang;
   t: Dictionary;
 };
 
-export default function CreatePaymentMethodForm({ lang, t }: Props) {
+export default function CreatePaymentMethodForm({ t }: Props) {
+  const { lang } = useStore();
   const router = useRouter();
   const {
     register,

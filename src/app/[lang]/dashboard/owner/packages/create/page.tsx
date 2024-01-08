@@ -19,7 +19,7 @@ export default async function PackageCreatePage({ params }: Props) {
   return (
     <section className="main-create-padding">
       <h3>Create Package</h3>
-      <CreatePackageForm option={option} lang={params.lang} t={t} />
+      <CreatePackageForm option={option} t={t} />
     </section>
   );
 }
