@@ -1,1 +1,1 @@
-export const internationalization = { defaultLocale: "en", locales: ["en"] } as const;
+export const internationalization = { defaultLocale: "en", locales: ["en", "id"] } as const;

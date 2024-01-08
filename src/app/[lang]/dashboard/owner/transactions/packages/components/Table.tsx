@@ -6,6 +6,7 @@ import Img from "@/components/Img";
 import Input from "@/components/Input";
 import { Modal } from "@/components/Modal";
 import PackageTransaction from "@/components/PackageTransaction";
+import { useStore } from "@/global/store";
 import { DETERMINE_GENDER, ICONS, PACKAGE_TYPES, USER_REDIRECT } from "@/lib/constants";
 import {
   cn,
@@ -24,7 +25,7 @@ import {
 } from "@/server/api/routers/packageTransaction";
 import { inputVariants, statusVariants } from "@/styles/variants";
 import { PAGINATION_LIMIT } from "@/trpc/shared";
-import { type Lang, type SearchParams } from "@/types";
+import { type SearchParams } from "@/types";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import { Table } from "antd";
 import { type FilterDropdownProps } from "antd/es/table/interface";
@@ -34,11 +35,11 @@ import { Fragment, useState } from "react";
 type Props = {
   data?: PackageTransactionList;
   searchParams: SearchParams;
-  lang: Lang;
   loading: boolean;
 };
 
-export default function PackageTransactionsTable({ data, searchParams, lang, loading }: Props) {
+export default function PackageTransactionsTable({ data, searchParams, loading }: Props) {
+  const { lang } = useStore();
   const newSearchParams = useSearchParams();
   const newParams = new URLSearchParams(newSearchParams.toString());
   const [selectedTransaction, setSelectedTransaction] = useState<PackageTransactionDetail | null>(null);
