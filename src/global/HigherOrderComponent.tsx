@@ -25,7 +25,7 @@ export default function HigherOrderComponent({ lang, session, children, isSessio
     if (session && isSessionExpired === false) {
       signOut().catch((error) => console.error(error));
     }
-  });
+  }, [session, isSessionExpired]);
 
   return children;
 }
