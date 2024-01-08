@@ -7,7 +7,7 @@ import Iconify from "@/components/Iconify";
 import Img from "@/components/Img";
 import Input from "@/components/Input";
 import NavigatorX from "@/components/NavigatorX";
-import { useStore } from "@/global/store";
+import { useZustand } from "@/global/store";
 import { DETERMINE_GENDER, GENDERS, ICONS, USER_REDIRECT } from "@/lib/constants";
 import { cn, createUrl, formatCurrency, localizePhoneNumber, textEllipsis } from "@/lib/functions";
 import { type UserList, type UserListInput } from "@/server/api/routers/user";
@@ -26,7 +26,7 @@ type Props = {
 };
 
 export default function VisitorsTable({ data, searchParams, loading }: Props) {
-  const { lang } = useStore();
+  const { lang } = useZustand();
   const newSearchParams = useSearchParams();
   const newParams = new URLSearchParams(newSearchParams.toString());
 

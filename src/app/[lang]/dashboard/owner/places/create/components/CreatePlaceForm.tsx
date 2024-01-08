@@ -4,7 +4,7 @@ import Button from "@/components/Button";
 import Input from "@/components/Input";
 import InputTextArea from "@/components/InputTextArea";
 import { toastError, toastSuccess } from "@/components/Toast";
-import { useStore } from "@/global/store";
+import { useZustand } from "@/global/store";
 import { ICONS, USER_REDIRECT } from "@/lib/constants";
 import { schema } from "@/schema";
 import { type PlaceCreateInput } from "@/server/api/routers/place";
@@ -19,7 +19,7 @@ type Props = {
 };
 
 export default function CreatePlaceForm({ t }: Props) {
-  const { lang } = useStore();
+  const { lang } = useZustand();
   const router = useRouter();
   const {
     register,

@@ -9,7 +9,7 @@ type StateItems = {
   setLang: (t: Lang) => void;
 };
 
-export const useStore = create<StateItems>((set) => ({
+export const useZustand = create<StateItems>((set) => ({
   session: null,
   lang: "en",
   setSession: (session) => set(() => ({ session })),

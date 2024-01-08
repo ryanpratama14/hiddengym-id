@@ -3,7 +3,7 @@
 import Button from "@/components/Button";
 import Iconify from "@/components/Iconify";
 import Input from "@/components/Input";
-import { useStore } from "@/global/store";
+import { useZustand } from "@/global/store";
 import { ICONS, USER_REDIRECT } from "@/lib/constants";
 import { createUrl } from "@/lib/functions";
 import { type SearchParams } from "@/types";
@@ -18,7 +18,7 @@ export default function TableSearch({ searchParams, loading }: Props) {
   const router = useRouter();
   const newSearchParams = useSearchParams();
   const newParams = new URLSearchParams(newSearchParams.toString());
-  const { lang } = useStore();
+  const { lang } = useZustand();
 
   return (
     <form

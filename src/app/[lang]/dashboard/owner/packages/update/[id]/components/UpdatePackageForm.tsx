@@ -5,7 +5,7 @@ import Input from "@/components/Input";
 import InputSelect from "@/components/InputSelect";
 import InputTextArea from "@/components/InputTextArea";
 import { toastError, toastSuccess } from "@/components/Toast";
-import { useStore } from "@/global/store";
+import { useZustand } from "@/global/store";
 import { ICONS, USER_REDIRECT } from "@/lib/constants";
 import { cn } from "@/lib/functions";
 import { schema } from "@/schema";
@@ -27,7 +27,7 @@ type Props = {
 };
 
 export default function UpdatePackageForm({ option, t, data }: Props) {
-  const { lang } = useStore();
+  const { lang } = useZustand();
   const router = useRouter();
 
   const {

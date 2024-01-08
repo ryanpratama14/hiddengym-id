@@ -5,7 +5,7 @@ import Input from "@/components/Input";
 import InputSelect from "@/components/InputSelect";
 import Logo from "@/components/Logo";
 import { toastError, toastSuccess, toastWarning } from "@/components/Toast";
-import { useStore } from "@/global/store";
+import { useZustand } from "@/global/store";
 import { ICONS, USER_REDIRECT } from "@/lib/constants";
 import {
   cn,
@@ -38,7 +38,7 @@ type Props = {
 };
 
 export default function CreatePackageTransactionForm({ t, option }: Props) {
-  const { lang } = useStore();
+  const { lang } = useZustand();
   const router = useRouter();
   const [selectedBuyer, setSelectedBuyer] = useState<User | null>();
   const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);

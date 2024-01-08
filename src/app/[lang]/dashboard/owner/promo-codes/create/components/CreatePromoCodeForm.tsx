@@ -4,7 +4,7 @@ import Button from "@/components/Button";
 import Input from "@/components/Input";
 import InputSelect from "@/components/InputSelect";
 import { toastError, toastSuccess } from "@/components/Toast";
-import { useStore } from "@/global/store";
+import { useZustand } from "@/global/store";
 import { ICONS, PROMO_CODE_TYPES, USER_REDIRECT } from "@/lib/constants";
 import { schema } from "@/schema";
 import { api } from "@/trpc/react";
@@ -19,7 +19,7 @@ type Props = {
 };
 
 export default function CreatePromoCodeForm({ t }: Props) {
-  const { lang } = useStore();
+  const { lang } = useZustand();
   const router = useRouter();
   const {
     register,

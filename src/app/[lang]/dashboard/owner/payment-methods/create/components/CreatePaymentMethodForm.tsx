@@ -3,7 +3,7 @@
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import { toastError, toastSuccess } from "@/components/Toast";
-import { useStore } from "@/global/store";
+import { useZustand } from "@/global/store";
 import { ICONS, USER_REDIRECT } from "@/lib/constants";
 import { schema } from "@/schema";
 import { type PaymentMethodCreateInput } from "@/server/api/routers/paymentMethod";
@@ -18,7 +18,7 @@ type Props = {
 };
 
 export default function CreatePaymentMethodForm({ t }: Props) {
-  const { lang } = useStore();
+  const { lang } = useZustand();
   const router = useRouter();
   const {
     register,

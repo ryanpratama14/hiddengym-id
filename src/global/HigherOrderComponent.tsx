@@ -1,6 +1,6 @@
 "use client";
 
-import { useStore } from "@/global/store";
+import { useZustand } from "@/global/store";
 import { type Lang } from "@/types";
 import { type Session } from "next-auth";
 import { signOut } from "next-auth/react";
@@ -14,7 +14,7 @@ type Props = {
 };
 
 export default function HigherOrderComponent({ lang, session, children, isSessionExpired }: Props) {
-  const { setSession, setLang } = useStore();
+  const { setSession, setLang } = useZustand();
 
   useEffect(() => {
     if (session) setSession(session);

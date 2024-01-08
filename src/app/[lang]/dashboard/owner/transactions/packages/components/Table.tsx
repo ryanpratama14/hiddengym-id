@@ -6,7 +6,7 @@ import Img from "@/components/Img";
 import Input from "@/components/Input";
 import { Modal } from "@/components/Modal";
 import PackageTransaction from "@/components/PackageTransaction";
-import { useStore } from "@/global/store";
+import { useZustand } from "@/global/store";
 import { DETERMINE_GENDER, ICONS, PACKAGE_TYPES, USER_REDIRECT } from "@/lib/constants";
 import {
   cn,
@@ -39,7 +39,7 @@ type Props = {
 };
 
 export default function PackageTransactionsTable({ data, searchParams, loading }: Props) {
-  const { lang } = useStore();
+  const { lang } = useZustand();
   const newSearchParams = useSearchParams();
   const newParams = new URLSearchParams(newSearchParams.toString());
   const [selectedTransaction, setSelectedTransaction] = useState<PackageTransactionDetail | null>(null);

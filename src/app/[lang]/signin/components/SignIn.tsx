@@ -3,7 +3,7 @@
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import { toastError, toastSuccess } from "@/components/Toast";
-import { useStore } from "@/global/store";
+import { useZustand } from "@/global/store";
 import { ICONS, USER_REDIRECT } from "@/lib/constants";
 import { schema, type Login } from "@/schema";
 import { COLORS } from "@/styles/theme";
@@ -22,7 +22,7 @@ type Props = {
 };
 
 export default function SignIn({ callbackUrl, t }: Props) {
-  const { lang } = useStore();
+  const { lang } = useZustand();
   const router = useRouter();
 
   const {
