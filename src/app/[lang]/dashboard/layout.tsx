@@ -4,7 +4,7 @@ import { getServerAuthSession } from "@/server/auth";
 import { api } from "@/trpc/server";
 import { type DashboardMenuKey, type Lang } from "@/types";
 import { redirect } from "next/navigation";
-import DashboardMenu from "./components/DashboardMenu";
+import DashboardContainer from "./components/DashboardContainer";
 import DashboardNavigator from "./components/DashboardNavigator";
 
 type MenuItem = {
@@ -17,7 +17,7 @@ type MenuItem = {
 
 type Props = { children: React.ReactNode; params: { lang: Lang } };
 
-export default async function DashboardOwnerLayout({ children, params }: Props) {
+export default async function DashboardLayout({ children, params }: Props) {
   const { lang } = params;
   const session = await getServerAuthSession();
   if (!session || !session.user) redirect(`/${params.lang}/signin`);
@@ -166,8 +166,8 @@ export default async function DashboardOwnerLayout({ children, params }: Props) 
   const filteredItems = items.filter((item) => !DASHBOARD_MENUS_TO_REMOVE[role].includes(item.key));
 
   return (
-    <DashboardMenu items={filteredItems} lang={lang} user={user}>
+    <DashboardContainer items={filteredItems} lang={lang} user={user}>
       {children}
-    </DashboardMenu>
+    </DashboardContainer>
   );
 }

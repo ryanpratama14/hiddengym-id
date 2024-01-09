@@ -1,32 +1,29 @@
-"use client";
-
 import Logo from "@/components/Logo";
+import { useZustand } from "@/global/store";
 import { cn, getSelectedMenu } from "@/lib/functions";
 import { type User } from "@/server/api/routers/user";
 import { COLORS } from "@/styles/theme";
-import { type Lang } from "@/types";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import { type ItemType, type MenuItemType } from "antd/es/menu/hooks/useItems";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Fragment, useEffect, useState } from "react";
-import AddButton from "../components/AddButton";
+import React, { Fragment, useEffect, useState } from "react";
 import DashboardProfileDropdown from "./DashboardProfileDropdown";
 
 type Props = {
-  children: React.ReactNode;
+  collapsed: boolean;
+  setCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
+  handleCollapse: () => void;
   user: User;
   items: ItemType<MenuItemType>[];
-  lang: Lang;
 };
 
-export default function DashboardMenu({ children, items, user, lang }: Props) {
-  const pathname = usePathname();
-  const [collapsed, setCollapsed] = useState(true);
-  const [selectedMenu, setSelectedMenu] = useState(getSelectedMenu({ pathname, role: user.role, lang }));
-  const handleCollapse = () => (collapsed ? undefined : setCollapsed(true));
+export default function DashboardLayout({ collapsed, setCollapsed, user, handleCollapse, items }: Props) {
+  const { lang } = useZustand();
 
+  const pathname = usePathname();
+  const [selectedMenu, setSelectedMenu] = useState(getSelectedMenu({ pathname, role: user.role, lang }));
   useEffect(() => {
     setSelectedMenu(getSelectedMenu({ pathname, role: user.role, lang }));
   }, [pathname]);
@@ -78,15 +75,6 @@ export default function DashboardMenu({ children, items, user, lang }: Props) {
           <DashboardProfileDropdown user={user} />
         </section>
       </nav>
-
-      <article
-        onClick={handleCollapse}
-        className={cn("animate min-h-screen p-shorter bg-cream ml-[3.1rem] mt-14", { "xl:ml-64": !collapsed })}
-      >
-        {children}
-      </article>
-
-      <AddButton handleCollapse={handleCollapse} role={user.role} lang={lang} />
     </Fragment>
   );
 }
