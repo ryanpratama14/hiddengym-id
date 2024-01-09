@@ -1,5 +1,5 @@
 import { COLORS } from "@/styles/theme";
-import { type AddButtonLabel, type DashboardMenuKey, type Lang } from "@/types";
+import { type AddButtonKey, type DashboardMenuKey, type Lang } from "@/types";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import { type Gender, type PackageTransaction, type PackageType, type PromoCodeType, type Role, type User } from "@prisma/client";
 
@@ -190,52 +190,52 @@ export const ADD_BUTTON_ITEMS = [
   {
     label: "Payment Method",
     icon: ICONS.payment_method,
-    href: "/payment-methods/create",
+    key: "/payment-methods/create",
   },
   {
     label: "Promo Code",
     icon: ICONS.promo_codes,
-    href: "/promo-codes/create",
+    key: "/promo-codes/create",
   },
   {
     label: "Place",
     icon: ICONS.place,
-    href: "/places/create",
+    key: "/places/create",
   },
   {
     label: "Sport Type",
     icon: ICONS.sport,
-    href: "/sport-types/create",
+    key: "/sport-types/create",
   },
   {
     label: "Package",
     icon: ICONS.package,
-    href: "/packages/create",
+    key: "/packages/create",
   },
   {
     label: "Product",
     icon: ICONS.product,
-    href: "/packages/create",
+    key: "/packages/create",
   },
   {
     label: "Visit",
     icon: ICONS.visit,
-    href: "/visits/create",
+    key: "/visits/create",
   },
   {
     label: "Schedule",
     icon: ICONS.schedule,
-    href: "/schedules/create",
+    key: "/schedules/create",
   },
   {
     label: "Transaction",
     icon: ICONS.transaction,
-    href: "/transactions/create",
+    key: "/transactions/create",
   },
   {
     label: "Visitor",
     icon: ICONS.visitor,
-    href: "/visitors/create",
+    key: "/visitors/create",
   },
 ] as const;
 
@@ -263,14 +263,14 @@ export const DASHBOARD_MENUS_TO_REMOVE: Record<Role, DashboardMenuKey[]> = {
   TRAINER: [],
 };
 
-export const ADD_BUTTON_ITEMS_TO_REMOVE: Record<Role, AddButtonLabel[]> = {
-  VISITOR: ["Package", "Product", "Schedule", "Transaction"],
-  TRAINER: ["Package", "Product", "Transaction"],
+export const ADD_BUTTON_ITEMS_TO_REMOVE: Record<Role, AddButtonKey[]> = {
+  VISITOR: [],
+  TRAINER: [],
   OWNER: [],
   ADMIN: [],
 };
 
 export const FILTERED_ADD_BUTTONS_ITEMS = (role: Role) =>
-  ADD_BUTTON_ITEMS.filter((button) => !ADD_BUTTON_ITEMS_TO_REMOVE[role].includes(button.label));
+  ADD_BUTTON_ITEMS.filter((button) => !ADD_BUTTON_ITEMS_TO_REMOVE[role].includes(button.key));
 
 export const DASHBOARD_SUB_MENUS = ["Detail", "Update", "Create"] as const;

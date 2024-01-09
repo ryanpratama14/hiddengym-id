@@ -39,7 +39,7 @@ export default function AddButton({ role, lang, handleCollapse }: Props) {
                 <Menu.Item key={item.icon}>
                   <button
                     type="button"
-                    onClick={() => router.push(USER_REDIRECT[role]({ lang, href: item.href }))}
+                    onClick={() => router.push(USER_REDIRECT[role]({ lang, href: item.key }))}
                     className={cn(
                       "rounded-md text-sm font-medium flex gap-2 items-center justify-end px-4 h-8 bg-light hover:bg-orange hover:text-cream text-dark",
                     )}
