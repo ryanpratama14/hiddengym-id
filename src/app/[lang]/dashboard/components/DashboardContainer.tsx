@@ -2,7 +2,6 @@
 
 import { cn } from "@/lib/functions";
 import { type User } from "@/server/api/routers/user";
-import { type Lang } from "@/types";
 import { type ItemType, type MenuItemType } from "antd/es/menu/hooks/useItems";
 import { Fragment, useState } from "react";
 import AddButton from "./AddButton";
@@ -12,10 +11,10 @@ type Props = {
   children: React.ReactNode;
   user: User;
   items: ItemType<MenuItemType>[];
-  lang: Lang;
+  addButtonItems: ItemType<MenuItemType>[];
 };
 
-export default function DashboardContainer({ children, items, user, lang }: Props) {
+export default function DashboardContainer({ children, items, user, addButtonItems }: Props) {
   const [collapsed, setCollapsed] = useState(true);
   const handleCollapse = () => (collapsed ? undefined : setCollapsed(true));
 
@@ -30,7 +29,7 @@ export default function DashboardContainer({ children, items, user, lang }: Prop
         {children}
       </article>
 
-      <AddButton handleCollapse={handleCollapse} role={user.role} lang={lang} />
+      <AddButton addButtonItems={addButtonItems} handleCollapse={handleCollapse} />
     </Fragment>
   );
 }

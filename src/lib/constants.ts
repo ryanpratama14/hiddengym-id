@@ -260,22 +260,103 @@ export const ADD_BUTTON_ITEMS = [
   },
 ] as const;
 
-export const DASHBOARD_MENUS = {
-  "/": "Home",
-  "/visitors": "Visitors",
-  "/trainers": "Trainers",
-  "/packages": "Packages",
-  "/products": "Products",
-  "/transactions": "Transactions",
-  "/transactions/packages": "Package Transactions",
-  "/transactions/products": "Product Transactions",
-  "/visits": "Visits",
-  "/schedules": "Schedules",
-  "/promo-codes": "Promo Codes",
-  "/sport-types": "Sport Types",
-  "/places": "Places",
-  "/payment-methods": "Payment Methods",
-} as const;
+export const DASHBOARD_MENUS = [
+  {
+    title: "",
+    key: "/",
+    label: "Home",
+    icon: ICONS.home,
+    children: undefined,
+  },
+  {
+    title: "",
+    key: "/transactions",
+    label: "Transactions",
+    icon: ICONS.transaction,
+    children: [
+      {
+        title: "",
+        key: "/transactions/packages",
+        label: "Packages",
+      },
+      {
+        title: "",
+        key: "/transactions/products",
+        label: "Products",
+      },
+    ],
+  },
+  {
+    title: "",
+    key: "/visitors",
+    label: "Visitors",
+    icon: ICONS.visitor,
+    children: undefined,
+  },
+  {
+    title: "",
+    key: "/trainers",
+    label: "Trainers",
+    icon: ICONS.trainer,
+    children: undefined,
+  },
+  {
+    title: "",
+    key: "/packages",
+    label: "Packages",
+    icon: ICONS.package,
+    children: undefined,
+  },
+  {
+    title: "",
+    key: "/products",
+    label: "Products",
+    icon: ICONS.product,
+    children: undefined,
+  },
+  {
+    title: "",
+    key: "/visits",
+    label: "Visits",
+    icon: ICONS.visit,
+    children: undefined,
+  },
+  {
+    title: "",
+    key: "/schedules",
+    label: "Schedules",
+    icon: ICONS.schedule,
+    children: undefined,
+  },
+  {
+    title: "",
+    key: "/promo-codes",
+    label: "Promo Codes",
+    icon: ICONS.promo_codes,
+    children: undefined,
+  },
+  {
+    title: "",
+    key: "/sport-types",
+    label: "Sport Types",
+    icon: ICONS.sport,
+    children: undefined,
+  },
+  {
+    title: "",
+    key: "/places",
+    label: "Places",
+    icon: ICONS.place,
+    children: undefined,
+  },
+  {
+    title: "",
+    key: "/payment-methods",
+    label: "Payment Methods",
+    icon: ICONS.payment_method,
+    children: undefined,
+  },
+] as const;
 
 export const DASHBOARD_MENUS_TO_REMOVE: Record<Role, DashboardMenuKey[]> = {
   ADMIN: [],
@@ -293,5 +374,8 @@ export const ADD_BUTTON_ITEMS_TO_REMOVE: Record<Role, AddButtonKey[]> = {
 
 export const FILTERED_ADD_BUTTONS_ITEMS = (role: Role) =>
   ADD_BUTTON_ITEMS.filter((button) => !ADD_BUTTON_ITEMS_TO_REMOVE[role].includes(button.key));
+
+export const FILTERED_DASHBOARD_MENU_ITEMS = (role: Role) =>
+  DASHBOARD_MENUS.filter((menu) => !DASHBOARD_MENUS_TO_REMOVE[role].includes(menu.key));
 
 export const DASHBOARD_SUB_MENUS = ["Detail", "Update", "Create"] as const;

@@ -243,7 +243,7 @@ export const getDashboardPathname = (pathname: string, role: Role): DashboardMen
   }
 };
 
-export type SelectedMenu = {
+type SelectedMenu = {
   label: DashboardMenuLabel | "";
   href: string;
   subName?: DashboardSubMenuKey;
@@ -259,11 +259,14 @@ export const getSelectedMenu = ({ pathname, role, lang }: { pathname: string; ro
   };
 
   for (const path of selectedMenu.keys) {
-    if (DASHBOARD_MENUS[path]) {
-      selectedMenu.label = DASHBOARD_MENUS[path];
+    const menu = DASHBOARD_MENUS.find((item) => item.key === path);
+    if (menu) {
+      selectedMenu.label = menu.label;
       selectedMenu.href = USER_REDIRECT[role]({ lang, href: path });
+      break;
     }
   }
+
   return selectedMenu;
 };
 
