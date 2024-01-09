@@ -8,14 +8,6 @@ import { redirect } from "next/navigation";
 import DashboardContainer from "./components/DashboardContainer";
 import DashboardNavigator from "./components/DashboardNavigator";
 
-// type MenuItem = {
-//   title: string;
-//   key: DashboardMenuKey;
-//   label: React.JSX.Element;
-//   icon?: React.JSX.Element;
-//   children?: MenuItem[];
-// };
-
 type Props = { children: React.ReactNode; params: { lang: Lang } };
 
 export default async function DashboardLayout({ children, params }: Props) {

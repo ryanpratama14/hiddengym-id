@@ -32,7 +32,7 @@ export default function SignInVisitor({ callbackUrl, t }: Props) {
 
   const onSubmit: SubmitHandler<LoginVisitor> = (data) => logIn(data);
 
-  const { mutate: logIn, isLoading } = useMutation({
+  const { mutate: logIn, isLoading: loading } = useMutation({
     mutationFn: async (data: LoginVisitor) => {
       const email = EMAIL_VISITOR_READONLY;
       const res = await signIn("credentials", {
@@ -63,7 +63,7 @@ export default function SignInVisitor({ callbackUrl, t }: Props) {
             {...register("credential")}
             error={errors.credential?.message}
           />
-          <Button loading={isLoading} className="mt-2" type="submit" color={isLoading ? "disabled" : "expired"} size="xl">
+          <Button loading={loading} className="mt-2" type="submit" color="expired" size="xl">
             Sign In
           </Button>
         </form>

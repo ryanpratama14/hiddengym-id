@@ -6,14 +6,12 @@ import { toastError, toastSuccess } from "@/components/Toast";
 import { useZustand } from "@/global/store";
 import { ICONS, USER_REDIRECT } from "@/lib/constants";
 import { schema, type Login } from "@/schema";
-import { COLORS } from "@/styles/theme";
 import { type Dictionary } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { getSession, signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { PulseLoader } from "react-spinners";
 
 type Props = {
   callbackUrl?: string;
@@ -35,7 +33,7 @@ export default function SignIn({ callbackUrl, t }: Props) {
 
   const onSubmit: SubmitHandler<Login> = (data) => logIn(data);
 
-  const { mutate: logIn, isLoading } = useMutation({
+  const { mutate: logIn, isLoading: loading } = useMutation({
     mutationFn: async (data: Login) => {
       const res = await signIn("credentials", {
         credential: data.credential,
@@ -67,8 +65,8 @@ export default function SignIn({ callbackUrl, t }: Props) {
             label="Email"
           />
           <Input withPasswordIcon {...register("credential")} error={errors.credential?.message} type="password" />
-          <Button className="mt-2" type="submit" color={isLoading ? "disabled" : "expired"} size="xl">
-            {isLoading ? <PulseLoader color={COLORS.cream} size={6} /> : "Sign In"}
+          <Button className="mt-2" type="submit" size="xl" color="expired" loading={loading}>
+            Sign In
           </Button>
         </form>
       </section>
