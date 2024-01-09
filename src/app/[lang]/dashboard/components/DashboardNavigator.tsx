@@ -1,6 +1,6 @@
 import { USER_REDIRECT } from "@/lib/constants";
 import { cn } from "@/lib/functions";
-import { type DashboardMenuKey, type Lang } from "@/types";
+import { type AddButtonKey, type DashboardMenuKey, type Lang } from "@/types";
 import { type Role } from "@prisma/client";
 import Link from "next/link";
 
@@ -12,8 +12,9 @@ const DashboardNavigator = ({
   isChildren,
   children,
   lang,
+  smallText,
 }: {
-  href: DashboardMenuKey;
+  href: DashboardMenuKey | AddButtonKey;
   isChildren?: boolean;
   children: React.ReactNode;
   className?: string;
@@ -21,12 +22,13 @@ const DashboardNavigator = ({
   target?: React.HTMLAttributeAnchorTarget;
   role: Role;
   lang: Lang;
+  smallText?: boolean;
 }) => {
   return (
     <Link
       target={newTab ? "_blank" : undefined}
       rel={newTab ? "noopener noreferrer" : undefined}
-      className={cn(`text-base select-none font-medium ${className}`, { "ml-3 text-sm": isChildren })}
+      className={cn(`select-none font-medium text-base ${className}`, { "ml-3 text-sm": isChildren }, { "text-sm": smallText })}
       href={USER_REDIRECT[role]({ lang, href })}
     >
       {children}

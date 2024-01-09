@@ -243,7 +243,7 @@ export const getDashboardPathname = (pathname: string, role: Role): DashboardMen
   }
 };
 
-type SelectedMenu = {
+export type SelectedMenu = {
   label: DashboardMenuLabel | "";
   href: string;
   subName?: DashboardSubMenuKey;

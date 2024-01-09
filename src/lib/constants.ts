@@ -191,51 +191,72 @@ export const ADD_BUTTON_ITEMS = [
     label: "Payment Method",
     icon: ICONS.payment_method,
     key: "/payment-methods/create",
+    children: undefined,
   },
   {
     label: "Promo Code",
     icon: ICONS.promo_codes,
     key: "/promo-codes/create",
+    children: undefined,
   },
   {
     label: "Place",
     icon: ICONS.place,
     key: "/places/create",
+    children: undefined,
   },
   {
     label: "Sport Type",
     icon: ICONS.sport,
     key: "/sport-types/create",
+    children: undefined,
   },
   {
     label: "Package",
     icon: ICONS.package,
     key: "/packages/create",
+    children: undefined,
   },
   {
     label: "Product",
     icon: ICONS.product,
-    key: "/packages/create",
+    key: "/products/create",
+    children: undefined,
   },
   {
     label: "Visit",
     icon: ICONS.visit,
     key: "/visits/create",
+    children: undefined,
   },
   {
     label: "Schedule",
     icon: ICONS.schedule,
     key: "/schedules/create",
+    children: undefined,
   },
   {
     label: "Transaction",
     icon: ICONS.transaction,
-    key: "/transactions/create",
+    key: "/transactions",
+    children: [
+      {
+        label: "Package",
+        icon: ICONS.package,
+        key: "/transactions/packages/create",
+      },
+      {
+        label: "Product",
+        icon: ICONS.product,
+        key: "/transactions/products/create",
+      },
+    ],
   },
   {
     label: "Visitor",
     icon: ICONS.visitor,
     key: "/visitors/create",
+    children: undefined,
   },
 ] as const;
 

@@ -13,4 +13,7 @@ export type DashboardMenuLabel = (typeof DASHBOARD_MENUS)[keyof typeof DASHBOARD
 export type DashboardMenuKey = keyof typeof DASHBOARD_MENUS;
 export type DashboardSubMenuKey = (typeof DASHBOARD_SUB_MENUS)[number];
 export type AddButtonLabel = (typeof ADD_BUTTON_ITEMS)[number]["label"];
-export type AddButtonKey = (typeof ADD_BUTTON_ITEMS)[number]["key"];
+export type AddButtonKey =
+  | (typeof ADD_BUTTON_ITEMS)[number]["key"]
+  | "/transactions/packages/create"
+  | "/transactions/products/create";
