@@ -240,16 +240,8 @@ export const ADD_BUTTON_ITEMS = [
     icon: ICONS.transaction,
     key: "/transactions",
     children: [
-      {
-        label: "Package",
-        icon: ICONS.package,
-        key: "/transactions/packages/create",
-      },
-      {
-        label: "Product",
-        icon: ICONS.product,
-        key: "/transactions/products/create",
-      },
+      { label: "Package", key: "/transactions/packages/create" },
+      { label: "Product", key: "/transactions/products/create" },
     ],
   },
   {

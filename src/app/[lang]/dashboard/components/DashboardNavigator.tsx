@@ -13,6 +13,7 @@ const DashboardNavigator = ({
   children,
   lang,
   smallText,
+  isChildrenAddButton,
 }: {
   href: DashboardMenuKey | AddButtonKey;
   isChildren?: boolean;
@@ -23,12 +24,18 @@ const DashboardNavigator = ({
   role: Role;
   lang: Lang;
   smallText?: boolean;
+  isChildrenAddButton?: boolean;
 }) => {
   return (
     <Link
       target={newTab ? "_blank" : undefined}
       rel={newTab ? "noopener noreferrer" : undefined}
-      className={cn(`select-none font-medium text-base ${className}`, { "ml-3 text-sm": isChildren }, { "text-sm": smallText })}
+      className={cn(
+        `select-none font-medium text-base ${className}`,
+        { "ml-3 text-sm": isChildren },
+        { "ml-4 text-sm": isChildrenAddButton },
+        { "text-sm": smallText },
+      )}
       href={USER_REDIRECT[role]({ lang, href })}
     >
       {children}
