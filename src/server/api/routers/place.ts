@@ -18,10 +18,7 @@ export const placeRouter = createTRPCRouter({
     return THROW_OK("CREATED", getCreatedMessage("place"));
   }),
 
-  list: ownerProcedure.query(async ({ ctx }) => {
-    const data = await ctx.db.place.findMany();
-    return data;
-  }),
+  list: ownerProcedure.query(async ({ ctx }) => await ctx.db.place.findMany()),
 });
 
 // outputs

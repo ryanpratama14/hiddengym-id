@@ -12,9 +12,7 @@ export const promoCodeRouter = createTRPCRouter({
     return THROW_OK("CREATED", "A promo code has been created.");
   }),
 
-  list: ownerProcedure.query(async ({ ctx }) => {
-    return await ctx.db.promoCode.findMany();
-  }),
+  list: ownerProcedure.query(async ({ ctx }) => await ctx.db.promoCode.findMany()),
 
   checkPromoCode: ownerProcedure
     .input(z.object({ code: z.string(), birthDate: z.date().nullable() }))
@@ -27,9 +25,9 @@ export const promoCodeRouter = createTRPCRouter({
         if (getUserAge(input.birthDate) > 22)
           return THROW_TRPC_ERROR(
             "FORBIDDEN",
-            `Not eligible to use this promo code.${`\nBirth date: ${formatDateShort({ date: input.birthDate })}.\nAge: ${getUserAge(
+            `Not eligible to use this promo code.${`\nDate of birth: ${formatDateShort({ date: input.birthDate })}.\nAge: ${getUserAge(
               input.birthDate,
-            )}`}
+            )}.`}
         `,
           );
       }
