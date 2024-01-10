@@ -19,7 +19,7 @@ export const paymentMethodRouter = createTRPCRouter({
   }),
 
   list: ownerProcedure.query(async ({ ctx }) => {
-    const data = ctx.db.paymentMethod.findMany({
+    const data = await ctx.db.paymentMethod.findMany({
       select: { packageTransactions: true, productTransactions: true, ...prismaExclude("PaymentMethod", []) },
     });
     return data;

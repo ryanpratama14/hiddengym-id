@@ -82,19 +82,13 @@ export const userRouter = createTRPCRouter({
   }),
 
   detail: protectedProcedure.input(z.object({ id: z.string() })).query(async ({ ctx, input }) => {
-    const data = await ctx.db.user.findUnique({
-      where: { id: input.id },
-      ...userSelect,
-    });
+    const data = await ctx.db.user.findUnique({ where: { id: input.id }, ...userSelect });
     if (!data) return THROW_TRPC_ERROR("NOT_FOUND");
     return data;
   }),
 
   detailMe: protectedProcedure.query(async ({ ctx }) => {
-    const data = await ctx.db.user.findUnique({
-      where: { id: ctx.session.user.id },
-      ...userSelect,
-    });
+    const data = await ctx.db.user.findUnique({ where: { id: ctx.session.user.id }, ...userSelect });
     if (!data) return THROW_TRPC_ERROR("NOT_FOUND");
     return data;
   }),

@@ -39,7 +39,7 @@ export const Modal = ({ show, closeModal, children, classNameDiv }: Props) => {
               leaveTo="opacity-0 scale-95"
             >
               <Dialog.Panel>
-                <section className={cn("w-fit p-6 rounded-md bg-white", classNameDiv)}>
+                <section className={cn("w-fit p-6 rounded-md bg-white relative", classNameDiv)}>
                   <button
                     type="submit"
                     onClick={closeModal}

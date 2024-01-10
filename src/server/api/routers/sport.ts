@@ -13,13 +13,7 @@ import {
 
 export const sportRouter = createTRPCRouter({
   list: ownerProcedure.query(async ({ ctx }) => {
-    return ctx.db.sport.findMany({
-      select: {
-        trainers: true,
-        packages: true,
-        ...prismaExclude("Sport", ["createdDate"]),
-      },
-    });
+    return await ctx.db.sport.findMany({ select: { trainers: true, packages: true, ...prismaExclude("Sport", []) } });
   }),
 
   create: ownerProcedure.input(schema.sport.create).mutation(async ({ ctx, input }) => {

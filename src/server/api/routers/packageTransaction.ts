@@ -19,10 +19,8 @@ import { updateTotalSpending } from "./other";
 const packageTransactionSelect = {
   select: {
     ...prismaExclude("PackageTransaction", []),
-    buyer: {
-      select: { ...prismaExclude("User", ["credential"]), image: true },
-    },
-    package: { select: { ...prismaExclude("Package", []) } },
+    buyer: { select: { ...prismaExclude("User", ["credential"]), image: true } },
+    package: true,
     promoCode: true,
     paymentMethod: true,
   },
@@ -62,10 +60,7 @@ export const packageTransactionRouter = createTRPCRouter({
       ctx.db.packageTransaction.count(whereQuery),
     ]);
 
-    return {
-      data,
-      ...getPaginationData({ ...pagination, totalData }),
-    };
+    return { data, ...getPaginationData({ ...pagination, totalData }) };
   }),
 
   create: ownerProcedure.input(schema.packageTransaction.create).mutation(async ({ ctx, input }) => {

@@ -13,8 +13,7 @@ export const promoCodeRouter = createTRPCRouter({
   }),
 
   list: ownerProcedure.query(async ({ ctx }) => {
-    const data = await ctx.db.promoCode.findMany();
-    return data;
+    return await ctx.db.promoCode.findMany();
   }),
 
   checkPromoCode: ownerProcedure
