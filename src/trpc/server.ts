@@ -1,20 +1,19 @@
 import "server-only";
-
-import { createTRPCProxyClient, loggerLink, TRPCClientError } from "@trpc/client";
-import { callProcedure } from "@trpc/server";
+import { appRouter, type AppRouter } from "@/server/api/root";
+import { createTRPCContext } from "@/server/api/trpc";
+import { createTRPCClient, loggerLink, TRPCClientError } from "@trpc/client";
+import { callProcedure } from "@trpc/core";
 import { observable } from "@trpc/server/observable";
 import { type TRPCErrorResponse } from "@trpc/server/rpc";
 import { cookies } from "next/headers";
 import { cache } from "react";
-import { appRouter, type AppRouter } from "@/server/api/root";
-import { createTRPCContext } from "@/server/api/trpc";
 import { transformer } from "./shared";
 
 const createContext = cache(() =>
-  createTRPCContext({ headers: new Headers({ cookie: cookies().toString(), "x-trpc-source": "rsc" }) })
+  createTRPCContext({ headers: new Headers({ cookie: cookies().toString(), "x-trpc-source": "rsc" }) }),
 );
 
-export const api = createTRPCProxyClient<AppRouter>({
+export const api = createTRPCClient<AppRouter>({
   transformer,
   links: [
     loggerLink({
@@ -28,7 +27,7 @@ export const api = createTRPCProxyClient<AppRouter>({
               return callProcedure({
                 procedures: appRouter._def.procedures,
                 path: op.path,
-                rawInput: op.input,
+                getRawInput: async () => await op.input,
                 ctx,
                 type: op.type,
               });
