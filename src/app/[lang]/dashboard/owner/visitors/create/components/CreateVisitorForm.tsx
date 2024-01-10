@@ -80,7 +80,7 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
 
   const onSubmit: SubmitHandler<UserCreateVisitorInput> = async (data) => createVisitor(data);
 
-  const { mutate: createVisitor, isPending: loading } = api.user.createVisitor.useMutation({
+  const { mutate: createVisitor, isLoading: loading } = api.user.createVisitor.useMutation({
     onSuccess: async (res) => {
       const packageTransaction: PackageTransactionCreateInput = {
         packageId: getValues("packageData.packageId"),
@@ -96,7 +96,7 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
     onError: (res) => toastError({ t, description: res.message }),
   });
 
-  const { mutate: checkPromoCode, isPending: loadingPromoCode } = api.promoCode.checkPromoCode.useMutation({
+  const { mutate: checkPromoCode, isLoading: loadingPromoCode } = api.promoCode.checkPromoCode.useMutation({
     onSuccess: (res) => {
       setSelectedPromoCode(res.data);
       setValue("packageData.promoCodeId", res.data.id);

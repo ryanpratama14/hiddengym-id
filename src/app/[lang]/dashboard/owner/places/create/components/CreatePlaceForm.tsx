@@ -32,7 +32,7 @@ export default function CreatePlaceForm({ t }: Props) {
 
   const onSubmit: SubmitHandler<PlaceCreateInput> = async (data) => createData(data);
 
-  const { mutate: createData, isPending: loading } = api.place.create.useMutation({
+  const { mutate: createData, isLoading: loading } = api.place.create.useMutation({
     onSuccess: (res) => {
       toastSuccess({ t, description: res.message });
       router.push(USER_REDIRECT.OWNER({ lang, href: "/places" }));

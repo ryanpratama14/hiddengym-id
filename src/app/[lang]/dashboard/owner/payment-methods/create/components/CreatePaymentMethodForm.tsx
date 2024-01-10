@@ -31,7 +31,7 @@ export default function CreatePaymentMethodForm({ t }: Props) {
 
   const onSubmit: SubmitHandler<PaymentMethodCreateInput> = async (data) => createData(data);
 
-  const { mutate: createData, isPending: loading } = api.paymentMethod.create.useMutation({
+  const { mutate: createData, isLoading: loading } = api.paymentMethod.create.useMutation({
     onSuccess: (res) => {
       toastSuccess({ t, description: res.message });
       router.push(USER_REDIRECT.OWNER({ lang, href: "/payment-methods" }));

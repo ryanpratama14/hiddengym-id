@@ -33,7 +33,7 @@ export default function CreatePromoCodeForm({ t }: Props) {
 
   const onSubmit: SubmitHandler<PromoCodeCreateInput> = async (data) => createData(data);
 
-  const { mutate: createData, isPending: loading } = api.promoCode.create.useMutation({
+  const { mutate: createData, isLoading: loading } = api.promoCode.create.useMutation({
     onSuccess: (res) => {
       toastSuccess({ t, description: res.message });
       router.push(USER_REDIRECT.OWNER({ lang, href: "/promo-codes" }));

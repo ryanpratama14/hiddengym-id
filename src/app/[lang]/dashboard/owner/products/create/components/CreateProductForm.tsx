@@ -31,7 +31,7 @@ export default function CreateProductForm({ t }: Props) {
 
   const onSubmit: SubmitHandler<ProductCreateInput> = async (data) => createData(data);
 
-  const { mutate: createData, isPending: loading } = api.product.create.useMutation({
+  const { mutate: createData, isLoading: loading } = api.product.create.useMutation({
     onSuccess: (res) => {
       toastSuccess({ t, description: res.message });
       router.push(USER_REDIRECT.OWNER({ lang, href: "/products" }));

@@ -56,7 +56,7 @@ export default function CreatePackageForm({ option, t }: Props) {
 
   const onSubmit: SubmitHandler<PackageCreateInput> = async (data) => createData(data);
 
-  const { mutate: createData, isPending: loading } = api.package.create.useMutation({
+  const { mutate: createData, isLoading: loading } = api.package.create.useMutation({
     onSuccess: (res) => {
       toastSuccess({ t, description: res.message });
       router.push(USER_REDIRECT.OWNER({ lang, href: "/packages" }));
