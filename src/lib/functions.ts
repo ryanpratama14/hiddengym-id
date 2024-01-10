@@ -69,20 +69,20 @@ export const getNewDate = (dateString?: string): Date => {
 
 export const getEndDate = (dateString: string): Date => {
   const updatedDate = getNewDate(dateString);
-  updatedDate.setHours(23, 59, 59, 999);
+  updatedDate.setUTCHours(23, 59, 59, 999);
   return updatedDate;
 };
 
 export const getStartDate = (dateString: string): Date => {
   const updatedDate = getNewDate(dateString);
-  updatedDate.setHours(0, 0, 0, 0);
+  updatedDate.setUTCHours(0, 0, 0, 0);
   return updatedDate;
 };
 
 export const getExpiryDate = ({ days, dateString }: { days: number; dateString: string }): Date => {
   const date = getNewDate(dateString);
   date.setDate(date.getDate() + days - 1);
-  date.setHours(23, 59, 59, 999);
+  date.setUTCHours(23, 59, 59, 999);
   return date;
 };
 
@@ -104,7 +104,7 @@ export const getRemainingDays = (targetDate: Date): number => {
   const currentDate = getNewDate();
   const timeDifference = targetDate.getTime() - currentDate.getTime();
   const remainingDays = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-  return remainingDays;
+  return remainingDays - 1;
 };
 
 export const getTokenExpiryDate = (): Date => new Date(getNewDate().getTime() + 3600000); // 1 hour;
@@ -125,34 +125,59 @@ export const formatDate = ({
   date,
   lang,
   style,
+  localTime,
   withTime,
 }: {
   date: Date;
   lang?: Lang;
   style: "short" | "long";
   withTime?: boolean;
+  localTime?: boolean;
 }): string => {
   return date.toLocaleDateString(lang ?? ["id-ID"], {
     year: "numeric",
     month: style === "long" ? "long" : "numeric",
     day: "numeric",
+    timeZone: localTime ? undefined : "UTC",
     ...(withTime ? { minute: "2-digit", hour: "2-digit" } : undefined),
   });
 };
 
-export const formatDateShort = ({ date, lang, withTime }: { date: Date; lang?: Lang; withTime?: boolean }): string => {
+export const formatDateShort = ({
+  date,
+  lang,
+  withTime,
+  localTime,
+}: {
+  date: Date;
+  lang?: Lang;
+  withTime?: boolean;
+  localTime?: boolean;
+}): string => {
   return date.toLocaleDateString(lang ?? ["id-ID"], {
     year: "numeric",
     month: "short",
+    timeZone: localTime ? undefined : "UTC",
     day: "numeric",
     ...(withTime ? { minute: "2-digit", hour: "2-digit" } : undefined),
   });
 };
 
-export const formatDateLong = ({ date, lang, withTime }: { date: Date; lang?: Lang; withTime?: boolean }): string => {
+export const formatDateLong = ({
+  date,
+  lang,
+  withTime,
+  localTime,
+}: {
+  date: Date;
+  lang?: Lang;
+  withTime?: boolean;
+  localTime?: boolean;
+}): string => {
   return date.toLocaleDateString(lang ?? ["id-ID"], {
     year: "numeric",
     month: "long",
+    timeZone: localTime ? undefined : "UTC",
     day: "numeric",
     ...(withTime ? { minute: "2-digit", hour: "2-digit" } : undefined),
   });
