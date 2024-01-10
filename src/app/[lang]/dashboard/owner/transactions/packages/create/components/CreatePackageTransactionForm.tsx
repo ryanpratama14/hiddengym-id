@@ -68,7 +68,7 @@ export default function CreatePackageTransactionForm({ t, option }: Props) {
     promoCodeId: watch("promoCodeId"),
   };
 
-  const { mutate: createData, isLoading: loading } = api.packageTransaction.create.useMutation({
+  const { mutate: createData, isPending: loading } = api.packageTransaction.create.useMutation({
     onSuccess: (res) => {
       toastSuccess({ t, description: res.message });
       router.push(USER_REDIRECT.OWNER({ lang, href: "/transactions/packages" }));
@@ -76,7 +76,7 @@ export default function CreatePackageTransactionForm({ t, option }: Props) {
     onError: (res) => toastError({ t, description: res.message }),
   });
 
-  const { mutate: checkPromoCode, isLoading: loadingPromoCode } = api.promoCode.checkPromoCode.useMutation({
+  const { mutate: checkPromoCode, isPending: loadingPromoCode } = api.promoCode.checkPromoCode.useMutation({
     onSuccess: (res) => {
       setSelectedPromoCode(res.data);
       setValue("promoCodeId", res.data.id);

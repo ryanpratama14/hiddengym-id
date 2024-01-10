@@ -31,7 +31,7 @@ export default function CreateSportForm({ t }: Props) {
 
   const onSubmit: SubmitHandler<SportCreateInput> = async (data) => createData(data);
 
-  const { mutate: createData, isLoading: loading } = api.sport.create.useMutation({
+  const { mutate: createData, isPending: loading } = api.sport.create.useMutation({
     onSuccess: (res) => {
       toastSuccess({ t, description: res.message });
       router.push(USER_REDIRECT.OWNER({ lang, href: "/sport-types" }));
