@@ -10,7 +10,9 @@ import { getUrl, transformer } from "./shared";
 
 export const api = createTRPCReact<AppRouter>();
 
-export function TRPCReactProvider(props: { children: React.ReactNode; cookies: string }) {
+type Props = { children: React.ReactNode; cookies: string };
+
+export function TRPCReactProvider({ children, cookies }: Props) {
   const [queryClient] = useState(() => new QueryClient());
 
   const [trpcClient] = useState(() =>
@@ -22,7 +24,7 @@ export function TRPCReactProvider(props: { children: React.ReactNode; cookies: s
         }),
         httpBatchStreamLink({
           url: getUrl(),
-          headers: () => ({ cookie: props.cookies, "x-trpc-source": "react" }),
+          headers: () => ({ cookie: cookies, "x-trpc-source": "react" }),
         }),
       ],
     }),
@@ -31,8 +33,8 @@ export function TRPCReactProvider(props: { children: React.ReactNode; cookies: s
   return (
     <QueryClientProvider client={queryClient}>
       <api.Provider client={trpcClient} queryClient={queryClient}>
-        <ReactQueryDevtools />
-        {props.children}
+        <ReactQueryDevtools initialIsOpen={false} />
+        {children}
       </api.Provider>
     </QueryClientProvider>
   );
