@@ -333,11 +333,11 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
                   <small>Start</small>
                   <small>Expiry</small>
                 </section>
-                <section className="flex justify-between items-center gap-6">
+                <section className="flex justify-between items-center gap-6 relative">
                   <section className="flex flex-col w-fit">
                     <p className="font-semibold">{formatDateShort({ date: getStartDate(data.transactionDate) })}</p>
                   </section>
-                  <div className="w-[25%] h-0.5 bg-dark" />
+                  <div className="absolute centered w-[25%] h-0.5 bg-dark" />
                   <section className="flex flex-col text-right w-fit">
                     <p className="font-semibold">
                       {isDateToday(
