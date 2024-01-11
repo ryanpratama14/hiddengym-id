@@ -11,7 +11,6 @@ import { GENDERS, ICONS, USER_REDIRECT } from "@/lib/constants";
 import {
   cn,
   formatCurrency,
-  formatDate,
   formatDateShort,
   formatPhoneNumber,
   getExpiryDate,
@@ -340,26 +339,12 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
                   <div className="absolute centered w-[25%] h-0.5 bg-dark" />
                   <section className="flex flex-col text-right w-fit">
                     <p className="font-semibold">
-                      {isDateToday(
-                        getExpiryDate({
-                          days: selectedPackage.validityInDays,
-                          dateString: data.transactionDate,
-                        }),
-                      )
+                      {isDateToday(getExpiryDate({ days: selectedPackage.validityInDays, dateString: data.transactionDate }))
                         ? "Today"
-                        : isDateExpired(
-                              getExpiryDate({
-                                days: selectedPackage.validityInDays,
-                                dateString: data.transactionDate,
-                              }),
-                            )
+                        : isDateExpired(getExpiryDate({ days: selectedPackage.validityInDays, dateString: data.transactionDate }))
                           ? "Expired"
-                          : formatDate({
-                              date: getExpiryDate({
-                                days: selectedPackage.validityInDays,
-                                dateString: data.transactionDate,
-                              }),
-                              style: "short",
+                          : formatDateShort({
+                              date: getExpiryDate({ days: selectedPackage.validityInDays, dateString: data.transactionDate }),
                             })}
                     </p>
                   </section>

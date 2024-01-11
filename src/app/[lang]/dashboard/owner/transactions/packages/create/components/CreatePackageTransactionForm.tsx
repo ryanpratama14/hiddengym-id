@@ -15,6 +15,7 @@ import {
   getInputDate,
   getNewDate,
   getStartDate,
+  isDateExpired,
   isDateToday,
   localizePhoneNumber,
 } from "@/lib/functions";
@@ -248,9 +249,11 @@ export default function CreatePackageTransactionForm({ t, option }: Props) {
                     <p className="font-semibold">
                       {isDateToday(getExpiryDate({ days: selectedPackage.validityInDays, dateString: data.transactionDate }))
                         ? "Today"
-                        : formatDateShort({
-                            date: getExpiryDate({ days: selectedPackage.validityInDays, dateString: data.transactionDate }),
-                          })}
+                        : isDateExpired(getExpiryDate({ days: selectedPackage.validityInDays, dateString: data.transactionDate }))
+                          ? "Expired"
+                          : formatDateShort({
+                              date: getExpiryDate({ days: selectedPackage.validityInDays, dateString: data.transactionDate }),
+                            })}
                     </p>
                   </section>
                 </section>
