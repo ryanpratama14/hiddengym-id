@@ -98,9 +98,9 @@ export const getUserAge = (birthDate: Date): number => {
 };
 
 export const getRemainingDays = (targetDate: Date): number => {
-  const currentDate = dayjs().tz("Asia/Jakarta");
-  const targetDateDayjs = dayjs(targetDate);
-  const remainingDays = targetDateDayjs.diff(currentDate, "day") + 1;
+  const currentDate = dayjs().tz("Asia/Jakarta").toDate();
+  const timeDifference = targetDate.getTime() - currentDate.getTime();
+  const remainingDays = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
   return remainingDays;
 };
 
