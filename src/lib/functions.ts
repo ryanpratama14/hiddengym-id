@@ -2,6 +2,7 @@ import { COUNTRY_CODE, DASHBOARD_MENUS, DASHBOARD_SUB_MENUS, USER_PATHNAMES, USE
 import { type DashboardMenuKey, type DashboardMenuLabel, type DashboardSubMenuKey, type Lang } from "@/types";
 import { type Role } from "@prisma/client";
 import { clsx, type ClassValue } from "clsx";
+import dayjs from "dayjs";
 import { type ReadonlyURLSearchParams } from "next/navigation";
 import { twMerge } from "tailwind-merge";
 
@@ -67,16 +68,12 @@ export const getNewDate = (dateString?: string): Date => {
   return new Date();
 };
 
-export const getEndDate = (dateString: string): Date => new Date(new Date(dateString).setHours(23, 59, 59, 999));
+export const getEndDate = (dateString: string): Date => dayjs(dateString).endOf("day").toDate();
 
-export const getStartDate = (dateString: string): Date => new Date(new Date(dateString).setHours(0, 0, 0, 0));
+export const getStartDate = (dateString: string): Date => dayjs(dateString).startOf("day").toDate();
 
-export const getExpiryDate = ({ days, dateString }: { days: number; dateString: string }): Date => {
-  const date = new Date(new Date(dateString));
-  date.setDate(date.getDate() + days - 1);
-  date.setHours(23, 59, 59, 999);
-  return date;
-};
+export const getExpiryDate = ({ days, dateString }: { days: number; dateString: string }): Date =>
+  dayjs(dateString).add(days, "day").toDate();
 
 export const getUserAge = (birthDate: Date): number => {
   const currentDate = getNewDate();
