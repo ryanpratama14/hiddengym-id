@@ -28,7 +28,7 @@ type Props = {
 export default function HomeContainer({ lang, user, updateUser, refreshUser, t }: Props) {
   const [isEdit, setIsEdit] = useState<boolean>(false);
 
-  const { mutate: uploadImage, isLoading } = useMutation({
+  const { mutate: uploadImage, isPending: loading } = useMutation({
     mutationFn: async (file: File) => {
       await uploadFiles("uploadUserImage", { files: [file] });
       await refreshUser();
@@ -52,7 +52,7 @@ export default function HomeContainer({ lang, user, updateUser, refreshUser, t }
       <section className="flex flex-col p-3 gap-6">
         <section className="flex flex-col gap-6 pb-2">
           <section className="relative bg-light rounded-full w-full aspect-square shadow">
-            {isLoading ? null : (
+            {loading ? null : (
               <section className="shadow-lg flex items-center justify-center px-1 py-0.5 bg-green text-light absolute bottom-0 right-0 rounded-md z-10 overflow-hidden">
                 <input
                   accept="image/*"
@@ -63,13 +63,13 @@ export default function HomeContainer({ lang, user, updateUser, refreshUser, t }
                 <CloudUploadOutlined className="text-3xl text-light" />
               </section>
             )}
-            {user?.image?.url && !isLoading ? (
+            {user?.image?.url && !loading ? (
               <Img
                 src={user.image.url}
                 alt="Profile Picture"
                 className="absolute centered w-full aspect-square object-cover rounded-full"
               />
-            ) : isLoading ? (
+            ) : loading ? (
               <section className="flex flex-col gap-4 absolute centered items-center justify-center w-full">
                 <Logo className="animate-pulse w-[60%] aspect-video" />
                 <p>uploading...</p>

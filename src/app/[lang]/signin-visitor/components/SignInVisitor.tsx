@@ -32,7 +32,7 @@ export default function SignInVisitor({ callbackUrl, t }: Props) {
 
   const onSubmit: SubmitHandler<LoginVisitor> = (data) => logIn(data);
 
-  const { mutate: logIn, isLoading: loading } = useMutation({
+  const { mutate: logIn, isPending: loading } = useMutation({
     mutationFn: async (data: LoginVisitor) => {
       const email = EMAIL_VISITOR_READONLY;
       const res = await signIn("credentials", {

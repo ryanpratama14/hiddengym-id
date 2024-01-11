@@ -33,7 +33,7 @@ export default function SignIn({ callbackUrl, t }: Props) {
 
   const onSubmit: SubmitHandler<Login> = (data) => logIn(data);
 
-  const { mutate: logIn, isLoading: loading } = useMutation({
+  const { mutate: logIn, isPending: loading } = useMutation({
     mutationFn: async (data: Login) => {
       const res = await signIn("credentials", {
         credential: data.credential,
