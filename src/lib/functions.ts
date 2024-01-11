@@ -2,7 +2,6 @@ import { COUNTRY_CODE, DASHBOARD_MENUS, DASHBOARD_SUB_MENUS, USER_PATHNAMES, USE
 import { type DashboardMenuKey, type DashboardMenuLabel, type DashboardSubMenuKey, type Lang } from "@/types";
 import { type Role } from "@prisma/client";
 import { clsx, type ClassValue } from "clsx";
-import dayjs from "dayjs";
 import { type ReadonlyURLSearchParams } from "next/navigation";
 import { twMerge } from "tailwind-merge";
 
@@ -48,8 +47,11 @@ export const formatName = (name: string): string => {
 };
 
 export const getInputDate = (date?: Date): string => {
-  const dateString = date ? dayjs(date) : dayjs();
-  return dateString.format("YYYY-MM-DD");
+  const dateString = date ?? getNewDate();
+  const year = dateString.getFullYear();
+  const month = String(dateString.getMonth() + 1).padStart(2, "0");
+  const day = String(dateString.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
 };
 
 export const getTodayDate = ({ locale, style }: { locale: Lang; style: "short" | "long" }): string => {
@@ -65,12 +67,16 @@ export const getNewDate = (dateString?: string): Date => {
   return new Date();
 };
 
-export const getEndDate = (dateString: string): Date => dayjs(dateString).endOf("day").toDate();
+export const getEndDate = (dateString: string): Date => new Date(new Date(dateString).setUTCHours(23, 59, 59, 999));
 
-export const getStartDate = (dateString: string): Date => dayjs(dateString).startOf("day").toDate();
+export const getStartDate = (dateString: string): Date => new Date(new Date(dateString).setUTCHours(0, 0, 0, 0));
 
-export const getExpiryDate = ({ days, dateString }: { days: number; dateString: string }): Date =>
-  dayjs(dateString).add(days, "day").toDate();
+export const getExpiryDate = ({ days, dateString }: { days: number; dateString: string }): Date => {
+  const date = getNewDate(dateString);
+  date.setDate(date.getDate() + days - 1);
+  date.setUTCHours(23, 59, 59, 999);
+  return date;
+};
 
 export const getUserAge = (birthDate: Date): number => {
   const currentDate = getNewDate();

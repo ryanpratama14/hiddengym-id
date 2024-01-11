@@ -74,9 +74,6 @@ dependencies:
   clsx:
     specifier: ^2.1.0
     version: 2.1.0
-  dayjs:
-    specifier: ^1.11.10
-    version: 1.11.10
   negotiator:
     specifier: ^0.6.3
     version: 0.6.3
