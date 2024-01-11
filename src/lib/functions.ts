@@ -130,7 +130,7 @@ export const formatDate = ({
     year: "numeric",
     month: style === "long" ? "long" : "numeric",
     day: "numeric",
-    // timeZone: localTime ? undefined : "UTC",
+    timeZone: localTime ? undefined : "UTC",
     ...(withTime ? { minute: "2-digit", hour: "2-digit" } : undefined),
   });
 };
@@ -149,7 +149,7 @@ export const formatDateShort = ({
   return date.toLocaleDateString(lang ?? ["id-ID"], {
     year: "numeric",
     month: "short",
-    // timeZone: localTime ? undefined : "UTC",
+    timeZone: localTime ? undefined : "UTC",
     day: "numeric",
     ...(withTime ? { minute: "2-digit", hour: "2-digit" } : undefined),
   });
@@ -169,7 +169,7 @@ export const formatDateLong = ({
   return date.toLocaleDateString(lang ?? ["id-ID"], {
     year: "numeric",
     month: "long",
-    // timeZone: localTime ? undefined : "UTC",
+    timeZone: localTime ? undefined : "UTC",
     day: "numeric",
     ...(withTime ? { minute: "2-digit", hour: "2-digit" } : undefined),
   });
