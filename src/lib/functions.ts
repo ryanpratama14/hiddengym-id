@@ -104,7 +104,7 @@ export const getRemainingDays = (targetDate: Date): number => {
   const currentDate = getNewDate();
   const timeDifference = targetDate.getTime() - currentDate.getTime();
   const remainingDays = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-  return remainingDays - 1;
+  return remainingDays;
 };
 
 export const getTokenExpiryDate = (): Date => new Date(getNewDate().getTime() + 3600000); // 1 hour;
