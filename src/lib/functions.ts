@@ -67,20 +67,12 @@ export const getNewDate = (dateString?: string): Date => {
   return new Date();
 };
 
-export const getEndDate = (dateString: string): Date => {
-  const updatedDate = getNewDate(dateString);
-  updatedDate.setUTCHours(23, 59, 59, 999);
-  return updatedDate;
-};
+export const getEndDate = (dateString: string): Date => new Date(new Date(dateString).setHours(23, 59, 59, 999));
 
-export const getStartDate = (dateString: string): Date => {
-  const updatedDate = getNewDate(dateString);
-  updatedDate.setUTCHours(0, 0, 0, 0);
-  return updatedDate;
-};
+export const getStartDate = (dateString: string): Date => new Date(new Date(dateString).setHours(0, 0, 0, 0));
 
 export const getExpiryDate = ({ days, dateString }: { days: number; dateString: string }): Date => {
-  const date = getNewDate(dateString);
+  const date = new Date(new Date(dateString));
   date.setDate(date.getDate() + days - 1);
   date.setUTCHours(23, 59, 59, 999);
   return date;
@@ -138,7 +130,7 @@ export const formatDate = ({
     year: "numeric",
     month: style === "long" ? "long" : "numeric",
     day: "numeric",
-    timeZone: localTime ? undefined : "UTC",
+    // timeZone: localTime ? undefined : "UTC",
     ...(withTime ? { minute: "2-digit", hour: "2-digit" } : undefined),
   });
 };
@@ -157,7 +149,7 @@ export const formatDateShort = ({
   return date.toLocaleDateString(lang ?? ["id-ID"], {
     year: "numeric",
     month: "short",
-    timeZone: localTime ? undefined : "UTC",
+    // timeZone: localTime ? undefined : "UTC",
     day: "numeric",
     ...(withTime ? { minute: "2-digit", hour: "2-digit" } : undefined),
   });
@@ -177,7 +169,7 @@ export const formatDateLong = ({
   return date.toLocaleDateString(lang ?? ["id-ID"], {
     year: "numeric",
     month: "long",
-    timeZone: localTime ? undefined : "UTC",
+    // timeZone: localTime ? undefined : "UTC",
     day: "numeric",
     ...(withTime ? { minute: "2-digit", hour: "2-digit" } : undefined),
   });
