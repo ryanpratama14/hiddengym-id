@@ -74,7 +74,7 @@ export const getStartDate = (dateString: string): Date => new Date(new Date(date
 export const getExpiryDate = ({ days, dateString }: { days: number; dateString: string }): Date => {
   const date = new Date(new Date(dateString));
   date.setDate(date.getDate() + days - 1);
-  date.setUTCHours(23, 59, 59, 999);
+  date.setHours(23, 59, 59, 999);
   return date;
 };
 
