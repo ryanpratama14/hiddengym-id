@@ -6,7 +6,6 @@ import Input from "@/components/Input";
 import InputSelect from "@/components/InputSelect";
 import Logo from "@/components/Logo";
 import { toastError, toastSuccess, toastWarning } from "@/components/Toast";
-import { useZustand } from "@/global/store";
 import { GENDERS, ICONS, USER_REDIRECT } from "@/lib/constants";
 import {
   cn,
@@ -44,8 +43,6 @@ type Props = {
 };
 
 export default function CreateVisitorForm({ lang, t, option, createPackageTransaction }: Props) {
-  const { lang: leng } = useZustand();
-  console.log(leng);
   const router = useRouter();
   const [isAddingTransaction, setIsAddingTransaction] = useState<boolean>(false);
   const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
