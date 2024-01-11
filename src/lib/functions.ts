@@ -2,8 +2,14 @@ import { COUNTRY_CODE, DASHBOARD_MENUS, DASHBOARD_SUB_MENUS, USER_PATHNAMES, USE
 import { type DashboardMenuKey, type DashboardMenuLabel, type DashboardSubMenuKey, type Lang } from "@/types";
 import { type Role } from "@prisma/client";
 import { clsx, type ClassValue } from "clsx";
+import dayjs from "dayjs";
+import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
 import { type ReadonlyURLSearchParams } from "next/navigation";
 import { twMerge } from "tailwind-merge";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 export const loadToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
@@ -47,11 +53,8 @@ export const formatName = (name: string): string => {
 };
 
 export const getInputDate = (date?: Date): string => {
-  const dateString = date ?? getNewDate();
-  const year = dateString.getFullYear();
-  const month = String(dateString.getMonth() + 1).padStart(2, "0");
-  const day = String(dateString.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
+  const dateString = date ? dayjs(date) : dayjs().tz("Asia/Jakarta");
+  return dateString.format("YYYY-MM-DD");
 };
 
 export const getTodayDate = ({ locale, style }: { locale: Lang; style: "short" | "long" }): string => {
@@ -67,14 +70,16 @@ export const getNewDate = (dateString?: string): Date => {
   return new Date();
 };
 
-export const getEndDate = (dateString: string): Date => new Date(new Date(dateString).setUTCHours(23, 59, 59, 999));
+export const getEndDate = (dateString: string): Date => dayjs.tz(dateString, "Asia/Jakarta").endOf("day").toDate();
 
-export const getStartDate = (dateString: string): Date => new Date(new Date(dateString).setUTCHours(0, 0, 0, 0));
+export const getStartDate = (dateString: string): Date => dayjs.tz(dateString, "Asia/Jakarta").startOf("day").toDate();
 
 export const getExpiryDate = ({ days, dateString }: { days: number; dateString: string }): Date => {
-  const date = getNewDate(dateString);
-  date.setDate(date.getDate() + days - 1);
-  date.setUTCHours(23, 59, 59, 999);
+  const date = dayjs
+    .tz(dateString, "Asia/Jakarta")
+    .add(days - 1, "day")
+    .endOf("day")
+    .toDate();
   return date;
 };
 
@@ -93,9 +98,9 @@ export const getUserAge = (birthDate: Date): number => {
 };
 
 export const getRemainingDays = (targetDate: Date): number => {
-  const currentDate = getNewDate();
-  const timeDifference = targetDate.getTime() - currentDate.getTime();
-  const remainingDays = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+  const currentDate = dayjs().tz("Asia/Jakarta");
+  const targetDateDayjs = dayjs(targetDate);
+  const remainingDays = targetDateDayjs.diff(currentDate, "day") + 1;
   return remainingDays;
 };
 
@@ -117,59 +122,35 @@ export const formatDate = ({
   date,
   lang,
   style,
-  localTime,
   withTime,
 }: {
   date: Date;
   lang?: Lang;
   style: "short" | "long";
   withTime?: boolean;
-  localTime?: boolean;
 }): string => {
   return date.toLocaleDateString(lang ?? ["id-ID"], {
     year: "numeric",
     month: style === "long" ? "long" : "numeric",
     day: "numeric",
-    timeZone: localTime ? undefined : "UTC",
+
     ...(withTime ? { minute: "2-digit", hour: "2-digit" } : undefined),
   });
 };
 
-export const formatDateShort = ({
-  date,
-  lang,
-  withTime,
-  localTime,
-}: {
-  date: Date;
-  lang?: Lang;
-  withTime?: boolean;
-  localTime?: boolean;
-}): string => {
+export const formatDateShort = ({ date, lang, withTime }: { date: Date; lang?: Lang; withTime?: boolean }): string => {
   return date.toLocaleDateString(lang ?? ["id-ID"], {
     year: "numeric",
     month: "short",
-    timeZone: localTime ? undefined : "UTC",
     day: "numeric",
     ...(withTime ? { minute: "2-digit", hour: "2-digit" } : undefined),
   });
 };
 
-export const formatDateLong = ({
-  date,
-  lang,
-  withTime,
-  localTime,
-}: {
-  date: Date;
-  lang?: Lang;
-  withTime?: boolean;
-  localTime?: boolean;
-}): string => {
+export const formatDateLong = ({ date, lang, withTime }: { date: Date; lang?: Lang; withTime?: boolean }): string => {
   return date.toLocaleDateString(lang ?? ["id-ID"], {
     year: "numeric",
     month: "long",
-    timeZone: localTime ? undefined : "UTC",
     day: "numeric",
     ...(withTime ? { minute: "2-digit", hour: "2-digit" } : undefined),
   });
