@@ -139,19 +139,6 @@ model Visit {
     @@index(fields: [startDate(sort: Desc)])
 }
 
-model Product {
-    id    String @id @default(auto()) @map("_id") @db.ObjectId
-    name  String
-    price Int
-
-    // relations
-    transactions ProductTransaction[]
-
-    createdDate DateTime @default(now())
-
-    @@index(fields: [name])
-}
-
 model Place {
     id      String @id @default(auto()) @map("_id") @db.ObjectId
     name    String
@@ -165,24 +152,48 @@ model Place {
     createdDate DateTime @default(now())
 }
 
+model Product {
+    id    String @id @default(auto()) @map("_id") @db.ObjectId
+    name  String
+    price Int
+
+    // relations
+    productOnTransaction ProductOnTransaction[]
+
+    createdDate DateTime @default(now())
+
+    @@index(fields: [name])
+}
+
 model ProductTransaction {
     id              String   @id @default(auto()) @map("_id") @db.ObjectId
-    quantity        Int
-    unitPrice       Int
     totalPrice      Int
     transactionDate DateTime @default(now())
 
     // relations
-    paymentMethod   PaymentMethod @relation(fields: [paymentMethodId], references: [id])
-    paymentMethodId String        @db.ObjectId
-    product         Product       @relation(fields: [productId], references: [id]) // bisa banyak produk
-    productId       String        @db.ObjectId
-    buyer           User          @relation(fields: [buyerId], references: [id])
-    buyerId         String        @db.ObjectId
+    paymentMethod   PaymentMethod          @relation(fields: [paymentMethodId], references: [id])
+    paymentMethodId String                 @db.ObjectId
+    products        ProductOnTransaction[]
+    buyer           User                   @relation(fields: [buyerId], references: [id])
+    buyerId         String                 @db.ObjectId
 
     createdDate DateTime @default(now())
 
     @@index(fields: [transactionDate(sort: Desc)])
+}
+
+model ProductOnTransaction {
+    id        String @id @default(auto()) @map("_id") @db.ObjectId
+    quantity  Int
+    unitPrice Int
+
+    // relations
+    product              Product            @relation(fields: [productId], references: [id])
+    productId            String             @db.ObjectId
+    productTransaction   ProductTransaction @relation(fields: [productTransactionId], references: [id])
+    productTransactionId String             @db.ObjectId
+
+    createdDate DateTime @default(now())
 }
 
 model PackageTransaction {

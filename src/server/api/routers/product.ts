@@ -3,6 +3,8 @@ import { createTRPCRouter, ownerProcedure } from "@/server/api/trpc";
 import {
   getConflictMessage,
   getCreatedMessage,
+  insensitiveMode,
+  prismaExclude,
   THROW_OK,
   THROW_TRPC_ERROR,
   type RouterInputs,
@@ -18,8 +20,16 @@ export const productRouter = createTRPCRouter({
     return THROW_OK("CREATED", getCreatedMessage("product"));
   }),
 
-  list: ownerProcedure.query(async ({ ctx }) => {
-    const data = await ctx.db.product.findMany();
+  list: ownerProcedure.input(schema.product.list).query(async ({ ctx, input }) => {
+    let data = await ctx.db.product.findMany({
+      select: {
+        ...prismaExclude("Product", []),
+        productOnTransaction: { select: { ...prismaExclude("ProductOnTransaction", []), productTransaction: true } },
+      },
+      where: { name: { contains: input.name, ...insensitiveMode }, price: { gte: input.price } },
+      orderBy: input.price ? { price: "asc" } : { name: "asc" },
+    });
+    if (input.totalTransactions) data = data.filter((item) => item.productOnTransaction.length >= input.totalTransactions!);
     return data;
   }),
 

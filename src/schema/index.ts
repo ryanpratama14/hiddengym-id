@@ -6,6 +6,9 @@ export const regex = {
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
 };
 
+const stringMessage = (field: string, min: number) => `${field} must contain at least ${min} character(s)`;
+const numberMessage = (field: string, min: number) => `${field} must be greater than or equal to ${min}`;
+
 export class schema {
   // enums
   static role = z.enum(["OWNER", "ADMIN", "TRAINER", "VISITOR"]).default("VISITOR");
@@ -31,7 +34,7 @@ export class schema {
     .string()
     .regex(/^\d+$/, "Provide a valid phone number")
     .regex(/^8/, "Phone Number should starts with number 8")
-    .min(10, "At least 10 characters")
+    .min(10, stringMessage("Phone Number", 10))
     .max(12);
 
   static date = z.string().min(1, "Pick a date");
@@ -41,7 +44,7 @@ export class schema {
     .string()
     .min(4, "At least 4 characters")
     .regex(/^[A-Z0-9]+$/, "Code should be uppercase and contain only letters and numbers");
-  static password = z.string().min(10, "At least 10 characters");
+  static password = z.string().min(10, stringMessage("Password", 10));
   static loginVisitor = z.object({ credential: schema.phoneNumber });
   static login = z.object({ email: schema.email, credential: schema.password }); // also for next-auth
 
@@ -106,6 +109,18 @@ export class schema {
       email: z.string().optional(),
       gender: schema.gender.optional(),
       totalSpending: z.coerce.number().optional(),
+    });
+  };
+
+  static product = class {
+    static create = z.object({
+      name: schema.names,
+      price: z.number().min(1),
+    });
+    static list = z.object({
+      name: z.string().optional(),
+      price: z.coerce.number().optional(),
+      totalTransactions: z.coerce.number().optional(),
     });
   };
 
@@ -181,13 +196,6 @@ export class schema {
     });
   };
 
-  static product = class {
-    static create = z.object({
-      name: schema.names,
-      price: z.number().min(1),
-    });
-  };
-
   static packageTransaction = class {
     static create = z.object({
       transactionDate: schema.date,
@@ -208,6 +216,23 @@ export class schema {
       promoCodeCode: z.string().optional(),
       totalPrice: z.coerce.number().optional(),
       transactionDate: schema.dateOptional,
+    });
+  };
+
+  static productTransaction = class {
+    static create = z.object({
+      transactionDate: schema.date,
+      paymentMethodId: z.string().min(1, "Select payment method"),
+      buyerId: z.string().min(1, "Select buyer"),
+      products: z
+        .array(
+          z.object({
+            productId: z.string().min(1, "Select product"),
+            quantity: z.number().min(1, numberMessage("Quantity", 1)),
+            unitPrice: z.number(),
+          }),
+        )
+        .min(1),
     });
   };
 }

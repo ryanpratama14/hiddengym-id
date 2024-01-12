@@ -35,7 +35,7 @@ const InputSelect = React.forwardRef<BaseSelectRef, InputSelectProps>((props, re
         },
       }}
     >
-      <section className="flex flex-col gap-0.5">
+      <section className={cn("flex flex-col gap-0.5", props.className)}>
         {props.label ? <label htmlFor={id}>{props.label}</label> : null}
         <section className="relative">
           <Select

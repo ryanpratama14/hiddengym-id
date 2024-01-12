@@ -77,7 +77,7 @@ export const packageRouter = createTRPCRouter({
         type: input.type,
         price: { gte: input.price },
       },
-      orderBy: { type: "asc" },
+      orderBy: input.price ? { price: "asc" } : { type: "asc" },
     });
     if (input.totalTransactions) data = data.filter((item) => item.transactions.length >= input.totalTransactions!);
     return data;

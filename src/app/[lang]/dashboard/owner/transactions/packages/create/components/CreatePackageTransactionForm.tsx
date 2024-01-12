@@ -28,7 +28,7 @@ import { inputVariants } from "@/styles/variants";
 import { api } from "@/trpc/react";
 import { type Dictionary } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { type Package, type PaymentMethod, type PromoCode, type User } from "@prisma/client";
+import { type Package, type PromoCode, type User } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
@@ -43,7 +43,7 @@ export default function CreatePackageTransactionForm({ t, option }: Props) {
   const router = useRouter();
   const [selectedBuyer, setSelectedBuyer] = useState<User | null>();
   const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<PaymentMethod | null>(null);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>("");
   const [selectedPromoCode, setSelectedPromoCode] = useState<PromoCode | null>(null);
 
   const {
@@ -143,10 +143,11 @@ export default function CreatePackageTransactionForm({ t, option }: Props) {
               {...field}
               icon={ICONS.payment_method}
               error={errors.paymentMethodId?.message}
-              options={option.paymentMethods.map((e) => ({ ...e, value: e.id, label: e.name }))}
+              options={option.paymentMethods.map((e) => ({ value: e.id, label: e.name }))}
               label="Payment Method"
               onChange={(value, item) => {
-                setSelectedPaymentMethod(item as PaymentMethod);
+                const option = structuredClone(item) as { value: string; label: string };
+                setSelectedPaymentMethod(option.label);
                 setValue("paymentMethodId", value as string);
                 clearErrors("paymentMethodId");
               }}
@@ -266,7 +267,7 @@ export default function CreatePackageTransactionForm({ t, option }: Props) {
 
             {selectedPaymentMethod ? (
               <section className="flex w-full bg-blue text-light justify-center text-lg py-1 font-medium shadow-lg">
-                PAID BY {selectedPaymentMethod.name.toUpperCase()}
+                PAID BY {selectedPaymentMethod.toUpperCase()}
               </section>
             ) : null}
 
