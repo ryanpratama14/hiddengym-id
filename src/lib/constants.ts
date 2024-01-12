@@ -144,6 +144,7 @@ export const ICONS = {
   invoice: "iconamoon:invoice",
   detail: "carbon:folder-details-reference",
   edit: "basil:edit-outline",
+  delete: "material-symbols:delete",
 };
 
 export const GENDERS: {

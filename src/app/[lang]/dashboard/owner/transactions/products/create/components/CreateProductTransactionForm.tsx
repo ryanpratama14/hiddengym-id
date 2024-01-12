@@ -7,7 +7,7 @@ import InputSelect from "@/components/InputSelect";
 import { toastError, toastSuccess } from "@/components/Toast";
 import { useZustand } from "@/global/store";
 import { ICONS, USER_REDIRECT } from "@/lib/constants";
-import { formatCurrency } from "@/lib/functions";
+import { cn, formatCurrency, getInputDate } from "@/lib/functions";
 import { schema } from "@/schema";
 import { type PaymentMethodList } from "@/server/api/routers/paymentMethod";
 import { type ProductList } from "@/server/api/routers/product";
@@ -40,10 +40,10 @@ export default function CreateProductTransactionForm({ t, option }: Props) {
     clearErrors,
   } = useForm<ProductTransactionInput>({
     resolver: zodResolver(schema.productTransaction.create),
-    defaultValues: { buyerId: "", paymentMethodId: "", products: [productInitialData] },
+    defaultValues: { transactionDate: getInputDate(), buyerId: "", paymentMethodId: "", products: [productInitialData] },
   });
 
-  const { fields, insert } = useFieldArray({ control, name: "products" });
+  const { fields, insert, remove } = useFieldArray({ control, name: "products" });
 
   const onSubmit: SubmitHandler<ProductTransactionInput> = (data) => createData(data);
 
@@ -120,15 +120,24 @@ export default function CreateProductTransactionForm({ t, option }: Props) {
                     />
                   )}
                 />
-                <Input
-                  {...register(`products.${index}.quantity`, { setValueAs: (v) => +v })}
-                  type="number"
-                  error={errors.products?.[index]?.quantity?.message}
-                />
+                <section className="flex justify-between">
+                  <Input
+                    classNameDiv={cn("w-[70%]", { "w-full": fields.length === 1 })}
+                    {...register(`products.${index}.quantity`, { setValueAs: (v) => +v })}
+                    type="number"
+                    error={errors.products?.[index]?.quantity?.message}
+                  />
+
+                  {fields.length === 1 ? null : (
+                    <section className="w-[30%] justify-end flex items-center">
+                      <Iconify onClick={() => remove(index)} icon={ICONS.delete} className="text-red" width={30} />
+                    </section>
+                  )}
+                </section>
               </section>
             ))}
           </section>
-          <section className="flex justify-end mt-2">
+          <section className="flex justify-end mt-2 pr-[0.15rem]">
             <section
               onClick={() => insert(fields.length, productInitialData)}
               className="relative size-6 bg-dark text-light cursor-pointer"
