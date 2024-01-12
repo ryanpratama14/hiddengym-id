@@ -28,8 +28,8 @@ export default function ProductsPage({ params, searchParams }: Props) {
               </header>
               <section className="flex flex-col">
                 <p>Recent transactions</p>
-                {product.transactions.map((txn) => (
-                  <section className="flex justify-between">{txn.buyer.fullName}</section>
+                {product.productOnTransaction.map((txn) => (
+                  <section className="flex justify-between">{txn.productTransaction.totalPrice}</section>
                 ))}
               </section>
             </section>
