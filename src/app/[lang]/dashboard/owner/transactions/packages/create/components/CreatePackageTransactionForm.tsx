@@ -187,6 +187,10 @@ export default function CreatePackageTransactionForm({ t, option }: Props) {
         </section>
       </section>
 
+      {/* {selectedBuyer && selectedPackage ? <>
+        
+      </> : null} */}
+
       {selectedPackage && selectedBuyer ? (
         <section className="flex justify-center items-center">
           <section className="md:w-[30rem] w-full flex flex-col gap-4 p-3 lg:p-6 shadow bg-light text-dark">

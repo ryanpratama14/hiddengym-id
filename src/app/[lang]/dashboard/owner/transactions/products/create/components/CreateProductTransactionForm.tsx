@@ -5,6 +5,7 @@ import Iconify from "@/components/Iconify";
 import Input from "@/components/Input";
 import InputSelect from "@/components/InputSelect";
 import { toastError, toastSuccess } from "@/components/Toast";
+import TransactionInvoice from "@/components/TransactionInvoice";
 import { useZustand } from "@/global/store";
 import { ICONS, USER_REDIRECT } from "@/lib/constants";
 import { cn, formatCurrency, getInputDate } from "@/lib/functions";
@@ -21,7 +22,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useFieldArray, useForm, type SubmitHandler } from "react-hook-form";
 
-const productInitialData = { unitPrice: 0, quantity: 1, productId: "" };
+const productInitialData = { unitPrice: 0, quantity: 1, productId: "", name: "" };
 
 type Props = { t: Dictionary; option: { paymentMethods: PaymentMethodList; products: ProductList; visitors: UserListVisitor } };
 
@@ -55,11 +56,9 @@ export default function CreateProductTransactionForm({ t, option }: Props) {
     onError: (res) => toastError({ t, description: res.message }),
   });
 
-  const data = {
-    products: watch("products"),
-  };
+  const data = { products: watch("products"), transactionDate: watch("transactionDate") };
 
-  console.log(fields);
+  console.log(data.products);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full">
@@ -107,13 +106,15 @@ export default function CreateProductTransactionForm({ t, option }: Props) {
                       error={errors.products?.[index]?.productId?.message}
                       {...field}
                       options={option.products.map((e) => ({
+                        name: e.name,
                         unitPrice: e.price,
                         value: e.id,
                         label: `${e.name} - ${formatCurrency(e.price)}`,
                       }))}
                       onChange={(e, item) => {
-                        const data = structuredClone(item) as { unitPrice: number };
+                        const data = structuredClone(item) as { unitPrice: number; name: string };
                         setValue(`products.${index}.unitPrice`, data.unitPrice);
+                        setValue(`products.${index}.name`, data.name);
                         setValue(`products.${index}.productId`, e as string);
                         clearErrors(`products.${index}.productId`);
                       }}
@@ -167,6 +168,26 @@ export default function CreateProductTransactionForm({ t, option }: Props) {
           )}
         />
       </section>
+
+      {selectedBuyer.fullName && data.products.length ? (
+        <TransactionInvoice>
+          <TransactionInvoice.Header
+            title="Product"
+            transactionDate={data.transactionDate}
+            totalPrice={data.products.reduce((sum, product) => {
+              const productTotalPrice = product.quantity * product.unitPrice;
+              return sum + productTotalPrice;
+            }, 0)}
+          />
+          <TransactionInvoice.Buyer
+            fullName={selectedBuyer.fullName}
+            phoneNumber={selectedBuyer.phoneNumber}
+            email={selectedBuyer.email}
+          />
+          <TransactionInvoice.Products products={data.products} />
+          <TransactionInvoice.PaymentMethod paymentMethod={selectedPaymentMethod} />
+        </TransactionInvoice>
+      ) : null}
 
       <section className="flex justify-center items-center">
         <Button className="md:w-fit w-full" loading={loading} type="submit" color="success" size="xl">

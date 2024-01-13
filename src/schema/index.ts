@@ -230,6 +230,7 @@ export class schema {
             productId: z.string().min(1, "Select product"),
             quantity: z.number().min(1, numberMessage("Quantity", 1)),
             unitPrice: z.number(),
+            name: z.string(),
           }),
         )
         .min(1),
