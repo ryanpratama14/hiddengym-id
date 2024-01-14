@@ -24,7 +24,7 @@ export default function DashboardContainer({ children, items, user, addButtonIte
 
       <article
         onClick={handleCollapse}
-        className={cn("animate min-h-screen p-shorter bg-cream ml-[3.1rem] mt-14", { "xl:ml-64": !collapsed })}
+        className={cn("animate h-dvh p-shorter bg-cream ml-[3.1rem] mt-14", { "xl:ml-64": !collapsed })}
       >
         {children}
       </article>

@@ -14,7 +14,7 @@ export default function SignInPageContainer({ callbackUrl, t }: Props) {
   const [isForgotPassword, setIsForgotPassword] = useState(false);
 
   return (
-    <article className="flex items-center justify-center min-h-screen">
+    <article className="flex items-center justify-center h-dvh">
       <section className="flex md:flex-row flex-col md:flex-nowrap flex-wrap md:w-[80%] w-full md:bg-light">
         <section className="md:w-[50%] w-full flex items-center justify-center max-md:border-b-2 border-dark max-md:rounded-b-full bg-cream aspect-[4/3] md:aspect-square">
           <header className="flex flex-col items-center justify-center gap-6 w-[50%] max-md:-translate-y-4 md:-translate-x-4">

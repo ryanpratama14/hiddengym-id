@@ -38,7 +38,7 @@ export default function DashboardLayout({ collapsed, setCollapsed, user, handleC
           collapsed={collapsed}
           width={250}
         >
-          <aside className="min-h-screen flex flex-col gap-6 justify-between pb-6">
+          <aside className="h-dvh flex flex-col gap-6 justify-between pb-6">
             <nav className="flex flex-col gap-4">
               <button
                 type="button"

@@ -18,7 +18,7 @@ export default async function SignInVisitorPage({ searchParams, params }: Props)
   const t = await useDictionary(params.lang);
 
   return (
-    <article className="flex items-center justify-center min-h-screen">
+    <article className="flex items-center justify-center h-dvh">
       <section className="flex md:flex-row flex-col md:flex-nowrap flex-wrap md:w-[80%] w-full md:bg-light">
         <section className="md:w-[50%] w-full flex items-center justify-center max-md:border-b-2 border-dark max-md:rounded-b-full bg-cream aspect-[4/3] md:aspect-square">
           <SignInVisitorHeader />
