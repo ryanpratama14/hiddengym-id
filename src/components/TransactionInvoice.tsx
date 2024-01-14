@@ -51,7 +51,7 @@ TransactionInvoice.Products = function InvoiceProducts({
   );
 };
 
-TransactionInvoice.Buyer = function InvoiceBuyer(props: { fullName: string; phoneNumber: string; email: string }) {
+TransactionInvoice.Buyer = function InvoiceBuyer(props: { fullName: string; phoneNumber: string; email?: string | null }) {
   return (
     <section className="flex flex-col text-center">
       <p className="font-medium underline">{props.fullName}</p>
@@ -61,13 +61,21 @@ TransactionInvoice.Buyer = function InvoiceBuyer(props: { fullName: string; phon
   );
 };
 
-TransactionInvoice.Header = function InvoiceHeader(props: { title: string; totalPrice: number; transactionDate: string }) {
+TransactionInvoice.Header = function InvoiceHeader(props: {
+  title: string;
+  totalPrice: number;
+  transactionDate?: string;
+  transactionDateDate?: Date;
+}) {
   return (
     <section className="flex justify-between w-full">
       <section className="flex flex-col">
         <h6>{props.title} TXN</h6>
         <p className="font-medium">
-          Date: {props.transactionDate ? formatDateShort({ date: getNewDate(props.transactionDate) }) : null}
+          Date:{" "}
+          {props.transactionDate
+            ? formatDateShort({ date: props.transactionDateDate ? props.transactionDateDate : getNewDate(props.transactionDate) })
+            : null}
         </p>
       </section>
       <section className="flex flex-col items-end">
@@ -78,7 +86,7 @@ TransactionInvoice.Header = function InvoiceHeader(props: { title: string; total
   );
 };
 
-TransactionInvoice.Package = function InvoicePackage(props: { package: Package; promoCode?: PromoCode }) {
+TransactionInvoice.Package = function InvoicePackage(props: { package: Package; promoCode?: PromoCode | null }) {
   return (
     <section className="flex flex-col gap-1">
       <section className="flex justify-between items-center">
@@ -102,7 +110,7 @@ TransactionInvoice.Package = function InvoicePackage(props: { package: Package; 
   );
 };
 
-TransactionInvoice.Validity = function InvoiceValidity(props: { validityInDays?: number; transactionDate?: string }) {
+TransactionInvoice.Validity = function InvoiceValidity(props: { validityInDays?: number | null; transactionDate?: string }) {
   return props.validityInDays && props.transactionDate ? (
     <section className="flex flex-col">
       <section className="flex justify-between">
@@ -130,7 +138,7 @@ TransactionInvoice.Validity = function InvoiceValidity(props: { validityInDays?:
   ) : null;
 };
 
-TransactionInvoice.ApprovedSessions = function InvoiceApprovedSessions({ approvedSessions }: { approvedSessions?: number }) {
+TransactionInvoice.ApprovedSessions = function InvoiceApprovedSessions({ approvedSessions }: { approvedSessions?: number | null }) {
   return approvedSessions ? <small className="text-left">Approved sessions: {`${approvedSessions} session(s)`}</small> : null;
 };
 

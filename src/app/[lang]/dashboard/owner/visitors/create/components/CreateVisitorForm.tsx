@@ -4,22 +4,10 @@ import Button from "@/components/Button";
 import Iconify from "@/components/Iconify";
 import Input from "@/components/Input";
 import InputSelect from "@/components/InputSelect";
-import Logo from "@/components/Logo";
 import { toastError, toastSuccess, toastWarning } from "@/components/Toast";
+import TransactionInvoice from "@/components/TransactionInvoice";
 import { GENDERS, ICONS, USER_REDIRECT } from "@/lib/constants";
-import {
-  cn,
-  formatCurrency,
-  formatDateShort,
-  formatPhoneNumber,
-  getExpiryDate,
-  getInputDate,
-  getNewDate,
-  getStartDate,
-  isDateExpired,
-  isDateToday,
-  localizePhoneNumber,
-} from "@/lib/functions";
+import { cn, getInputDate, getNewDate } from "@/lib/functions";
 import { schema } from "@/schema";
 import { type PackageList } from "@/server/api/routers/package";
 import { type PackageTransactionCreateInput } from "@/server/api/routers/packageTransaction";
@@ -30,7 +18,7 @@ import { api } from "@/trpc/react";
 import { type TRPC_RESPONSE } from "@/trpc/shared";
 import { type Dictionary, type Lang } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { type Package, type PaymentMethod, type PromoCode } from "@prisma/client";
+import { type Package, type PromoCode } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { Fragment, useState } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
@@ -46,7 +34,7 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
   const router = useRouter();
   const [isAddingTransaction, setIsAddingTransaction] = useState<boolean>(false);
   const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<PaymentMethod | null>(null);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>("");
   const [selectedPromoCode, setSelectedPromoCode] = useState<PromoCode | null>(null);
 
   const {
@@ -179,8 +167,8 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
                 if (!isAddingTransaction) setValue("packageData.packageId", "");
                 if (!isAddingTransaction) setValue("packageData.paymentMethodId", "");
                 if (selectedPackage) setSelectedPackage(null);
-                if (selectedPaymentMethod) setSelectedPaymentMethod(null);
                 if (selectedPromoCode) setSelectedPromoCode(null);
+                if (selectedPaymentMethod) setSelectedPaymentMethod("");
               }}
               className={cn({ "text-dark bg-dark/10": !isAddingTransaction })}
             >
@@ -230,7 +218,8 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
                   options={option.paymentMethods.map((e) => ({ ...e, value: e.id, label: e.name }))}
                   label="Payment Method"
                   onChange={(value, item) => {
-                    setSelectedPaymentMethod(item as PaymentMethod);
+                    const data = structuredClone(item) as { label: string };
+                    setSelectedPaymentMethod(data.label);
                     setValue("packageData.paymentMethodId", value as string);
                     clearErrors("packageData.paymentMethodId");
                   }}
@@ -275,102 +264,22 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
       ) : null}
 
       {/* TRANSACTION_INVOICE */}
+
       {selectedPackage ? (
-        <section className="flex justify-center items-center">
-          <section className="md:w-[30rem] w-full flex flex-col gap-4 p-3 lg:p-6 shadow bg-light text-dark">
-            <section className="flex justify-between w-full">
-              <section className="flex flex-col">
-                <h6>Package TXN</h6>
-                <p className="font-medium">
-                  Date: {data.transactionDate ? formatDateShort({ date: getNewDate(data.transactionDate) }) : null}
-                </p>
-              </section>
-              <section className="flex flex-col items-end">
-                <p className="font-semibold">TOTAL AMOUNT</p>
-                <h6 className="w-fit px-2 text-light bg-orange">
-                  {formatCurrency(
-                    selectedPromoCode?.discountPrice
-                      ? selectedPackage.price - selectedPromoCode?.discountPrice
-                      : selectedPackage.price,
-                  )}
-                </h6>
-              </section>
-            </section>
-
-            <section className="flex flex-col text-center">
-              <p className="font-medium underline">{data.fullName}</p>
-              <p>{localizePhoneNumber(formatPhoneNumber(data.phoneNumber))}</p>
-              <p>{data.email}</p>
-            </section>
-
-            <section className="flex flex-col gap-1">
-              <section className="flex justify-between items-center">
-                <section className="flex gap-2 items-center">
-                  <small className="font-semibold border-1 border-dark px-1">{selectedPackage.type}</small>
-                  <small>{selectedPackage.name}</small>
-                </section>
-                <small>{formatCurrency(selectedPackage.price)}</small>
-              </section>
-              {selectedPromoCode ? (
-                <section className="flex justify-between items-center">
-                  <section className="flex gap-1 items-center">
-                    <small>PROMO CODE</small>
-                    <code className="text-sm italic underline">{selectedPromoCode.code}</code>
-                  </section>
-
-                  <small>{formatCurrency(-selectedPromoCode.discountPrice)}</small>
-                </section>
-              ) : null}
-            </section>
-
-            {selectedPackage.validityInDays && data.transactionDate ? (
-              <section className="flex flex-col">
-                <section className="flex justify-between">
-                  <small>Start</small>
-                  <small>Expiry</small>
-                </section>
-                <section className="flex justify-between items-center gap-6 relative">
-                  <section className="flex flex-col w-fit">
-                    <p className="font-semibold">{formatDateShort({ date: getStartDate(data.transactionDate) })}</p>
-                  </section>
-                  <div className="absolute centered w-[25%] h-0.5 bg-dark" />
-                  <section className="flex flex-col text-right w-fit">
-                    <p className="font-semibold">
-                      {isDateToday(getExpiryDate({ days: selectedPackage.validityInDays, dateString: data.transactionDate }))
-                        ? "Today"
-                        : isDateExpired(getExpiryDate({ days: selectedPackage.validityInDays, dateString: data.transactionDate }))
-                          ? "Expired"
-                          : formatDateShort({
-                              date: getExpiryDate({ days: selectedPackage.validityInDays, dateString: data.transactionDate }),
-                            })}
-                    </p>
-                  </section>
-                </section>
-              </section>
-            ) : null}
-
-            {selectedPackage.approvedSessions ? (
-              <small className="text-left">Approved sessions: {`${selectedPackage.approvedSessions} session(s)`}</small>
-            ) : null}
-
-            {selectedPaymentMethod ? (
-              <section className="flex w-full bg-blue text-light justify-center text-lg py-1 font-medium shadow-lg">
-                PAID BY {selectedPaymentMethod.name.toUpperCase()}
-              </section>
-            ) : null}
-
-            <section className="flex flex-col justify-center items-center gap-6 mt-6">
-              <Logo className="aspect-video w-[50%]" />
-              <section className="flex justify-center flex-col gap-1 text-center">
-                <h6>HIDDEN GYM</h6>
-                <small className="text-balance">
-                  Jl. Cengkir No.9 10, RT.10/RW.12, Utan Kayu Sel., Kec. Matraman, Kota Jakarta Timur, Daerah Khusus Ibukota Jakarta
-                  13120
-                </small>
-              </section>
-            </section>
-          </section>
-        </section>
+        <TransactionInvoice>
+          <TransactionInvoice.Header
+            title="Package"
+            totalPrice={
+              selectedPromoCode?.discountPrice ? selectedPackage.price - selectedPromoCode?.discountPrice : selectedPackage.price
+            }
+            transactionDate={data.transactionDate}
+          />
+          <TransactionInvoice.Buyer fullName={data.fullName} email={data.email} phoneNumber={data.phoneNumber} />
+          <TransactionInvoice.Package package={selectedPackage} promoCode={selectedPromoCode} />
+          <TransactionInvoice.Validity validityInDays={selectedPackage.validityInDays} transactionDate={data.transactionDate} />
+          <TransactionInvoice.ApprovedSessions approvedSessions={selectedPackage.approvedSessions} />
+          <TransactionInvoice.PaymentMethod paymentMethod={selectedPaymentMethod} />
+        </TransactionInvoice>
       ) : null}
 
       <section className="flex justify-center items-center">
