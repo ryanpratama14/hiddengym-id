@@ -23,7 +23,7 @@ export class schema {
     page: z.coerce.number().positive().default(1),
     limit: z.coerce.number().positive().default(PAGINATION_LIMIT),
   });
-  static sorting = z.object({ sorting: z.string().optional() });
+  static sorting = z.object({ sort: z.string().optional() });
   static email = z.string().email("Provide a valid email");
   static fullName = z
     .string()
@@ -220,6 +220,15 @@ export class schema {
   };
 
   static productTransaction = class {
+    static list = z.object({
+      ...schema.pagination.shape,
+      ...schema.sorting.shape,
+      totalPrice: z.coerce.number().optional(),
+      paymentMethod: z.string().optional(),
+      buyer: z.string().optional(),
+      transactionDate: z.string().optional(),
+    });
+
     static create = z.object({
       transactionDate: schema.date,
       paymentMethodId: z.string().min(1, "Select payment method"),

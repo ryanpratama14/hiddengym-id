@@ -1,7 +1,15 @@
 import { COLORS } from "@/styles/theme";
 import { type AddButtonKey, type DashboardMenuKey, type Lang } from "@/types";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
-import { type Gender, type PackageTransaction, type PackageType, type PromoCodeType, type Role, type User } from "@prisma/client";
+import {
+  type Gender,
+  type PackageTransaction,
+  type PackageType,
+  type ProductTransaction,
+  type PromoCodeType,
+  type Role,
+  type User,
+} from "@prisma/client";
 
 export const USER_LIST_SORTERERS: { name: keyof User; title: string }[] = [
   {
@@ -50,6 +58,21 @@ export const PACKAGE_TRANSACTION_SORTERERS: { name: keyof PackageTransaction; ti
   {
     name: "promoCodeId",
     title: "Promo Code",
+  },
+  {
+    name: "buyerId",
+    title: "Buyer",
+  },
+];
+
+export const PRODUCT_TRANSACTION_SORTERERS: { name: keyof ProductTransaction; title: string }[] = [
+  {
+    name: "transactionDate",
+    title: "Transaction Date",
+  },
+  {
+    name: "paymentMethodId",
+    title: "Payment Method",
   },
   {
     name: "buyerId",

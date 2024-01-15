@@ -17,7 +17,7 @@ import { inputVariants } from "@/styles/variants";
 import { api } from "@/trpc/react";
 import { type Dictionary } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { type Package, type PromoCode, type User } from "@prisma/client";
+import { type Package, type PromoCode } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
@@ -27,10 +27,17 @@ type Props = {
   option: { packages: PackageList; paymentMethods: PaymentMethodList; visitors: UserListVisitor };
 };
 
+type SelectedUser = { fullName: string; email: null | string; phoneNumber: string; birthDate: null | Date };
+
 export default function CreatePackageTransactionForm({ t, option }: Props) {
   const { lang } = useZustand();
   const router = useRouter();
-  const [selectedBuyer, setSelectedBuyer] = useState<User | null>();
+  const [selectedBuyer, setSelectedBuyer] = useState<SelectedUser>({
+    fullName: "",
+    email: null,
+    phoneNumber: "",
+    birthDate: null,
+  });
   const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>("");
   const [selectedPromoCode, setSelectedPromoCode] = useState<PromoCode | null>(null);
@@ -87,10 +94,23 @@ export default function CreatePackageTransactionForm({ t, option }: Props) {
               {...field}
               icon={ICONS.person}
               error={errors.buyerId?.message}
-              options={option.visitors.map((e) => ({ ...e, value: e.id, label: e.fullName }))}
+              options={option.visitors.map((e) => ({
+                email: e.email,
+                phoneNumber: e.phoneNumber,
+                value: e.id,
+                label: e.fullName,
+                fullName: e.fullName,
+                birthDate: e.birthDate,
+              }))}
               label="Buyer"
               onChange={(value, item) => {
-                setSelectedBuyer(item as User);
+                const user = structuredClone(item) as SelectedUser;
+                setSelectedBuyer({
+                  fullName: user.fullName,
+                  email: user.email,
+                  phoneNumber: user.phoneNumber,
+                  birthDate: user.birthDate,
+                });
                 setValue("buyerId", value as string);
                 clearErrors("buyerId");
                 if (selectedPromoCode && selectedPromoCode.type === "STUDENT") setSelectedPromoCode(null);
