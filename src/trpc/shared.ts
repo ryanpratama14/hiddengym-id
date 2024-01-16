@@ -200,16 +200,12 @@ export const getPaginationData = ({ totalData, limit, page }: Pagination & { tot
 
 export const insensitiveMode = { mode: "insensitive" as Prisma.QueryMode };
 
-export const getPaginationQuery = ({ limit, page }: Pagination) => {
-  return { skip: (page - 1) * limit, take: limit };
-};
+export const getPaginationQuery = ({ limit, page }: Pagination) => ({ skip: (page - 1) * limit, take: limit });
 
 export const getSortingQuery = (sorting?: string) => {
   if (sorting) {
     const [name, value] = sorting.split("-");
-    return {
-      orderBy: [{ [name!]: value }],
-    };
+    return { orderBy: { [name!]: value } };
   }
   return undefined;
 };

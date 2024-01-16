@@ -12,15 +12,7 @@ import {
 } from "@/trpc/shared";
 import { z } from "zod";
 
-const packageSelect = {
-  select: {
-    ...prismaExclude("Package", []),
-    trainers: true,
-    places: true,
-    sports: true,
-    transactions: true,
-  },
-};
+const packageSelect = { select: { ...prismaExclude("Package", []), trainers: true, places: true, sports: true, transactions: true } };
 
 export const packageRouter = createTRPCRouter({
   update: ownerProcedure.input(schema.package.update).mutation(async ({ ctx, input }) => {
@@ -42,6 +34,7 @@ export const packageRouter = createTRPCRouter({
 
     return THROW_OK("OK", "Package has been updated.");
   }),
+
   create: ownerProcedure.input(schema.package.create).mutation(async ({ ctx, input }) => {
     const data = await ctx.db.package.findFirst({ where: { name: input.name } });
     if (data) return THROW_TRPC_ERROR("CONFLICT", getConflictMessage("package", "name"));

@@ -8,22 +8,10 @@ import { notification } from "antd";
 type ToastType = "success" | "error" | "warning" | "info";
 
 const toastIcons: Record<ToastType, { icon: IconifyIcon | string; color: string }> = {
-  success: {
-    icon: ICONS.success,
-    color: COLORS.green,
-  },
-  error: {
-    icon: ICONS.error,
-    color: COLORS.red,
-  },
-  info: {
-    icon: ICONS.info,
-    color: COLORS.blue,
-  },
-  warning: {
-    icon: ICONS.warning,
-    color: COLORS.orange,
-  },
+  success: { icon: ICONS.success, color: COLORS.green },
+  error: { icon: ICONS.error, color: COLORS.red },
+  info: { icon: ICONS.info, color: COLORS.blue },
+  warning: { icon: ICONS.warning, color: COLORS.orange },
 };
 
 export const toast = ({ type, description, t }: { type: ToastType; description: string; t: Dictionary }) => {

@@ -11,6 +11,8 @@ import { twMerge } from "tailwind-merge";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
+export const timeZones: Record<"WIB", string> = { WIB: "Asia/Jakarta" };
+
 export const loadToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
 export const cn = (...inputs: ClassValue[]): string => twMerge(clsx(inputs));
@@ -53,7 +55,7 @@ export const formatName = (name: string): string => {
 };
 
 export const getInputDate = (date?: Date): string => {
-  const dateString = date ? dayjs(date) : dayjs().tz("Asia/Jakarta");
+  const dateString = date ? dayjs(date) : dayjs().tz(timeZones.WIB);
   return dateString.format("YYYY-MM-DD");
 };
 
@@ -70,13 +72,13 @@ export const getNewDate = (dateString?: string): Date => {
   return new Date();
 };
 
-export const getEndDate = (dateString: string): Date => dayjs.tz(dateString, "Asia/Jakarta").endOf("day").toDate();
+export const getEndDate = (dateString: string): Date => dayjs.tz(dateString, timeZones.WIB).endOf("day").toDate();
 
-export const getStartDate = (dateString: string): Date => dayjs.tz(dateString, "Asia/Jakarta").startOf("day").toDate();
+export const getStartDate = (dateString: string): Date => dayjs.tz(dateString, timeZones.WIB).startOf("day").toDate();
 
 export const getExpiryDate = ({ days, dateString }: { days: number; dateString: string }): Date => {
   const date = dayjs
-    .tz(dateString, "Asia/Jakarta")
+    .tz(dateString, timeZones.WIB)
     .add(days - 1, "day")
     .endOf("day")
     .toDate();
@@ -98,7 +100,7 @@ export const getUserAge = (birthDate: Date): number => {
 };
 
 export const getRemainingDays = (targetDate: Date): number => {
-  const currentDate = dayjs().tz("Asia/Jakarta").toDate();
+  const currentDate = dayjs().tz(timeZones.WIB).toDate();
   const timeDifference = targetDate.getTime() - currentDate.getTime();
   const remainingDays = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
   return remainingDays;
