@@ -31,6 +31,7 @@ export default async function RootLayout({ children, params }: Props) {
   let isSessionExpired;
 
   if (session) if (Date.now() >= session.user.exp) isSessionExpired = false;
+  console.log(session);
 
   return (
     <html lang={params.lang} className={poppins.variable}>

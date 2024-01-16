@@ -4,7 +4,7 @@ import { formatPhoneNumber } from "@/lib/functions";
 import { schema } from "@/schema";
 import { db } from "@/server/db";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { type Role } from "@prisma/client";
+import { type Role, type User } from "@prisma/client";
 import { verify } from "argon2";
 import { getServerSession, type DefaultSession, type NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -21,17 +21,13 @@ export const authOptions: NextAuthOptions = {
   session: { strategy: "jwt" },
   callbacks: {
     jwt: async ({ token, user }) => ({ ...token, ...user }),
-    session: async ({ session, token }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        id: token.id as string,
-        role: token.role as Role,
-        exp: (token.exp as number) * 1000,
-        name: token.fullName as string,
-        image: null,
-      },
-    }),
+    session: async ({ session, token }) => {
+      const user = structuredClone(token) as User & { exp: number };
+      return {
+        ...session,
+        user: { ...session.user, id: user.id, role: user.role, exp: user.exp * 1000, name: user.fullName, image: user.imageId },
+      };
+    },
   },
   providers: [
     CredentialsProvider({
@@ -44,7 +40,7 @@ export const authOptions: NextAuthOptions = {
 
         // for visitors
         if (email === EMAIL_VISITOR_READONLY) {
-          const user = await db.user.findFirst({ where: { phoneNumber: formatPhoneNumber(credential) } });
+          const user = await db.user.findUnique({ where: { phoneNumber: formatPhoneNumber(credential) } });
           if (!user) return null;
           return user;
         }
