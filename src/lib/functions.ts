@@ -158,11 +158,9 @@ export const formatDateLong = ({ date, lang, withTime }: { date: Date; lang?: La
   });
 };
 
-export const formatPhoneNumber = (phoneNumber: string): string => `${COUNTRY_CODE}${phoneNumber}`;
-export const removeFormatPhoneNumber = (phoneNumber: string): string => phoneNumber.replace(COUNTRY_CODE, "");
-
 export const localizePhoneNumber = (phoneNumber: string): string => {
-  const formattedNumber = `${phoneNumber.slice(0, 3)} ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}-${phoneNumber.slice(10)}`;
+  const localizedPhoneNumber = `${COUNTRY_CODE}${phoneNumber}`;
+  const formattedNumber = `${localizedPhoneNumber.slice(0, 3)} ${localizedPhoneNumber.slice(3, 6)}-${localizedPhoneNumber.slice(6, 10)}-${localizedPhoneNumber.slice(10)}`;
   return formattedNumber;
 };
 

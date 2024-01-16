@@ -5,7 +5,7 @@ import Iconify from "@/components/Iconify";
 import Input from "@/components/Input";
 import { toastError, toastSuccess } from "@/components/Toast";
 import { GENDERS, ICONS } from "@/lib/constants";
-import { getInputDate, removeFormatPhoneNumber } from "@/lib/functions";
+import { getInputDate } from "@/lib/functions";
 import { schema } from "@/schema";
 import { type User, type UserUpdateInput } from "@/server/api/routers/user";
 import { type TRPC_RESPONSE } from "@/trpc/shared";
@@ -35,7 +35,7 @@ export default function ProfileForm({ user, setIsEdit, updateUser, t }: Props) {
         fullName: user?.fullName,
         email: user?.email ?? "",
         gender: user?.gender,
-        phoneNumber: user?.phoneNumber && removeFormatPhoneNumber(user.phoneNumber),
+        phoneNumber: user?.phoneNumber,
         birthDate: user?.birthDate ? getInputDate(user.birthDate) : "",
       },
     },

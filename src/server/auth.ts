@@ -1,6 +1,5 @@
 import { env } from "@/env";
 import { EMAIL_VISITOR_READONLY } from "@/lib/constants";
-import { formatPhoneNumber } from "@/lib/functions";
 import { schema } from "@/schema";
 import { db } from "@/server/db";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
@@ -40,7 +39,7 @@ export const authOptions: NextAuthOptions = {
 
         // for visitors
         if (email === EMAIL_VISITOR_READONLY) {
-          const user = await db.user.findUnique({ where: { phoneNumber: formatPhoneNumber(credential) } });
+          const user = await db.user.findUnique({ where: { phoneNumber: credential } });
           if (!user) return null;
           return user;
         }

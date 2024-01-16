@@ -1,4 +1,4 @@
-import { formatName, formatPhoneNumber, getNewDate } from "@/lib/functions";
+import { formatName, getNewDate } from "@/lib/functions";
 import { schema, type Pagination } from "@/schema";
 import { createTRPCRouter, ownerAdminProcedure, ownerProcedure, protectedProcedure, publicProcedure } from "@/server/api/trpc";
 import {
@@ -40,14 +40,14 @@ export const userRouter = createTRPCRouter({
     const dataByEmail = await ctx.db.user.findFirst({ where: { email: input.email } });
     if (dataByEmail) return THROW_TRPC_ERROR("CONFLICT", getConflictMessage("user", "email"));
 
-    const dataByPhoneNumber = await ctx.db.user.findUnique({ where: { phoneNumber: formatPhoneNumber(input.phoneNumber) } });
+    const dataByPhoneNumber = await ctx.db.user.findUnique({ where: { phoneNumber: input.phoneNumber } });
     if (dataByPhoneNumber) return THROW_TRPC_ERROR("CONFLICT", getConflictMessage("user", "phone number"));
 
     await ctx.db.user.create({
       data: {
         email: input.email.toLowerCase(),
         fullName: formatName(input.fullName),
-        phoneNumber: formatPhoneNumber(input.phoneNumber),
+        phoneNumber: input.phoneNumber,
         gender: input.gender,
         credential: await hash(input.credential),
         birthDate: input.birthDate && getNewDate(input.birthDate),
@@ -65,14 +65,14 @@ export const userRouter = createTRPCRouter({
       if (dataByEmail) return THROW_TRPC_ERROR("CONFLICT", getConflictMessage("visitor", "email"));
     }
 
-    const dataByPhoneNumber = await ctx.db.user.findUnique({ where: { phoneNumber: formatPhoneNumber(visitorData.phoneNumber) } });
+    const dataByPhoneNumber = await ctx.db.user.findUnique({ where: { phoneNumber: visitorData.phoneNumber } });
     if (dataByPhoneNumber) return THROW_TRPC_ERROR("CONFLICT", getConflictMessage("visitor", "phone number"));
 
     const newData = await ctx.db.user.create({
       data: {
         fullName: formatName(visitorData.fullName),
         email: visitorData?.email ? visitorData.email.toLowerCase() : null,
-        phoneNumber: formatPhoneNumber(visitorData.phoneNumber),
+        phoneNumber: visitorData.phoneNumber,
         gender: visitorData.gender,
         credential: await hash(visitorData.phoneNumber),
         birthDate: visitorData.birthDate ? getNewDate(visitorData.birthDate) : null,
@@ -101,7 +101,7 @@ export const userRouter = createTRPCRouter({
       where: { id: userId },
       data: {
         fullName: formatName(input.body.fullName),
-        phoneNumber: formatPhoneNumber(body.phoneNumber),
+        phoneNumber: body.phoneNumber,
         birthDate: getNewDate(body.birthDate),
         email: body.email,
         gender: body.gender,
