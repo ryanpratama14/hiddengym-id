@@ -10,7 +10,7 @@ type Props = {
   lang: Lang;
   session: Session | null;
   children: React.ReactNode;
-  isSessionExpired?: boolean | undefined;
+  isSessionExpired: boolean | undefined;
 };
 
 export default function HigherOrderComponent({ lang, session, children, isSessionExpired }: Props) {
