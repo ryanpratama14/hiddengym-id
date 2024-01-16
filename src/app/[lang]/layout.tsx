@@ -35,15 +35,15 @@ export default async function RootLayout({ children, params }: Props) {
   return (
     <html lang={params.lang} className={poppins.variable}>
       <body>
-        <HigherOrderComponent lang={params.lang} session={session} isSessionExpired={isSessionExpired}>
+        <TRPCReactProvider cookies={cookies().toString()}>
           <AntdRegistry>
             <ConfigProvider theme={theme}>
-              <TRPCReactProvider cookies={cookies().toString()}>
+              <HigherOrderComponent lang={params.lang} session={session} isSessionExpired={isSessionExpired}>
                 <main>{children}</main>
-              </TRPCReactProvider>
+              </HigherOrderComponent>
             </ConfigProvider>
           </AntdRegistry>
-        </HigherOrderComponent>
+        </TRPCReactProvider>
       </body>
     </html>
   );

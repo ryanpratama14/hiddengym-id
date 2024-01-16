@@ -31,12 +31,12 @@ export const Modal = ({ show, closeModal, children, classNameDiv }: Props) => {
           <div className="flex min-h-full items-center justify-center p-4 text-center">
             <Transition.Child
               as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0 scale-95"
-              enterTo="opacity-100 scale-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100 scale-100"
-              leaveTo="opacity-0 scale-95"
+              enter="transition duration-300"
+              enterFrom="transform translate-y-2 opacity-0"
+              enterTo="transform opacity-100 scale-100"
+              leave="transition duration-300"
+              leaveFrom="transform opacity-100 scale-100"
+              leaveTo="transform translate-y-2 opacity-0"
             >
               <Dialog.Panel>
                 <section className={cn("w-fit p-6 rounded-md bg-white relative", classNameDiv)}>

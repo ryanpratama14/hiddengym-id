@@ -63,6 +63,10 @@ export const PACKAGE_TRANSACTION_SORTERERS: { name: keyof PackageTransaction; ti
     name: "buyerId",
     title: "Buyer",
   },
+  {
+    name: "totalPrice",
+    title: "Total Price",
+  },
 ];
 
 export const PRODUCT_TRANSACTION_SORTERERS: { name: keyof ProductTransaction; title: string }[] = [
@@ -77,6 +81,10 @@ export const PRODUCT_TRANSACTION_SORTERERS: { name: keyof ProductTransaction; ti
   {
     name: "buyerId",
     title: "Buyer",
+  },
+  {
+    name: "totalPrice",
+    title: "Total Price",
   },
 ];
 

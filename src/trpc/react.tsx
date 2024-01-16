@@ -31,11 +31,11 @@ export function TRPCReactProvider({ children, cookies }: Props) {
   );
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <api.Provider client={trpcClient} queryClient={queryClient}>
+    <api.Provider client={trpcClient} queryClient={queryClient}>
+      <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools initialIsOpen={false} />
         {children}
-      </api.Provider>
-    </QueryClientProvider>
+      </QueryClientProvider>
+    </api.Provider>
   );
 }
