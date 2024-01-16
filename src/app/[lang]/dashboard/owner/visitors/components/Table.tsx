@@ -8,7 +8,7 @@ import Img from "@/components/Img";
 import Input from "@/components/Input";
 import NavigatorX from "@/components/NavigatorX";
 import { useZustand } from "@/global/store";
-import { DETERMINE_GENDER, GENDERS, ICONS, USER_REDIRECT } from "@/lib/constants";
+import { COUNTRY_CODE, DETERMINE_GENDER, GENDERS, ICONS, USER_REDIRECT } from "@/lib/constants";
 import { cn, createUrl, formatCurrency, localizePhoneNumber, textEllipsis } from "@/lib/functions";
 import { type UserList, type UserListInput } from "@/server/api/routers/user";
 import { PAGINATION_LIMIT } from "@/trpc/shared";
@@ -196,7 +196,7 @@ export default function VisitorsTable({ data, searchParams, loading }: Props) {
           dataIndex: "phoneNumber",
           ...getTableFilter({ name: "phoneNumber" }),
           render: (text: string) => (
-            <NavigatorX newTab href={`tel:${text}`} className="hover:underline text-dark">
+            <NavigatorX newTab href={`tel:${COUNTRY_CODE}${text}`} className="hover:underline text-dark">
               {localizePhoneNumber(text)}
             </NavigatorX>
           ),

@@ -6,7 +6,7 @@ import Img from "@/components/Img";
 import Logo from "@/components/Logo";
 import NavigatorX from "@/components/NavigatorX";
 import { toastError, toastSuccess } from "@/components/Toast";
-import { DETERMINE_GENDER, GENDERS } from "@/lib/constants";
+import { COUNTRY_CODE, DETERMINE_GENDER, GENDERS } from "@/lib/constants";
 import { formatDateLong, formatName, isFileSizeAllowed, localizePhoneNumber } from "@/lib/functions";
 import { uploadFiles } from "@/lib/uploadthing";
 import { type User, type UserUpdateInput } from "@/server/api/routers/user";
@@ -117,7 +117,7 @@ export default function HomeContainer({ lang, user, updateUser, refreshUser, t }
                   </section>
                   <section className="flex flex-col">
                     <p className="label">Phone Number</p>
-                    <NavigatorX newTab href={`tel:${user.phoneNumber}`} className="hover:underline">
+                    <NavigatorX newTab href={`tel:${COUNTRY_CODE}${user.phoneNumber}`} className="hover:underline">
                       {localizePhoneNumber(user?.phoneNumber)}
                     </NavigatorX>
                   </section>
