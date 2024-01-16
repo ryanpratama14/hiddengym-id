@@ -28,7 +28,7 @@ export const packageRouter = createTRPCRouter({
         type: body.type,
         placeIDs: body.placeIDs,
         sportIDs: body.sportIDs,
-        trainerIDs: body.trainerIDs,
+        trainerIDs: body.trainerIDs ?? [],
       },
     });
 
