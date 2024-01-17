@@ -14,19 +14,22 @@ declare module "next-auth" {
   }
 }
 
+declare module "next-auth/jwt" {
+  interface JWT extends User {
+    exp: number;
+  }
+}
+
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(db),
   secret: env.NEXTAUTH_SECRET,
   session: { strategy: "jwt" },
   callbacks: {
     jwt: async ({ token, user }) => ({ ...token, ...user }),
-    session: async ({ session, token }) => {
-      const user = structuredClone(token) as User & { exp: number };
-      return {
-        ...session,
-        user: { ...session.user, id: user.id, role: user.role, exp: user.exp * 1000, name: user.fullName, image: user.imageId },
-      };
-    },
+    session: async ({ session, token }) => ({
+      ...session,
+      user: { ...session.user, id: token.id, role: token.role, exp: token.exp * 1000, name: token.fullName, image: token.imageId },
+    }),
   },
   providers: [
     CredentialsProvider({
