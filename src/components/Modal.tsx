@@ -14,7 +14,7 @@ type Props = {
 export const Modal = ({ show, closeModal, children, classNameDiv }: Props) => {
   return (
     <Transition appear show={show} as={Fragment}>
-      <Dialog as="div" className="relative z-[100]" onClose={closeModal}>
+      <Dialog as="article" className="relative z-[100]" onClose={closeModal}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -24,11 +24,11 @@ export const Modal = ({ show, closeModal, children, classNameDiv }: Props) => {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-black/25" />
+          <div className="fixed inset-0 bg-black/40" />
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-y-auto">
-          <div className="flex min-h-full items-center justify-center p-4 text-center">
+          <div className="flex min-h-full items-center justify-center text-center w-full">
             <Transition.Child
               as={Fragment}
               enter="transition duration-300"
@@ -38,14 +38,14 @@ export const Modal = ({ show, closeModal, children, classNameDiv }: Props) => {
               leaveFrom="transform opacity-100 scale-100"
               leaveTo="transform translate-y-2 opacity-0"
             >
-              <Dialog.Panel>
-                <section className={cn("w-fit p-6 rounded-md bg-white relative", classNameDiv)}>
+              <Dialog.Panel className="max-md:w-full max-md:px-shorter">
+                <section className={cn("w-full p-6 rounded-md bg-cream relative", classNameDiv)}>
                   <button
                     type="submit"
                     onClick={closeModal}
-                    className="size-8 flex items-center justify-center rounded-full absolute -right-3 -top-3 bg-dark"
+                    className="size-6 flex items-center justify-center rounded-full absolute -right-2 -top-2 bg-dark"
                   >
-                    <Iconify icon={ICONS.close} className="text-light" width={25} />
+                    <Iconify icon={ICONS.close} className="text-light" width={20} />
                   </button>
                   {children}
                 </section>

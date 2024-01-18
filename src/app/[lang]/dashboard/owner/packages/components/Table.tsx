@@ -2,16 +2,15 @@ import ActionButton from "@/app/[lang]/dashboard/components/ActionButton";
 import Button from "@/components/Button";
 import FilterIcon from "@/components/FilterIcon";
 import Input from "@/components/Input";
-import { ICONS, PACKAGE_TYPES, USER_REDIRECT } from "@/lib/constants";
+import { ICONS, PACKAGE_TYPES } from "@/lib/constants";
 import { cn, formatCurrency } from "@/lib/functions";
-import { type PackageList, type PackageListInput } from "@/server/api/routers/package";
+import { type PackageDetail, type PackageList, type PackageListInput } from "@/server/api/routers/package";
 import { inputVariants, statusVariants } from "@/styles/variants";
 import { type Lang, type SearchParams } from "@/types";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import { type PackageTransaction, type PackageType } from "@prisma/client";
 import { Table } from "antd";
 import { type FilterDropdownProps } from "antd/es/table/interface";
-import { useRouter } from "next/navigation";
 
 type Props = {
   data?: PackageList;
@@ -20,10 +19,19 @@ type Props = {
   searchParams: SearchParams;
   newParams: URLSearchParams;
   redirectTable: (newParams: URLSearchParams) => void;
+  setSelectedPackage: React.Dispatch<React.SetStateAction<PackageDetail | null>>;
+  setShowModalUpdate: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function PackagesTable({ data, loading, lang, searchParams, newParams, redirectTable }: Props) {
-  const router = useRouter();
+export default function PackagesTable({
+  data,
+  loading,
+  searchParams,
+  newParams,
+  redirectTable,
+  setSelectedPackage,
+  setShowModalUpdate,
+}: Props) {
   const getTableFilter = ({
     name,
     icon,
@@ -109,10 +117,13 @@ export default function PackagesTable({ data, loading, lang, searchParams, newPa
           dataIndex: "id",
           title: "Action",
           width: 1,
-          render: (text: string) => (
+          render: (id: string, item) => (
             <section className="flex justify-center items-center">
               <ActionButton
-                onClick={() => router.push(USER_REDIRECT.OWNER({ lang, href: `/packages/update/${text}` }))}
+                onClick={() => {
+                  setSelectedPackage(item);
+                  setShowModalUpdate(true);
+                }}
                 icon={ICONS.edit}
                 color="yellow"
                 title="Update"
