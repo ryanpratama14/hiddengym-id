@@ -131,17 +131,16 @@ export const formatDate = ({
   style: "short" | "long";
   withTime?: boolean;
 }): string => {
-  return date.toLocaleDateString(lang ?? ["id-ID"], {
+  return date.toLocaleDateString(lang ?? ["en-MY"], {
     year: "numeric",
     month: style === "long" ? "long" : "numeric",
     day: "numeric",
-
     ...(withTime ? { minute: "2-digit", hour: "2-digit" } : undefined),
   });
 };
 
 export const formatDateShort = ({ date, lang, withTime }: { date: Date; lang?: Lang; withTime?: boolean }): string => {
-  return date.toLocaleDateString(lang ?? ["id-ID"], {
+  return date.toLocaleDateString(lang ?? ["en-MY"], {
     year: "numeric",
     month: "short",
     day: "numeric",
@@ -150,7 +149,7 @@ export const formatDateShort = ({ date, lang, withTime }: { date: Date; lang?: L
 };
 
 export const formatDateLong = ({ date, lang, withTime }: { date: Date; lang?: Lang; withTime?: boolean }): string => {
-  return date.toLocaleDateString(lang ?? ["id-ID"], {
+  return date.toLocaleDateString(lang ?? ["en-MY"], {
     year: "numeric",
     month: "long",
     day: "numeric",

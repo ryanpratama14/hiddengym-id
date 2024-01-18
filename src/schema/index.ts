@@ -46,7 +46,7 @@ export class schema {
     .regex(/^[A-Z0-9]+$/, "Code should be uppercase and contain only letters and numbers");
   static password = z.string().min(10, stringMessage("Password", 10));
   static loginVisitor = z.object({ credential: schema.phoneNumber });
-  static login = z.object({ email: schema.email, credential: schema.password }); // also for next-auth
+  static login = z.object({ email: schema.email, credential: schema.password });
 
   static user = class {
     static create = z.object({
@@ -144,26 +144,14 @@ export class schema {
         placeIDs: z.array(z.string()).min(1, "Pick at least 1 place"),
         trainerIDs: z.array(z.string()).optional(),
       })
-      .refine(
-        ({ type, approvedSessions }) => {
-          if (type === "SESSIONS" && !approvedSessions) return false;
-          return true;
-        },
-        {
-          message: "This field is required since the type is Sessions",
-          path: ["approvedSessions"],
-        },
-      )
-      .refine(
-        ({ type, trainerIDs }) => {
-          if (type === "SESSIONS" && !trainerIDs?.length) return false;
-          return true;
-        },
-        {
-          message: "Pick at least 1 trainer",
-          path: ["trainerIDs"],
-        },
-      );
+      .refine(({ type, approvedSessions }) => type === "SESSIONS" && approvedSessions, {
+        message: "This field is required since the type is Sessions",
+        path: ["approvedSessions"],
+      })
+      .refine(({ type, trainerIDs }) => type === "SESSIONS" && trainerIDs?.length, {
+        message: "Pick at least 1 trainer",
+        path: ["trainerIDs"],
+      });
 
     static update = z.object({
       id: z.string(),

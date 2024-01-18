@@ -1,5 +1,8 @@
+import { COUNTRY_CODE } from "@/lib/constants";
 import {
+  cn,
   formatCurrency,
+  formatDateLong,
   formatDateShort,
   getExpiryDate,
   getNewDate,
@@ -10,6 +13,7 @@ import {
 } from "@/lib/functions";
 import { type Package, type PromoCode } from "@prisma/client";
 import Logo from "./Logo";
+import NavigatorX from "./NavigatorX";
 
 export default function TransactionInvoice({ children }: { children: React.ReactNode }) {
   return (
@@ -36,7 +40,7 @@ TransactionInvoice.Products = function InvoiceProducts({
   products: { unitPrice: number; quantity: number; productId: string; name: string }[];
 }) {
   return (
-    <section className="flex flex-col gap-1">
+    <section className="flex flex-col gap-0.5">
       {products.map((product, index) =>
         product.productId ? (
           <section key={index} className="flex justify-between items-center">
@@ -55,7 +59,9 @@ TransactionInvoice.Buyer = function InvoiceBuyer(props: { fullName: string; phon
   return (
     <section className="flex flex-col text-center">
       <p className="font-medium underline">{props.fullName}</p>
-      <small>{localizePhoneNumber(props.phoneNumber)}</small>
+      <NavigatorX newTab href={`tel:${COUNTRY_CODE}${props.phoneNumber}`}>
+        <small>{localizePhoneNumber(props.phoneNumber)}</small>
+      </NavigatorX>
       <small>{props.email}</small>
     </section>
   );
@@ -69,14 +75,9 @@ TransactionInvoice.Header = function InvoiceHeader(props: {
 }) {
   return (
     <section className="flex justify-between w-full">
-      <section className="flex flex-col">
+      <section className="flex flex-col text-left">
         <h6>{props.title} TXN</h6>
-        <p className="font-medium">
-          Date:{" "}
-          {props.transactionDate
-            ? formatDateShort({ date: props.transactionDateDate ? props.transactionDateDate : getNewDate(props.transactionDate) })
-            : null}
-        </p>
+        <p>{formatDateLong({ date: props.transactionDateDate ? props.transactionDateDate : getNewDate(props.transactionDate) })}</p>
       </section>
       <section className="flex flex-col items-end">
         <p className="font-semibold">TOTAL AMOUNT</p>
@@ -142,10 +143,19 @@ TransactionInvoice.ApprovedSessions = function InvoiceApprovedSessions({ approve
   return approvedSessions ? <small className="text-left">Approved sessions: {`${approvedSessions} session(s)`}</small> : null;
 };
 
-TransactionInvoice.PaymentMethod = function InvoiceApprovedSession({ paymentMethod }: { paymentMethod?: string }) {
+TransactionInvoice.PaymentMethod = function InvoicePaymentMethod({ paymentMethod }: { paymentMethod?: string }) {
   return paymentMethod ? (
     <section className="flex w-full bg-blue text-light justify-center text-lg py-1 font-medium shadow-lg">
       PAID BY {paymentMethod.toUpperCase()}
     </section>
   ) : null;
+};
+
+TransactionInvoice.PaymentMethodWithTxnId = function InvoicePaymentMethodWithTxnId(props: { paymentMethod: string; txnId: string }) {
+  return (
+    <section className="px-4 py-1 shadow-lg text-light bg-blue flex flex-col">
+      <section className="text-lg font-medium">PAID BY {props.paymentMethod.toUpperCase()}</section>
+      <small className={cn("text-xs")}>txn {props.txnId}</small>
+    </section>
+  );
 };

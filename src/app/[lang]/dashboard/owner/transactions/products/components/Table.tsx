@@ -163,17 +163,12 @@ export default function ProductTransactionsTable({ data, searchParams, loading }
           {
             title: "Products",
             key: "products",
-            render: (_, item) => {
-              return (
-                <section className="flex flex-col">
-                  {item.products.map((e) => (
-                    <p className="md:text-base text-sm">
-                      {e.quantity}x {e.product.name}
-                    </p>
-                  ))}
-                </section>
-              );
-            },
+            render: (_, item) =>
+              item.products.map((e) => (
+                <p key={e.id} className="md:text-base text-sm">
+                  {e.quantity}x {e.product.name}
+                </p>
+              )),
           },
           {
             title: "Total Price",
