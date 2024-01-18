@@ -127,6 +127,7 @@ export class schema {
 
   static package = class {
     static list = z.object({
+      ...schema.sorting.shape,
       name: z.string().optional(),
       type: schema.packageType.optional(),
       price: z.coerce.number().optional(),
