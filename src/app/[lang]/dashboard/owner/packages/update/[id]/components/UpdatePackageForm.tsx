@@ -22,7 +22,6 @@ import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 type Props = {
   option: { places: PlaceList; sports: SportList; trainers: UserListData };
   t: Dictionary;
-
   data: PackageDetail;
 };
 

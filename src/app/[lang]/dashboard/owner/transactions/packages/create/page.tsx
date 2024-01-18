@@ -13,7 +13,7 @@ export default async function PackageTransactionCreatePage({ params }: Props) {
   const option = {
     packages: await api.package.list.query({}),
     paymentMethods: await api.paymentMethod.list.query(),
-    visitors: (await api.user.list.query({ role: "VISITOR", pagination: false })).data,
+    visitors: (await api.user.list.query({ role: "VISITOR", pagination: false, sort: "fullName-asc" })).data,
   };
 
   return (
