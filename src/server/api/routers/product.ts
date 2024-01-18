@@ -24,7 +24,7 @@ export const productRouter = createTRPCRouter({
     let data = await ctx.db.product.findMany({
       select: {
         ...prismaExclude("Product", []),
-        productOnTransaction: {
+        transactions: {
           select: {
             ...prismaExclude("ProductOnTransaction", []),
             productTransaction: { select: { ...prismaExclude("ProductTransaction", []), buyer: true } },
@@ -34,7 +34,7 @@ export const productRouter = createTRPCRouter({
       where: { name: { contains: input.name, ...insensitiveMode }, price: { gte: input.price } },
       orderBy: input.price ? { price: "asc" } : { name: "asc" },
     });
-    if (input.totalTransactions) data = data.filter((item) => item.productOnTransaction.length >= input.totalTransactions!);
+    if (input.totalTransactions) data = data.filter((item) => item.transactions.length >= input.totalTransactions!);
     return data;
   }),
 

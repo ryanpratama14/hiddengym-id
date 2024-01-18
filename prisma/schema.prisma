@@ -160,7 +160,7 @@ model Product {
     totalTransactions Int    @default(0)
 
     // relations
-    productOnTransaction ProductOnTransaction[]
+    transactions ProductOnTransaction[]
 
     createdDate DateTime @default(now())
 

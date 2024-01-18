@@ -33,7 +33,7 @@ export default function ProductsPage({ params, searchParams }: Props) {
                   </header>
                   <section className="flex flex-col">
                     <p className="text-blue2 font-medium">Recent transactions</p>
-                    {product.productOnTransaction.map((txn) => (
+                    {product.transactions.map((txn) => (
                       <section key={txn.id} className="flex justify-between">
                         <small>{txn.productTransaction.buyer.fullName}</small>
                         <small>

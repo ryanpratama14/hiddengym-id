@@ -37,11 +37,11 @@ export const updateProductTotalTransactions = async (productIDs: string[]) => {
   for (const id of productIDs) {
     const data = await db.product.findFirst({
       where: { id },
-      select: { ...prismaExclude("Product", []), productOnTransaction: true },
+      select: { ...prismaExclude("Product", []), transactions: true },
     });
     if (!data) return THROW_TRPC_ERROR("NOT_FOUND");
-    if (data.totalTransactions !== accumulateValue(data.productOnTransaction, "quantity")) {
-      await db.product.update({ where: { id }, data: { totalTransactions: accumulateValue(data.productOnTransaction, "quantity") } });
+    if (data.totalTransactions !== accumulateValue(data.transactions, "quantity")) {
+      await db.product.update({ where: { id }, data: { totalTransactions: accumulateValue(data.transactions, "quantity") } });
     }
   }
 };
