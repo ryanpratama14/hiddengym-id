@@ -86,7 +86,7 @@ export default function ModalUpdate({ t, data, show, closeModal, option }: Props
             />
           </section>
           <section className="grid md:grid-cols-2 gap-4">
-            <section className={cn("grid gap-6", { "grid-cols-2": watchedData.type === "SESSIONS" })}>
+            <section className={cn("grid gap-4", { "grid-cols-2": watchedData.type === "SESSIONS" })}>
               {watchedData.type === "SESSIONS" ? (
                 <Input
                   disabled={watchedData.type !== "SESSIONS"}
@@ -122,7 +122,6 @@ export default function ModalUpdate({ t, data, show, closeModal, option }: Props
               )}
             />
           </section>
-          {/* dropdowns */}
 
           <Controller
             control={control}

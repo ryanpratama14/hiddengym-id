@@ -46,7 +46,7 @@ export const inputVariants = tv({
       none: " ",
     },
     border: {
-      bottom: "border-b-1.5 border-dark ",
+      bottom: "border-b-1.5 border-dark",
       all: "border-1.5 border-dark",
     },
     rounded: {
@@ -56,7 +56,7 @@ export const inputVariants = tv({
   },
   defaultVariants: {
     size: "m",
-    color: "blue",
+    color: "orange",
     border: "all",
     rounded: "md",
   },

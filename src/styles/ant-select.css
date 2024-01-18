@@ -39,6 +39,6 @@
 .ant-select-selector:focus,
 .ant-select-selector:active,
 .ant-select-open .ant-select-selector {
-  border-color: #0078cc !important;
+  border-color: #ff4a01 !important;
   box-shadow: none !important;
 }
