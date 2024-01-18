@@ -3,7 +3,7 @@ import Button from "@/components/Button";
 import FilterIcon from "@/components/FilterIcon";
 import Input from "@/components/Input";
 import { ICONS, PACKAGE_TYPES, USER_REDIRECT } from "@/lib/constants";
-import { cn, createUrl, formatCurrency } from "@/lib/functions";
+import { cn, formatCurrency } from "@/lib/functions";
 import { type PackageList, type PackageListInput } from "@/server/api/routers/package";
 import { inputVariants, statusVariants } from "@/styles/variants";
 import { type Lang, type SearchParams } from "@/types";
@@ -11,24 +11,19 @@ import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import { type PackageTransaction, type PackageType } from "@prisma/client";
 import { Table } from "antd";
 import { type FilterDropdownProps } from "antd/es/table/interface";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 type Props = {
   data?: PackageList;
   lang: Lang;
   loading: boolean;
   searchParams: SearchParams;
+  newParams: URLSearchParams;
+  redirectTable: (newParams: URLSearchParams) => void;
 };
 
-export default function PackagesTable({ data, loading, lang, searchParams }: Props) {
-  const newSearchParams = useSearchParams();
-  const newParams = new URLSearchParams(newSearchParams.toString());
+export default function PackagesTable({ data, loading, lang, searchParams, newParams, redirectTable }: Props) {
   const router = useRouter();
-
-  const redirectTable = (newParams: URLSearchParams) => {
-    router.push(createUrl(USER_REDIRECT.OWNER({ lang, href: "/packages" }), newParams));
-  };
-
   const getTableFilter = ({
     name,
     icon,

@@ -13,7 +13,7 @@ import { schema } from "@/schema";
 import { type PaymentMethodList } from "@/server/api/routers/paymentMethod";
 import { type ProductList } from "@/server/api/routers/product";
 import { type ProductTransactionInput } from "@/server/api/routers/productTransaction";
-import { type UserListVisitor } from "@/server/api/routers/user";
+import { type UserListData } from "@/server/api/routers/user";
 import { api } from "@/trpc/react";
 import { type Dictionary } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,7 +24,7 @@ import { Controller, useFieldArray, useForm, type SubmitHandler } from "react-ho
 
 const productInitialData = { unitPrice: 0, quantity: 1, productId: "", name: "" };
 
-type Props = { t: Dictionary; option: { paymentMethods: PaymentMethodList; products: ProductList; visitors: UserListVisitor } };
+type Props = { t: Dictionary; option: { paymentMethods: PaymentMethodList; products: ProductList; visitors: UserListData } };
 
 export default function CreateProductTransactionForm({ t, option }: Props) {
   const [selectedBuyer, setSelectedBuyer] = useState({ fullName: "", email: "", phoneNumber: "" });

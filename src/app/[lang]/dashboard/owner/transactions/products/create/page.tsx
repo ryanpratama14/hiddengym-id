@@ -10,7 +10,7 @@ export default async function ProductTransactionCreatePage({ params }: Props) {
   const option = {
     paymentMethods: await api.paymentMethod.list.query(),
     products: await api.product.list.query({}),
-    visitors: await api.user.listVisitor.query(),
+    visitors: (await api.user.list.query({ role: "VISITOR", pagination: false })).data,
   };
 
   return (

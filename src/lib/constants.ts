@@ -3,6 +3,7 @@ import { type AddButtonKey, type DashboardMenuKey, type Lang } from "@/types";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import {
   type Gender,
+  type Package,
   type PackageTransaction,
   type PackageType,
   type ProductTransaction,
@@ -11,107 +12,50 @@ import {
   type User,
 } from "@prisma/client";
 
+export const PACKAGE_SORTERERS: { name: keyof Package; title: string }[] = [
+  { name: "type", title: "Type" },
+  { name: "name", title: "Name" },
+  { name: "price", title: "Price" },
+  { name: "validityInDays", title: "Validity In Days" },
+  { name: "approvedSessions", title: "Approved Session(s)" },
+  { name: "totalTransactions", title: "Total Transactions" },
+];
+
 export const USER_LIST_SORTERERS: { name: keyof User; title: string }[] = [
-  {
-    name: "fullName",
-    title: "Name",
-  },
-  {
-    name: "phoneNumber",
-    title: "Phone Number",
-  },
-  {
-    name: "email",
-    title: "Email",
-  },
-  {
-    name: "gender",
-    title: "Gender",
-  },
-  {
-    name: "totalSpending",
-    title: "Total Spending",
-  },
+  { name: "fullName", title: "Name" },
+  { name: "phoneNumber", title: "Phone Number" },
+  { name: "email", title: "Email" },
+  { name: "gender", title: "Gender" },
+  { name: "totalSpending", title: "Total Spending" },
 ];
 
 export const PACKAGE_TRANSACTION_SORTERERS: { name: keyof PackageTransaction; title: string }[] = [
-  {
-    name: "transactionDate",
-    title: "Transaction Date",
-  },
-  {
-    name: "packageId",
-    title: "Package",
-  },
-  {
-    name: "paymentMethodId",
-    title: "Payment Method",
-  },
-  {
-    name: "expiryDate",
-    title: "Expiry Date",
-  },
-  {
-    name: "remainingSessions",
-    title: "Remaining Sessions",
-  },
-  {
-    name: "promoCodeId",
-    title: "Promo Code",
-  },
-  {
-    name: "buyerId",
-    title: "Buyer",
-  },
-  {
-    name: "totalPrice",
-    title: "Total Price",
-  },
+  { name: "transactionDate", title: "Transaction Date" },
+  { name: "packageId", title: "Package" },
+  { name: "paymentMethodId", title: "Payment Method" },
+  { name: "expiryDate", title: "Expiry Date" },
+  { name: "remainingSessions", title: "Remaining Session(s)" },
+  { name: "promoCodeId", title: "Promo Code" },
+  { name: "buyerId", title: "Buyer" },
+  { name: "totalPrice", title: "Total Price" },
 ];
 
 export const PRODUCT_TRANSACTION_SORTERERS: { name: keyof ProductTransaction; title: string }[] = [
-  {
-    name: "transactionDate",
-    title: "Transaction Date",
-  },
-  {
-    name: "paymentMethodId",
-    title: "Payment Method",
-  },
-  {
-    name: "buyerId",
-    title: "Buyer",
-  },
-  {
-    name: "totalPrice",
-    title: "Total Price",
-  },
+  { name: "transactionDate", title: "Transaction Date" },
+  { name: "paymentMethodId", title: "Payment Method" },
+  { name: "buyerId", title: "Buyer" },
+  { name: "totalPrice", title: "Total Price" },
 ];
 
 export const PACKAGE_TYPES: { label: string; value: PackageType }[] = [
-  {
-    label: "MEMBER",
-    value: "MEMBER",
-  },
-  {
-    label: "VISIT",
-    value: "VISIT",
-  },
-  {
-    label: "SESSIONS",
-    value: "SESSIONS",
-  },
+  { label: "MEMBER", value: "MEMBER" },
+  { label: "VISIT", value: "VISIT" },
+  { label: "SESSIONS", value: "SESSIONS" },
 ];
 
 export const PROMO_CODE_TYPES: { label: string; value: PromoCodeType }[] = [
-  {
-    label: "REGULAR",
-    value: "REGULAR",
-  },
-  {
-    label: "STUDENT",
-    value: "STUDENT",
-  },
+  { label: "REGULAR", value: "REGULAR" },
+  { label: "STUDENT", value: "STUDENT" },
 ];
 
 export const USER_PATHNAMES: Record<Role, string> = {
