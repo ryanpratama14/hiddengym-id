@@ -100,7 +100,7 @@ export default function CreatePackageForm({ option, t }: Props) {
         />
       </section>
       <section className="grid md:grid-cols-2 gap-4">
-        <section className={cn("grid gap-6", { "grid-cols-2": data.type === "SESSIONS" })}>
+        <section className={cn("grid gap-4", { "grid-cols-2": data.type === "SESSIONS" })}>
           {data.type === "SESSIONS" ? (
             <Input
               disabled={data.type !== "SESSIONS"}
@@ -136,7 +136,6 @@ export default function CreatePackageForm({ option, t }: Props) {
           )}
         />
       </section>
-      {/* dropdowns */}
 
       <Controller
         control={control}
