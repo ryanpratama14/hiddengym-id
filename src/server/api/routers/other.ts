@@ -18,3 +18,17 @@ export const updateTotalSpending = async (userId: string) => {
 
   return await db.user.update({ where: { id: data.id }, data: spendingData });
 };
+
+export const updatePackageTotalTransactions = async (packageId: string) => {
+  const data = await db.package.findFirst({
+    where: { id: packageId },
+    select: { ...prismaExclude("Package", []), transactions: true },
+  });
+  if (!data) return THROW_TRPC_ERROR("NOT_FOUND");
+
+  if (data.transactions.length !== data.totalTransactions) {
+    return await db.package.update({ where: { id: data.id }, data: { totalTransactions: data.transactions.length } });
+  }
+
+  return;
+};

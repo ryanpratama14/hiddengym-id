@@ -14,7 +14,7 @@ import {
   type RouterOutputs,
 } from "@/trpc/shared";
 import { z } from "zod";
-import { updateTotalSpending } from "./other";
+import { updatePackageTotalTransactions, updateTotalSpending } from "./other";
 
 const packageTransactionSelect = {
   select: {
@@ -88,6 +88,7 @@ export const packageTransactionRouter = createTRPCRouter({
     });
 
     await updateTotalSpending(input.buyerId);
+    await updatePackageTotalTransactions(selectedPackage.id);
     return THROW_OK("CREATED", getCreatedMessage("package transaction"));
   }),
 });

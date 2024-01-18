@@ -3,6 +3,7 @@ import { createTRPCRouter, ownerProcedure, publicProcedure } from "@/server/api/
 import {
   getConflictMessage,
   getCreatedMessage,
+  getSortingQuery,
   insensitiveMode,
   prismaExclude,
   THROW_OK,
@@ -63,16 +64,16 @@ export const packageRouter = createTRPCRouter({
   }),
 
   list: publicProcedure.input(schema.package.list).query(async ({ ctx, input }) => {
-    let data = await ctx.db.package.findMany({
+    const data = await ctx.db.package.findMany({
       ...packageSelect,
       where: {
         name: { contains: input.name, ...insensitiveMode },
         type: input.type,
         price: { gte: input.price },
+        totalTransactions: { gte: input.totalTransactions },
       },
-      orderBy: input.price ? { price: "asc" } : { type: "asc" },
+      ...(input.sort ? getSortingQuery(input.sort) : { orderBy: { type: "asc" } }),
     });
-    if (input.totalTransactions) data = data.filter((item) => item.transactions.length >= input.totalTransactions!);
     return data;
   }),
 });

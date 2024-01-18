@@ -74,13 +74,14 @@ model PromoCode {
 }
 
 model Package {
-    id               String  @id @default(auto()) @map("_id") @db.ObjectId
-    name             String
-    description      String?
-    price            Int
-    validityInDays   Int?
-    approvedSessions Int?
-    isActive         Boolean @default(true)
+    id                String  @id @default(auto()) @map("_id") @db.ObjectId
+    name              String
+    description       String?
+    price             Int
+    validityInDays    Int?
+    approvedSessions  Int?
+    isActive          Boolean @default(true)
+    totalTransactions Int     @default(0)
 
     // relations
     type         PackageType
