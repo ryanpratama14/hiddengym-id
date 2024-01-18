@@ -110,15 +110,6 @@ export const userRouter = createTRPCRouter({
     return THROW_OK("OK", "Your profile has been updated.");
   }),
 
-  listTrainer: ownerProcedure.query(async ({ ctx }) => {
-    const data = await ctx.db.user.findMany({ where: { role: "TRAINER" }, ...userSelect });
-    return data;
-  }),
-
-  listVisitor: ownerProcedure.query(async ({ ctx }) => {
-    return await ctx.db.user.findMany({ where: { role: "VISITOR" }, select: prismaExclude("User", ["credential"]) });
-  }),
-
   list: ownerProcedure.input(schema.user.list).query(async ({ ctx, input }) => {
     const pagination: Pagination = { limit: input.limit, page: input.page };
 
@@ -135,20 +126,23 @@ export const userRouter = createTRPCRouter({
     };
 
     const [data, totalData] = await ctx.db.$transaction([
-      ctx.db.user.findMany({ ...getSortingQuery(input.sort), ...getPaginationQuery(pagination), ...whereQuery, ...userSelect }),
+      ctx.db.user.findMany({
+        ...getSortingQuery(input.sort),
+        ...(input.pagination && getPaginationQuery(pagination)),
+        ...whereQuery,
+        ...userSelect,
+      }),
       ctx.db.user.count(whereQuery),
     ]);
 
-    return { data, ...getPaginationData({ ...pagination, totalData }) };
+    return { data, ...(input.pagination && getPaginationData({ ...pagination, totalData })) };
   }),
 });
 
 // outputs
 export type User = RouterOutputs["user"]["detail"];
 export type UserList = RouterOutputs["user"]["list"];
-export type UserListVisitor = RouterOutputs["user"]["listVisitor"];
 export type UserListData = RouterOutputs["user"]["list"]["data"];
-export type UserListTrainer = RouterOutputs["user"]["listTrainer"];
 export type UserCreateVisitor = RouterOutputs["user"]["createVisitor"];
 
 // inputs

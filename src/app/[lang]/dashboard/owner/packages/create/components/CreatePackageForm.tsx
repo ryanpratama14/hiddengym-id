@@ -12,7 +12,7 @@ import { schema } from "@/schema";
 import { type PackageCreateInput } from "@/server/api/routers/package";
 import { type PlaceList } from "@/server/api/routers/place";
 import { type SportList } from "@/server/api/routers/sport";
-import { type UserListTrainer } from "@/server/api/routers/user";
+import { type UserListData } from "@/server/api/routers/user";
 import { api } from "@/trpc/react";
 import { type Dictionary } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -32,7 +32,7 @@ const initialData: PackageCreateInput = {
 };
 
 type Props = {
-  option: { places: PlaceList; sports: SportList; trainers: UserListTrainer };
+  option: { places: PlaceList; sports: SportList; trainers: UserListData };
   t: Dictionary;
 };
 

@@ -11,11 +11,10 @@ export default async function PackageCreatePage({ params }: Props) {
   const option = {
     places: await api.place.list.query(),
     sports: await api.sport.list.query(),
-    trainers: await api.user.listTrainer.query(),
+    trainers: (await api.user.list.query({ role: "TRAINER", pagination: false })).data,
   };
 
   const data = await api.package.detail.query({ id: params.id });
-
   const t = await useDictionary(params.lang);
 
   return (

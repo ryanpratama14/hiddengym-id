@@ -12,7 +12,7 @@ import { schema } from "@/schema";
 import { type PackageCreateInput, type PackageDetail } from "@/server/api/routers/package";
 import { type PlaceList } from "@/server/api/routers/place";
 import { type SportList } from "@/server/api/routers/sport";
-import { type UserListTrainer } from "@/server/api/routers/user";
+import { type UserListData } from "@/server/api/routers/user";
 import { api } from "@/trpc/react";
 import { type Dictionary } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,7 +20,7 @@ import { useRouter } from "next/navigation";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 
 type Props = {
-  option: { places: PlaceList; sports: SportList; trainers: UserListTrainer };
+  option: { places: PlaceList; sports: SportList; trainers: UserListData };
   t: Dictionary;
 
   data: PackageDetail;

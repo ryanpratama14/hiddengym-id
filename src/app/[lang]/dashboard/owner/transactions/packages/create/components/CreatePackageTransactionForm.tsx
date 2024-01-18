@@ -12,7 +12,7 @@ import { schema } from "@/schema";
 import { type PackageList } from "@/server/api/routers/package";
 import { type PackageTransactionCreateInput } from "@/server/api/routers/packageTransaction";
 import { type PaymentMethodList } from "@/server/api/routers/paymentMethod";
-import { type UserListVisitor } from "@/server/api/routers/user";
+import { type UserListData } from "@/server/api/routers/user";
 import { inputVariants } from "@/styles/variants";
 import { api } from "@/trpc/react";
 import { type Dictionary } from "@/types";
@@ -24,7 +24,7 @@ import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 
 type Props = {
   t: Dictionary;
-  option: { packages: PackageList; paymentMethods: PaymentMethodList; visitors: UserListVisitor };
+  option: { packages: PackageList; paymentMethods: PaymentMethodList; visitors: UserListData };
 };
 
 type SelectedUser = { fullName: string; email: null | string; phoneNumber: string; birthDate: null | Date };

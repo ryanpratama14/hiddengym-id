@@ -101,6 +101,7 @@ export class schema {
     });
 
     static list = z.object({
+      pagination: z.boolean().default(true),
       ...schema.pagination.shape,
       ...schema.sorting.shape,
       role: schema.role,
