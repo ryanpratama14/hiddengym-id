@@ -40,7 +40,7 @@ export default function CreatePaymentMethodForm({ t }: Props) {
   });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 w-full">
       <Input icon={ICONS.name} error={errors.name?.message} label="Name" {...register("name")} />
       <section className="flex justify-center items-center">
         <Button className="md:w-fit w-full" loading={loading} type="submit" color="success" size="xl">

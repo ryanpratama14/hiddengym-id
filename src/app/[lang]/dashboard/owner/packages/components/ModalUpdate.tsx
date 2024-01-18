@@ -73,10 +73,9 @@ export default function ModalUpdate({ t, data, show, closeModal, option }: Props
   return (
     <Modal show={show} closeModal={closeModal}>
       <Modal.Body>
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 w-full">
           <h6 className="px-2 border-1 border-dark w-fit">{watchedData.type}</h6>
-
-          <section className="grid md:grid-cols-2 gap-4 md:gap-6">
+          <section className="grid md:grid-cols-2 gap-4">
             <Input error={errors.name?.message} {...register("name")} icon={ICONS.name} label="Name" />
             <Input
               error={errors.price?.message}
@@ -86,7 +85,7 @@ export default function ModalUpdate({ t, data, show, closeModal, option }: Props
               label="Price"
             />
           </section>
-          <section className="grid md:grid-cols-2 gap-4 md:gap-6">
+          <section className="grid md:grid-cols-2 gap-4">
             <section className={cn("grid gap-6", { "grid-cols-2": watchedData.type === "SESSIONS" })}>
               {watchedData.type === "SESSIONS" ? (
                 <Input

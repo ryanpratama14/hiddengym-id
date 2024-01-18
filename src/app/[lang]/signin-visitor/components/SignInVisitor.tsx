@@ -52,22 +52,18 @@ export default function SignInVisitor({ callbackUrl, t }: Props) {
   });
 
   return (
-    <section className="w-full flex flex-col gap-8">
-      <section className="flex flex-col gap-6">
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
-          <Input
-            isPhoneNumber
-            maxLength={12}
-            label="Phone Number"
-            className="w-full"
-            {...register("credential")}
-            error={errors.credential?.message}
-          />
-          <Button loading={loading} className="mt-2" type="submit" color="expired" size="xl">
-            Sign In
-          </Button>
-        </form>
-      </section>
-    </section>
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 w-full">
+      <Input
+        isPhoneNumber
+        maxLength={12}
+        label="Phone Number"
+        className="w-full"
+        {...register("credential")}
+        error={errors.credential?.message}
+      />
+      <Button loading={loading} className="mt-2" type="submit" color="expired" size="xl">
+        Sign In
+      </Button>
+    </form>
   );
 }

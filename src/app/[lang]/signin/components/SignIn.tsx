@@ -53,23 +53,19 @@ export default function SignIn({ callbackUrl, t }: Props) {
   });
 
   return (
-    <section className="w-full flex flex-col gap-8">
-      <section className="flex flex-col gap-6">
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
-          <Input
-            icon={ICONS.email}
-            placeholder="hiddengym@gmail.com"
-            type="text"
-            {...register("email")}
-            error={errors.email?.message}
-            label="Email"
-          />
-          <Input withPasswordIcon {...register("credential")} error={errors.credential?.message} type="password" />
-          <Button className="mt-2" type="submit" size="xl" color="expired" loading={loading}>
-            Sign In
-          </Button>
-        </form>
-      </section>
-    </section>
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full">
+      <Input
+        icon={ICONS.email}
+        placeholder="hiddengym@gmail.com"
+        type="text"
+        {...register("email")}
+        error={errors.email?.message}
+        label="Email"
+      />
+      <Input withPasswordIcon {...register("credential")} error={errors.credential?.message} type="password" />
+      <Button className="mt-2" type="submit" size="xl" color="expired" loading={loading}>
+        Sign In
+      </Button>
+    </form>
   );
 }

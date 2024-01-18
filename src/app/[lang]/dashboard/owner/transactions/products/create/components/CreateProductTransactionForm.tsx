@@ -61,8 +61,8 @@ export default function CreateProductTransactionForm({ t, option }: Props) {
   console.log(data.products);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full">
-      <section className="grid md:grid-cols-2 gap-4 md:gap-6">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 w-full">
+      <section className="grid md:grid-cols-2 gap-4">
         <Controller
           control={control}
           name="buyerId"
@@ -85,7 +85,7 @@ export default function CreateProductTransactionForm({ t, option }: Props) {
         />
         <Input label="Transaction Date" {...register("transactionDate")} type="date" />
       </section>
-      <section className="grid md:grid-cols-2 gap-4 md:gap-6">
+      <section className="grid md:grid-cols-2 gap-4">
         <section className="flex flex-col gap-0.5">
           <section className="grid grid-cols-3 gap-4">
             <p className="font-medium col-span-2">Products</p>

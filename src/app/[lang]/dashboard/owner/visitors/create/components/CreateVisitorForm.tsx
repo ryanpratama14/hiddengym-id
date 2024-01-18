@@ -92,8 +92,8 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
   });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 w-full">
-      <section className="grid md:grid-cols-2 gap-4 md:gap-6">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 w-full">
+      <section className="grid md:grid-cols-2 gap-4">
         <Input
           error={errors.visitorData?.fullName?.message}
           icon={ICONS.person}
@@ -107,7 +107,7 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
           isPhoneNumber
         />
       </section>
-      <section className="grid md:grid-cols-2 gap-4 md:gap-6">
+      <section className="grid md:grid-cols-2 gap-4">
         <Input
           error={errors.visitorData?.email?.message}
           icon={ICONS.email}
@@ -115,7 +115,7 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
           {...register("visitorData.email")}
         />
         <section className="flex flex-col gap-6">
-          <section className="grid md:grid-cols-2 gap-4 md:gap-6">
+          <section className="grid md:grid-cols-2 gap-4">
             <Input
               error={errors.visitorData?.birthDate?.message}
               label="Date of Birth (Optional)"
@@ -179,7 +179,7 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
       </section>
       {isAddingTransaction ? (
         <Fragment>
-          <section className="grid md:grid-cols-2 gap-4 md:gap-6">
+          <section className="grid md:grid-cols-2 gap-4">
             <Controller
               control={control}
               name="packageData.packageId"
@@ -206,7 +206,7 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
               type="date"
             />
           </section>
-          <section className="grid md:grid-cols-2 gap-4 md:gap-6">
+          <section className="grid md:grid-cols-2 gap-4">
             <Controller
               control={control}
               name="packageData.paymentMethodId"

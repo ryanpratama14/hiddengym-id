@@ -30,7 +30,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     if (type !== "password") {
       return (
         <section className={cn(classNameDiv, { "gap-0.5 flex flex-col": label })}>
-          {label ? <label htmlFor={id}>{label}</label> : null}
+          {label ? (
+            <label htmlFor={id} className="text-left">
+              {label}
+            </label>
+          ) : null}
           <section className="relative">
             <input
               disabled={disabled}

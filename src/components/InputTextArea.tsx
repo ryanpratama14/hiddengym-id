@@ -20,7 +20,11 @@ const InputTextArea = forwardRef<HTMLTextAreaElement, InputProps>(
 
     return (
       <section className={cn(`${classNameDiv} gap-0.5 flex flex-col`)}>
-        {label ? <label htmlFor={id}>{label}</label> : null}
+        {label ? (
+          <label className="text-left" htmlFor={id}>
+            {label}
+          </label>
+        ) : null}
         <section className="relative">
           <textarea
             rows={3}

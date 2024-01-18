@@ -149,6 +149,7 @@ export default function PackagesTable({
         {
           title: "Price",
           key: "price",
+          align: "right",
           dataIndex: "price",
           ...getTableFilter({ name: "price", icon: ICONS.payment_method, type: "number" }),
           render: (text: number) => formatCurrency(text),
