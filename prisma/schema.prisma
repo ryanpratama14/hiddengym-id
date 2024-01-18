@@ -200,6 +200,8 @@ model ProductOnTransaction {
 model PackageTransaction {
     id                String    @id @default(auto()) @map("_id") @db.ObjectId
     totalPrice        Int
+    unitPrice         Int
+    discountPrice     Int?
     startDate         DateTime? @default(now())
     expiryDate        DateTime?
     remainingSessions Int?

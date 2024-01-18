@@ -13,7 +13,10 @@ export default function PackageTransaction({ data }: Props) {
     <TransactionInvoice>
       <TransactionInvoice.Header title="Package" transactionDateDate={data.transactionDate} totalPrice={data.totalPrice} />
       <TransactionInvoice.Buyer fullName={data.buyer.fullName} phoneNumber={data.buyer.phoneNumber} email={data.buyer?.email} />
-      <TransactionInvoice.Package package={data.package} promoCode={data.promoCode} />
+      <TransactionInvoice.PackageWithTxnId
+        package={{ name: data.package.name, unitPrice: data.unitPrice, type: data.package.type }}
+        promoCode={{ code: data.promoCode?.code, discountPrice: data?.discountPrice }}
+      />
 
       <section className="flex flex-col gap-4">
         {data.expiryDate && data.startDate ? (

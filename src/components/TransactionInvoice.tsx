@@ -11,7 +11,7 @@ import {
   isDateToday,
   localizePhoneNumber,
 } from "@/lib/functions";
-import { type Package, type PromoCode } from "@prisma/client";
+import { type Package, type PackageType, type PromoCode } from "@prisma/client";
 import Logo from "./Logo";
 import NavigatorX from "./NavigatorX";
 
@@ -98,6 +98,33 @@ TransactionInvoice.Package = function InvoicePackage(props: { package: Package; 
         <small>{formatCurrency(props.package.price)}</small>
       </section>
       {props.promoCode ? (
+        <section className="flex justify-between items-center">
+          <section className="flex gap-1 items-center">
+            <small>PROMO CODE</small>
+            <code className="text-sm italic underline">{props.promoCode.code}</code>
+          </section>
+
+          <small>{formatCurrency(-props.promoCode.discountPrice)}</small>
+        </section>
+      ) : null}
+    </section>
+  );
+};
+
+TransactionInvoice.PackageWithTxnId = function InvoicePackageWithTxnId(props: {
+  package: { name: string; unitPrice: number; type: PackageType };
+  promoCode?: { code?: string; discountPrice: number | null };
+}) {
+  return (
+    <section className="flex flex-col gap-1">
+      <section className="flex justify-between items-center">
+        <section className="flex gap-2 items-center">
+          <small className="font-semibold border-1 border-dark px-1">{props.package.type}</small>
+          <small>{props.package.name}</small>
+        </section>
+        <small>{formatCurrency(props.package.unitPrice)}</small>
+      </section>
+      {props.promoCode?.code && props.promoCode.discountPrice ? (
         <section className="flex justify-between items-center">
           <section className="flex gap-1 items-center">
             <small>PROMO CODE</small>

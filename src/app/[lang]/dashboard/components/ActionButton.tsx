@@ -13,7 +13,7 @@ type Props = VariantProps<typeof actionVariants> & {
 
 export default function ActionButton({ color, icon, title, onClick }: Props) {
   return (
-    <Tooltip title={title} style={{ zIndex: 50 }}>
+    <Tooltip title={title} style={{ zIndex: 50 }} placement="left">
       <button type="button" onClick={onClick}>
         <Iconify icon={icon} width={25} className={actionVariants({ color })} />
       </button>
