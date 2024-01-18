@@ -20,6 +20,7 @@ export default async function DashboardLayout({ children, params }: Props) {
   const items: ItemType<MenuItemType>[] = FILTERED_DASHBOARD_MENU_ITEMS(role).map((e) => {
     const hasChildren = e.children;
     return {
+      title: "",
       key: e.key,
       icon: <Iconify icon={e.icon} width={MENU_ICON_SIZE} />,
       label: hasChildren ? (
@@ -37,6 +38,7 @@ export default async function DashboardLayout({ children, params }: Props) {
                 {sub.label}
               </DashboardNavigator>
             ),
+            title: "",
             key: sub.key,
           }))
         : undefined,
@@ -46,6 +48,7 @@ export default async function DashboardLayout({ children, params }: Props) {
   const addButtonItems: ItemType<MenuItemType>[] = FILTERED_ADD_BUTTONS_ITEMS(role).map((e) => {
     const hasChildren = e.children;
     return {
+      title: "",
       key: e.key,
       icon: <Iconify icon={e.icon} width={20} />,
       label: hasChildren ? (
@@ -63,6 +66,7 @@ export default async function DashboardLayout({ children, params }: Props) {
                 {sub.label}
               </DashboardNavigator>
             ),
+            title: "",
             key: sub.key,
           }))
         : undefined,
