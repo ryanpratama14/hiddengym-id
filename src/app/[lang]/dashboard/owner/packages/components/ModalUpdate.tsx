@@ -28,6 +28,7 @@ type Props = {
 };
 
 export default function ModalUpdate({ t, data, show, closeModal, option }: Props) {
+  const utils = api.useUtils();
   const {
     register,
     handleSubmit,
@@ -43,9 +44,10 @@ export default function ModalUpdate({ t, data, show, closeModal, option }: Props
     data?.id && updateData({ body: updatedData, id: data.id });
 
   const { mutate: updateData, isPending: loading } = api.package.update.useMutation({
-    onSuccess: (res) => {
+    onSuccess: async (res) => {
       toastSuccess({ t, description: res.message });
       closeModal();
+      await utils.package.list.invalidate();
     },
     onError: (res) => toastError({ t, description: res.message }),
   });
