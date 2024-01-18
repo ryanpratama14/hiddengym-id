@@ -154,9 +154,10 @@ model Place {
 }
 
 model Product {
-    id    String @id @default(auto()) @map("_id") @db.ObjectId
-    name  String
-    price Int
+    id                String @id @default(auto()) @map("_id") @db.ObjectId
+    name              String
+    price             Int
+    totalTransactions Int    @default(0)
 
     // relations
     productOnTransaction ProductOnTransaction[]

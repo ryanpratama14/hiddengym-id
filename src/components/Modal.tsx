@@ -43,9 +43,9 @@ export const Modal = ({ show, closeModal, children, classNameDiv }: Props) => {
                   <button
                     type="submit"
                     onClick={closeModal}
-                    className="size-7 flex items-center justify-center rounded-full absolute -right-2 -top-2 bg-dark"
+                    className="size-8 flex items-center justify-center rounded-full absolute -right-3 -top-3 bg-dark"
                   >
-                    <Iconify icon={ICONS.close} className="text-light" width={22} />
+                    <Iconify icon={ICONS.close} className="text-light" width={25} />
                   </button>
                   {children}
                 </section>

@@ -14,7 +14,7 @@ import {
 } from "@/trpc/shared";
 import { z } from "zod";
 import { createTRPCRouter, ownerAdminProcedure, protectedProcedure } from "../trpc";
-import { updateTotalSpending } from "./other";
+import { updateProductTotalTransactions, updateTotalSpending } from "./other";
 
 const productTransactionSelect = {
   select: {
@@ -82,6 +82,7 @@ export const productTransactionRouter = createTRPCRouter({
     });
 
     await updateTotalSpending(input.buyerId);
+    await updateProductTotalTransactions(input.products.map((product) => product.productId));
     return THROW_OK("CREATED", getCreatedMessage("product transaction"));
   }),
 });
