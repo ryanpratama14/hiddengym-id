@@ -153,7 +153,6 @@ export default function ProductTransactionsTable({ data, searchParams, loading }
                     setSelectedTransaction(item);
                     setShow(true);
                   }}
-                  title="Invoice"
                   icon={ICONS.invoice}
                   color="green"
                 />

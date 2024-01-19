@@ -6,18 +6,8 @@ import Img from "@/components/Img";
 import Input from "@/components/Input";
 import { Modal } from "@/components/Modal";
 import PackageTransaction from "@/components/PackageTransaction";
-import { useZustand } from "@/global/store";
-import { DETERMINE_GENDER, ICONS, PACKAGE_TYPES, USER_REDIRECT } from "@/lib/constants";
-import {
-  cn,
-  createUrl,
-  formatCurrency,
-  formatDateShort,
-  getRemainingDays,
-  isDateExpired,
-  isDateToday,
-  textEllipsis,
-} from "@/lib/functions";
+import { DETERMINE_GENDER, ICONS, PACKAGE_TYPES } from "@/lib/constants";
+import { cn, formatCurrency, formatDateShort, getRemainingDays, isDateExpired, isDateToday, textEllipsis } from "@/lib/functions";
 import {
   type PackageTransactionDetail,
   type PackageTransactionList,
@@ -29,33 +19,23 @@ import { type SearchParams } from "@/types";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import { Table } from "antd";
 import { type FilterDropdownProps } from "antd/es/table/interface";
-import { redirect, useRouter, useSearchParams } from "next/navigation";
 import { Fragment, useState } from "react";
 
 type Props = {
   data?: PackageTransactionList;
   searchParams: SearchParams;
   loading: boolean;
+  newParams: URLSearchParams;
+  redirectTable: (newParams: URLSearchParams) => void;
 };
 
-export default function PackageTransactionsTable({ data, searchParams, loading }: Props) {
-  const { lang } = useZustand();
-  const newSearchParams = useSearchParams();
-  const newParams = new URLSearchParams(newSearchParams.toString());
+export default function PackageTransactionsTable({ data, searchParams, loading, newParams, redirectTable }: Props) {
   const [selectedTransaction, setSelectedTransaction] = useState<PackageTransactionDetail | null>(null);
-  const [show, setShow] = useState(false);
 
   if (data?.isPaginationInvalid) {
     newParams.delete("page");
-    redirect(createUrl(USER_REDIRECT.OWNER({ lang, href: "/transactions/packages" }), newParams));
+    redirectTable(newParams);
   }
-
-  const router = useRouter();
-
-  const redirectTable = (newParams: URLSearchParams) => {
-    router.push(createUrl(USER_REDIRECT.OWNER({ lang, href: "/transactions/packages" }), newParams));
-  };
-
   const getTableFilter = ({
     name,
     icon,
@@ -128,7 +108,13 @@ export default function PackageTransactionsTable({ data, searchParams, loading }
 
   return (
     <Fragment>
-      <Modal show={show} closeModal={() => setShow(false)}>
+      <Modal
+        show={!!searchParams.id}
+        closeModal={() => {
+          newParams.delete("id");
+          redirectTable(newParams);
+        }}
+      >
         <Modal.Body>
           <PackageTransaction data={selectedTransaction} />
         </Modal.Body>
@@ -167,14 +153,14 @@ export default function PackageTransactionsTable({ data, searchParams, loading }
             key: "id",
             width: 1,
             dataIndex: "id",
-            render: (_, item) => (
+            render: (id: string, item) => (
               <section className="flex justify-center items-center">
                 <ActionButton
                   onClick={() => {
                     setSelectedTransaction(item);
-                    setShow(true);
+                    newParams.set("id", id);
+                    redirectTable(newParams);
                   }}
-                  title="Invoice"
                   icon={ICONS.invoice}
                   color="green"
                 />

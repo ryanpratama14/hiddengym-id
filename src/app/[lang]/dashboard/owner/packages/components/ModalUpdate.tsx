@@ -10,9 +10,6 @@ import { ICONS } from "@/lib/constants";
 import { cn } from "@/lib/functions";
 import { schema } from "@/schema";
 import { type PackageCreateInput, type PackageDetail } from "@/server/api/routers/package";
-import { type PlaceList } from "@/server/api/routers/place";
-import { type SportList } from "@/server/api/routers/sport";
-import { type UserListData } from "@/server/api/routers/user";
 import { api } from "@/trpc/react";
 import { type Dictionary } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,15 +17,18 @@ import { useEffect } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 
 type Props = {
-  option: { places: PlaceList; sports: SportList; trainers: UserListData };
   t: Dictionary;
   data: PackageDetail | null;
   show: boolean;
   closeModal: () => void;
 };
 
-export default function ModalUpdate({ t, data, show, closeModal, option }: Props) {
+export default function ModalUpdate({ t, data, show, closeModal }: Props) {
   const utils = api.useUtils();
+  const { data: places } = api.place.list.useQuery();
+  const { data: sports } = api.sport.list.useQuery();
+  const { data: trainers } = api.user.list.useQuery({ role: "TRAINER", pagination: false, sort: "fullName-asc" });
+
   const {
     register,
     handleSubmit,
@@ -40,8 +40,7 @@ export default function ModalUpdate({ t, data, show, closeModal, option }: Props
     resolver: zodResolver(schema.package.create),
   });
 
-  const onSubmit: SubmitHandler<PackageCreateInput> = async (updatedData) =>
-    data?.id && updateData({ body: updatedData, id: data.id });
+  const onSubmit: SubmitHandler<PackageCreateInput> = async (updatedData) => data && updateData({ body: updatedData, id: data.id });
 
   const { mutate: updateData, isPending: loading } = api.package.update.useMutation({
     onSuccess: async (res) => {
@@ -114,7 +113,7 @@ export default function ModalUpdate({ t, data, show, closeModal, option }: Props
                   {...field}
                   mode="multiple"
                   showSearch={false}
-                  options={option.places.map((e) => ({ value: e.id, label: e.name }))}
+                  options={places?.map((e) => ({ value: e.id, label: e.name }))}
                   icon={ICONS.place}
                   error={errors.placeIDs?.message}
                   label="Places"
@@ -131,7 +130,7 @@ export default function ModalUpdate({ t, data, show, closeModal, option }: Props
                 {...field}
                 showSearch={false}
                 mode="multiple"
-                options={option.sports.map((e) => ({ value: e.id, label: e.name }))}
+                options={sports?.map((e) => ({ value: e.id, label: e.name }))}
                 icon={ICONS.sport}
                 error={errors.sportIDs?.message}
                 label="Sport Types"
@@ -148,7 +147,7 @@ export default function ModalUpdate({ t, data, show, closeModal, option }: Props
                   showSearch={false}
                   {...field}
                   mode="multiple"
-                  options={option.trainers.map((e) => ({ value: e.id, label: e.fullName }))}
+                  options={trainers?.data?.map((e) => ({ value: e.id, label: e.fullName }))}
                   icon={ICONS.trainer}
                   error={errors.trainerIDs?.message}
                   label="Trainers"

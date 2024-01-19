@@ -168,7 +168,7 @@ export default function VisitorsTable({ data, searchParams, loading }: Props) {
           render: (id: string) => (
             <section className="flex justify-center items-center">
               <Link href={USER_REDIRECT.OWNER({ lang, href: `/visitors/detail/${id}` })} className="flex items-center">
-                <ActionButton title="Detail" icon={ICONS.detail} color="blue" />
+                <ActionButton icon={ICONS.detail} color="blue" />
               </Link>
             </section>
           ),

@@ -6,11 +6,13 @@ import { ICONS, PACKAGE_TYPES } from "@/lib/constants";
 import { cn, formatCurrency } from "@/lib/functions";
 import { type PackageDetail, type PackageList, type PackageListInput } from "@/server/api/routers/package";
 import { inputVariants, statusVariants } from "@/styles/variants";
-import { type Lang, type SearchParams } from "@/types";
+import { type Dictionary, type Lang, type SearchParams } from "@/types";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import { type PackageTransaction, type PackageType } from "@prisma/client";
 import { Table } from "antd";
 import { type FilterDropdownProps } from "antd/es/table/interface";
+import { Fragment, useState } from "react";
+import ModalUpdate from "./ModalUpdate";
 
 type Props = {
   data?: PackageList;
@@ -19,19 +21,12 @@ type Props = {
   searchParams: SearchParams;
   newParams: URLSearchParams;
   redirectTable: (newParams: URLSearchParams) => void;
-  setSelectedPackage: React.Dispatch<React.SetStateAction<PackageDetail | null>>;
-  setShowModalUpdate: React.Dispatch<React.SetStateAction<boolean>>;
+  t: Dictionary;
 };
 
-export default function PackagesTable({
-  data,
-  loading,
-  searchParams,
-  newParams,
-  redirectTable,
-  setSelectedPackage,
-  setShowModalUpdate,
-}: Props) {
+export default function PackagesTable({ data, loading, searchParams, newParams, redirectTable, t }: Props) {
+  const [selectedPackage, setSelectedPackage] = useState<PackageDetail | null>(null);
+
   const getTableFilter = ({
     name,
     icon,
@@ -103,81 +98,92 @@ export default function PackagesTable({
   });
 
   return (
-    <Table
-      dataSource={data}
-      loading={loading}
-      pagination={false}
-      rowKey="id"
-      scroll={{ x: "max-content" }}
-      columns={[
-        {
-          fixed: "left",
-          align: "center",
-          key: "id",
-          dataIndex: "id",
-          title: "Action",
-          width: 1,
-          render: (id: string, item) => (
-            <section className="flex justify-center items-center">
-              <ActionButton
-                onClick={() => {
-                  setSelectedPackage(item);
-                  setShowModalUpdate(true);
-                }}
-                icon={ICONS.edit}
-                color="yellow"
-                title="Update"
-              />
-            </section>
-          ),
-        },
-        {
-          title: "Type",
-          key: "type",
-          dataIndex: "type",
-          align: "center",
-          width: 1,
-          ...getTableFilter({ name: "type", icon: ICONS.package }),
-          render: (text: PackageType) => <p className="font-semibold border-1 border-dark px-2 select-none">{text}</p>,
-        },
-        {
-          title: "Name",
-          key: "name",
-          dataIndex: "name",
-          ...getTableFilter({ name: "name", icon: ICONS.name }),
-        },
-        {
-          title: "Price",
-          key: "price",
-          align: "right",
-          dataIndex: "price",
-          ...getTableFilter({ name: "price", icon: ICONS.payment_method, type: "number" }),
-          render: (text: number) => formatCurrency(text),
-        },
-        {
-          title: "Validity",
-          key: "validityInDays",
-          dataIndex: "validityInDays",
-          render: (text: number, item) => {
-            if (item.type === "SESSIONS") {
-              return (
-                <section className="flex gap-2">
-                  <p className={statusVariants({ status: "session" })}>{item.approvedSessions} session(s)</p>
-                  {text ? <p className={statusVariants({ status: "active" })}>{text} day(s)</p> : null}
-                </section>
-              );
-            }
-            return <p className={statusVariants({ status: "active" })}>{text} day(s)</p>;
+    <Fragment>
+      <ModalUpdate
+        t={t}
+        show={!!searchParams.id}
+        closeModal={() => {
+          newParams.delete("id");
+          redirectTable(newParams);
+        }}
+        data={selectedPackage}
+      />
+      <Table
+        dataSource={data}
+        loading={loading}
+        pagination={false}
+        rowKey="id"
+        scroll={{ x: "max-content" }}
+        columns={[
+          {
+            fixed: "left",
+            align: "center",
+            key: "id",
+            dataIndex: "id",
+            title: "Action",
+            width: 1,
+            render: (id: string, item) => (
+              <section className="flex justify-center items-center">
+                <ActionButton
+                  onClick={() => {
+                    setSelectedPackage(item);
+                    newParams.set("id", id);
+                    redirectTable(newParams);
+                  }}
+                  icon={ICONS.edit}
+                  color="yellow"
+                />
+              </section>
+            ),
           },
-        },
-        {
-          title: "Total Transactions",
-          key: "transactions",
-          dataIndex: "transactions",
-          ...getTableFilter({ name: "totalTransactions", type: "number" }),
-          render: (text: PackageTransaction[]) => text.length,
-        },
-      ]}
-    />
+          {
+            title: "Type",
+            key: "type",
+            dataIndex: "type",
+            align: "center",
+            width: 1,
+            ...getTableFilter({ name: "type", icon: ICONS.package }),
+            render: (text: PackageType) => <p className="font-semibold border-1 border-dark px-2 select-none">{text}</p>,
+          },
+          {
+            title: "Name",
+            key: "name",
+            dataIndex: "name",
+            ...getTableFilter({ name: "name", icon: ICONS.name }),
+          },
+          {
+            title: "Price",
+            key: "price",
+            align: "right",
+            dataIndex: "price",
+            ...getTableFilter({ name: "price", icon: ICONS.payment_method, type: "number" }),
+            render: (text: number) => formatCurrency(text),
+          },
+          {
+            title: "Validity",
+            key: "validityInDays",
+            dataIndex: "validityInDays",
+            render: (text: number, item) => {
+              if (item.type === "SESSIONS") {
+                return (
+                  <section className="flex gap-2">
+                    <p className={statusVariants({ status: "session" })}>{item.approvedSessions} session(s)</p>
+                    {text ? <p className={statusVariants({ status: "active" })}>{text} day(s)</p> : null}
+                  </section>
+                );
+              }
+              return <p className={statusVariants({ status: "active" })}>{text} day(s)</p>;
+            },
+          },
+          {
+            title: "Total Transactions",
+            key: "transactions",
+            dataIndex: "transactions",
+            ...getTableFilter({ name: "totalTransactions", type: "number" }),
+            render: (text: PackageTransaction[]) => text.length,
+          },
+        ]}
+      />
+    </Fragment>
   );
 }

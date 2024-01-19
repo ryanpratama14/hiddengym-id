@@ -2,21 +2,12 @@
 
 import Button from "@/components/Button";
 import Iconify from "@/components/Iconify";
-import { useZustand } from "@/global/store";
-import { ICONS, PACKAGE_TRANSACTION_SORTERERS, USER_REDIRECT } from "@/lib/constants";
-import { cn, createUrl, getSorterSlug } from "@/lib/functions";
-import { useRouter, useSearchParams } from "next/navigation";
+import { ICONS, PACKAGE_TRANSACTION_SORTERERS } from "@/lib/constants";
+import { cn, getSorterSlug } from "@/lib/functions";
 
-export default function TableSorter() {
-  const { lang } = useZustand();
-  const router = useRouter();
-  const newSearchParams = useSearchParams();
-  const newParams = new URLSearchParams(newSearchParams.toString());
+type Props = { newParams: URLSearchParams; redirectTable: (newParams: URLSearchParams) => void };
 
-  const redirectTable = (newParams: URLSearchParams) => {
-    router.push(createUrl(USER_REDIRECT.OWNER({ lang, href: "/transactions/packages" }), newParams));
-  };
-
+export default function TableSorter({ redirectTable, newParams }: Props) {
   return (
     <section className="hidden md:flex flex-col gap-2">
       <section className="flex justify-between items-end">
