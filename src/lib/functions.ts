@@ -259,7 +259,7 @@ export const getSelectedMenu = ({ pathname, role, lang }: { pathname: string; ro
     const menu = DASHBOARD_MENUS.find((item) => item.key === path);
     if (menu) {
       selectedMenu.label = menu.label;
-      selectedMenu.href = USER_REDIRECT[role]({ lang, href: path });
+      selectedMenu.href = USER_REDIRECT({ role, lang, href: path });
       break;
     }
   }

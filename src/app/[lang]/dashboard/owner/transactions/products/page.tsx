@@ -17,7 +17,7 @@ export default function TransactionsProductsPage({ searchParams, params }: Props
   const router = useRouter();
 
   const redirectTable = (newParams: URLSearchParams) => {
-    router.push(createUrl(USER_REDIRECT.OWNER({ lang: params.lang, href: "/transactions/products" }), newParams));
+    router.push(createUrl(USER_REDIRECT({ lang: params.lang, href: "/transactions/products", role: "OWNER" }), newParams));
   };
 
   const { data, isLoading: loading } = api.productTransaction.list.useQuery(query, { refetchInterval: REFETCH_INTERVAL });

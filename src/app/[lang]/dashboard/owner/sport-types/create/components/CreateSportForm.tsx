@@ -34,7 +34,7 @@ export default function CreateSportForm({ t }: Props) {
   const { mutate: createData, isPending: loading } = api.sport.create.useMutation({
     onSuccess: (res) => {
       toastSuccess({ t, description: res.message });
-      router.push(USER_REDIRECT.OWNER({ lang, href: "/sport-types" }));
+      router.push(USER_REDIRECT({ lang, href: "/sport-types", role: "OWNER" }));
     },
     onError: (res) => toastError({ t, description: res.message }),
   });

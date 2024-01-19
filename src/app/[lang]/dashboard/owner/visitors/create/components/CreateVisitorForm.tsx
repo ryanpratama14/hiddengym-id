@@ -77,7 +77,7 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
       };
       await createPackageTransaction(packageTransaction);
       toastSuccess({ t, description: res.message });
-      router.push(USER_REDIRECT.OWNER({ lang, href: "/visitors" }));
+      router.push(USER_REDIRECT({ lang, href: "/visitors", role: "OWNER" }));
     },
     onError: (res) => toastError({ t, description: res.message }),
   });

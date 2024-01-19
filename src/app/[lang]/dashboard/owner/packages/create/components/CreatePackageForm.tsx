@@ -59,7 +59,7 @@ export default function CreatePackageForm({ option, t }: Props) {
   const { mutate: createData, isPending: loading } = api.package.create.useMutation({
     onSuccess: (res) => {
       toastSuccess({ t, description: res.message });
-      router.push(USER_REDIRECT.OWNER({ lang, href: "/packages" }));
+      router.push(USER_REDIRECT({ lang, href: "/packages", role: "OWNER" }));
     },
     onError: (res) => toastError({ t, description: res.message }),
   });

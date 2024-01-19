@@ -43,7 +43,7 @@ export default function SignInVisitor({ callbackUrl, t }: Props) {
       if (!res?.error) {
         reset();
         toastSuccess({ t, description: t.login.correct });
-        router.push(callbackUrl ? `/${lang}${callbackUrl}` : USER_REDIRECT.VISITOR({ lang, href: "" }));
+        router.push(callbackUrl ? `/${lang}${callbackUrl}` : USER_REDIRECT({ lang, href: "", role: "VISITOR" }));
       } else {
         toastError({ t, description: t.login.incorrectPhoneNumber });
         resetField("credential");

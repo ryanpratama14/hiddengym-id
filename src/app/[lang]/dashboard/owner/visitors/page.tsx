@@ -21,7 +21,7 @@ export default function VisitorsPage({ searchParams, params }: Props) {
   const router = useRouter();
 
   const redirectTable = (newParams: URLSearchParams) => {
-    router.push(createUrl(USER_REDIRECT.OWNER({ lang: params.lang, href: "/visitors" }), newParams));
+    router.push(createUrl(USER_REDIRECT({ lang: params.lang, href: "/visitors", role: "OWNER" }), newParams));
   };
   const { data, isLoading: loading } = api.user.list.useQuery({ ...query, role: "VISITOR" }, { refetchInterval: REFETCH_INTERVAL });
 

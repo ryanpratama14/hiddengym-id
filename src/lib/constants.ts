@@ -1,16 +1,7 @@
 import { COLORS } from "@/styles/theme";
-import { type AddButtonKey, type DashboardMenuKey, type Lang } from "@/types";
+import type { AddButtonKey, DashboardHrefKey, DashboardMenuKey, Lang } from "@/types";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
-import {
-  type Gender,
-  type Package,
-  type PackageTransaction,
-  type PackageType,
-  type ProductTransaction,
-  type PromoCodeType,
-  type Role,
-  type User,
-} from "@prisma/client";
+import type { Gender, Package, PackageTransaction, PackageType, ProductTransaction, PromoCodeType, Role, User } from "@prisma/client";
 
 export const PACKAGE_SORTERERS: { name: keyof Package; title: string }[] = [
   { name: "type", title: "Type" },
@@ -65,12 +56,8 @@ export const USER_PATHNAMES: Record<Role, string> = {
   TRAINER: `/dashboard/trainer`,
 };
 
-export const USER_REDIRECT = {
-  VISITOR: ({ lang, href }: { lang: Lang; href: string }) => `/${lang}${USER_PATHNAMES.VISITOR}${href}`,
-  ADMIN: ({ lang, href }: { lang: Lang; href: string }) => `/${lang}${USER_PATHNAMES.ADMIN}${href}`,
-  OWNER: ({ lang, href }: { lang: Lang; href: string }) => `/${lang}${USER_PATHNAMES.OWNER}${href}`,
-  TRAINER: ({ lang, href }: { lang: Lang; href: string }) => `/${lang}${USER_PATHNAMES.TRAINER}${href}`,
-};
+export const USER_REDIRECT = ({ role, lang, href, params }: { role: Role; lang: Lang; href: DashboardHrefKey; params?: string }) =>
+  `/${lang}/${USER_PATHNAMES[role]}${href}${params ?? ""}`;
 
 export const EMAIL_VISITOR_READONLY = "readonly@hiddengym-id.com";
 

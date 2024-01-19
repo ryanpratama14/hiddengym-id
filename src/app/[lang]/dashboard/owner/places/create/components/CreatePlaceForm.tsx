@@ -35,7 +35,7 @@ export default function CreatePlaceForm({ t }: Props) {
   const { mutate: createData, isPending: loading } = api.place.create.useMutation({
     onSuccess: (res) => {
       toastSuccess({ t, description: res.message });
-      router.push(USER_REDIRECT.OWNER({ lang, href: "/places" }));
+      router.push(USER_REDIRECT({ lang, href: "/places", role: "OWNER" }));
     },
     onError: (res) => toastError({ t, description: res.message }),
   });

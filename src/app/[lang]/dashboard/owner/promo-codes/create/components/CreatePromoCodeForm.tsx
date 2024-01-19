@@ -36,7 +36,7 @@ export default function CreatePromoCodeForm({ t }: Props) {
   const { mutate: createData, isPending: loading } = api.promoCode.create.useMutation({
     onSuccess: (res) => {
       toastSuccess({ t, description: res.message });
-      router.push(USER_REDIRECT.OWNER({ lang, href: "/promo-codes" }));
+      router.push(USER_REDIRECT({ lang, href: "/promo-codes", role: "OWNER" }));
     },
     onError: (res) => toastError({ t, description: res.message }),
   });

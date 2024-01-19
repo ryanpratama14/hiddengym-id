@@ -36,7 +36,7 @@ const DashboardNavigator = ({
         { "ml-4 text-sm": isChildrenAddButton },
         { "text-sm": smallText },
       )}
-      href={USER_REDIRECT[role]({ lang, href })}
+      href={USER_REDIRECT({ lang, href, role })}
     >
       {children}
     </Link>

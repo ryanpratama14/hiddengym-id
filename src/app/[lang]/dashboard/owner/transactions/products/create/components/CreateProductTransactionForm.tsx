@@ -51,7 +51,7 @@ export default function CreateProductTransactionForm({ t, option }: Props) {
   const { mutate: createData, isPending: loading } = api.productTransaction.create.useMutation({
     onSuccess: (res) => {
       toastSuccess({ t, description: res.message });
-      router.push(USER_REDIRECT.OWNER({ lang, href: "/transactions/products" }));
+      router.push(USER_REDIRECT({ lang, href: "/transactions/products", role: "OWNER" }));
     },
     onError: (res) => toastError({ t, description: res.message }),
   });

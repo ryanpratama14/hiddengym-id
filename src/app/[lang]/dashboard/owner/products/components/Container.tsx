@@ -18,7 +18,7 @@ export default function ProductsContainer({ lang, searchParams, t }: Props) {
   const { data, isLoading: loading } = api.product.list.useQuery(query, { refetchInterval: REFETCH_INTERVAL });
 
   const redirectTable = (newParams: URLSearchParams) => {
-    router.push(createUrl(USER_REDIRECT.OWNER({ lang, href: "/products" }), newParams));
+    router.push(createUrl(USER_REDIRECT({ lang, href: "/products", role: "OWNER" }), newParams));
   };
 
   return (

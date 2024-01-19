@@ -34,7 +34,7 @@ export default function CreatePaymentMethodForm({ t }: Props) {
   const { mutate: createData, isPending: loading } = api.paymentMethod.create.useMutation({
     onSuccess: (res) => {
       toastSuccess({ t, description: res.message });
-      router.push(USER_REDIRECT.OWNER({ lang, href: "/payment-methods" }));
+      router.push(USER_REDIRECT({ lang, href: "/payment-methods", role: "OWNER" }));
     },
     onError: (res) => toastError({ t, description: res.message }),
   });

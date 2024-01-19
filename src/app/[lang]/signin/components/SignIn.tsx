@@ -44,7 +44,7 @@ export default function SignIn({ callbackUrl, t }: Props) {
       if (!res?.error && session?.user) {
         reset();
         toastSuccess({ t, description: t.login.correct });
-        router.push(callbackUrl ? `/${lang}${callbackUrl}` : USER_REDIRECT[session.user.role]({ lang, href: "" }));
+        router.push(callbackUrl ? `/${lang}${callbackUrl}` : USER_REDIRECT({ lang, href: "", role: session.user.role }));
       } else {
         toastError({ t, description: t.login.incorrectEmail });
         resetField("credential");

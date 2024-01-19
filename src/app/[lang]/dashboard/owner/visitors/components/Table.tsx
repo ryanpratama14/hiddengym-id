@@ -152,7 +152,7 @@ export default function VisitorsTable({ data, searchParams, lang, loading, newPa
           dataIndex: "id",
           render: (id: string) => (
             <section className="flex justify-center items-center">
-              <ActionButton href={`/visitors/detail/${id}`} lang={lang} role="OWNER" icon={ICONS.detail} color="blue" />
+              <ActionButton href="/visitors/detail" params={`/${id}`} lang={lang} role="OWNER" icon={ICONS.detail} color="blue" />
             </section>
           ),
         },

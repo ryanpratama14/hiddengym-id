@@ -25,7 +25,7 @@ export default function PackagesContainer({ lang, searchParams, t }: Props) {
   const router = useRouter();
 
   const redirectTable = (newParams: URLSearchParams) => {
-    router.push(createUrl(USER_REDIRECT.OWNER({ lang, href: "/packages" }), newParams));
+    router.push(createUrl(USER_REDIRECT({ lang, href: "/packages", role: "OWNER" }), newParams));
   };
 
   return (
