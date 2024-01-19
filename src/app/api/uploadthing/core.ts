@@ -1,7 +1,7 @@
-import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { getServerAuthSession } from "@/server/auth";
 import { db } from "@/server/db";
 import { THROW_OK } from "@/trpc/shared";
+import { createUploadthing, type FileRouter } from "uploadthing/next";
 
 const f = createUploadthing();
 
@@ -13,7 +13,7 @@ export const ourFileRouter = {
       return { userId: session.user.id };
     })
     .onUploadComplete(async ({ file, metadata }) => {
-      const newImage = await db.file.create({ data: { url: file.url, name: file.name } });
+      const newImage = await db.file.create({ data: { url: file.url, name: file.name, ownerId: metadata.userId } });
       await db.user.update({ where: { id: metadata.userId }, data: { imageId: newImage.id } });
       return THROW_OK("CREATED");
     }),

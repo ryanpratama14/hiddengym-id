@@ -52,6 +52,8 @@ export const userRouter = createTRPCRouter({
         credential: await hash(input.credential),
         birthDate: input.birthDate && getNewDate(input.birthDate),
         imageId: null,
+        emailVerified: null,
+        activeVisitId: null,
       },
     });
     return THROW_OK("CREATED");
@@ -77,6 +79,8 @@ export const userRouter = createTRPCRouter({
         credential: await hash(visitorData.phoneNumber),
         birthDate: visitorData.birthDate ? getNewDate(visitorData.birthDate) : null,
         imageId: null,
+        emailVerified: null,
+        activeVisitId: null,
       },
     });
 
