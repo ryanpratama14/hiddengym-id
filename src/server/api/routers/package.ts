@@ -18,6 +18,9 @@ const packageSelect = { select: { ...prismaExclude("Package", []), trainers: tru
 export const packageRouter = createTRPCRouter({
   update: ownerProcedure.input(schema.package.update).mutation(async ({ ctx, input }) => {
     const { body, id } = input;
+    const data = await ctx.db.package.findFirst({ where: { id } });
+    if (!data) return THROW_TRPC_ERROR("NOT_FOUND");
+
     await ctx.db.package.update({
       where: { id },
       data: {

@@ -1,15 +1,22 @@
 import { formatDateShort, getUserAge } from "@/lib/functions";
 import { schema } from "@/schema";
 import { createTRPCRouter, ownerProcedure } from "@/server/api/trpc";
-import { THROW_OK, THROW_TRPC_ERROR, type RouterInputs, type RouterOutputs } from "@/trpc/shared";
+import {
+  getConflictMessage,
+  getCreatedMessage,
+  THROW_OK,
+  THROW_TRPC_ERROR,
+  type RouterInputs,
+  type RouterOutputs,
+} from "@/trpc/shared";
 import { z } from "zod";
 
 export const promoCodeRouter = createTRPCRouter({
   create: ownerProcedure.input(schema.promoCode.create).mutation(async ({ ctx, input }) => {
     const data = await ctx.db.promoCode.findUnique({ where: { code: input.code } });
-    if (data) return THROW_TRPC_ERROR("CONFLICT", "A promo code with this name already exists.");
+    if (data) return THROW_TRPC_ERROR("CONFLICT", getConflictMessage("promo code", "code"));
     await ctx.db.promoCode.create({ data: { code: input.code, discountPrice: input.discountPrice, type: input.type } });
-    return THROW_OK("CREATED", "A promo code has been created.");
+    return THROW_OK("CREATED", getCreatedMessage("promo code"));
   }),
 
   list: ownerProcedure.query(async ({ ctx }) => await ctx.db.promoCode.findMany()),

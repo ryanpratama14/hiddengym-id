@@ -16,7 +16,7 @@ export const updateTotalSpending = async (userId: string) => {
     totalSpending: accumulateValue(data.packageTransactions, "totalPrice") + accumulateValue(data.productTransactions, "totalPrice"),
   };
 
-  return await db.user.update({ where: { id: data.id }, data: spendingData });
+  return await db.user.update({ where: { id: userId }, data: spendingData });
 };
 
 export const updatePackageTotalTransactions = async (packageId: string) => {
@@ -27,7 +27,7 @@ export const updatePackageTotalTransactions = async (packageId: string) => {
   if (!data) return THROW_TRPC_ERROR("NOT_FOUND");
 
   if (data.transactions.length !== data.totalTransactions) {
-    return await db.package.update({ where: { id: data.id }, data: { totalTransactions: data.transactions.length } });
+    return await db.package.update({ where: { id: packageId }, data: { totalTransactions: data.transactions.length } });
   }
 
   return;

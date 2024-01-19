@@ -71,7 +71,7 @@ TransactionInvoice.Products = function InvoiceProducts({
 TransactionInvoice.Buyer = function InvoiceBuyer(props: { fullName: string; phoneNumber: string; email?: string | null }) {
   return (
     <section className="flex flex-col text-center">
-      <p className="font-medium underline">{props.fullName}</p>
+      <p className="font-medium">{props.fullName}</p>
       <NavigatorX newTab href={`tel:${COUNTRY_CODE}${props.phoneNumber}`}>
         <small className="hover:text-blue">{localizePhoneNumber(props.phoneNumber)}</small>
       </NavigatorX>
