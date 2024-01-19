@@ -43,14 +43,14 @@ export const productTransactionRouter = createTRPCRouter({
     const [data, totalData] = await ctx.db.$transaction([
       ctx.db.productTransaction.findMany({
         ...productTransactionSelect,
-        ...getPaginationQuery(pagination),
+        ...(input.pagination && getPaginationQuery(pagination)),
         ...whereQuery,
         ...(input.sort ? getSortingQuery(input.sort) : { orderBy: { transactionDate: "desc" } }),
       }),
       ctx.db.productTransaction.count(whereQuery),
     ]);
 
-    return { data, ...getPaginationData({ ...pagination, totalData }) };
+    return { data, ...(input.pagination && getPaginationData({ ...pagination, totalData })) };
   }),
 
   detail: protectedProcedure.input(z.object({ id: z.string() })).query(async ({ input, ctx }) => {

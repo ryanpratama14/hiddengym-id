@@ -5,13 +5,12 @@ import Iconify from "@/components/Iconify";
 import { useZustand } from "@/global/store";
 import { ICONS, USER_LIST_SORTERERS, USER_REDIRECT } from "@/lib/constants";
 import { cn, createUrl, getSorterSlug } from "@/lib/functions";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function TableSorter() {
   const { lang } = useZustand();
   const router = useRouter();
-  const newSearchParams = useSearchParams();
-  const newParams = new URLSearchParams(newSearchParams.toString());
+  const newParams = new URLSearchParams();
 
   const redirectTable = (newParams: URLSearchParams) => {
     router.push(createUrl(USER_REDIRECT.OWNER({ lang, href: "/visitors" }), newParams));

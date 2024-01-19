@@ -21,7 +21,7 @@ export const productRouter = createTRPCRouter({
   }),
 
   list: ownerProcedure.input(schema.product.list).query(async ({ ctx, input }) => {
-    let data = await ctx.db.product.findMany({
+    const data = await ctx.db.product.findMany({
       select: {
         ...prismaExclude("Product", []),
         transactions: {
@@ -31,10 +31,14 @@ export const productRouter = createTRPCRouter({
           },
         },
       },
-      where: { name: { contains: input.name, ...insensitiveMode }, price: { gte: input.price } },
+      where: {
+        name: { contains: input.name, ...insensitiveMode },
+        price: { gte: input.price },
+        totalTransactions: { gte: input.totalTransactions },
+      },
       orderBy: input.price ? { price: "asc" } : { name: "asc" },
     });
-    if (input.totalTransactions) data = data.filter((item) => item.transactions.length >= input.totalTransactions!);
+
     return data;
   }),
 

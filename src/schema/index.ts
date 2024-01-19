@@ -22,6 +22,7 @@ export class schema {
   static pagination = z.object({
     page: z.coerce.number().positive().default(1),
     limit: z.coerce.number().positive().default(PAGINATION_LIMIT),
+    pagination: z.boolean().default(true),
   });
   static sorting = z.object({ sort: z.string().optional() });
   static email = z.string().email("Provide a valid email");
@@ -101,7 +102,6 @@ export class schema {
     });
 
     static list = z.object({
-      pagination: z.boolean().default(true),
       ...schema.pagination.shape,
       ...schema.sorting.shape,
       role: schema.role,
@@ -249,7 +249,7 @@ export class schema {
   };
 }
 
-export type Pagination = z.infer<typeof schema.pagination>;
+export type Pagination = Omit<z.infer<typeof schema.pagination>, "pagination">;
 export type Login = z.infer<typeof schema.login>;
 export type LoginVisitor = z.infer<typeof schema.loginVisitor>;
 export type TokenType = z.infer<typeof schema.tokenType>;

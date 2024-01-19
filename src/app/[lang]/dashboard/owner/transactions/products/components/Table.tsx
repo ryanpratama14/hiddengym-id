@@ -19,7 +19,7 @@ import { type SearchParams } from "@/types";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import { Table } from "antd";
 import { type FilterDropdownProps } from "antd/es/table/interface";
-import { redirect, useRouter, useSearchParams } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { Fragment, useState } from "react";
 
 type Props = {
@@ -30,8 +30,7 @@ type Props = {
 
 export default function ProductTransactionsTable({ data, searchParams, loading }: Props) {
   const { lang } = useZustand();
-  const newSearchParams = useSearchParams();
-  const newParams = new URLSearchParams(newSearchParams.toString());
+  const newParams = new URLSearchParams();
   const [selectedTransaction, setSelectedTransaction] = useState<ProductTransactionDetail | null>(null);
   const [show, setShow] = useState(false);
 

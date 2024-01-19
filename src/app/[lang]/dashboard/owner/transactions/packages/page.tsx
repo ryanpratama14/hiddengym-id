@@ -5,7 +5,7 @@ import { createUrl } from "@/lib/functions";
 import { schema } from "@/schema";
 import { api } from "@/trpc/react";
 import { type Lang, type SearchParams } from "@/types";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Table from "./components/Table";
 import TableSorter from "./components/TableSorter";
 
@@ -16,8 +16,7 @@ type Props = {
 
 export default function TransactionsProductPage({ searchParams, params }: Props) {
   const query = schema.packageTransaction.list.parse(searchParams);
-  const newSearchParams = useSearchParams();
-  const newParams = new URLSearchParams(newSearchParams.toString());
+  const newParams = new URLSearchParams();
   const router = useRouter();
 
   const redirectTable = (newParams: URLSearchParams) => {

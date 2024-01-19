@@ -5,7 +5,7 @@ import { createUrl } from "@/lib/functions";
 import { schema } from "@/schema";
 import { api } from "@/trpc/react";
 import { type Dictionary, type Lang, type SearchParams } from "@/types";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Fragment } from "react";
 import Table from "../components/Table";
 import TableSorter from "../components/TableSorter";
@@ -20,8 +20,7 @@ export default function PackagesContainer({ lang, searchParams, t }: Props) {
   const query = schema.package.list.parse(searchParams);
   const { data, isLoading: loading } = api.package.list.useQuery(query, { refetchInterval: REFETCH_INTERVAL });
 
-  const newSearchParams = useSearchParams();
-  const newParams = new URLSearchParams(newSearchParams.toString());
+  const newParams = new URLSearchParams();
   const router = useRouter();
 
   const redirectTable = (newParams: URLSearchParams) => {

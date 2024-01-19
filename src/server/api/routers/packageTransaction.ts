@@ -52,7 +52,7 @@ export const packageTransactionRouter = createTRPCRouter({
 
     const [data, totalData] = await ctx.db.$transaction([
       ctx.db.packageTransaction.findMany({
-        ...getPaginationQuery(pagination),
+        ...(input.pagination && getPaginationQuery(pagination)),
         ...packageTransactionSelect,
         ...whereQuery,
         ...(input.sort ? getSortingQuery(input.sort) : { orderBy: { transactionDate: "desc" } }),
@@ -60,7 +60,7 @@ export const packageTransactionRouter = createTRPCRouter({
       ctx.db.packageTransaction.count(whereQuery),
     ]);
 
-    return { data, ...getPaginationData({ ...pagination, totalData }) };
+    return { data, ...(input.pagination && getPaginationData({ ...pagination, totalData })) };
   }),
 
   create: ownerProcedure.input(schema.packageTransaction.create).mutation(async ({ ctx, input }) => {

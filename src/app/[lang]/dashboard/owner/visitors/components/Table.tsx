@@ -17,7 +17,7 @@ import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import { Table } from "antd";
 import { type FilterDropdownProps } from "antd/es/table/interface";
 import Link from "next/link";
-import { redirect, useRouter, useSearchParams } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 
 type Props = {
   data?: UserList;
@@ -27,8 +27,7 @@ type Props = {
 
 export default function VisitorsTable({ data, searchParams, loading }: Props) {
   const { lang } = useZustand();
-  const newSearchParams = useSearchParams();
-  const newParams = new URLSearchParams(newSearchParams.toString());
+  const newParams = new URLSearchParams();
 
   if (data?.isPaginationInvalid) {
     newParams.delete("page");

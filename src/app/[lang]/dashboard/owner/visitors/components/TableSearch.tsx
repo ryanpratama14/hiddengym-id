@@ -7,7 +7,7 @@ import { useZustand } from "@/global/store";
 import { ICONS, USER_REDIRECT } from "@/lib/constants";
 import { createUrl } from "@/lib/functions";
 import { type SearchParams } from "@/types";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 type Props = {
   searchParams: SearchParams;
@@ -16,8 +16,7 @@ type Props = {
 
 export default function TableSearch({ searchParams, loading }: Props) {
   const router = useRouter();
-  const newSearchParams = useSearchParams();
-  const newParams = new URLSearchParams(newSearchParams.toString());
+  const newParams = new URLSearchParams();
   const { lang } = useZustand();
 
   return (
