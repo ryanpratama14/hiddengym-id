@@ -3,22 +3,17 @@
 import Button from "@/components/Button";
 import Iconify from "@/components/Iconify";
 import Input from "@/components/Input";
-import { useZustand } from "@/global/store";
-import { ICONS, USER_REDIRECT } from "@/lib/constants";
-import { createUrl } from "@/lib/functions";
+import { ICONS } from "@/lib/constants";
 import { type SearchParams } from "@/types";
-import { useRouter } from "next/navigation";
 
 type Props = {
   searchParams: SearchParams;
   loading: boolean;
+  newParams: URLSearchParams;
+  redirectTable: (newParams: URLSearchParams) => void;
 };
 
-export default function TableSearch({ searchParams, loading }: Props) {
-  const router = useRouter();
-  const newParams = new URLSearchParams();
-  const { lang } = useZustand();
-
+export default function TableSearch({ searchParams, loading, newParams, redirectTable }: Props) {
   return (
     <form
       onSubmit={(e) => {
@@ -29,7 +24,7 @@ export default function TableSearch({ searchParams, loading }: Props) {
           newParams.set("fullName", search.value);
         } else newParams.delete("fullName");
         newParams.delete("page");
-        router.push(createUrl(USER_REDIRECT.OWNER({ lang, href: "/visitors" }), newParams));
+        redirectTable(newParams);
       }}
       className="flex justify-between gap-2 md:gap-6"
     >

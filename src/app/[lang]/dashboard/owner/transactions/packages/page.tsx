@@ -16,7 +16,7 @@ type Props = {
 
 export default function TransactionsProductPage({ searchParams, params }: Props) {
   const query = schema.packageTransaction.list.parse(searchParams);
-  const newParams = new URLSearchParams();
+  const newParams = new URLSearchParams(searchParams);
   const router = useRouter();
 
   const redirectTable = (newParams: URLSearchParams) => {
@@ -24,6 +24,11 @@ export default function TransactionsProductPage({ searchParams, params }: Props)
   };
 
   const { data, isLoading: loading } = api.packageTransaction.list.useQuery(query, { refetchInterval: REFETCH_INTERVAL });
+
+  if (data?.isPaginationInvalid) {
+    newParams.delete("page");
+    redirectTable(newParams);
+  }
 
   return (
     <section className="grid md:grid-cols-5 gap-6 lg:gap-x-12">

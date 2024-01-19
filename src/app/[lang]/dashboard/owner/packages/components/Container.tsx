@@ -20,7 +20,7 @@ export default function PackagesContainer({ lang, searchParams, t }: Props) {
   const query = schema.package.list.parse(searchParams);
   const { data, isLoading: loading } = api.package.list.useQuery(query, { refetchInterval: REFETCH_INTERVAL });
 
-  const newParams = new URLSearchParams();
+  const newParams = new URLSearchParams(searchParams);
   const router = useRouter();
 
   const redirectTable = (newParams: URLSearchParams) => {

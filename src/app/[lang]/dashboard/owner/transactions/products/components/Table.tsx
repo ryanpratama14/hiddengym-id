@@ -6,9 +6,8 @@ import Img from "@/components/Img";
 import Input from "@/components/Input";
 import { Modal } from "@/components/Modal";
 import ProductTransaction from "@/components/ProductTransaction";
-import { useZustand } from "@/global/store";
-import { DETERMINE_GENDER, ICONS, USER_REDIRECT } from "@/lib/constants";
-import { cn, createUrl, formatCurrency, formatDateShort, textEllipsis } from "@/lib/functions";
+import { DETERMINE_GENDER, ICONS } from "@/lib/constants";
+import { cn, formatCurrency, formatDateShort, textEllipsis } from "@/lib/functions";
 import {
   type ProductTransactionDetail,
   type ProductTransactionList,
@@ -19,31 +18,18 @@ import { type SearchParams } from "@/types";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import { Table } from "antd";
 import { type FilterDropdownProps } from "antd/es/table/interface";
-import { redirect, useRouter } from "next/navigation";
 import { Fragment, useState } from "react";
 
 type Props = {
   data?: ProductTransactionList;
   searchParams: SearchParams;
   loading: boolean;
+  newParams: URLSearchParams;
+  redirectTable: (newParams: URLSearchParams) => void;
 };
 
-export default function ProductTransactionsTable({ data, searchParams, loading }: Props) {
-  const { lang } = useZustand();
-  const newParams = new URLSearchParams();
+export default function ProductTransactionsTable({ data, searchParams, loading, newParams, redirectTable }: Props) {
   const [selectedTransaction, setSelectedTransaction] = useState<ProductTransactionDetail | null>(null);
-  const [show, setShow] = useState(false);
-
-  if (data?.isPaginationInvalid) {
-    newParams.delete("page");
-    redirect(createUrl(USER_REDIRECT.OWNER({ lang, href: "/transactions/products" }), newParams));
-  }
-
-  const router = useRouter();
-
-  const redirectTable = (newParams: URLSearchParams) => {
-    router.push(createUrl(USER_REDIRECT.OWNER({ lang, href: "/transactions/products" }), newParams));
-  };
 
   const getTableFilter = ({
     name,
@@ -106,7 +92,13 @@ export default function ProductTransactionsTable({ data, searchParams, loading }
 
   return (
     <Fragment>
-      <Modal show={show} closeModal={() => setShow(false)}>
+      <Modal
+        show={!!searchParams.id}
+        closeModal={() => {
+          newParams.delete("id");
+          redirectTable(newParams);
+        }}
+      >
         <Modal.Body>
           <ProductTransaction data={selectedTransaction} />
         </Modal.Body>
@@ -145,12 +137,13 @@ export default function ProductTransactionsTable({ data, searchParams, loading }
             key: "id",
             width: 1,
             dataIndex: "id",
-            render: (_, item) => (
+            render: (id: string, item) => (
               <section className="flex justify-center items-center">
                 <ActionButton
                   onClick={() => {
                     setSelectedTransaction(item);
-                    setShow(true);
+                    newParams.set("id", id);
+                    redirectTable(newParams);
                   }}
                   icon={ICONS.invoice}
                   color="green"

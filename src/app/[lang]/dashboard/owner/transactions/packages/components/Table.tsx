@@ -32,10 +32,6 @@ type Props = {
 export default function PackageTransactionsTable({ data, searchParams, loading, newParams, redirectTable }: Props) {
   const [selectedTransaction, setSelectedTransaction] = useState<PackageTransactionDetail | null>(null);
 
-  if (data?.isPaginationInvalid) {
-    newParams.delete("page");
-    redirectTable(newParams);
-  }
   const getTableFilter = ({
     name,
     icon,

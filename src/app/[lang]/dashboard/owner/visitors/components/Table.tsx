@@ -7,39 +7,26 @@ import Iconify from "@/components/Iconify";
 import Img from "@/components/Img";
 import Input from "@/components/Input";
 import NavigatorX from "@/components/NavigatorX";
-import { useZustand } from "@/global/store";
 import { COUNTRY_CODE, DETERMINE_GENDER, GENDERS, ICONS, USER_REDIRECT } from "@/lib/constants";
-import { cn, createUrl, formatCurrency, localizePhoneNumber, textEllipsis } from "@/lib/functions";
+import { cn, formatCurrency, localizePhoneNumber, textEllipsis } from "@/lib/functions";
 import { type UserList, type UserListInput } from "@/server/api/routers/user";
 import { PAGINATION_LIMIT } from "@/trpc/shared";
-import { type SearchParams } from "@/types";
+import { type Lang, type SearchParams } from "@/types";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import { Table } from "antd";
 import { type FilterDropdownProps } from "antd/es/table/interface";
 import Link from "next/link";
-import { redirect, useRouter } from "next/navigation";
 
 type Props = {
   data?: UserList;
   searchParams: SearchParams;
   loading: boolean;
+  newParams: URLSearchParams;
+  redirectTable: (newParams: URLSearchParams) => void;
+  lang: Lang;
 };
 
-export default function VisitorsTable({ data, searchParams, loading }: Props) {
-  const { lang } = useZustand();
-  const newParams = new URLSearchParams();
-
-  if (data?.isPaginationInvalid) {
-    newParams.delete("page");
-    redirect(createUrl(USER_REDIRECT.OWNER({ lang, href: "/visitors" }), newParams));
-  }
-
-  const router = useRouter();
-
-  const redirectTable = (newParams: URLSearchParams) => {
-    router.push(createUrl(USER_REDIRECT.OWNER({ lang, href: "/visitors" }), newParams));
-  };
-
+export default function VisitorsTable({ data, searchParams, lang, loading, newParams, redirectTable }: Props) {
   const getTableFilter = ({
     name,
     icon,
