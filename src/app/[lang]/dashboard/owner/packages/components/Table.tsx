@@ -99,7 +99,7 @@ export default function PackagesTable({ data, loading, searchParams, newParams, 
     <Fragment>
       <ModalUpdate
         t={t}
-        show={!!searchParams.id}
+        show={!!searchParams.id && !!data?.find((e) => e.id === searchParams.id)}
         closeModal={() => {
           newParams.delete("id");
           redirectTable(newParams);

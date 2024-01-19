@@ -102,7 +102,7 @@ export default function ProductTransactionsTable({ data, searchParams, loading, 
   return (
     <Fragment>
       <Modal
-        show={!!searchParams.id}
+        show={!!searchParams.id && !!selectedTransaction}
         closeModal={() => {
           newParams.delete("id");
           redirectTable(newParams);

@@ -1,4 +1,3 @@
-import Navigator from "@/components/Navigator";
 import { cn } from "@/lib/functions";
 import { api } from "@/trpc/server";
 
@@ -30,9 +29,6 @@ export default async function PaymentMethodsPage() {
                       <p>products</p>
                     </section>
                   </section>
-                  <Navigator href="/" color="link" size="l">
-                    More Detail
-                  </Navigator>
                 </section>
               </section>
             </section>
