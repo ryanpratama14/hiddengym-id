@@ -18,7 +18,7 @@ import { type SearchParams } from "@/types";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import { Table } from "antd";
 import { type FilterDropdownProps } from "antd/es/table/interface";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 
 type Props = {
   data?: ProductTransactionList;
@@ -30,6 +30,15 @@ type Props = {
 
 export default function ProductTransactionsTable({ data, searchParams, loading, newParams, redirectTable }: Props) {
   const [selectedTransaction, setSelectedTransaction] = useState<ProductTransactionDetail | null>(null);
+
+  useEffect(() => {
+    if (searchParams.id && data?.data) {
+      const selectedData = data.data.find((e) => e.id === searchParams.id);
+      if (selectedData) {
+        setSelectedTransaction(selectedData);
+      } else setSelectedTransaction(null);
+    }
+  }, [searchParams, data]);
 
   const getTableFilter = ({
     name,
@@ -137,11 +146,10 @@ export default function ProductTransactionsTable({ data, searchParams, loading, 
             key: "id",
             width: 1,
             dataIndex: "id",
-            render: (id: string, item) => (
+            render: (id: string) => (
               <section className="flex justify-center items-center">
                 <ActionButton
                   onClick={() => {
-                    setSelectedTransaction(item);
                     newParams.set("id", id);
                     redirectTable(newParams);
                   }}
