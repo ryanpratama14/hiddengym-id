@@ -8,7 +8,7 @@ export default function ProductTransaction({ data }: Props) {
 
   return (
     <TransactionInvoice>
-      <TransactionInvoice.Header title="Package" transactionDateDate={data.transactionDate} totalPrice={data.totalPrice} />
+      <TransactionInvoice.Header title="Product" transactionDateDate={data.transactionDate} totalPrice={data.totalPrice} />
       <TransactionInvoice.Buyer fullName={data.buyer.fullName} phoneNumber={data.buyer.phoneNumber} email={data.buyer?.email} />
       <TransactionInvoice.Products
         products={data.products.map((e) => ({
