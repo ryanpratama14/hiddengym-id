@@ -117,7 +117,7 @@ export const ICONS = {
   url: "tabler:link",
   name: "mdi:rename-outline",
   invoice: "iconamoon:invoice",
-  detail: "carbon:folder-details-reference",
+  detail: "mdi:account-details",
   edit: "basil:edit-outline",
   delete: "material-symbols:delete",
 };

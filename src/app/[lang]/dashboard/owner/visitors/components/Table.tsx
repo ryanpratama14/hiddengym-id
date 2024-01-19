@@ -7,7 +7,7 @@ import Iconify from "@/components/Iconify";
 import Img from "@/components/Img";
 import Input from "@/components/Input";
 import NavigatorX from "@/components/NavigatorX";
-import { COUNTRY_CODE, DETERMINE_GENDER, GENDERS, ICONS, USER_REDIRECT } from "@/lib/constants";
+import { COUNTRY_CODE, DETERMINE_GENDER, GENDERS, ICONS } from "@/lib/constants";
 import { cn, formatCurrency, localizePhoneNumber, textEllipsis } from "@/lib/functions";
 import { type UserList, type UserListInput } from "@/server/api/routers/user";
 import { PAGINATION_LIMIT } from "@/trpc/shared";
@@ -15,7 +15,6 @@ import { type Lang, type SearchParams } from "@/types";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import { Table } from "antd";
 import { type FilterDropdownProps } from "antd/es/table/interface";
-import Link from "next/link";
 
 type Props = {
   data?: UserList;
@@ -153,9 +152,7 @@ export default function VisitorsTable({ data, searchParams, lang, loading, newPa
           dataIndex: "id",
           render: (id: string) => (
             <section className="flex justify-center items-center">
-              <Link href={USER_REDIRECT.OWNER({ lang, href: `/visitors/detail/${id}` })} className="flex items-center">
-                <ActionButton icon={ICONS.detail} color="blue" />
-              </Link>
+              <ActionButton href={`/visitors/detail/${id}`} lang={lang} role="OWNER" icon={ICONS.detail} color="blue" />
             </section>
           ),
         },
