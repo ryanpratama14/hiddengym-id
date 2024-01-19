@@ -25,7 +25,7 @@ export default async function SignInVisitorPage({ searchParams, params }: Props)
         </section>
         <section className="md:shadow-lg gap-8 p-normal md:w-[50%] w-full  md:bg-light flex flex-col justify-center items-center aspect-square">
           <h4>{t.login.welcomeBack}</h4>
-          <SignInVisitor callbackUrl={searchParams.callbackUrl as string} t={t} />
+          <SignInVisitor callbackUrl={searchParams.callbackUrl} t={t} />
         </section>
       </section>
     </article>
