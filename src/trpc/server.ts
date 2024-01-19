@@ -2,7 +2,7 @@ import "server-only";
 import { appRouter, type AppRouter } from "@/server/api/root";
 import { createTRPCContext } from "@/server/api/trpc";
 import { createTRPCClient, loggerLink, TRPCClientError } from "@trpc/client";
-import { callProcedure } from "@trpc/core";
+import { callTRPCProcedure } from "@trpc/server";
 import { observable } from "@trpc/server/observable";
 import { type TRPCErrorResponse } from "@trpc/server/rpc";
 import { cookies } from "next/headers";
@@ -24,7 +24,7 @@ export const api = createTRPCClient<AppRouter>({
         observable((observer) => {
           createContext()
             .then((ctx) =>
-              callProcedure({
+              callTRPCProcedure({
                 getRawInput: async () => await op.input,
                 procedures: appRouter._def.procedures,
                 path: op.path,

@@ -38,8 +38,8 @@ export const Modal = ({ show, closeModal, children, classNameDiv }: Props) => {
               leaveFrom="transform opacity-100 scale-100"
               leaveTo="transform translate-y-2 opacity-0"
             >
-              <Dialog.Panel className="max-md:w-full px-shorter">
-                <section className={cn("w-full p-6 rounded-md bg-cream relative", classNameDiv)}>
+              <Dialog.Panel className={cn("max-md:w-full px-shorter", classNameDiv)}>
+                <section className="w-full p-6 rounded-md bg-cream relative">
                   <Iconify
                     onClick={closeModal}
                     icon={ICONS.close}

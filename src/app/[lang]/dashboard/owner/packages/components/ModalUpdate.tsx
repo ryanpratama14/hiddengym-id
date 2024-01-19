@@ -73,7 +73,7 @@ export default function ModalUpdate({ t, data, show, closeModal }: Props) {
   }, [show, data]);
 
   return (
-    <Modal show={show} closeModal={closeModal}>
+    <Modal classNameDiv="xl:w-[60%]" show={show} closeModal={closeModal}>
       <Modal.Body>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 w-full">
           <h6 className="px-2 border-1 border-dark w-fit">{watchedData.type}</h6>
