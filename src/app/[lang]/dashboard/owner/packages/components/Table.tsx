@@ -4,14 +4,14 @@ import FilterIcon from "@/components/FilterIcon";
 import Input from "@/components/Input";
 import { ICONS, PACKAGE_TYPES } from "@/lib/constants";
 import { cn, formatCurrency } from "@/lib/functions";
-import { type PackageDetail, type PackageList, type PackageListInput } from "@/server/api/routers/package";
+import { type PackageList, type PackageListInput } from "@/server/api/routers/package";
 import { inputVariants, statusVariants } from "@/styles/variants";
 import { type Dictionary, type Lang, type SearchParams } from "@/types";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import { type PackageTransaction, type PackageType } from "@prisma/client";
 import { Table } from "antd";
 import { type FilterDropdownProps } from "antd/es/table/interface";
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import ModalUpdate from "./ModalUpdate";
 
 type Props = {
@@ -25,8 +25,6 @@ type Props = {
 };
 
 export default function PackagesTable({ data, loading, searchParams, newParams, redirectTable, t }: Props) {
-  const [selectedPackage, setSelectedPackage] = useState<PackageDetail | null>(null);
-
   const getTableFilter = ({
     name,
     icon,
@@ -106,7 +104,7 @@ export default function PackagesTable({ data, loading, searchParams, newParams, 
           newParams.delete("id");
           redirectTable(newParams);
         }}
-        data={selectedPackage}
+        data={searchParams.id && data ? data.find((e) => e.id === searchParams.id)! : null}
       />
       <Table
         dataSource={data}
@@ -122,11 +120,10 @@ export default function PackagesTable({ data, loading, searchParams, newParams, 
             dataIndex: "id",
             title: "Action",
             width: 1,
-            render: (id: string, item) => (
+            render: (id: string) => (
               <section className="flex justify-center items-center">
                 <ActionButton
                   onClick={() => {
-                    setSelectedPackage(item);
                     newParams.set("id", id);
                     redirectTable(newParams);
                   }}
