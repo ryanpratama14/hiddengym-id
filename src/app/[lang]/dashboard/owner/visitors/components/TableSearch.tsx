@@ -30,7 +30,7 @@ export default function TableSearch({ searchParams, loading, newParams, redirect
     >
       <section className="relative w-[80%] group">
         <Input
-          key={searchParams.fullName as string}
+          key={searchParams.fullName}
           defaultValue={searchParams.fullName}
           name="fullName"
           autoComplete="off"
