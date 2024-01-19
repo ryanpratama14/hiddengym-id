@@ -57,7 +57,7 @@ export const USER_PATHNAMES: Record<Role, string> = {
 };
 
 export const USER_REDIRECT = ({ role, lang, href, params }: { role: Role; lang: Lang; href: DashboardHrefKey; params?: string }) =>
-  `/${lang}/${USER_PATHNAMES[role]}${href}${params ?? ""}`;
+  `/${lang}${USER_PATHNAMES[role]}${href}${params ?? ""}`;
 
 export const EMAIL_VISITOR_READONLY = "readonly@hiddengym-id.com";
 
