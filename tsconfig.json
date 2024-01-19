@@ -30,12 +30,13 @@
       "#/*": ["./public/*"],
       "~/*": ["./src/app/[lang]/*"],
       "@router/*": ["./src/server/api/routers/*"],
+      "@dashboard/*": ["./src/app/[lang]/dashboard/*"],
       "@owner/*": ["./src/app/[lang]/dashboard/owner/*"],
       "@trainer/*": ["./src/app/[lang]/dashboard/trainer/*"],
       "@admin/*": ["./src/app/[lang]/dashboard/admin/*"],
-      "@visitor/*": ["./src/app/[lang]/dashboard/visitor/*"]
-    }
+      "@visitor/*": ["./src/app/[lang]/dashboard/visitor/*"],
+    },
   },
   "include": [".eslintrc.cjs", "next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.cjs", "**/*.js", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
 }

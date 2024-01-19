@@ -24,7 +24,7 @@ export const Modal = ({ show, closeModal, children, classNameDiv }: Props) => {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-black/40" />
+          <div className="fixed inset-0 bg-black/50" />
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-y-auto">
@@ -39,14 +39,13 @@ export const Modal = ({ show, closeModal, children, classNameDiv }: Props) => {
               leaveTo="transform translate-y-2 opacity-0"
             >
               <Dialog.Panel className="max-md:w-full px-shorter">
-                <section className={cn("w-full p-8 rounded-md bg-cream relative", classNameDiv)}>
-                  <button
-                    type="submit"
+                <section className={cn("w-full p-6 rounded-md bg-cream relative", classNameDiv)}>
+                  <Iconify
                     onClick={closeModal}
-                    className="size-6 flex items-center justify-center rounded-full absolute right-1.5 top-1.5 bg-dark"
-                  >
-                    <Iconify icon={ICONS.close} className="text-light" width={20} />
-                  </button>
+                    icon={ICONS.close}
+                    className="text-cream absolute rounded-md top-2 right-2 z-10 bg-dark"
+                    width={22}
+                  />
                   {children}
                 </section>
               </Dialog.Panel>

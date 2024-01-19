@@ -6,13 +6,12 @@ import { ICONS, PACKAGE_TYPES } from "@/lib/constants";
 import { cn, formatCurrency } from "@/lib/functions";
 import { type PackageList, type PackageListInput } from "@/server/api/routers/package";
 import { inputVariants, statusVariants } from "@/styles/variants";
-import { type Dictionary, type Lang, type SearchParams } from "@/types";
+import { type Lang, type SearchParams } from "@/types";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import { type PackageTransaction, type PackageType } from "@prisma/client";
 import { Table } from "antd";
 import { type FilterDropdownProps } from "antd/es/table/interface";
 import { Fragment } from "react";
-import ModalUpdate from "./ModalUpdate";
 
 type Props = {
   data?: PackageList;
@@ -21,10 +20,9 @@ type Props = {
   searchParams: SearchParams;
   newParams: URLSearchParams;
   redirectTable: (newParams: URLSearchParams) => void;
-  t: Dictionary;
 };
 
-export default function PackagesTable({ data, loading, searchParams, newParams, redirectTable, t }: Props) {
+export default function PackagesTable({ data, loading, searchParams, newParams, redirectTable }: Props) {
   const getTableFilter = ({
     name,
     icon,
@@ -97,15 +95,6 @@ export default function PackagesTable({ data, loading, searchParams, newParams, 
 
   return (
     <Fragment>
-      <ModalUpdate
-        t={t}
-        show={!!searchParams.id && !!data?.find((e) => e.id === searchParams.id)}
-        closeModal={() => {
-          newParams.delete("id");
-          redirectTable(newParams);
-        }}
-        data={searchParams.id && data ? data.find((e) => e.id === searchParams.id)! : null}
-      />
       <Table
         dataSource={data}
         loading={loading}

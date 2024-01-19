@@ -9,7 +9,7 @@ import { toastError, toastSuccess } from "@/components/Toast";
 import { ICONS } from "@/lib/constants";
 import { cn } from "@/lib/functions";
 import { schema } from "@/schema";
-import { type PackageCreateInput, type PackageDetail } from "@/server/api/routers/package";
+import { type PackageDetail, type PackageUpdateInput } from "@/server/api/routers/package";
 import { api } from "@/trpc/react";
 import { type Dictionary } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -36,11 +36,11 @@ export default function ModalUpdate({ t, data, show, closeModal }: Props) {
     watch,
     control,
     reset,
-  } = useForm<PackageCreateInput>({
-    resolver: zodResolver(schema.package.create),
+  } = useForm<PackageUpdateInput>({
+    resolver: zodResolver(schema.package.update),
   });
 
-  const onSubmit: SubmitHandler<PackageCreateInput> = async (updatedData) => data && updateData({ body: updatedData, id: data.id });
+  const onSubmit: SubmitHandler<PackageUpdateInput> = async (data) => updateData(data);
 
   const { mutate: updateData, isPending: loading } = api.package.update.useMutation({
     onSuccess: async (res) => {
@@ -51,20 +51,23 @@ export default function ModalUpdate({ t, data, show, closeModal }: Props) {
     onError: (res) => toastError({ t, description: res.message }),
   });
 
-  const watchedData = { type: watch("type") };
+  const watchedData = { type: watch("body.type") };
 
   useEffect(() => {
     if (show && data) {
       reset({
-        type: data.type,
-        name: data.name,
-        description: data.description,
-        price: data.price,
-        validityInDays: data.validityInDays,
-        placeIDs: data.placeIDs,
-        sportIDs: data.sportIDs,
-        trainerIDs: data.trainerIDs,
-        approvedSessions: data.approvedSessions,
+        id: data.id,
+        body: {
+          type: data.type,
+          name: data.name,
+          description: data.description,
+          price: data.price,
+          validityInDays: data.validityInDays,
+          placeIDs: data.placeIDs,
+          sportIDs: data.sportIDs,
+          trainerIDs: data.trainerIDs,
+          approvedSessions: data.approvedSessions,
+        },
       });
     }
   }, [show, data]);
@@ -75,10 +78,10 @@ export default function ModalUpdate({ t, data, show, closeModal }: Props) {
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 w-full">
           <h6 className="px-2 border-1 border-dark w-fit">{watchedData.type}</h6>
           <section className="grid md:grid-cols-2 gap-4">
-            <Input error={errors.name?.message} {...register("name")} icon={ICONS.name} label="Name" />
+            <Input error={errors.body?.name?.message} {...register("body.name")} icon={ICONS.name} label="Name" />
             <Input
-              error={errors.price?.message}
-              {...register("price", { setValueAs: (v: string) => (!v ? 0 : parseInt(v)) })}
+              error={errors.body?.price?.message}
+              {...register("body.price", { setValueAs: (v: string) => parseInt(v) })}
               type="number"
               icon={ICONS.payment_method}
               label="Price"
@@ -89,25 +92,25 @@ export default function ModalUpdate({ t, data, show, closeModal }: Props) {
               {watchedData.type === "SESSIONS" ? (
                 <Input
                   disabled={watchedData.type !== "SESSIONS"}
-                  error={errors.approvedSessions?.message}
-                  {...register("approvedSessions", { setValueAs: (v: string) => (!v ? null : parseInt(v)) })}
+                  error={errors.body?.approvedSessions?.message}
+                  {...register("body.approvedSessions", { setValueAs: (v: string) => (!v ? null : parseInt(v)) })}
                   type="number"
                   icon={ICONS.session}
                   label="Approved Sessions"
                 />
               ) : null}
               <Input
-                error={errors.validityInDays?.message}
+                error={errors.body?.validityInDays?.message}
                 icon={ICONS.validity}
                 type="number"
                 label="Validity In Days"
-                {...register("validityInDays", { setValueAs: (v: string) => (!v ? null : parseInt(v)) })}
+                {...register("body.validityInDays", { setValueAs: (v: string) => (!v ? null : parseInt(v)) })}
               />
             </section>
 
             <Controller
               control={control}
-              name="placeIDs"
+              name="body.placeIDs"
               render={({ field }) => (
                 <InputSelect
                   {...field}
@@ -115,7 +118,7 @@ export default function ModalUpdate({ t, data, show, closeModal }: Props) {
                   showSearch={false}
                   options={places?.map((e) => ({ value: e.id, label: e.name }))}
                   icon={ICONS.place}
-                  error={errors.placeIDs?.message}
+                  error={errors.body?.placeIDs?.message}
                   label="Places"
                 />
               )}
@@ -124,7 +127,7 @@ export default function ModalUpdate({ t, data, show, closeModal }: Props) {
 
           <Controller
             control={control}
-            name="sportIDs"
+            name="body.sportIDs"
             render={({ field }) => (
               <InputSelect
                 {...field}
@@ -132,7 +135,7 @@ export default function ModalUpdate({ t, data, show, closeModal }: Props) {
                 mode="multiple"
                 options={sports?.map((e) => ({ value: e.id, label: e.name }))}
                 icon={ICONS.sport}
-                error={errors.sportIDs?.message}
+                error={errors.body?.sportIDs?.message}
                 label="Sport Types"
               />
             )}
@@ -141,7 +144,7 @@ export default function ModalUpdate({ t, data, show, closeModal }: Props) {
           {watchedData.type === "SESSIONS" ? (
             <Controller
               control={control}
-              name="trainerIDs"
+              name="body.trainerIDs"
               render={({ field }) => (
                 <InputSelect
                   showSearch={false}
@@ -149,7 +152,7 @@ export default function ModalUpdate({ t, data, show, closeModal }: Props) {
                   mode="multiple"
                   options={trainers?.data?.map((e) => ({ value: e.id, label: e.fullName }))}
                   icon={ICONS.trainer}
-                  error={errors.trainerIDs?.message}
+                  error={errors.body?.trainerIDs?.message}
                   label="Trainers"
                 />
               )}
@@ -157,9 +160,9 @@ export default function ModalUpdate({ t, data, show, closeModal }: Props) {
           ) : null}
 
           <InputTextArea
-            error={errors.description?.message}
+            error={errors.body?.description?.message}
             label="Description (optional)"
-            {...register("description", { setValueAs: (v: string) => (v ? v : null) })}
+            {...register("body.description", { setValueAs: (v: string) => (v ? v : null) })}
           />
           <section className="flex justify-center items-center">
             <Button className="md:w-fit w-full" loading={loading} type="submit" color="success" size="xl">

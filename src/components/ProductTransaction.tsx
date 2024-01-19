@@ -7,7 +7,7 @@ export default function ProductTransaction({ data }: Props) {
   if (!data) return null;
 
   return (
-    <TransactionInvoice>
+    <TransactionInvoice shadow="none" background="cream">
       <TransactionInvoice.Header title="Product" transactionDateDate={data.transactionDate} totalPrice={data.totalPrice} />
       <TransactionInvoice.Buyer fullName={data.buyer.fullName} phoneNumber={data.buyer.phoneNumber} email={data.buyer?.email} />
       <TransactionInvoice.Products

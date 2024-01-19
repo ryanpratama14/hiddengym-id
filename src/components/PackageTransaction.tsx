@@ -10,7 +10,7 @@ export default function PackageTransaction({ data }: Props) {
   if (!data) return null;
 
   return (
-    <TransactionInvoice>
+    <TransactionInvoice shadow="none" background="cream">
       <TransactionInvoice.Header title="Package" transactionDateDate={data.transactionDate} totalPrice={data.totalPrice} />
       <TransactionInvoice.Buyer fullName={data.buyer.fullName} phoneNumber={data.buyer.phoneNumber} email={data.buyer?.email} />
       <TransactionInvoice.PackageWithTxnId

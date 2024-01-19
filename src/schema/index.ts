@@ -116,12 +116,16 @@ export class schema {
   static product = class {
     static create = z.object({
       name: schema.names,
-      price: z.number().min(1),
+      price: z.number().min(1, numberMessage("Price", 1)),
     });
     static list = z.object({
       name: z.string().optional(),
       price: z.coerce.number().optional(),
       totalTransactions: z.coerce.number().optional(),
+    });
+    static update = z.object({
+      id: z.string(),
+      body: this.create,
     });
   };
 

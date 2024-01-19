@@ -29,7 +29,7 @@ export const packageRouter = createTRPCRouter({
         type: body.type,
         placeIDs: body.placeIDs,
         sportIDs: body.sportIDs,
-        trainerIDs: body.trainerIDs ?? [],
+        trainerIDs: body.trainerIDs,
       },
     });
 
@@ -84,4 +84,5 @@ export type PackageDetail = RouterOutputs["package"]["detail"];
 
 // inputs
 export type PackageCreateInput = RouterInputs["package"]["create"];
+export type PackageUpdateInput = RouterInputs["package"]["update"];
 export type PackageListInput = RouterInputs["package"]["list"];

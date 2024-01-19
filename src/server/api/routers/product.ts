@@ -3,6 +3,7 @@ import { createTRPCRouter, ownerProcedure } from "@/server/api/trpc";
 import {
   getConflictMessage,
   getCreatedMessage,
+  getUpdatedMessage,
   insensitiveMode,
   prismaExclude,
   THROW_OK,
@@ -12,6 +13,18 @@ import {
 } from "@/trpc/shared";
 import { z } from "zod";
 
+const productSelect = {
+  select: {
+    ...prismaExclude("Product", []),
+    transactions: {
+      select: {
+        ...prismaExclude("ProductOnTransaction", []),
+        productTransaction: { select: { ...prismaExclude("ProductTransaction", []), buyer: true } },
+      },
+    },
+  },
+};
+
 export const productRouter = createTRPCRouter({
   create: ownerProcedure.input(schema.product.create).mutation(async ({ ctx, input }) => {
     const data = await ctx.db.product.findFirst({ where: { name: input.name } });
@@ -20,17 +33,17 @@ export const productRouter = createTRPCRouter({
     return THROW_OK("CREATED", getCreatedMessage("product"));
   }),
 
+  update: ownerProcedure.input(schema.product.update).mutation(async ({ ctx, input }) => {
+    const { body, id } = input;
+    const data = await ctx.db.product.findFirst({ where: { id } });
+    if (!data) return THROW_TRPC_ERROR("NOT_FOUND");
+    await ctx.db.product.update({ where: { id }, data: { name: body.name, price: body.price } });
+    return THROW_OK("OK", getUpdatedMessage("product"));
+  }),
+
   list: ownerProcedure.input(schema.product.list).query(async ({ ctx, input }) => {
     const data = await ctx.db.product.findMany({
-      select: {
-        ...prismaExclude("Product", []),
-        transactions: {
-          select: {
-            ...prismaExclude("ProductOnTransaction", []),
-            productTransaction: { select: { ...prismaExclude("ProductTransaction", []), buyer: true } },
-          },
-        },
-      },
+      ...productSelect,
       where: {
         name: { contains: input.name, ...insensitiveMode },
         price: { gte: input.price },
@@ -43,7 +56,7 @@ export const productRouter = createTRPCRouter({
   }),
 
   detail: ownerProcedure.input(z.object({ id: z.string() })).mutation(async ({ ctx, input }) => {
-    const data = await ctx.db.product.findFirst({ where: { id: input.id } });
+    const data = await ctx.db.product.findFirst({ where: { id: input.id }, ...productSelect });
     if (!data) return THROW_TRPC_ERROR("NOT_FOUND");
     return data;
   }),
@@ -55,4 +68,5 @@ export type ProductDetail = RouterOutputs["product"]["detail"];
 
 // inputs
 export type ProductCreateInput = RouterInputs["product"]["create"];
+export type ProductUpdateInput = RouterInputs["product"]["update"];
 export type ProductDetailInput = RouterInputs["product"]["detail"];

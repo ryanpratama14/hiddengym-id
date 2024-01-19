@@ -15,10 +15,23 @@ import { type Package, type PackageType, type PromoCode } from "@prisma/client";
 import Logo from "./Logo";
 import NavigatorX from "./NavigatorX";
 
-export default function TransactionInvoice({ children }: { children: React.ReactNode }) {
+export default function TransactionInvoice({
+  children,
+  background,
+  shadow,
+}: {
+  children: React.ReactNode;
+  background?: "light" | "cream";
+  shadow?: "none" | "base";
+}) {
   return (
     <section className="flex justify-center items-center">
-      <section className="md:w-[30rem] w-full flex flex-col gap-4 p-3 lg:p-6 shadow bg-light text-dark">
+      <section
+        className={cn("md:w-[30rem] w-full flex flex-col gap-4 p-3 lg:p-6 shadow bg-light text-dark", {
+          "bg-cream": background === "cream",
+          "shadow-none": shadow === "none",
+        })}
+      >
         {children}
         <section className="flex flex-col justify-center items-center gap-6 mt-6">
           <Logo className="aspect-video w-[50%]" />
@@ -60,7 +73,7 @@ TransactionInvoice.Buyer = function InvoiceBuyer(props: { fullName: string; phon
     <section className="flex flex-col text-center">
       <p className="font-medium underline">{props.fullName}</p>
       <NavigatorX newTab href={`tel:${COUNTRY_CODE}${props.phoneNumber}`}>
-        <small>{localizePhoneNumber(props.phoneNumber)}</small>
+        <small className="text-blue">{localizePhoneNumber(props.phoneNumber)}</small>
       </NavigatorX>
       <small>{props.email}</small>
     </section>

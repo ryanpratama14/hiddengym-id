@@ -84,6 +84,7 @@ export const actionVariants = tv({
       orange: "bg-orange",
       red: "bg-red",
       blue: "bg-blue",
+      dark: "bg-dark",
     },
   },
   defaultVariants: { color: "green" },
