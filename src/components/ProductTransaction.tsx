@@ -10,28 +10,30 @@ export default function ProductTransaction({ id }: Props) {
 
   return (
     <TransactionInvoice shadow="none" background="cream">
-      {!data ? (
-        <Skeleton paragraph={{ rows: 8 }} />
-      ) : (
-        <Fragment>
-          <TransactionInvoice.Header
-            tz={data.buyer.tz}
-            title="Product"
-            transactionDateDate={data.transactionDate}
-            totalPrice={data.totalPrice}
-          />
-          <TransactionInvoice.Buyer fullName={data.buyer.fullName} phoneNumber={data.buyer.phoneNumber} email={data.buyer?.email} />
-          <TransactionInvoice.Products
-            products={data.products.map((e) => ({
-              unitPrice: e.unitPrice,
-              quantity: e.quantity,
-              name: e.product.name,
-              productId: e.product.id,
-            }))}
-          />
-          <TransactionInvoice.PaymentMethodWithTxnId paymentMethod={data.paymentMethod.name} txnId={data.id} />
-        </Fragment>
-      )}
+      <Fragment>
+        {!data ? (
+          <Skeleton paragraph={{ rows: 8 }} />
+        ) : (
+          <Fragment>
+            <TransactionInvoice.Header
+              tz={data.buyer.tz}
+              title="Product"
+              transactionDateDate={data.transactionDate}
+              totalPrice={data.totalPrice}
+            />
+            <TransactionInvoice.Buyer fullName={data.buyer.fullName} phoneNumber={data.buyer.phoneNumber} email={data.buyer?.email} />
+            <TransactionInvoice.Products
+              products={data.products.map((e) => ({
+                unitPrice: e.unitPrice,
+                quantity: e.quantity,
+                name: e.product.name,
+                productId: e.product.id,
+              }))}
+            />
+            <TransactionInvoice.PaymentMethodWithTxnId paymentMethod={data.paymentMethod.name} txnId={data.id} />
+          </Fragment>
+        )}
+      </Fragment>
     </TransactionInvoice>
   );
 }

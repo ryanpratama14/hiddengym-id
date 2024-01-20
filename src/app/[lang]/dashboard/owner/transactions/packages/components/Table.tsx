@@ -6,7 +6,6 @@ import Img from "@/components/Img";
 import Input from "@/components/Input";
 import { Modal } from "@/components/Modal";
 import PackageTransaction from "@/components/PackageTransaction";
-import { useZustand } from "@/global/store";
 import { DETERMINE_GENDER, ICONS, PACKAGE_TYPES } from "@/lib/constants";
 import { cn, formatCurrency, formatDateShort, getRemainingDays, isDateExpired, isDateToday, textEllipsis } from "@/lib/functions";
 import type { PackageTransactionList, PackageTransactionListInput } from "@/server/api/routers/packageTransaction";
@@ -27,8 +26,6 @@ type Props = {
 };
 
 export default function PackageTransactionsTable({ data, searchParams, loading, newParams, redirectTable }: Props) {
-  const { session } = useZustand();
-
   const getTableFilter = ({
     name,
     icon,
@@ -214,17 +211,17 @@ export default function PackageTransactionsTable({ data, searchParams, loading, 
                   return (
                     <section className="flex gap-2">
                       <p className={statusVariants({ status: "session" })}>{item.remainingSessions} session(s)</p>
-                      <p className={statusVariants({ status: "active" })}>{getRemainingDays(text, session!.user.tz)} day(s)</p>
+                      <p className={statusVariants({ status: "active" })}>{getRemainingDays(text, item.buyer.tz)} day(s)</p>
                     </section>
                   );
                 }
                 if (!text) return <p className={statusVariants({ status: "expired" })}>Expired</p>;
               }
 
-              if (isDateExpired(text, session!.user.tz)) return <p className={statusVariants({ status: "expired" })}>Expired</p>;
-              if (isDateToday(text, session!.user.tz)) return <p className={statusVariants({ status: "today" })}>Today</p>;
+              if (isDateExpired(text, item.buyer.tz)) return <p className={statusVariants({ status: "expired" })}>Expired</p>;
+              if (isDateToday(text, item.buyer.tz)) return <p className={statusVariants({ status: "today" })}>Today</p>;
 
-              return <p className={statusVariants({ status: "active" })}>{getRemainingDays(text, session!.user.tz)} day(s)</p>;
+              return <p className={statusVariants({ status: "active" })}>{getRemainingDays(text, item.buyer.tz)} day(s)</p>;
             },
           },
           {

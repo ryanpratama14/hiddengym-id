@@ -1,7 +1,7 @@
 import { ICONS } from "@/lib/constants";
 import { cn } from "@/lib/functions";
 import { Dialog, Transition } from "@headlessui/react";
-import React, { Fragment } from "react";
+import { Fragment, useRef, type ElementRef } from "react";
 import Iconify from "./Iconify";
 
 type Props = {
@@ -12,6 +12,8 @@ type Props = {
 };
 
 export const Modal = ({ show, closeModal, children, classNameDiv }: Props) => {
+  const closeButtonRef = useRef<ElementRef<"button">>(null);
+
   return (
     <Transition appear show={show} as={Fragment}>
       <Dialog as="article" className="relative z-[100]" onClose={closeModal}>
@@ -40,12 +42,14 @@ export const Modal = ({ show, closeModal, children, classNameDiv }: Props) => {
             >
               <Dialog.Panel className={cn("max-md:w-full px-shorter", classNameDiv)}>
                 <section className="w-full p-6 rounded-md bg-cream relative">
-                  <Iconify
+                  <button
                     onClick={closeModal}
-                    icon={ICONS.close}
-                    className="text-dark p-0.5 absolute top-3 right-3 z-10 hover:bg-dark/10"
-                    width={22}
-                  />
+                    ref={closeButtonRef}
+                    type="button"
+                    className=" hover:bg-dark/10 rounded-md absolute top-3 right-3 p-0.5 flex items-center justify-center"
+                  >
+                    <Iconify icon={ICONS.close} className="text-dark" width={22} />
+                  </button>
                   {children}
                 </section>
               </Dialog.Panel>
