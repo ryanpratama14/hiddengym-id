@@ -12,7 +12,7 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 export const timeZones = {
-  WIB: Intl.DateTimeFormat().resolvedOptions().timeZone,
+  WIB: "Asia/Jakarta",
   WITA: "Asia/Makassar",
   WIT: "Asia/Jayapura",
 } as const;
