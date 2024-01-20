@@ -14,7 +14,7 @@ export const env = createEnv({
     UPLOADTHING_APP_ID: z.string(),
     RESEND_API_KEY: z.string(),
   },
-  client: { NEXT_PUBLIC_API: z.string(), NEXT_PUBLIC_TZ: z.string() },
+  client: { NEXT_PUBLIC_API: z.string() },
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
     NODE_ENV: process.env.NODE_ENV,
@@ -24,7 +24,6 @@ export const env = createEnv({
     UPLOADTHING_APP_ID: process.env.UPLOADTHING_APP_ID,
     RESEND_API_KEY: process.env.RESEND_API_KEY,
     NEXT_PUBLIC_API: process.env.NEXT_PUBLIC_API,
-    NEXT_PUBLIC_TZ: process.env.NEXT_PUBLIC_TZ,
   },
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,
   emptyStringAsUndefined: true,

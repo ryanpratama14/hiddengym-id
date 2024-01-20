@@ -1,4 +1,3 @@
-import { env } from "@/env";
 import { COUNTRY_CODE, DASHBOARD_MENUS, DASHBOARD_SUB_MENUS, USER_PATHNAMES, USER_REDIRECT } from "@/lib/constants";
 import type { DashboardMenuKey, DashboardMenuLabel, DashboardSubMenuKey, Lang } from "@/types";
 import { type Role } from "@prisma/client";
@@ -11,6 +10,12 @@ import { twMerge } from "tailwind-merge";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
+
+export const timeZones = {
+  WIB: Intl.DateTimeFormat().resolvedOptions().timeZone,
+  WITA: "Asia/Makassar",
+  WIT: "Asia/Jayapura",
+} as const;
 
 export const loadToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
@@ -54,7 +59,7 @@ export const formatName = (name: string): string => {
 };
 
 export const getInputDate = (date?: Date): string => {
-  const dateString = date ? dayjs(date) : dayjs().tz(env.NEXT_PUBLIC_TZ);
+  const dateString = date ? dayjs(date) : dayjs().tz(timeZones.WIB);
   return dateString.format("YYYY-MM-DD");
 };
 
@@ -71,13 +76,13 @@ export const getNewDate = (dateString?: string): Date => {
   return new Date();
 };
 
-export const getEndDate = (dateString: string): Date => dayjs.tz(dateString, env.NEXT_PUBLIC_TZ).endOf("day").toDate();
+export const getEndDate = (dateString: string): Date => dayjs.tz(dateString, timeZones.WIB).endOf("day").toDate();
 
-export const getStartDate = (dateString: string): Date => dayjs.tz(dateString, env.NEXT_PUBLIC_TZ).startOf("day").toDate();
+export const getStartDate = (dateString: string): Date => dayjs.tz(dateString, timeZones.WIB).startOf("day").toDate();
 
 export const getExpiryDate = ({ days, dateString }: { days: number; dateString: string }): Date => {
   const date = dayjs
-    .tz(dateString, env.NEXT_PUBLIC_TZ)
+    .tz(dateString, timeZones.WIB)
     .add(days - 1, "day")
     .endOf("day")
     .toDate();
@@ -99,7 +104,7 @@ export const getUserAge = (birthDate: Date): number => {
 };
 
 export const getRemainingDays = (targetDate: Date): number => {
-  const currentDate = dayjs().tz(env.NEXT_PUBLIC_TZ).toDate();
+  const currentDate = dayjs().tz(timeZones.WIB).toDate();
   const timeDifference = targetDate.getTime() - currentDate.getTime();
   const remainingDays = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
   return remainingDays;
