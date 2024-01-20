@@ -41,7 +41,12 @@ export default function CreateProductTransactionForm({ t, option }: Props) {
     clearErrors,
   } = useForm<ProductTransactionInput>({
     resolver: zodResolver(schema.productTransaction.create),
-    defaultValues: { transactionDate: getInputDate(), buyerId: "", paymentMethodId: "", products: [productInitialData] },
+    defaultValues: {
+      transactionDate: getInputDate({}),
+      buyerId: "",
+      paymentMethodId: "",
+      products: [productInitialData],
+    },
   });
 
   const { fields, insert, remove } = useFieldArray({ control, name: "products" });

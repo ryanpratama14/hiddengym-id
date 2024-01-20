@@ -36,7 +36,7 @@ export default function ProfileForm({ user, setIsEdit, updateUser, t }: Props) {
         email: user?.email ?? "",
         gender: user?.gender,
         phoneNumber: user?.phoneNumber,
-        birthDate: user?.birthDate ? getInputDate(user.birthDate) : "",
+        birthDate: user?.birthDate ? getInputDate({ date: user.birthDate }) : "",
       },
     },
   });

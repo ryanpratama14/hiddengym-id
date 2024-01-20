@@ -10,7 +10,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 
 declare module "next-auth" {
   interface Session extends DefaultSession {
-    user: { id: string; role: Role; exp: number } & DefaultSession["user"];
+    user: { id: string; role: Role; exp: number; tz: string } & DefaultSession["user"];
   }
 }
 
@@ -28,7 +28,15 @@ export const authOptions: NextAuthOptions = {
     jwt: async ({ token, user }) => ({ ...token, ...user }),
     session: async ({ session, token }) => ({
       ...session,
-      user: { ...session.user, id: token.id, role: token.role, exp: token.exp * 1000, name: token.fullName, image: token.imageId },
+      user: {
+        ...session.user,
+        id: token.id,
+        role: token.role,
+        exp: token.exp * 1000,
+        name: token.fullName,
+        image: token.imageId,
+        tz: token.tz,
+      },
     }),
   },
   providers: [

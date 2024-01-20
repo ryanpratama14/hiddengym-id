@@ -3,6 +3,16 @@ import type { AddButtonKey, DashboardHrefKey, DashboardMenuKey, Lang } from "@/t
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import type { Gender, Package, PackageTransaction, PackageType, ProductTransaction, PromoCodeType, Role, User } from "@prisma/client";
 
+export type TimeZone = "WIB" | "WITA" | "WIT";
+
+export const TIME_ZONES: Record<TimeZone, string> = {
+  WIB: "Asia/Jakarta",
+  WITA: "Asia/Makassar",
+  WIT: "Asia/Jayapura",
+};
+
+export const TIME_ZONE_OPTIONS = Object.entries(TIME_ZONES).map(([label, value]) => ({ label: label as TimeZone, value }));
+
 export const PACKAGE_SORTERERS: { name: keyof Package; title: string }[] = [
   { name: "type", title: "Type" },
   { name: "name", title: "Name" },

@@ -163,7 +163,7 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
               onClick={() => {
                 setIsAddingTransaction(!isAddingTransaction);
                 if (isAddingTransaction) unregister("packageData");
-                if (!isAddingTransaction) setValue("packageData.transactionDate", getInputDate());
+                if (!isAddingTransaction) setValue("packageData.transactionDate", getInputDate({}));
                 if (!isAddingTransaction) setValue("packageData.packageId", "");
                 if (!isAddingTransaction) setValue("packageData.paymentMethodId", "");
                 if (selectedPackage) setSelectedPackage(null);

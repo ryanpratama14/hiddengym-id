@@ -1,4 +1,4 @@
-import { COUNTRY_CODE, DASHBOARD_MENUS, DASHBOARD_SUB_MENUS, USER_PATHNAMES, USER_REDIRECT } from "@/lib/constants";
+import { COUNTRY_CODE, DASHBOARD_MENUS, DASHBOARD_SUB_MENUS, TIME_ZONES, USER_PATHNAMES, USER_REDIRECT } from "@/lib/constants";
 import type { DashboardMenuKey, DashboardMenuLabel, DashboardSubMenuKey, Lang } from "@/types";
 import { type Role } from "@prisma/client";
 import { clsx, type ClassValue } from "clsx";
@@ -10,12 +10,6 @@ import { twMerge } from "tailwind-merge";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
-
-export const timeZones = {
-  WIB: "Asia/Jakarta",
-  WITA: "Asia/Makassar",
-  WIT: "Asia/Jayapura",
-} as const;
 
 export const loadToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
@@ -58,11 +52,6 @@ export const formatName = (name: string): string => {
   return convertedName;
 };
 
-export const getInputDate = (date?: Date): string => {
-  const dateString = date ? dayjs(date) : dayjs().tz(timeZones.WIB);
-  return dateString.format("YYYY-MM-DD");
-};
-
 export const getTodayDate = ({ locale, style }: { locale: Lang; style: "short" | "long" }): string => {
   return getNewDate().toLocaleDateString(locale, {
     year: "numeric",
@@ -76,13 +65,18 @@ export const getNewDate = (dateString?: string): Date => {
   return new Date();
 };
 
-export const getEndDate = (dateString: string): Date => dayjs.tz(dateString, timeZones.WIB).endOf("day").toDate();
+export const getInputDate = ({ date, tz }: { date?: Date; tz?: string }): string => {
+  const dateString = date ? dayjs(date) : dayjs().tz(tz ?? TIME_ZONES.WIB);
+  return dateString.format("YYYY-MM-DD");
+};
 
-export const getStartDate = (dateString: string): Date => dayjs.tz(dateString, timeZones.WIB).startOf("day").toDate();
+export const getEndDate = (dateString: string): Date => dayjs.utc(dateString).endOf("day").toDate();
+
+export const getStartDate = (dateString: string): Date => dayjs.utc(dateString).startOf("day").toDate();
 
 export const getExpiryDate = ({ days, dateString }: { days: number; dateString: string }): Date => {
   const date = dayjs
-    .tz(dateString, timeZones.WIB)
+    .utc(dateString)
     .add(days - 1, "day")
     .endOf("day")
     .toDate();
@@ -103,23 +97,37 @@ export const getUserAge = (birthDate: Date): number => {
   return age;
 };
 
-export const getRemainingDays = (targetDate: Date): number => {
-  const currentDate = dayjs().tz(timeZones.WIB).toDate();
-  const timeDifference = targetDate.getTime() - currentDate.getTime();
+export const getRemainingDays = (targetDate: Date, tz: string): number => {
+  const currentDate = dayjs().tz(tz).toDate();
+  const timeZoneOffset = dayjs.tz(targetDate, tz).utcOffset();
+  const adjustedTargetDate = dayjs(targetDate).subtract(timeZoneOffset, "minute");
+  const timeDifference = adjustedTargetDate.diff(currentDate, "millisecond");
   const remainingDays = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
   return remainingDays;
 };
 
+export const getRemainingDate = (targetDate: Date, tz: string): string => {
+  const currentDate = dayjs().tz(tz).toDate();
+  const timeZoneOffset = dayjs.tz(targetDate, tz).utcOffset();
+  const adjustedTargetDate = dayjs(targetDate).subtract(timeZoneOffset, "minute");
+  const timeDifference = adjustedTargetDate.diff(currentDate, "millisecond");
+  const remainingDays = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+  if (remainingDays <= 0) return "Expired";
+  if (remainingDays === 1) return "Today";
+
+  return formatDateShort({ date: adjustedTargetDate.toDate(), utc: true });
+};
+
 export const getTokenExpiryDate = (): Date => new Date(getNewDate().getTime() + 3600000); // 1 hour;
 
-export const isDateExpired = (expiryDate: Date): boolean => {
-  const remainingDays = getRemainingDays(expiryDate);
+export const isDateExpired = (expiryDate: Date, tz: string): boolean => {
+  const remainingDays = getRemainingDays(expiryDate, tz);
   if (remainingDays <= 0) return true;
   return false;
 };
 
-export const isDateToday = (date: Date): boolean => {
-  const remainingDays = getRemainingDays(date);
+export const isDateToday = (date: Date, tz: string): boolean => {
+  const remainingDays = getRemainingDays(date, tz);
   if (remainingDays === 1) return true;
   return false;
 };
@@ -129,34 +137,59 @@ export const formatDate = ({
   lang,
   style,
   withTime,
+  utc,
 }: {
   date: Date;
   lang?: Lang;
   style: "short" | "long";
   withTime?: boolean;
+  utc?: boolean;
 }): string => {
   return date.toLocaleDateString(lang ?? ["en-MY"], {
     year: "numeric",
     month: style === "long" ? "long" : "numeric",
     day: "numeric",
+    timeZone: utc ? "UTC" : undefined,
     ...(withTime ? { minute: "2-digit", hour: "2-digit" } : undefined),
   });
 };
 
-export const formatDateShort = ({ date, lang, withTime }: { date: Date; lang?: Lang; withTime?: boolean }): string => {
+export const formatDateShort = ({
+  date,
+  lang,
+  withTime,
+  utc,
+}: {
+  date: Date;
+  lang?: Lang;
+  withTime?: boolean;
+  utc?: boolean;
+}): string => {
   return date.toLocaleDateString(lang ?? ["en-MY"], {
     year: "numeric",
     month: "short",
     day: "numeric",
+    timeZone: utc ? "UTC" : undefined,
     ...(withTime ? { minute: "2-digit", hour: "2-digit" } : undefined),
   });
 };
 
-export const formatDateLong = ({ date, lang, withTime }: { date: Date; lang?: Lang; withTime?: boolean }): string => {
+export const formatDateLong = ({
+  date,
+  lang,
+  withTime,
+  utc,
+}: {
+  date: Date;
+  lang?: Lang;
+  withTime?: boolean;
+  utc?: boolean;
+}): string => {
   return date.toLocaleDateString(lang ?? ["en-MY"], {
     year: "numeric",
     month: "long",
     day: "numeric",
+    timeZone: utc ? "UTC" : undefined,
     ...(withTime ? { minute: "2-digit", hour: "2-digit" } : undefined),
   });
 };

@@ -1,4 +1,4 @@
-import { COUNTRY_CODE } from "@/lib/constants";
+import { COUNTRY_CODE, TIME_ZONES } from "@/lib/constants";
 import {
   cn,
   formatCurrency,
@@ -6,9 +6,8 @@ import {
   formatDateShort,
   getExpiryDate,
   getNewDate,
+  getRemainingDate,
   getStartDate,
-  isDateExpired,
-  isDateToday,
   localizePhoneNumber,
 } from "@/lib/functions";
 import { type Package, type PackageType, type PromoCode } from "@prisma/client";
@@ -151,7 +150,11 @@ TransactionInvoice.PackageWithTxnId = function InvoicePackageWithTxnId(props: {
   );
 };
 
-TransactionInvoice.Validity = function InvoiceValidity(props: { validityInDays?: number | null; transactionDate?: string }) {
+TransactionInvoice.Validity = function InvoiceValidity(props: {
+  validityInDays?: number | null;
+  transactionDate?: string;
+  tz?: string;
+}) {
   return props.validityInDays && props.transactionDate ? (
     <section className="flex flex-col">
       <section className="flex justify-between">
@@ -165,13 +168,10 @@ TransactionInvoice.Validity = function InvoiceValidity(props: { validityInDays?:
         <div className="absolute centered w-[25%] h-0.5 bg-dark" />
         <section className="flex flex-col text-right w-fit">
           <p className="font-semibold">
-            {isDateToday(getExpiryDate({ days: props.validityInDays, dateString: props.transactionDate }))
-              ? "Today"
-              : isDateExpired(getExpiryDate({ days: props.validityInDays, dateString: props.transactionDate }))
-                ? "Expired"
-                : formatDateShort({
-                    date: getExpiryDate({ days: props.validityInDays, dateString: props.transactionDate }),
-                  })}
+            {getRemainingDate(
+              getExpiryDate({ days: props.validityInDays, dateString: props.transactionDate }),
+              props.tz ?? TIME_ZONES.WIB,
+            )}
           </p>
         </section>
       </section>

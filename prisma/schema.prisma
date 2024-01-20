@@ -21,6 +21,7 @@ model User {
     totalSpendingPackage Int       @default(0)
     totalSpendingProduct Int       @default(0)
     totalSpending        Int       @default(0)
+    tz                   String    @default("Asia/Jakarta")
 
     // relations
     packageTransactions PackageTransaction[]

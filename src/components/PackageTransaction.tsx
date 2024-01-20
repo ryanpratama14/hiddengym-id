@@ -1,4 +1,4 @@
-import { formatDateShort, isDateExpired, isDateToday } from "@/lib/functions";
+import { formatDateShort, getRemainingDate } from "@/lib/functions";
 import { type PackageTransactionDetail } from "@/server/api/routers/packageTransaction";
 import TransactionInvoice from "./TransactionInvoice";
 
@@ -32,13 +32,7 @@ export default function PackageTransaction({ data }: Props) {
               </section>
 
               <section className="flex flex-col text-right w-fit">
-                <p className="font-semibold">
-                  {isDateToday(data.expiryDate)
-                    ? "Today"
-                    : isDateExpired(data.expiryDate)
-                      ? "Expired"
-                      : formatDateShort({ date: data.expiryDate })}
-                </p>
+                <p className="font-semibold">{getRemainingDate(data.expiryDate, data.buyer.tz)}</p>
               </section>
             </section>
           </section>

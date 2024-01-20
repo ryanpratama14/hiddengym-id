@@ -30,7 +30,7 @@ type Props = {
 type SelectedUser = { fullName: string; email: null | string; phoneNumber: string; birthDate: null | Date };
 
 export default function CreatePackageTransactionForm({ t, option }: Props) {
-  const { lang } = useZustand();
+  const { lang, session } = useZustand();
   const router = useRouter();
   const [selectedBuyer, setSelectedBuyer] = useState<SelectedUser>({
     fullName: "",
@@ -53,7 +53,7 @@ export default function CreatePackageTransactionForm({ t, option }: Props) {
     resetField,
   } = useForm<PackageTransactionCreateInput>({
     resolver: zodResolver(schema.packageTransaction.create),
-    defaultValues: { transactionDate: getInputDate(), paymentMethodId: "", buyerId: "", packageId: "" },
+    defaultValues: { transactionDate: getInputDate({}), paymentMethodId: "", buyerId: "", packageId: "" },
   });
 
   const onSubmit: SubmitHandler<PackageTransactionCreateInput> = (data) => createData(data);
@@ -211,7 +211,11 @@ export default function CreatePackageTransactionForm({ t, option }: Props) {
             phoneNumber={selectedBuyer.phoneNumber}
           />
           <TransactionInvoice.Package package={selectedPackage} promoCode={selectedPromoCode} />
-          <TransactionInvoice.Validity validityInDays={selectedPackage.validityInDays} transactionDate={data.transactionDate} />
+          <TransactionInvoice.Validity
+            validityInDays={selectedPackage.validityInDays}
+            transactionDate={data.transactionDate}
+            tz={session!.user.tz}
+          />
           <TransactionInvoice.ApprovedSessions approvedSessions={selectedPackage.approvedSessions} />
           <TransactionInvoice.PaymentMethod paymentMethod={selectedPaymentMethod} />
         </TransactionInvoice>
