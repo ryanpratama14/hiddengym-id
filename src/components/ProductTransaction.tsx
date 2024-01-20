@@ -1,13 +1,11 @@
-import { api } from "@/trpc/react";
+import { type ProductTransactionDetail } from "@/server/api/routers/productTransaction";
 import { Skeleton } from "antd";
 import { Fragment } from "react";
 import TransactionInvoice from "./TransactionInvoice";
 
-type Props = { id: string };
+type Props = { data: ProductTransactionDetail | null };
 
-export default function ProductTransaction({ id }: Props) {
-  const { data } = api.productTransaction.detail.useQuery({ id }, { enabled: !!id });
-
+export default function ProductTransaction({ data }: Props) {
   return (
     <TransactionInvoice shadow="none" background="cream">
       <Fragment>

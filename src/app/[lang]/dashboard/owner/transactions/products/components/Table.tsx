@@ -8,7 +8,11 @@ import { Modal } from "@/components/Modal";
 import ProductTransaction from "@/components/ProductTransaction";
 import { DETERMINE_GENDER, ICONS } from "@/lib/constants";
 import { cn, formatCurrency, formatDateShort, textEllipsis } from "@/lib/functions";
-import type { ProductTransactionList, ProductTransactionListInput } from "@/server/api/routers/productTransaction";
+import type {
+  ProductTransactionDetail,
+  ProductTransactionList,
+  ProductTransactionListInput,
+} from "@/server/api/routers/productTransaction";
 import { PAGINATION_LIMIT } from "@/trpc/shared";
 import { type SearchParams } from "@/types";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
@@ -22,9 +26,10 @@ type Props = {
   loading: boolean;
   newParams: URLSearchParams;
   redirectTable: (newParams: URLSearchParams) => void;
+  selectedData: ProductTransactionDetail | null;
 };
 
-export default function ProductTransactionsTable({ data, searchParams, loading, newParams, redirectTable }: Props) {
+export default function ProductTransactionsTable({ data, searchParams, loading, newParams, redirectTable, selectedData }: Props) {
   const getTableFilter = ({
     name,
     icon,
@@ -94,7 +99,7 @@ export default function ProductTransactionsTable({ data, searchParams, loading, 
         }}
       >
         <Modal.Body>
-          <ProductTransaction id={searchParams.id ?? ""} />
+          <ProductTransaction data={selectedData} />
         </Modal.Body>
       </Modal>
       <Table

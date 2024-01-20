@@ -1,16 +1,12 @@
 import { formatDateShort, getRemainingDate } from "@/lib/functions";
-import { api } from "@/trpc/react";
+import { type PackageTransactionDetail } from "@/server/api/routers/packageTransaction";
 import { Skeleton } from "antd";
 import { Fragment } from "react";
 import TransactionInvoice from "./TransactionInvoice";
 
-type Props = {
-  id: string;
-};
+type Props = { data: PackageTransactionDetail | null };
 
-export default function PackageTransaction({ id }: Props) {
-  const { data } = api.packageTransaction.detail.useQuery({ id }, { enabled: !!id });
-
+export default function PackageTransaction({ data }: Props) {
   return (
     <TransactionInvoice shadow="none" background="cream">
       <Fragment>

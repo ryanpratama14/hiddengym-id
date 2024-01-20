@@ -1,41 +1,11 @@
-"use client";
+import { api } from "@/trpc/server";
+import type { Lang, SearchParams } from "@/types";
+import TransactionsPackageContainer from "./components/Container";
 
-import { REFETCH_INTERVAL, USER_REDIRECT } from "@/lib/constants";
-import { createUrl } from "@/lib/functions";
-import { schema } from "@/schema";
-import { api } from "@/trpc/react";
-import { type Lang, type SearchParams } from "@/types";
-import { useRouter } from "next/navigation";
-import Table from "./components/Table";
-import TableSorter from "./components/TableSorter";
+type Props = { searchParams: SearchParams; params: { lang: Lang } };
 
-type Props = {
-  searchParams: SearchParams;
-  params: { lang: Lang };
-};
+export default async function TransactionsPackagePage({ searchParams, params }: Props) {
+  const selectedData = searchParams.id ? await api.packageTransaction.detail.query({ id: searchParams.id }) : null;
 
-export default function TransactionsProductPage({ searchParams, params }: Props) {
-  const query = schema.packageTransaction.list.parse(searchParams);
-  const newParams = new URLSearchParams(searchParams);
-  const router = useRouter();
-
-  const redirectTable = (newParams: URLSearchParams) => {
-    router.push(createUrl(USER_REDIRECT({ lang: params.lang, href: "/transactions/packages", role: "OWNER" }), newParams));
-  };
-
-  const { data, isLoading: loading } = api.packageTransaction.list.useQuery(query, { refetchInterval: REFETCH_INTERVAL });
-
-  if (data?.isPaginationInvalid) {
-    newParams.delete("page");
-    redirectTable(newParams);
-  }
-
-  return (
-    <section className="grid md:grid-cols-5 gap-6 lg:gap-x-12">
-      <section className="flex flex-col gap-6 md:col-span-4">
-        <Table loading={loading} data={data} searchParams={searchParams} redirectTable={redirectTable} newParams={newParams} />
-      </section>
-      <TableSorter redirectTable={redirectTable} newParams={newParams} />
-    </section>
-  );
+  return <TransactionsPackageContainer searchParams={searchParams} lang={params.lang} selectedData={selectedData} />;
 }

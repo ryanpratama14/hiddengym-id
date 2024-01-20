@@ -8,7 +8,11 @@ import { Modal } from "@/components/Modal";
 import PackageTransaction from "@/components/PackageTransaction";
 import { DETERMINE_GENDER, ICONS, PACKAGE_TYPES } from "@/lib/constants";
 import { cn, formatCurrency, formatDateShort, getRemainingDays, isDateExpired, isDateToday, textEllipsis } from "@/lib/functions";
-import type { PackageTransactionList, PackageTransactionListInput } from "@/server/api/routers/packageTransaction";
+import type {
+  PackageTransactionDetail,
+  PackageTransactionList,
+  PackageTransactionListInput,
+} from "@/server/api/routers/packageTransaction";
 import { inputVariants, statusVariants } from "@/styles/variants";
 import { PAGINATION_LIMIT } from "@/trpc/shared";
 import { type SearchParams } from "@/types";
@@ -23,9 +27,10 @@ type Props = {
   loading: boolean;
   newParams: URLSearchParams;
   redirectTable: (newParams: URLSearchParams) => void;
+  selectedData: PackageTransactionDetail | null;
 };
 
-export default function PackageTransactionsTable({ data, searchParams, loading, newParams, redirectTable }: Props) {
+export default function PackageTransactionsTable({ data, searchParams, loading, newParams, redirectTable, selectedData }: Props) {
   const getTableFilter = ({
     name,
     icon,
@@ -106,7 +111,7 @@ export default function PackageTransactionsTable({ data, searchParams, loading, 
         }}
       >
         <Modal.Body>
-          <PackageTransaction id={searchParams.id ?? ""} />
+          <PackageTransaction data={selectedData} />
         </Modal.Body>
       </Modal>
       <Table
