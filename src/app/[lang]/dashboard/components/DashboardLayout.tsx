@@ -1,6 +1,6 @@
 import Logo from "@/components/Logo";
 import { useZustand } from "@/global/store";
-import { cn, getSelectedMenu } from "@/lib/functions";
+import { cn, formatDateShort, getNewDate, getSelectedMenu } from "@/lib/functions";
 import { type User } from "@/server/api/routers/user";
 import { COLORS } from "@/styles/theme";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
@@ -71,7 +71,12 @@ export default function DashboardLayout({ collapsed, setCollapsed, user, handleC
               </p>
             ) : null}
           </section>
-          <DashboardProfileDropdown user={user} />
+          <section className="flex gap-4 items-center">
+            <p className="md:block hidden select-none rounded-md border-2 border-cream py-0.5 px-3 font-medium">
+              {formatDateShort({ date: getNewDate(), tz: user.tz })}
+            </p>
+            <DashboardProfileDropdown user={user} />
+          </section>
         </section>
       </nav>
     </Fragment>

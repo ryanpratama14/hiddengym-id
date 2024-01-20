@@ -27,16 +27,17 @@ type Props = {
   option: { packages: PackageList; paymentMethods: PaymentMethodList; visitors: UserListData };
 };
 
-type SelectedUser = { fullName: string; email: null | string; phoneNumber: string; birthDate: null | Date };
+type SelectedUser = { fullName: string; email: null | string; phoneNumber: string; birthDate: null | Date; tz: string };
 
 export default function CreatePackageTransactionForm({ t, option }: Props) {
-  const { lang, session } = useZustand();
+  const { lang } = useZustand();
   const router = useRouter();
   const [selectedBuyer, setSelectedBuyer] = useState<SelectedUser>({
     fullName: "",
     email: null,
     phoneNumber: "",
     birthDate: null,
+    tz: "",
   });
   const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>("");
@@ -101,6 +102,7 @@ export default function CreatePackageTransactionForm({ t, option }: Props) {
                 label: e.fullName,
                 fullName: e.fullName,
                 birthDate: e.birthDate,
+                tz: e.tz,
               }))}
               label="Buyer"
               onChange={(value, item) => {
@@ -110,6 +112,7 @@ export default function CreatePackageTransactionForm({ t, option }: Props) {
                   email: user.email,
                   phoneNumber: user.phoneNumber,
                   birthDate: user.birthDate,
+                  tz: user.tz,
                 });
                 setValue("buyerId", value as string);
                 clearErrors("buyerId");
@@ -199,6 +202,7 @@ export default function CreatePackageTransactionForm({ t, option }: Props) {
       {selectedBuyer && selectedPackage ? (
         <TransactionInvoice>
           <TransactionInvoice.Header
+            tz={selectedBuyer.tz}
             title="Package"
             totalPrice={
               selectedPromoCode?.discountPrice ? selectedPackage.price - selectedPromoCode?.discountPrice : selectedPackage.price
@@ -214,7 +218,7 @@ export default function CreatePackageTransactionForm({ t, option }: Props) {
           <TransactionInvoice.Validity
             validityInDays={selectedPackage.validityInDays}
             transactionDate={data.transactionDate}
-            tz={session!.user.tz}
+            tz={selectedBuyer.tz}
           />
           <TransactionInvoice.ApprovedSessions approvedSessions={selectedPackage.approvedSessions} />
           <TransactionInvoice.PaymentMethod paymentMethod={selectedPaymentMethod} />

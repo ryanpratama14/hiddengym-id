@@ -17,17 +17,24 @@ import { type UserListData } from "@/server/api/routers/user";
 import { api } from "@/trpc/react";
 import { type Dictionary } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { type User } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useFieldArray, useForm, type SubmitHandler } from "react-hook-form";
 
 const productInitialData = { unitPrice: 0, quantity: 1, productId: "", name: "" };
 
+type SelectedUser = { fullName: string; email: null | string; phoneNumber: string; tz: string };
+
 type Props = { t: Dictionary; option: { paymentMethods: PaymentMethodList; products: ProductList; visitors: UserListData } };
 
 export default function CreateProductTransactionForm({ t, option }: Props) {
-  const [selectedBuyer, setSelectedBuyer] = useState({ fullName: "", email: "", phoneNumber: "" });
+  const [selectedBuyer, setSelectedBuyer] = useState<SelectedUser>({
+    fullName: "",
+    email: null,
+    phoneNumber: "",
+    tz: "",
+  });
+
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>("");
   const { lang } = useZustand();
   const router = useRouter();
@@ -63,8 +70,6 @@ export default function CreateProductTransactionForm({ t, option }: Props) {
 
   const data = { products: watch("products"), transactionDate: watch("transactionDate") };
 
-  console.log(data.products);
-
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 w-full">
       <section className="grid md:grid-cols-2 gap-4">
@@ -77,11 +82,23 @@ export default function CreateProductTransactionForm({ t, option }: Props) {
               showSearch={true}
               {...field}
               icon={ICONS.person}
-              options={option.visitors.map((e) => ({ ...e, value: e.id, label: e.fullName }))}
+              options={option.visitors.map((e) => ({
+                email: e.email,
+                phoneNumber: e.phoneNumber,
+                value: e.id,
+                label: e.fullName,
+                fullName: e.fullName,
+                tz: e.tz,
+              }))}
               label="Buyer"
               onChange={(value, item) => {
-                const data = structuredClone(item) as User;
-                setSelectedBuyer({ fullName: data.fullName, email: data.email ?? "", phoneNumber: data.phoneNumber });
+                const user = structuredClone(item) as SelectedUser;
+                setSelectedBuyer({
+                  fullName: user.fullName,
+                  email: user.email,
+                  phoneNumber: user.phoneNumber,
+                  tz: user.tz,
+                });
                 setValue("buyerId", value as string);
                 clearErrors("buyerId");
               }}
@@ -177,6 +194,7 @@ export default function CreateProductTransactionForm({ t, option }: Props) {
       {selectedBuyer.fullName && data.products.length ? (
         <TransactionInvoice>
           <TransactionInvoice.Header
+            tz={selectedBuyer.tz}
             title="Product"
             transactionDate={data.transactionDate}
             totalPrice={data.products.reduce((sum, product) => {

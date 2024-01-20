@@ -1,5 +1,6 @@
 import { useDictionary } from "@/lib/dictionary";
 import { type PackageTransactionCreateInput } from "@/server/api/routers/packageTransaction";
+import { getServerAuthSession } from "@/server/auth";
 import { api } from "@/trpc/server";
 import { type Lang } from "@/types";
 import { revalidatePath } from "next/cache";
@@ -24,10 +25,21 @@ export default async function CustomerCreatePage({ params }: Props) {
     paymentMethods: await api.paymentMethod.list.query(),
   };
 
-  return (
-    <section className="main-create-padding">
-      <h3>Create Visitor</h3>
-      <CreateVisitorForm option={option} t={t} createPackageTransaction={createPackageTransaction} lang={params.lang} />
-    </section>
-  );
+  const session = await getServerAuthSession();
+
+  console.log(session);
+
+  if (session)
+    return (
+      <section className="main-create-padding">
+        <h3>Create Visitor</h3>
+        <CreateVisitorForm
+          session={session}
+          option={option}
+          t={t}
+          createPackageTransaction={createPackageTransaction}
+          lang={params.lang}
+        />
+      </section>
+    );
 }

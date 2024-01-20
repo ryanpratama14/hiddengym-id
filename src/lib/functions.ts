@@ -1,4 +1,12 @@
-import { COUNTRY_CODE, DASHBOARD_MENUS, DASHBOARD_SUB_MENUS, TIME_ZONES, USER_PATHNAMES, USER_REDIRECT } from "@/lib/constants";
+import {
+  COUNTRY_CODE,
+  DASHBOARD_MENUS,
+  DASHBOARD_SUB_MENUS,
+  DETERMINE_TIME_ZONE,
+  TIME_ZONES,
+  USER_PATHNAMES,
+  USER_REDIRECT,
+} from "@/lib/constants";
 import type { DashboardMenuKey, DashboardMenuLabel, DashboardSubMenuKey, Lang } from "@/types";
 import { type Role } from "@prisma/client";
 import { clsx, type ClassValue } from "clsx";
@@ -66,7 +74,7 @@ export const getNewDate = (dateString?: string): Date => {
 };
 
 export const getInputDate = ({ date, tz }: { date?: Date; tz?: string }): string => {
-  const dateString = date ? dayjs(date) : dayjs().tz(tz ?? TIME_ZONES.WIB);
+  const dateString = date ? dayjs(date) : dayjs().tz(tz ?? TIME_ZONES.WIB.value);
   return dateString.format("YYYY-MM-DD");
 };
 
@@ -138,20 +146,22 @@ export const formatDate = ({
   style,
   withTime,
   utc,
+  tz,
 }: {
   date: Date;
   lang?: Lang;
   style: "short" | "long";
   withTime?: boolean;
   utc?: boolean;
+  tz?: string;
 }): string => {
-  return date.toLocaleDateString(lang ?? ["en-MY"], {
+  return `${date.toLocaleDateString(lang ?? ["en-MY"], {
     year: "numeric",
     month: style === "long" ? "long" : "numeric",
     day: "numeric",
     timeZone: utc ? "UTC" : undefined,
     ...(withTime ? { minute: "2-digit", hour: "2-digit" } : undefined),
-  });
+  })}${tz ? `, ${DETERMINE_TIME_ZONE(tz)}` : ""}`;
 };
 
 export const formatDateShort = ({
@@ -159,19 +169,21 @@ export const formatDateShort = ({
   lang,
   withTime,
   utc,
+  tz,
 }: {
   date: Date;
   lang?: Lang;
   withTime?: boolean;
   utc?: boolean;
+  tz?: string;
 }): string => {
-  return date.toLocaleDateString(lang ?? ["en-MY"], {
+  return `${date.toLocaleDateString(lang ?? ["en-MY"], {
     year: "numeric",
     month: "short",
     day: "numeric",
     timeZone: utc ? "UTC" : undefined,
     ...(withTime ? { minute: "2-digit", hour: "2-digit" } : undefined),
-  });
+  })}${tz ? `, ${DETERMINE_TIME_ZONE(tz)}` : ""}`;
 };
 
 export const formatDateLong = ({
@@ -179,19 +191,21 @@ export const formatDateLong = ({
   lang,
   withTime,
   utc,
+  tz,
 }: {
   date: Date;
   lang?: Lang;
   withTime?: boolean;
   utc?: boolean;
+  tz?: string;
 }): string => {
-  return date.toLocaleDateString(lang ?? ["en-MY"], {
+  return `${date.toLocaleDateString(lang ?? ["en-MY"], {
     year: "numeric",
     month: "long",
     day: "numeric",
     timeZone: utc ? "UTC" : undefined,
     ...(withTime ? { minute: "2-digit", hour: "2-digit" } : undefined),
-  });
+  })}${tz ? `, ${DETERMINE_TIME_ZONE(tz)}` : ""}`;
 };
 
 export const localizePhoneNumber = (phoneNumber: string): string => {

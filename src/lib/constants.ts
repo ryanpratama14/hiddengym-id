@@ -5,13 +5,14 @@ import type { Gender, Package, PackageTransaction, PackageType, ProductTransacti
 
 export type TimeZone = "WIB" | "WITA" | "WIT";
 
-export const TIME_ZONES: Record<TimeZone, string> = {
-  WIB: "Asia/Jakarta",
-  WITA: "Asia/Makassar",
-  WIT: "Asia/Jayapura",
+export const TIME_ZONES: Record<TimeZone, { value: string; label: TimeZone }> = {
+  WIB: { value: "Asia/Jakarta", label: "WIB" },
+  WITA: { value: "Asia/Makassar", label: "WITA" },
+  WIT: { value: "Asia/Jakarta", label: "WIT" },
 };
 
-export const TIME_ZONE_OPTIONS = Object.entries(TIME_ZONES).map(([label, value]) => ({ label: label as TimeZone, value }));
+export const TIME_ZONE_OPTIONS = Object.entries(TIME_ZONES).map(([label, e]) => ({ label: label as TimeZone, value: e.value }));
+export const DETERMINE_TIME_ZONE = (tz: string) => TIME_ZONE_OPTIONS.find((e) => e.value === tz)!.label;
 
 export const PACKAGE_SORTERERS: { name: keyof Package; title: string }[] = [
   { name: "type", title: "Type" },

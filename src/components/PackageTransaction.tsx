@@ -11,7 +11,12 @@ export default function PackageTransaction({ data }: Props) {
 
   return (
     <TransactionInvoice shadow="none" background="cream">
-      <TransactionInvoice.Header title="Package" transactionDateDate={data.transactionDate} totalPrice={data.totalPrice} />
+      <TransactionInvoice.Header
+        title="Package"
+        transactionDateDate={data.transactionDate}
+        totalPrice={data.totalPrice}
+        tz={data.buyer.tz}
+      />
       <TransactionInvoice.Buyer fullName={data.buyer.fullName} phoneNumber={data.buyer.phoneNumber} email={data.buyer?.email} />
       <TransactionInvoice.PackageWithTxnId
         package={{ name: data.package.name, unitPrice: data.unitPrice, type: data.package.type }}

@@ -1,4 +1,4 @@
-import { COUNTRY_CODE, TIME_ZONES } from "@/lib/constants";
+import { COUNTRY_CODE } from "@/lib/constants";
 import {
   cn,
   formatCurrency,
@@ -84,12 +84,18 @@ TransactionInvoice.Header = function InvoiceHeader(props: {
   totalPrice: number;
   transactionDate?: string;
   transactionDateDate?: Date;
+  tz: string;
 }) {
   return (
     <section className="flex justify-between w-full">
       <section className="flex flex-col text-left">
         <h6>{props.title} TXN</h6>
-        <p>{formatDateLong({ date: props.transactionDateDate ? props.transactionDateDate : getNewDate(props.transactionDate) })}</p>
+        <small>
+          {formatDateLong({
+            date: props.transactionDateDate ? props.transactionDateDate : getNewDate(props.transactionDate),
+            tz: props.tz,
+          })}
+        </small>
       </section>
       <section className="flex flex-col items-end">
         <p className="font-semibold">TOTAL AMOUNT</p>
@@ -153,7 +159,7 @@ TransactionInvoice.PackageWithTxnId = function InvoicePackageWithTxnId(props: {
 TransactionInvoice.Validity = function InvoiceValidity(props: {
   validityInDays?: number | null;
   transactionDate?: string;
-  tz?: string;
+  tz: string;
 }) {
   return props.validityInDays && props.transactionDate ? (
     <section className="flex flex-col">
@@ -168,10 +174,7 @@ TransactionInvoice.Validity = function InvoiceValidity(props: {
         <div className="absolute centered w-[25%] h-0.5 bg-dark" />
         <section className="flex flex-col text-right w-fit">
           <p className="font-semibold">
-            {getRemainingDate(
-              getExpiryDate({ days: props.validityInDays, dateString: props.transactionDate }),
-              props.tz ?? TIME_ZONES.WIB,
-            )}
+            {getRemainingDate(getExpiryDate({ days: props.validityInDays, dateString: props.transactionDate }), props.tz)}
           </p>
         </section>
       </section>

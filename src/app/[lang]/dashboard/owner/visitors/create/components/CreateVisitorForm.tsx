@@ -19,6 +19,7 @@ import { type TRPC_RESPONSE } from "@/trpc/shared";
 import { type Dictionary, type Lang } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type Package, type PromoCode } from "@prisma/client";
+import { type Session } from "next-auth";
 import { useRouter } from "next/navigation";
 import { Fragment, useState } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
@@ -28,9 +29,10 @@ type Props = {
   lang: Lang;
   t: Dictionary;
   option: { packages: PackageList; paymentMethods: PaymentMethodList };
+  session: Session;
 };
 
-export default function CreateVisitorForm({ lang, t, option, createPackageTransaction }: Props) {
+export default function CreateVisitorForm({ lang, t, option, createPackageTransaction, session }: Props) {
   const router = useRouter();
   const [isAddingTransaction, setIsAddingTransaction] = useState<boolean>(false);
   const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
@@ -268,6 +270,7 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
       {selectedPackage ? (
         <TransactionInvoice>
           <TransactionInvoice.Header
+            tz={session.user.tz}
             title="Package"
             totalPrice={
               selectedPromoCode?.discountPrice ? selectedPackage.price - selectedPromoCode?.discountPrice : selectedPackage.price
@@ -276,7 +279,11 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
           />
           <TransactionInvoice.Buyer fullName={data.fullName} email={data.email} phoneNumber={data.phoneNumber} />
           <TransactionInvoice.Package package={selectedPackage} promoCode={selectedPromoCode} />
-          <TransactionInvoice.Validity validityInDays={selectedPackage.validityInDays} transactionDate={data.transactionDate} />
+          <TransactionInvoice.Validity
+            validityInDays={selectedPackage.validityInDays}
+            transactionDate={data.transactionDate}
+            tz={session.user.tz}
+          />
           <TransactionInvoice.ApprovedSessions approvedSessions={selectedPackage.approvedSessions} />
           <TransactionInvoice.PaymentMethod paymentMethod={selectedPaymentMethod} />
         </TransactionInvoice>
