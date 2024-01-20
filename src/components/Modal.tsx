@@ -43,7 +43,7 @@ export const Modal = ({ show, closeModal, children, classNameDiv }: Props) => {
                   <Iconify
                     onClick={closeModal}
                     icon={ICONS.close}
-                    className="text-dark p-0.5 absolute rounded-full top-3 right-3 z-10 hover:bg-dark/10"
+                    className="text-dark p-0.5 absolute top-3 right-3 z-10 hover:bg-dark/10"
                     width={22}
                   />
                   {children}

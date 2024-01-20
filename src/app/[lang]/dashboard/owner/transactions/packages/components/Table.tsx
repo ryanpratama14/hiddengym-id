@@ -9,18 +9,14 @@ import PackageTransaction from "@/components/PackageTransaction";
 import { useZustand } from "@/global/store";
 import { DETERMINE_GENDER, ICONS, PACKAGE_TYPES } from "@/lib/constants";
 import { cn, formatCurrency, formatDateShort, getRemainingDays, isDateExpired, isDateToday, textEllipsis } from "@/lib/functions";
-import {
-  type PackageTransactionDetail,
-  type PackageTransactionList,
-  type PackageTransactionListInput,
-} from "@/server/api/routers/packageTransaction";
+import type { PackageTransactionList, PackageTransactionListInput } from "@/server/api/routers/packageTransaction";
 import { inputVariants, statusVariants } from "@/styles/variants";
 import { PAGINATION_LIMIT } from "@/trpc/shared";
 import { type SearchParams } from "@/types";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import { Table } from "antd";
 import { type FilterDropdownProps } from "antd/es/table/interface";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment } from "react";
 
 type Props = {
   data?: PackageTransactionList;
@@ -32,16 +28,6 @@ type Props = {
 
 export default function PackageTransactionsTable({ data, searchParams, loading, newParams, redirectTable }: Props) {
   const { session } = useZustand();
-  const [selectedTransaction, setSelectedTransaction] = useState<PackageTransactionDetail | null>(null);
-
-  useEffect(() => {
-    if (searchParams.id && data?.data) {
-      const selectedData = data.data.find((e) => e.id === searchParams.id);
-      if (selectedData) {
-        setSelectedTransaction(selectedData);
-      } else setSelectedTransaction(null);
-    }
-  }, [searchParams, data]);
 
   const getTableFilter = ({
     name,
@@ -116,14 +102,14 @@ export default function PackageTransactionsTable({ data, searchParams, loading, 
   return (
     <Fragment>
       <Modal
-        show={!!searchParams.id && !!selectedTransaction}
+        show={!!searchParams.id}
         closeModal={() => {
           newParams.delete("id");
           redirectTable(newParams);
         }}
       >
         <Modal.Body>
-          <PackageTransaction data={selectedTransaction} />
+          <PackageTransaction id={searchParams.id ?? ""} />
         </Modal.Body>
       </Modal>
       <Table

@@ -8,17 +8,13 @@ import { Modal } from "@/components/Modal";
 import ProductTransaction from "@/components/ProductTransaction";
 import { DETERMINE_GENDER, ICONS } from "@/lib/constants";
 import { cn, formatCurrency, formatDateShort, textEllipsis } from "@/lib/functions";
-import {
-  type ProductTransactionDetail,
-  type ProductTransactionList,
-  type ProductTransactionListInput,
-} from "@/server/api/routers/productTransaction";
+import type { ProductTransactionList, ProductTransactionListInput } from "@/server/api/routers/productTransaction";
 import { PAGINATION_LIMIT } from "@/trpc/shared";
 import { type SearchParams } from "@/types";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import { Table } from "antd";
 import { type FilterDropdownProps } from "antd/es/table/interface";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment } from "react";
 
 type Props = {
   data?: ProductTransactionList;
@@ -29,17 +25,6 @@ type Props = {
 };
 
 export default function ProductTransactionsTable({ data, searchParams, loading, newParams, redirectTable }: Props) {
-  const [selectedTransaction, setSelectedTransaction] = useState<ProductTransactionDetail | null>(null);
-
-  useEffect(() => {
-    if (searchParams.id && data?.data) {
-      const selectedData = data.data.find((e) => e.id === searchParams.id);
-      if (selectedData) {
-        setSelectedTransaction(selectedData);
-      } else setSelectedTransaction(null);
-    }
-  }, [searchParams, data]);
-
   const getTableFilter = ({
     name,
     icon,
@@ -102,14 +87,14 @@ export default function ProductTransactionsTable({ data, searchParams, loading, 
   return (
     <Fragment>
       <Modal
-        show={!!searchParams.id && !!selectedTransaction}
+        show={!!searchParams.id}
         closeModal={() => {
           newParams.delete("id");
           redirectTable(newParams);
         }}
       >
         <Modal.Body>
-          <ProductTransaction data={selectedTransaction} />
+          <ProductTransaction id={searchParams.id ?? ""} />
         </Modal.Body>
       </Modal>
       <Table
