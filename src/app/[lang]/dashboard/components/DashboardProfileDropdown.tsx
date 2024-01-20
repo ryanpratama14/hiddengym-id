@@ -1,7 +1,7 @@
 import Button from "@/components/Button";
 import Iconify from "@/components/Iconify";
 import Img from "@/components/Img";
-import { DETERMINE_GENDER, ICONS } from "@/lib/constants";
+import { GENDERS, ICONS } from "@/lib/constants";
 import { cn } from "@/lib/functions";
 import { type User } from "@/server/api/routers/user";
 import { Menu, Transition } from "@headlessui/react";
@@ -20,7 +20,7 @@ export default function DashboardProfileDropdown({ user }: Props) {
           {user?.image?.url ? (
             <Img src={user.image.url} alt="Profile Picture" className="absolute centered object-cover w-full h-full rounded-full" />
           ) : (
-            <Iconify icon={DETERMINE_GENDER[user.gender].picture} className="absolute centered text-dark" width={35} />
+            <Iconify icon={GENDERS[user.gender].picture} className="absolute centered text-dark" width={35} />
           )}
         </section>
       </Menu.Button>

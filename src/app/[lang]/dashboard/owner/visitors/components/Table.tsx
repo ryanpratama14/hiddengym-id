@@ -7,7 +7,7 @@ import Iconify from "@/components/Iconify";
 import Img from "@/components/Img";
 import Input from "@/components/Input";
 import NavigatorX from "@/components/NavigatorX";
-import { COUNTRY_CODE, DETERMINE_GENDER, GENDERS, ICONS } from "@/lib/constants";
+import { COUNTRY_CODE, GENDER_OPTIONS, GENDERS, ICONS } from "@/lib/constants";
 import { cn, formatCurrency, localizePhoneNumber, textEllipsis } from "@/lib/functions";
 import { type UserList, type UserListInput } from "@/server/api/routers/user";
 import { PAGINATION_LIMIT } from "@/trpc/shared";
@@ -52,7 +52,7 @@ export default function VisitorsTable({ data, searchParams, lang, loading, newPa
         >
           {name === "gender" ? (
             <section className="grid grid-cols-2">
-              {GENDERS.map((option, index) => {
+              {GENDER_OPTIONS.map((option, index) => {
                 return (
                   <section key={option.label} className="items-center flex gap-2">
                     <button
@@ -166,7 +166,7 @@ export default function VisitorsTable({ data, searchParams, lang, loading, newPa
                 {user?.image?.url ? (
                   <Img src={user.image.url} alt={text} className="object-cover w-full h-full rounded-full" />
                 ) : (
-                  <Iconify icon={DETERMINE_GENDER[user.gender].picture} className="text-dark" width={20} />
+                  <Iconify icon={GENDERS[user.gender].picture} className="text-dark" width={20} />
                 )}
               </section>
               {textEllipsis(text, 27)}
@@ -198,11 +198,10 @@ export default function VisitorsTable({ data, searchParams, lang, loading, newPa
           align: "center",
           dataIndex: "gender",
           ...getTableFilter({ name: "gender" }),
-          render: (text: string) => {
-            const gender = GENDERS.find((item) => item.value === text);
+          render: (text: string, item) => {
             return (
               <section className="flex items-center justify-center">
-                <Iconify width={25} icon={gender!.icon} color={gender!.color} />
+                <Iconify width={25} icon={GENDERS[item.gender].icon} color={GENDERS[item.gender].color} />
               </section>
             );
           },

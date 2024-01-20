@@ -17,13 +17,14 @@ import { type UserListData } from "@/server/api/routers/user";
 import { api } from "@/trpc/react";
 import { type Dictionary } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { type Gender } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useFieldArray, useForm, type SubmitHandler } from "react-hook-form";
 
 const productInitialData = { unitPrice: 0, quantity: 1, productId: "", name: "" };
 
-type SelectedUser = { fullName: string; email: null | string; phoneNumber: string; tz: string };
+type SelectedUser = { fullName: string; email: null | string; phoneNumber: string; tz: string; gender: Gender };
 
 type Props = { t: Dictionary; option: { paymentMethods: PaymentMethodList; products: ProductList; visitors: UserListData } };
 
@@ -33,6 +34,7 @@ export default function CreateProductTransactionForm({ t, option }: Props) {
     email: null,
     phoneNumber: "",
     tz: "",
+    gender: "MALE",
   });
 
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>("");
@@ -89,6 +91,7 @@ export default function CreateProductTransactionForm({ t, option }: Props) {
                 label: e.fullName,
                 fullName: e.fullName,
                 tz: e.tz,
+                gender: e.gender,
               }))}
               label="Buyer"
               onChange={(value, item) => {
@@ -98,6 +101,7 @@ export default function CreateProductTransactionForm({ t, option }: Props) {
                   email: user.email,
                   phoneNumber: user.phoneNumber,
                   tz: user.tz,
+                  gender: user.gender,
                 });
                 setValue("buyerId", value as string);
                 clearErrors("buyerId");
@@ -203,6 +207,7 @@ export default function CreateProductTransactionForm({ t, option }: Props) {
             }, 0)}
           />
           <TransactionInvoice.Buyer
+            gender={selectedBuyer.gender}
             fullName={selectedBuyer.fullName}
             phoneNumber={selectedBuyer.phoneNumber}
             email={selectedBuyer.email}

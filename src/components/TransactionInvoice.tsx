@@ -1,4 +1,4 @@
-import { COUNTRY_CODE } from "@/lib/constants";
+import { COUNTRY_CODE, GENDERS } from "@/lib/constants";
 import {
   cn,
   formatCurrency,
@@ -10,7 +10,8 @@ import {
   getStartDate,
   localizePhoneNumber,
 } from "@/lib/functions";
-import { type Package, type PackageType, type PromoCode } from "@prisma/client";
+import type { Gender, Package, PackageType, PromoCode } from "@prisma/client";
+import Iconify from "./Iconify";
 import Logo from "./Logo";
 import NavigatorX from "./NavigatorX";
 
@@ -67,10 +68,18 @@ TransactionInvoice.Products = function InvoiceProducts({
   );
 };
 
-TransactionInvoice.Buyer = function InvoiceBuyer(props: { fullName: string; phoneNumber: string; email?: string | null }) {
+TransactionInvoice.Buyer = function InvoiceBuyer(props: {
+  fullName: string;
+  phoneNumber: string;
+  email?: string | null;
+  gender: Gender;
+}) {
   return (
     <section className="flex flex-col text-center">
-      <p className="font-medium -mb-0.5">{props.fullName}</p>
+      <section className="flex gap-0.5 items-center justify-center">
+        <p className="font-medium -mb-0.5">{props.fullName}</p>
+        <Iconify width={20} icon={GENDERS[props.gender].icon} color={GENDERS[props.gender].color} />
+      </section>
       <NavigatorX newTab href={`tel:${COUNTRY_CODE}${props.phoneNumber}`}>
         <small className="hover:text-blue">{localizePhoneNumber(props.phoneNumber)}</small>
       </NavigatorX>

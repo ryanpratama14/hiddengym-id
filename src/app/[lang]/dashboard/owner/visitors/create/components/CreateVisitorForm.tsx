@@ -6,7 +6,7 @@ import Input from "@/components/Input";
 import InputSelect from "@/components/InputSelect";
 import { toastError, toastSuccess, toastWarning } from "@/components/Toast";
 import TransactionInvoice from "@/components/TransactionInvoice";
-import { GENDERS, ICONS, USER_REDIRECT } from "@/lib/constants";
+import { GENDER_OPTIONS, ICONS, USER_REDIRECT } from "@/lib/constants";
 import { cn, getInputDate, getNewDate } from "@/lib/functions";
 import { schema } from "@/schema";
 import { type PackageList } from "@/server/api/routers/package";
@@ -60,6 +60,7 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
     fullName: watch("visitorData.fullName"),
     phoneNumber: watch("visitorData.phoneNumber"),
     email: watch("visitorData.email"),
+    gender: watch("visitorData.gender"),
     promoCodeCode: watch("packageData.promoCodeCode"),
     packageId: watch("packageData.packageId"),
     birthDate: watch("visitorData.birthDate"),
@@ -132,12 +133,12 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
             <section className="flex flex-col">
               <p>Gender</p>
               <section className="grid grid-cols-2 h-10">
-                {GENDERS.map((option, index) => {
+                {GENDER_OPTIONS.map((option, index) => {
                   return (
                     <section key={option.label} className="items-center flex gap-2">
                       <button
                         type="button"
-                        className="relative rounded-full w-6 bg-white aspect-square border-1 border-dark has-[:checked]:bg-dark"
+                        className="relative rounded-full size-6 bg-white border-1 border-dark has-[:checked]:bg-dark"
                       >
                         <input
                           value={option.value}
@@ -277,7 +278,7 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
             }
             transactionDate={data.transactionDate}
           />
-          <TransactionInvoice.Buyer fullName={data.fullName} email={data.email} phoneNumber={data.phoneNumber} />
+          <TransactionInvoice.Buyer fullName={data.fullName} email={data.email} phoneNumber={data.phoneNumber} gender={data.gender} />
           <TransactionInvoice.Package package={selectedPackage} promoCode={selectedPromoCode} />
           <TransactionInvoice.Validity
             validityInDays={selectedPackage.validityInDays}

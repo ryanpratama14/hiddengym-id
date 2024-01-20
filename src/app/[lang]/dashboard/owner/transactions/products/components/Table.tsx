@@ -6,7 +6,7 @@ import Img from "@/components/Img";
 import Input from "@/components/Input";
 import { Modal } from "@/components/Modal";
 import ProductTransaction from "@/components/ProductTransaction";
-import { DETERMINE_GENDER, ICONS } from "@/lib/constants";
+import { GENDERS, ICONS } from "@/lib/constants";
 import { cn, formatCurrency, formatDateShort, textEllipsis } from "@/lib/functions";
 import type {
   ProductTransactionDetail,
@@ -182,7 +182,7 @@ export default function ProductTransactionsTable({ data, searchParams, loading, 
                   {item.buyer?.image?.url ? (
                     <Img src={item.buyer.image.url} alt={item.buyer.fullName} className="object-cover w-full h-full rounded-full" />
                   ) : (
-                    <Iconify icon={DETERMINE_GENDER[item.buyer.gender].picture} className="absolute centered text-dark" width={20} />
+                    <Iconify icon={GENDERS[item.buyer.gender].picture} className="absolute centered text-dark" width={20} />
                   )}
                 </section>
                 {textEllipsis(item.buyer.fullName, 27)}

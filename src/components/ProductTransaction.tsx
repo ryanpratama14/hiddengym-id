@@ -19,7 +19,12 @@ export default function ProductTransaction({ data }: Props) {
               transactionDateDate={data.transactionDate}
               totalPrice={data.totalPrice}
             />
-            <TransactionInvoice.Buyer fullName={data.buyer.fullName} phoneNumber={data.buyer.phoneNumber} email={data.buyer?.email} />
+            <TransactionInvoice.Buyer
+              fullName={data.buyer.fullName}
+              phoneNumber={data.buyer.phoneNumber}
+              email={data.buyer?.email}
+              gender={data.buyer.gender}
+            />
             <TransactionInvoice.Products
               products={data.products.map((e) => ({
                 unitPrice: e.unitPrice,

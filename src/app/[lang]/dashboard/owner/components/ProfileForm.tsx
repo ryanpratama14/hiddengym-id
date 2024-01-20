@@ -4,7 +4,7 @@ import Button from "@/components/Button";
 import Iconify from "@/components/Iconify";
 import Input from "@/components/Input";
 import { toastError, toastSuccess } from "@/components/Toast";
-import { GENDERS, ICONS } from "@/lib/constants";
+import { GENDER_OPTIONS, ICONS } from "@/lib/constants";
 import { getInputDate } from "@/lib/functions";
 import { schema } from "@/schema";
 import { type User, type UserUpdateInput } from "@/server/api/routers/user";
@@ -58,10 +58,10 @@ export default function ProfileForm({ user, setIsEdit, updateUser, t }: Props) {
       <section className="flex flex-col">
         <p>Gender</p>
         <section className="grid grid-cols-2 h-10">
-          {GENDERS.map((option, index) => {
+          {GENDER_OPTIONS.map((option, index) => {
             return (
               <section key={option.label} className="items-center flex gap-2">
-                <button type="button" className="relative rounded-full w-6 aspect-square border-1 border-dark has-[:checked]:bg-dark">
+                <button type="button" className="relative rounded-full size-6 border-1 border-dark has-[:checked]:bg-dark">
                   <input
                     value={option.value}
                     className="cursor-pointer absolute w-full h-full opacity-0 z-10 top-0 left-0"

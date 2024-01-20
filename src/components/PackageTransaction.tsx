@@ -20,7 +20,12 @@ export default function PackageTransaction({ data }: Props) {
               totalPrice={data.totalPrice}
               tz={data.buyer.tz}
             />
-            <TransactionInvoice.Buyer fullName={data.buyer.fullName} phoneNumber={data.buyer.phoneNumber} email={data.buyer?.email} />
+            <TransactionInvoice.Buyer
+              fullName={data.buyer.fullName}
+              phoneNumber={data.buyer.phoneNumber}
+              email={data.buyer?.email}
+              gender={data.buyer.gender}
+            />
             <TransactionInvoice.PackageWithTxnId
               package={{ name: data.package.name, unitPrice: data.unitPrice, type: data.package.type }}
               promoCode={{ code: data.promoCode?.code, discountPrice: data?.discountPrice }}

@@ -120,27 +120,7 @@ export const ICONS = {
   delete: "material-symbols:delete",
 };
 
-export const GENDERS: {
-  value: Gender;
-  icon: string;
-  label: string;
-  color: string;
-}[] = [
-  {
-    icon: "material-symbols:male",
-    value: "MALE",
-    label: "Male",
-    color: COLORS.blue,
-  },
-  {
-    icon: "material-symbols:female",
-    value: "FEMALE",
-    label: "Female",
-    color: "#ec4899",
-  },
-];
-
-export const DETERMINE_GENDER: Record<
+export const GENDERS: Record<
   Gender,
   { icon: IconifyIcon | string; value: Gender; label: string; color: string; picture: IconifyIcon | string }
 > = {
@@ -148,17 +128,19 @@ export const DETERMINE_GENDER: Record<
     icon: "material-symbols:male",
     picture: ICONS.male,
     value: "MALE",
-    label: "Male",
+    label: "M",
     color: COLORS.blue,
   },
   FEMALE: {
     icon: "material-symbols:female",
     picture: ICONS.female,
     value: "FEMALE",
-    label: "Female",
+    label: "F",
     color: "#ec4899",
   },
 };
+
+export const GENDER_OPTIONS = Object.entries(GENDERS).map(([_, e]) => ({ ...e }));
 
 export const ADD_BUTTON_ITEMS = [
   {

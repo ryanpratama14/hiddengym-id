@@ -17,7 +17,7 @@ import { inputVariants } from "@/styles/variants";
 import { api } from "@/trpc/react";
 import { type Dictionary } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { type Package, type PromoCode } from "@prisma/client";
+import type { Gender, Package, PromoCode } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
@@ -27,7 +27,14 @@ type Props = {
   option: { packages: PackageList; paymentMethods: PaymentMethodList; visitors: UserListData };
 };
 
-type SelectedUser = { fullName: string; email: null | string; phoneNumber: string; birthDate: null | Date; tz: string };
+type SelectedUser = {
+  fullName: string;
+  email: null | string;
+  phoneNumber: string;
+  birthDate: null | Date;
+  tz: string;
+  gender: Gender;
+};
 
 export default function CreatePackageTransactionForm({ t, option }: Props) {
   const { lang } = useZustand();
@@ -38,6 +45,7 @@ export default function CreatePackageTransactionForm({ t, option }: Props) {
     phoneNumber: "",
     birthDate: null,
     tz: "",
+    gender: "MALE",
   });
   const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>("");
@@ -103,6 +111,7 @@ export default function CreatePackageTransactionForm({ t, option }: Props) {
                 fullName: e.fullName,
                 birthDate: e.birthDate,
                 tz: e.tz,
+                gender: e.gender,
               }))}
               label="Buyer"
               onChange={(value, item) => {
@@ -113,6 +122,7 @@ export default function CreatePackageTransactionForm({ t, option }: Props) {
                   phoneNumber: user.phoneNumber,
                   birthDate: user.birthDate,
                   tz: user.tz,
+                  gender: user.gender,
                 });
                 setValue("buyerId", value as string);
                 clearErrors("buyerId");
@@ -210,6 +220,7 @@ export default function CreatePackageTransactionForm({ t, option }: Props) {
             transactionDate={data.transactionDate}
           />
           <TransactionInvoice.Buyer
+            gender={selectedBuyer.gender}
             fullName={selectedBuyer.fullName}
             email={selectedBuyer.email}
             phoneNumber={selectedBuyer.phoneNumber}

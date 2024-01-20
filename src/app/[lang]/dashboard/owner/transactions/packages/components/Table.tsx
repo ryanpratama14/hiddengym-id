@@ -6,7 +6,7 @@ import Img from "@/components/Img";
 import Input from "@/components/Input";
 import { Modal } from "@/components/Modal";
 import PackageTransaction from "@/components/PackageTransaction";
-import { DETERMINE_GENDER, ICONS, PACKAGE_TYPES } from "@/lib/constants";
+import { GENDERS, ICONS, PACKAGE_TYPES } from "@/lib/constants";
 import { cn, formatCurrency, formatDateShort, getRemainingDays, isDateExpired, isDateToday, textEllipsis } from "@/lib/functions";
 import type {
   PackageTransactionDetail,
@@ -197,7 +197,7 @@ export default function PackageTransactionsTable({ data, searchParams, loading, 
                   {item.buyer?.image?.url ? (
                     <Img src={item.buyer.image.url} alt={item.buyer.fullName} className="object-cover w-full h-full rounded-full" />
                   ) : (
-                    <Iconify icon={DETERMINE_GENDER[item.buyer.gender].picture} className="absolute centered text-dark" width={20} />
+                    <Iconify icon={GENDERS[item.buyer.gender].picture} className="absolute centered text-dark" width={20} />
                   )}
                 </section>
                 {textEllipsis(item.buyer.fullName, 27)}

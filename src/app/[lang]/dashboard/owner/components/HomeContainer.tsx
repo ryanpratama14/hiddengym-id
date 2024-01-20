@@ -6,7 +6,7 @@ import Img from "@/components/Img";
 import Logo from "@/components/Logo";
 import NavigatorX from "@/components/NavigatorX";
 import { toastError, toastSuccess } from "@/components/Toast";
-import { COUNTRY_CODE, DETERMINE_GENDER, GENDERS } from "@/lib/constants";
+import { COUNTRY_CODE, GENDERS } from "@/lib/constants";
 import { formatDateLong, formatName, isFileSizeAllowed, localizePhoneNumber } from "@/lib/functions";
 import { uploadFiles } from "@/lib/uploadthing";
 import { type User, type UserUpdateInput } from "@/server/api/routers/user";
@@ -75,7 +75,7 @@ export default function HomeContainer({ lang, user, updateUser, refreshUser, t }
                 <p>uploading...</p>
               </section>
             ) : (
-              <Iconify icon={DETERMINE_GENDER[user.gender].picture} className="absolute text-dark centered" width={220} />
+              <Iconify icon={GENDERS[user.gender].picture} className="absolute text-dark centered" width={220} />
             )}
           </section>
         </section>
@@ -124,11 +124,7 @@ export default function HomeContainer({ lang, user, updateUser, refreshUser, t }
                   <section className="flex flex-col">
                     <p className="label">Gender</p>
                     <section className="flex gap-1 items-center">
-                      <Iconify
-                        width={25}
-                        icon={GENDERS.find((item) => item.value === user.gender)!.icon}
-                        color={GENDERS.find((item) => item.value === user.gender)!.color}
-                      />
+                      <Iconify width={25} icon={GENDERS[user.gender].icon} color={GENDERS[user.gender].color} />
                       <p>{formatName(user?.gender)}</p>
                     </section>
                   </section>
