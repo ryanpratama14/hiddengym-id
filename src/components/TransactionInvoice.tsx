@@ -77,8 +77,8 @@ TransactionInvoice.Buyer = function InvoiceBuyer(props: {
   return (
     <section className="flex flex-col text-center">
       <section className="flex gap-0.5 items-center justify-center">
-        <p className="font-medium -mb-0.5">{props.fullName}</p>
         <Iconify width={20} icon={GENDERS[props.gender].icon} color={GENDERS[props.gender].color} />
+        <p className="font-medium -mb-0.5">{props.fullName}</p>
       </section>
       <NavigatorX newTab href={`tel:${COUNTRY_CODE}${props.phoneNumber}`}>
         <small className="hover:text-blue">{localizePhoneNumber(props.phoneNumber)}</small>
