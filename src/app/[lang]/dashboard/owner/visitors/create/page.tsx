@@ -27,8 +27,6 @@ export default async function CustomerCreatePage({ params }: Props) {
 
   const session = await getServerAuthSession();
 
-  console.log(session);
-
   if (session)
     return (
       <section className="main-create-padding">
