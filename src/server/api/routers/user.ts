@@ -131,8 +131,15 @@ export const userRouter = createTRPCRouter({
 
     const whereQuery = {
       where: {
-        role: input?.role,
         isActive: true,
+        role: input?.role,
+        OR: input?.search
+          ? [
+              { phoneNumber: { contains: input?.search } },
+              { fullName: { contains: input?.search && formatName(input?.search), ...insensitiveMode } },
+              { email: { contains: input?.search, ...insensitiveMode } },
+            ]
+          : undefined,
         phoneNumber: { contains: input?.phoneNumber },
         email: { contains: input?.email, ...insensitiveMode },
         gender: input?.gender,

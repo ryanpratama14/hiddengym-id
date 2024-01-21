@@ -2,7 +2,7 @@ import "@/styles/ant-select.css";
 import { cn } from "@/lib/functions";
 import { COLORS } from "@/styles/theme";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
-import { ConfigProvider } from "antd";
+import { ConfigProvider, Empty, Spin } from "antd";
 import Select, { type BaseOptionType, type DefaultOptionType, type SelectProps } from "antd/es/select";
 import { type BaseSelectRef } from "rc-select";
 import React, { useId } from "react";
@@ -43,11 +43,24 @@ const InputSelect = React.forwardRef<BaseSelectRef, InputSelectProps>((props, re
         ) : null}
         <section className="relative">
           <Select
+            notFoundContent={
+              props.loading ? (
+                <section className="flex justify-center items-center py-4">
+                  <Spin size="default" />
+                </section>
+              ) : (
+                <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+              )
+            }
             ref={ref}
             {...props}
             id={id}
-            optionFilterProp="children"
-            filterOption={(input, option) => ((option?.label as string) ?? "").toLowerCase().includes(input.toLowerCase())}
+            filterOption={(input, option) =>
+              Object.values(option as object)
+                .join(" ")
+                .toLowerCase()
+                .includes(input.toLowerCase())
+            }
             style={{ width: "100%", height: "100%" }}
             showSearch={props.showSearch}
           />

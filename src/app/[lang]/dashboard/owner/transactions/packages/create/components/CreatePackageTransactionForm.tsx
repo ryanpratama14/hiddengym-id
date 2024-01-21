@@ -7,24 +7,24 @@ import { toastError, toastSuccess, toastWarning } from "@/components/Toast";
 import TransactionInvoice from "@/components/TransactionInvoice";
 import { useZustand } from "@/global/store";
 import { ICONS, USER_REDIRECT } from "@/lib/constants";
-import { cn, getInputDate } from "@/lib/functions";
+import { cn, getInputDate, localizePhoneNumber } from "@/lib/functions";
 import { schema } from "@/schema";
 import { type PackageList } from "@/server/api/routers/package";
 import { type PackageTransactionCreateInput } from "@/server/api/routers/packageTransaction";
 import { type PaymentMethodList } from "@/server/api/routers/paymentMethod";
-import { type UserListData } from "@/server/api/routers/user";
 import { inputVariants } from "@/styles/variants";
 import { api } from "@/trpc/react";
 import { type Dictionary } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { Gender, Package, PromoCode } from "@prisma/client";
+import { useDebounce } from "@uidotdev/usehooks";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 
 type Props = {
   t: Dictionary;
-  option: { packages: PackageList; paymentMethods: PaymentMethodList; visitors: UserListData };
+  option: { packages: PackageList; paymentMethods: PaymentMethodList };
 };
 
 type SelectedUser = {
@@ -50,6 +50,15 @@ export default function CreatePackageTransactionForm({ t, option }: Props) {
   const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>("");
   const [selectedPromoCode, setSelectedPromoCode] = useState<PromoCode | null>(null);
+  const [search, setSearch] = useState<string>("");
+  const debouncedSearch = useDebounce(search, 500);
+
+  const { data: visitors, isFetching: loadingSearch } = api.user.list.useQuery(
+    { search: debouncedSearch, role: "VISITOR", pagination: false, sort: "fullName-asc" },
+    { enabled: !!debouncedSearch },
+  );
+
+  console.log(visitors);
 
   const {
     register,
@@ -99,15 +108,17 @@ export default function CreatePackageTransactionForm({ t, option }: Props) {
           name="buyerId"
           render={({ field }) => (
             <InputSelect
+              loading={loadingSearch}
+              onSearch={(e) => setSearch(e)}
               showSearch={true}
               {...field}
               icon={ICONS.person}
               error={errors.buyerId?.message}
-              options={option.visitors.map((e) => ({
+              options={visitors?.data?.map((e) => ({
                 email: e.email,
                 phoneNumber: e.phoneNumber,
                 value: e.id,
-                label: e.fullName,
+                label: `${e.fullName}, ${localizePhoneNumber(e.phoneNumber)}`,
                 fullName: e.fullName,
                 birthDate: e.birthDate,
                 tz: e.tz,
@@ -209,7 +220,7 @@ export default function CreatePackageTransactionForm({ t, option }: Props) {
         </section>
       </section>
 
-      {selectedBuyer && selectedPackage ? (
+      {selectedBuyer.tz && selectedPackage ? (
         <TransactionInvoice>
           <TransactionInvoice.Header
             tz={selectedBuyer.tz}

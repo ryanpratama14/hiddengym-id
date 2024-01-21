@@ -19,10 +19,10 @@ export default function TableSearch({ searchParams, loading, newParams, redirect
       onSubmit={(e) => {
         e.preventDefault();
         const val = e.target as HTMLFormElement;
-        const search = val.fullName as HTMLInputElement;
+        const search = val.search as HTMLInputElement;
         if (search.value) {
-          newParams.set("fullName", search.value);
-        } else newParams.delete("fullName");
+          newParams.set("search", search.value);
+        } else newParams.delete("search");
         newParams.delete("page");
         redirectTable(newParams);
       }}
@@ -30,11 +30,11 @@ export default function TableSearch({ searchParams, loading, newParams, redirect
     >
       <section className="relative w-[80%] group">
         <Input
-          key={searchParams.fullName}
-          defaultValue={searchParams.fullName}
-          name="fullName"
+          key={searchParams.search}
+          defaultValue={searchParams.search}
+          name="search"
           autoComplete="off"
-          placeholder="Search by full name..."
+          placeholder="Search by name, email or phone number"
           icon={ICONS.search}
         />
       </section>

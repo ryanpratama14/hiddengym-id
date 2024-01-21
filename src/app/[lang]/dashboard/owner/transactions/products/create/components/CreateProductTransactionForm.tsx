@@ -8,16 +8,16 @@ import { toastError, toastSuccess } from "@/components/Toast";
 import TransactionInvoice from "@/components/TransactionInvoice";
 import { useZustand } from "@/global/store";
 import { ICONS, USER_REDIRECT } from "@/lib/constants";
-import { cn, formatCurrency, getInputDate } from "@/lib/functions";
+import { cn, formatCurrency, getInputDate, localizePhoneNumber } from "@/lib/functions";
 import { schema } from "@/schema";
 import { type PaymentMethodList } from "@/server/api/routers/paymentMethod";
 import { type ProductList } from "@/server/api/routers/product";
 import { type ProductTransactionInput } from "@/server/api/routers/productTransaction";
-import { type UserListData } from "@/server/api/routers/user";
 import { api } from "@/trpc/react";
 import { type Dictionary } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type Gender } from "@prisma/client";
+import { useDebounce } from "@uidotdev/usehooks";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useFieldArray, useForm, type SubmitHandler } from "react-hook-form";
@@ -26,9 +26,11 @@ const productInitialData = { unitPrice: 0, quantity: 1, productId: "", name: "" 
 
 type SelectedUser = { fullName: string; email: null | string; phoneNumber: string; tz: string; gender: Gender };
 
-type Props = { t: Dictionary; option: { paymentMethods: PaymentMethodList; products: ProductList; visitors: UserListData } };
+type Props = { t: Dictionary; option: { paymentMethods: PaymentMethodList; products: ProductList } };
 
 export default function CreateProductTransactionForm({ t, option }: Props) {
+  const { lang } = useZustand();
+  const router = useRouter();
   const [selectedBuyer, setSelectedBuyer] = useState<SelectedUser>({
     fullName: "",
     email: null,
@@ -38,8 +40,15 @@ export default function CreateProductTransactionForm({ t, option }: Props) {
   });
 
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>("");
-  const { lang } = useZustand();
-  const router = useRouter();
+
+  const [search, setSearch] = useState<string>("");
+  const debouncedSearch = useDebounce(search, 500);
+
+  const { data: visitors, isFetching: loadingSearch } = api.user.list.useQuery(
+    { search: debouncedSearch, role: "VISITOR", pagination: false, sort: "fullName-asc" },
+    { enabled: !!debouncedSearch },
+  );
+
   const {
     control,
     register,
@@ -80,15 +89,17 @@ export default function CreateProductTransactionForm({ t, option }: Props) {
           name="buyerId"
           render={({ field }) => (
             <InputSelect
+              loading={loadingSearch}
+              onSearch={(e) => setSearch(e)}
               error={errors?.buyerId?.message}
               showSearch={true}
               {...field}
               icon={ICONS.person}
-              options={option.visitors.map((e) => ({
+              options={visitors?.data?.map((e) => ({
                 email: e.email,
                 phoneNumber: e.phoneNumber,
                 value: e.id,
-                label: e.fullName,
+                label: `${e.fullName} ${localizePhoneNumber(e.phoneNumber)}`,
                 fullName: e.fullName,
                 tz: e.tz,
                 gender: e.gender,
@@ -195,7 +206,7 @@ export default function CreateProductTransactionForm({ t, option }: Props) {
         />
       </section>
 
-      {selectedBuyer.fullName && data.products.length ? (
+      {selectedBuyer.tz && data.products.length ? (
         <TransactionInvoice>
           <TransactionInvoice.Header
             tz={selectedBuyer.tz}

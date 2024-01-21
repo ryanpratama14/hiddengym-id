@@ -120,6 +120,7 @@ export class schema {
       email: z.string().optional(),
       gender: schema.gender.optional(),
       totalSpending: z.coerce.number().optional(),
+      search: z.string().optional(),
     });
   };
 

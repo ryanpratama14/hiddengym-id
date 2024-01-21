@@ -7,11 +7,7 @@ type Props = { params: { lang: Lang } };
 
 export default async function ProductTransactionCreatePage({ params }: Props) {
   const t = await useDictionary(params.lang);
-  const option = {
-    paymentMethods: await api.paymentMethod.list.query(),
-    products: await api.product.list.query({}),
-    visitors: (await api.user.list.query({ role: "VISITOR", pagination: false })).data,
-  };
+  const option = { paymentMethods: await api.paymentMethod.list.query(), products: await api.product.list.query({}) };
 
   return (
     <section className="main-create-padding">
