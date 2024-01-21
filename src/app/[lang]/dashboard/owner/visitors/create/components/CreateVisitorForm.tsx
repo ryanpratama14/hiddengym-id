@@ -57,6 +57,7 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
 
   const data = {
     transactionDate: watch("packageData.transactionDate"),
+    startDate: watch("packageData.startDate"),
     fullName: watch("visitorData.fullName"),
     phoneNumber: watch("visitorData.phoneNumber"),
     email: watch("visitorData.email"),
@@ -76,6 +77,7 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
         paymentMethodId: getValues("packageData.paymentMethodId"),
         transactionDate: getValues("packageData.transactionDate"),
         promoCodeId: getValues("packageData.promoCodeId"),
+        startDate: getValues("packageData.startDate"),
         buyerId: res.visitorId,
       };
       await createPackageTransaction(packageTransaction);
@@ -167,6 +169,7 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
                 setIsAddingTransaction(!isAddingTransaction);
                 if (isAddingTransaction) unregister("packageData");
                 if (!isAddingTransaction) setValue("packageData.transactionDate", getInputDate({}));
+                if (!isAddingTransaction) setValue("packageData.startDate", getInputDate({}));
                 if (!isAddingTransaction) setValue("packageData.packageId", "");
                 if (!isAddingTransaction) setValue("packageData.paymentMethodId", "");
                 if (selectedPackage) setSelectedPackage(null);
@@ -202,12 +205,20 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
               )}
             />
 
-            <Input
-              {...register("packageData.transactionDate")}
-              error={errors.packageData?.transactionDate?.message}
-              label="Transaction Date"
-              type="date"
-            />
+            <section className="grid grid-cols-2 gap-4">
+              <Input
+                {...register("packageData.transactionDate")}
+                error={errors.packageData?.transactionDate?.message}
+                label="Transaction Date"
+                type="date"
+              />
+              <Input
+                {...register("packageData.startDate")}
+                error={errors.packageData?.startDate?.message}
+                label="Start Date"
+                type="date"
+              />
+            </section>
           </section>
           <section className="grid md:grid-cols-2 gap-4">
             <Controller
@@ -255,7 +266,7 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
                       checkPromoCode({ code: data.promoCodeCode, birthDate: getNewDate(data.birthDate) });
                     }}
                     size="m"
-                    className="h-full"
+                    className="h-10"
                   >
                     {selectedPromoCode?.code ? "Applied" : "Apply"}
                   </Button>
@@ -282,7 +293,7 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
           <TransactionInvoice.Package package={selectedPackage} promoCode={selectedPromoCode} />
           <TransactionInvoice.Validity
             validityInDays={selectedPackage.validityInDays}
-            transactionDate={data.transactionDate}
+            startDate={data.startDate}
             tz={session.user.tz}
           />
           <TransactionInvoice.ApprovedSessions approvedSessions={selectedPackage.approvedSessions} />

@@ -165,12 +165,8 @@ TransactionInvoice.PackageWithTxnId = function InvoicePackageWithTxnId(props: {
   );
 };
 
-TransactionInvoice.Validity = function InvoiceValidity(props: {
-  validityInDays?: number | null;
-  transactionDate?: string;
-  tz: string;
-}) {
-  return props.validityInDays && props.transactionDate ? (
+TransactionInvoice.Validity = function InvoiceValidity(props: { validityInDays?: number | null; startDate?: string; tz: string }) {
+  return props.validityInDays && props.startDate ? (
     <section className="flex flex-col">
       <section className="flex justify-between">
         <small>Start</small>
@@ -178,12 +174,12 @@ TransactionInvoice.Validity = function InvoiceValidity(props: {
       </section>
       <section className="flex justify-between items-center gap-6 relative">
         <section className="flex flex-col w-fit">
-          <p className="font-semibold">{formatDateShort({ date: getStartDate(props.transactionDate) })}</p>
+          <p className="font-semibold">{formatDateShort({ date: getStartDate(props.startDate) })}</p>
         </section>
         <div className="absolute centered w-[25%] h-0.5 bg-dark" />
         <section className="flex flex-col text-right w-fit">
           <p className="font-semibold">
-            {getRemainingDate(getExpiryDate({ days: props.validityInDays, dateString: props.transactionDate }), props.tz)}
+            {getRemainingDate(getExpiryDate({ days: props.validityInDays, dateString: props.startDate }), props.tz)}
           </p>
         </section>
       </section>

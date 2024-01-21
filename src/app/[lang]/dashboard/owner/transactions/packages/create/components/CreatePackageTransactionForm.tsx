@@ -71,13 +71,14 @@ export default function CreatePackageTransactionForm({ t, option }: Props) {
     resetField,
   } = useForm<PackageTransactionCreateInput>({
     resolver: zodResolver(schema.packageTransaction.create),
-    defaultValues: { transactionDate: getInputDate({}), paymentMethodId: "", buyerId: "", packageId: "" },
+    defaultValues: { transactionDate: getInputDate({}), startDate: getInputDate({}), paymentMethodId: "", buyerId: "", packageId: "" },
   });
 
   const onSubmit: SubmitHandler<PackageTransactionCreateInput> = (data) => createData(data);
 
   const data = {
     transactionDate: watch("transactionDate"),
+    startDate: watch("startDate"),
     promoCodeCode: watch("promoCodeCode"),
     packageId: watch("packageId"),
     promoCodeId: watch("promoCodeId"),
@@ -144,10 +145,6 @@ export default function CreatePackageTransactionForm({ t, option }: Props) {
             />
           )}
         />
-        <Input label="Transaction Date" {...register("transactionDate")} type="date" />
-      </section>
-
-      <section className="grid md:grid-cols-2 gap-4">
         <Controller
           control={control}
           name="packageId"
@@ -167,6 +164,13 @@ export default function CreatePackageTransactionForm({ t, option }: Props) {
             />
           )}
         />
+      </section>
+
+      <section className="grid md:grid-cols-2 gap-4">
+        <section className="grid grid-cols-2 gap-4">
+          <Input label="Transaction Date" {...register("transactionDate")} type="date" />
+          <Input label="Start Date" {...register("startDate")} type="date" />
+        </section>
         <Controller
           control={control}
           name="paymentMethodId"
@@ -188,6 +192,8 @@ export default function CreatePackageTransactionForm({ t, option }: Props) {
           )}
         />
       </section>
+
+      {/* PROMO_CODES */}
       <section className="flex flex-col gap-0.5">
         <label htmlFor="promoCodeCode">Promo Code (Optional)</label>
         <section className="flex flex-col">
@@ -212,7 +218,7 @@ export default function CreatePackageTransactionForm({ t, option }: Props) {
                 checkPromoCode({ code: data.promoCodeCode, birthDate: selectedBuyer.birthDate });
               }}
               size="m"
-              className="h-full"
+              className="h-10"
             >
               {selectedPromoCode?.code ? "Applied" : "Apply"}
             </Button>
@@ -239,7 +245,7 @@ export default function CreatePackageTransactionForm({ t, option }: Props) {
           <TransactionInvoice.Package package={selectedPackage} promoCode={selectedPromoCode} />
           <TransactionInvoice.Validity
             validityInDays={selectedPackage.validityInDays}
-            transactionDate={data.transactionDate}
+            startDate={data.startDate}
             tz={selectedBuyer.tz}
           />
           <TransactionInvoice.ApprovedSessions approvedSessions={selectedPackage.approvedSessions} />

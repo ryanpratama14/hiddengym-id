@@ -1,5 +1,5 @@
 import { COLORS } from "@/styles/theme";
-import type { AddButtonKey, DashboardHrefKey, DashboardMenuKey, Lang } from "@/types";
+import type { AddButtonKey, DashboardHrefKey, DashboardMenuKey, Lang, ProfileButtonKey } from "@/types";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import type { Gender, Package, PackageTransaction, PackageType, ProductTransaction, PromoCodeType, Role, User } from "@prisma/client";
 
@@ -319,6 +319,13 @@ export const ADD_BUTTON_ITEMS_TO_REMOVE: Record<Role, AddButtonKey[]> = {
   TRAINER: [],
   OWNER: [],
   ADMIN: [],
+};
+
+export const PROFILE_BUTTON_ITEMS_TO_REMOVE: Record<Role, ProfileButtonKey[]> = {
+  ADMIN: [],
+  OWNER: [],
+  VISITOR: ["change-password"],
+  TRAINER: [],
 };
 
 export const FILTERED_ADD_BUTTONS_ITEMS = (role: Role) =>

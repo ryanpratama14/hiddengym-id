@@ -93,6 +93,7 @@ export class schema {
         .object({
           packageId: z.string().min(1, "Select package"),
           transactionDate: schema.date,
+          startDate: schema.date,
           paymentMethodId: z.string().min(1, "Select payment method"),
           promoCodeCode: z.string().optional(),
           promoCodeId: z.string().optional(),
@@ -215,6 +216,7 @@ export class schema {
 
   static packageTransaction = class {
     static create = z.object({
+      startDate: schema.date,
       transactionDate: schema.date,
       paymentMethodId: z.string().min(1, "Select payment method"),
       packageId: z.string().min(1, "Select package"),

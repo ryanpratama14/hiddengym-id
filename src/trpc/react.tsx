@@ -33,7 +33,7 @@ export function TRPCReactProvider({ children, cookies }: Props) {
   return (
     <api.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
-        <ReactQueryDevtools initialIsOpen={false} />
+        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
         {children}
       </QueryClientProvider>
     </api.Provider>

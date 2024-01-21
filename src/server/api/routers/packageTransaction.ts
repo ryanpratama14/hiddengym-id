@@ -76,9 +76,9 @@ export const packageTransactionRouter = createTRPCRouter({
         unitPrice: selectedPackage.price,
         discountPrice: promoCode?.discountPrice ? promoCode.discountPrice : null,
         totalPrice: promoCode ? selectedPackage.price - promoCode.discountPrice : selectedPackage.price,
-        startDate: selectedPackage.validityInDays ? getStartDate(input.transactionDate) : null,
+        startDate: selectedPackage.validityInDays ? getStartDate(input.startDate) : null,
         expiryDate: selectedPackage.validityInDays
-          ? getExpiryDate({ days: selectedPackage.validityInDays, dateString: input.transactionDate })
+          ? getExpiryDate({ days: selectedPackage.validityInDays, dateString: input.startDate })
           : null,
         remainingSessions: isSessions && selectedPackage.approvedSessions ? selectedPackage.approvedSessions : null,
         transactionDate: getNewDate(input.transactionDate),
