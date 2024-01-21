@@ -50,6 +50,16 @@ export class schema {
   static login = z.object({ email: schema.email, credential: schema.password });
 
   static user = class {
+    static changePassword = z
+      .object({
+        oldPassword: schema.password,
+        newPassword: schema.password,
+        confirmPassword: schema.password,
+      })
+      .refine(({ newPassword, confirmPassword }) => newPassword === confirmPassword, {
+        message: "New password and confirm password don't match.",
+        path: ["confirmPassword"],
+      });
     static create = z.object({
       email: schema.email,
       fullName: schema.fullName,

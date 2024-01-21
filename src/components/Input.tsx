@@ -58,14 +58,16 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               </section>
             ) : null}
           </section>
-          {error ? <small className={cn("text-red text-xs mt-0.5")}>{error}</small> : null}
+          {error ? <small className={cn("text-red text-xs mt-0.5 text-left")}>{error}</small> : null}
         </section>
       );
     }
 
     return (
       <section className={cn(classNameDiv, { "gap-0.5 flex flex-col": label })}>
-        <label htmlFor={id}>Password</label>
+        <label className="text-left" htmlFor={id}>
+          {label ? label : "Password"}
+        </label>
         <section className="relative">
           <input
             ref={ref}
@@ -90,7 +92,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             {showPassword ? <EyeOutlined /> : <EyeInvisibleOutlined />}
           </section>
         </section>
-        {error ? <small className={cn("text-red text-xs mt-0.5")}>{error}</small> : null}
+        {error ? <small className={cn("text-red text-xs mt-0.5 text-left")}>{error}</small> : null}
       </section>
     );
   },

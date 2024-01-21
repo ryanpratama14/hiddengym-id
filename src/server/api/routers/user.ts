@@ -14,7 +14,7 @@ import {
   type RouterInputs,
   type RouterOutputs,
 } from "@/trpc/shared";
-import { hash } from "argon2";
+import { hash, verify } from "argon2";
 import { z } from "zod";
 
 const userSelect = {
@@ -36,6 +36,18 @@ const userSelect = {
 };
 
 export const userRouter = createTRPCRouter({
+  changePassword: protectedProcedure.input(schema.user.changePassword).mutation(async ({ ctx, input }) => {
+    const data = await ctx.db.user.findFirst({ where: { id: ctx.session.user.id } });
+    if (!data) return THROW_TRPC_ERROR("NOT_FOUND");
+    const isOldPasswordValid = await verify(data.credential, input.oldPassword);
+    if (!isOldPasswordValid) return THROW_TRPC_ERROR("BAD_REQUEST", "Old password is wrong.");
+    await ctx.db.user.update({
+      where: { id: ctx.session.user.id },
+      data: { credential: await hash(input.newPassword) },
+    });
+    return THROW_OK("OK", "Your password has been changed.");
+  }),
+
   create: publicProcedure.input(schema.user.create).mutation(async ({ ctx, input }) => {
     const dataByEmail = await ctx.db.user.findFirst({ where: { email: input.email } });
     if (dataByEmail) return THROW_TRPC_ERROR("CONFLICT", getConflictMessage("user", "email"));
@@ -154,3 +166,4 @@ export type UserCreateInput = RouterInputs["user"]["create"];
 export type UserCreateVisitorInput = RouterInputs["user"]["createVisitor"];
 export type UserUpdateInput = RouterInputs["user"]["update"];
 export type UserListInput = RouterInputs["user"]["list"];
+export type UserChangePasswordInput = RouterInputs["user"]["changePassword"];

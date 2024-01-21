@@ -3,7 +3,7 @@
 import Logo from "@/components/Logo";
 import { useZustand } from "@/global/store";
 import { COLORS } from "@/styles/theme";
-import { type Lang } from "@/types";
+import type { Dictionary, Lang } from "@/types";
 import { type Session } from "next-auth";
 import { signOut } from "next-auth/react";
 import { Suspense, useEffect } from "react";
@@ -14,17 +14,19 @@ type Props = {
   session: Session | null;
   children: React.ReactNode;
   isSessionExpired: boolean | undefined;
+  t: Dictionary;
 };
 
-export default function HigherOrderComponent({ lang, session, children, isSessionExpired }: Props) {
+export default function HigherOrderComponent({ lang, session, children, isSessionExpired, t }: Props) {
   if (session && isSessionExpired === false) signOut().catch((error) => console.error(error));
 
-  const { setSession, setLang } = useZustand();
+  const { setSession, setLang, setT } = useZustand();
 
   useEffect(() => {
     if (session) setSession(session);
     if (lang) setLang(lang);
-  }, [session, lang]);
+    if (t) setT(t);
+  }, [session, lang, t]);
 
   return (
     <Suspense

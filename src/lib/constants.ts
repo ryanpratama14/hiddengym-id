@@ -79,6 +79,7 @@ export const MENU_ICON_SIZE = 25;
 export const REFETCH_INTERVAL = 10_000;
 
 export const ICONS = {
+  change: "ic:outline-change-circle",
   search: "material-symbols:search",
   searchName: "icon-park-outline:edit-name",
   email: "ic:outline-email",

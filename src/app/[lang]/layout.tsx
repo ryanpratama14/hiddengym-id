@@ -1,6 +1,7 @@
 import "@/styles/tailwind.css";
 import "@/styles/stylesheet.css";
 import HigherOrderComponent from "@/global/HigherOrderComponent";
+import { useDictionary } from "@/lib/dictionary";
 import { getServerAuthSession } from "@/server/auth";
 import { theme } from "@/styles/theme";
 import { TRPCReactProvider } from "@/trpc/react";
@@ -27,6 +28,7 @@ const poppins = Poppins({
 type Props = { children: React.ReactNode; params: { lang: Lang } };
 
 export default async function RootLayout({ children, params }: Props) {
+  const t = await useDictionary(params.lang);
   const session = await getServerAuthSession();
   let isSessionExpired;
 
@@ -35,7 +37,7 @@ export default async function RootLayout({ children, params }: Props) {
   return (
     <html lang={params.lang} className={poppins.variable}>
       <body>
-        <HigherOrderComponent lang={params.lang} session={session} isSessionExpired={isSessionExpired}>
+        <HigherOrderComponent t={t} lang={params.lang} session={session} isSessionExpired={isSessionExpired}>
           <TRPCReactProvider cookies={cookies().toString()}>
             <AntdRegistry>
               <ConfigProvider theme={theme}>
