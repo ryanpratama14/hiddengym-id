@@ -16,9 +16,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Fragment } from "react";
 import ModalChangePassword from "./ModalChangePassword";
 
-type Props = {
-  user: User;
-};
+type Props = { user: User };
 
 export default function DashboardProfileDropdown({ user }: Props) {
   const { lang } = useZustand();
@@ -58,7 +56,7 @@ export default function DashboardProfileDropdown({ user }: Props) {
     key: index,
     icon: <Iconify icon={e.icon} width={20} />,
     label: (
-      <button onClick={e.onClick} type="button" className="font-medium text-sm">
+      <button onClick={e.onClick} type="button" className="font-medium text-sm w-full h-full text-left">
         {e.label}
       </button>
     ),
