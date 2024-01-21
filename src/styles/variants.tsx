@@ -63,7 +63,7 @@ export const inputVariants = tv({
 });
 
 export const statusVariants = tv({
-  base: "h-7 font-medium flex items-center w-fit text-cream shadow px-2 rounded-md",
+  base: "h-6 md:h-7 md:text-base text-sm font-medium flex items-center w-fit text-cream shadow px-2 rounded-md",
   variants: {
     status: {
       active: "bg-emerald",

@@ -46,7 +46,7 @@ export const Modal = ({ show, closeModal, children, classNameDiv }: Props) => {
                     onClick={closeModal}
                     ref={closeButtonRef}
                     type="button"
-                    className=" hover:bg-dark/10 rounded-md absolute top-2 right-2 p-0.5 flex items-center justify-center"
+                    className=" hover:bg-dark/10 rounded-md absolute top-2 right-2 flex items-center justify-center"
                   >
                     <Iconify icon={ICONS.close} className="text-dark" width={22} />
                   </button>
