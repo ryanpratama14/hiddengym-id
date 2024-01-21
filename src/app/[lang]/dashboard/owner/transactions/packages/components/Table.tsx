@@ -221,10 +221,11 @@ export default function PackageTransactionsTable({ data, searchParams, loading, 
             key: "status",
             dataIndex: "expiryDate",
             render: (expiryDate: Date, item) => {
-              if (item.startDate && isDateFuture(item.startDate, item.buyer.tz))
+              const activeInDays = item.startDate && isDateFuture(item.startDate, item.buyer.tz);
+              if (activeInDays)
                 return (
                   <p className={statusVariants({ status: "future" })}>
-                    Active in {isDateFuture(item.startDate, item.buyer.tz)} day(s)
+                    Active {activeInDays === 1 ? "tomorrow" : `in ${activeInDays} day(s)`}
                   </p>
                 );
 
