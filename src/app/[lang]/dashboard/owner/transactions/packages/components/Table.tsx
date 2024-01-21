@@ -220,7 +220,7 @@ export default function PackageTransactionsTable({ data, searchParams, loading, 
             title: "Status",
             key: "status",
             dataIndex: "expiryDate",
-            render: (text: Date, item) => {
+            render: (expiryDate: Date, item) => {
               if (item.startDate && isDateFuture(item.startDate, item.buyer.tz))
                 return (
                   <p className={statusVariants({ status: "future" })}>
@@ -228,23 +228,23 @@ export default function PackageTransactionsTable({ data, searchParams, loading, 
                   </p>
                 );
 
+              if (isDateExpired(expiryDate, item.buyer.tz)) return <p className={statusVariants({ status: "expired" })}>Expired</p>;
+              if (isDateToday(expiryDate, item.buyer.tz)) return <p className={statusVariants({ status: "today" })}>Today</p>;
+
               if (item.package.type === "SESSIONS") {
                 if (item.remainingSessions) {
-                  if (!text) return <p className={statusVariants({ status: "session" })}>{item.remainingSessions} session(s)</p>;
+                  if (!expiryDate) return <p className={statusVariants({ status: "session" })}>{item.remainingSessions} session(s)</p>;
                   return (
                     <section className="flex gap-2">
                       <p className={statusVariants({ status: "session" })}>{item.remainingSessions} session(s)</p>
-                      <p className={statusVariants({ status: "active" })}>{getRemainingDays(text, item.buyer.tz)} day(s)</p>
+                      <p className={statusVariants({ status: "active" })}>{getRemainingDays(expiryDate, item.buyer.tz)} day(s)</p>
                     </section>
                   );
                 }
-                if (!text) return <p className={statusVariants({ status: "expired" })}>Expired</p>;
+                if (!expiryDate) return <p className={statusVariants({ status: "expired" })}>Expired</p>;
               }
 
-              if (isDateExpired(text, item.buyer.tz)) return <p className={statusVariants({ status: "expired" })}>Expired</p>;
-              if (isDateToday(text, item.buyer.tz)) return <p className={statusVariants({ status: "today" })}>Today</p>;
-
-              return <p className={statusVariants({ status: "active" })}>{getRemainingDays(text, item.buyer.tz)} day(s)</p>;
+              return <p className={statusVariants({ status: "active" })}>{getRemainingDays(expiryDate, item.buyer.tz)} day(s)</p>;
             },
           },
           {
