@@ -69,7 +69,8 @@ export const statusVariants = tv({
       active: "bg-emerald",
       expired: "bg-red",
       session: "bg-purple-600",
-      today: "bg-yellow-600",
+      today: "bg-yellow-600 animate-pulse",
+      future: "bg-cyan-600",
     },
   },
 });

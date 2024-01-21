@@ -7,7 +7,16 @@ import Input from "@/components/Input";
 import { Modal } from "@/components/Modal";
 import PackageTransaction from "@/components/PackageTransaction";
 import { GENDERS, ICONS, PACKAGE_TYPES } from "@/lib/constants";
-import { cn, formatCurrency, formatDateShort, getRemainingDays, isDateExpired, isDateToday, textEllipsis } from "@/lib/functions";
+import {
+  cn,
+  formatCurrency,
+  formatDateShort,
+  getRemainingDays,
+  isDateExpired,
+  isDateFuture,
+  isDateToday,
+  textEllipsis,
+} from "@/lib/functions";
 import type {
   PackageTransactionDetail,
   PackageTransactionList,
@@ -212,6 +221,13 @@ export default function PackageTransactionsTable({ data, searchParams, loading, 
             key: "status",
             dataIndex: "expiryDate",
             render: (text: Date, item) => {
+              if (item.startDate && isDateFuture(item.startDate, item.buyer.tz))
+                return (
+                  <p className={statusVariants({ status: "future" })}>
+                    Active in {isDateFuture(item.startDate, item.buyer.tz)} day(s)
+                  </p>
+                );
+
               if (item.package.type === "SESSIONS") {
                 if (item.remainingSessions) {
                   if (!text) return <p className={statusVariants({ status: "session" })}>{item.remainingSessions} session(s)</p>;

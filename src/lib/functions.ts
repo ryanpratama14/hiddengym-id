@@ -128,6 +128,15 @@ export const getRemainingDate = (targetDate: Date, tz: string): string => {
 
 export const getTokenExpiryDate = (): Date => new Date(getNewDate().getTime() + 3600000); // 1 hour;
 
+export const isDateFuture = (startDate: Date, tz: string) => {
+  const currentDate = dayjs().tz(tz).toDate();
+  const timeZoneOffset = dayjs.tz(startDate, tz).utcOffset();
+  const adjustedStartDate = dayjs(startDate).subtract(timeZoneOffset, "minute").toDate();
+  const daysUntilStart = Math.ceil((adjustedStartDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24));
+  if (daysUntilStart > 0) return daysUntilStart;
+  return 0;
+};
+
 export const isDateExpired = (expiryDate: Date, tz: string): boolean => {
   const remainingDays = getRemainingDays(expiryDate, tz);
   if (remainingDays <= 0) return true;

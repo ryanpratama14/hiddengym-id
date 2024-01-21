@@ -1,7 +1,6 @@
 import Iconify from "@/components/Iconify";
 import Img from "@/components/Img";
-import { useZustand } from "@/global/store";
-import { GENDERS, ICONS, PROFILE_BUTTON_ITEMS_TO_REMOVE, USER_REDIRECT } from "@/lib/constants";
+import { GENDERS, ICONS, PROFILE_BUTTON_ITEMS_TO_REMOVE } from "@/lib/constants";
 import { createUrl } from "@/lib/functions";
 import { type User } from "@/server/api/routers/user";
 import { COLORS } from "@/styles/theme";
@@ -12,20 +11,20 @@ import type { Role } from "@prisma/client";
 import { Menu as AntdMenu, ConfigProvider } from "antd";
 import type { ItemType, MenuItemType } from "antd/es/menu/hooks/useItems";
 import { signOut } from "next-auth/react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Fragment } from "react";
 import ModalChangePassword from "./ModalChangePassword";
 
 type Props = { user: User };
 
 export default function DashboardProfileDropdown({ user }: Props) {
-  const { lang } = useZustand();
   const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const newParams = new URLSearchParams(searchParams);
 
   const redirect = (newParams: URLSearchParams) => {
-    router.push(createUrl(USER_REDIRECT({ role: user.role, lang, href: "" }), newParams));
+    router.push(createUrl(pathname, newParams));
   };
 
   const PROFILE_BUTTON_ITEMS: { label: string; key: ProfileButtonKey; icon: IconifyIcon | string; onClick: () => void }[] = [
