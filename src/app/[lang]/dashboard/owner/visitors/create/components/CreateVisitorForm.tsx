@@ -66,6 +66,7 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
     packageId: watch("packageData.packageId"),
     birthDate: watch("visitorData.birthDate"),
     promoCodeId: watch("packageData.promoCodeId"),
+    unitPrice: watch("packageData.unitPrice"),
   };
 
   const onSubmit: SubmitHandler<UserCreateVisitorInput> = async (data) => createVisitor(data);
@@ -78,6 +79,7 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
         transactionDate: getValues("packageData.transactionDate"),
         promoCodeId: getValues("packageData.promoCodeId"),
         startDate: getValues("packageData.startDate"),
+        unitPrice: getValues("packageData.unitPrice"),
         buyerId: res.visitorId,
       };
       await createPackageTransaction(packageTransaction);
@@ -197,8 +199,10 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
                   options={option.packages.map((e) => ({ ...e, value: e.id, label: `${e.type} - ${e.name}` }))}
                   label="Package"
                   onChange={(value, item) => {
-                    setSelectedPackage(item as Package);
+                    const data = structuredClone(item) as Package;
+                    setSelectedPackage(data);
                     setValue("packageData.packageId", value as string);
+                    setValue("packageData.unitPrice", data.price);
                     clearErrors("packageData.packageId");
                   }}
                 />
@@ -242,34 +246,37 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
             />
 
             {/* PROMO_CODES */}
-            <section className="flex flex-col gap-0.5">
-              <label htmlFor="promoCodeCode">Promo Code (Optional)</label>
-              <section className="flex flex-col">
-                <section className="grid grid-cols-3 items-end gap-2">
-                  <input
-                    disabled={loadingPromoCode || !!selectedPromoCode?.code || !selectedPackage?.id}
-                    id="promoCodeCode"
-                    {...register("packageData.promoCodeCode")}
-                    className={cn("col-span-2 font-mono", inputVariants(), {
-                      "border-dark/30": loadingPromoCode || !!selectedPromoCode?.code || !selectedPackage?.id,
-                    })}
-                  />
-                  <Button
-                    icon={selectedPromoCode?.code && ICONS.check}
-                    color={selectedPromoCode ? "active" : "primary"}
-                    loading={loadingPromoCode}
-                    disabled={loadingPromoCode || !!selectedPromoCode?.id}
-                    onClick={async () => {
-                      if (!data.birthDate) return toastWarning({ t, description: "Pick date of birth first" });
-                      if (!data.packageId) return toastWarning({ t, description: "Pick package first" });
-                      if (!data.promoCodeCode) return toastWarning({ t, description: "Fill out the Promo Code first" });
-                      checkPromoCode({ code: data.promoCodeCode, birthDate: getNewDate(data.birthDate) });
-                    }}
-                    size="m"
-                    className="h-10"
-                  >
-                    {selectedPromoCode?.code ? "Applied" : "Apply"}
-                  </Button>
+            <section className="grid md:grid-cols-2 gap-4">
+              <Input disabled={!data.packageId} {...register("packageData.unitPrice")} type="number" label="Unit Price" />
+              <section className="flex flex-col gap-0.5">
+                <label htmlFor="promoCodeCode">Promo Code (Optional)</label>
+                <section className="flex flex-col">
+                  <section className="grid grid-cols-3 items-end gap-2">
+                    <input
+                      disabled={loadingPromoCode || !!selectedPromoCode?.code || !selectedPackage?.id}
+                      id="promoCodeCode"
+                      {...register("packageData.promoCodeCode")}
+                      className={cn("col-span-2 font-mono", inputVariants(), {
+                        "border-dark/30": loadingPromoCode || !!selectedPromoCode?.code || !selectedPackage?.id,
+                      })}
+                    />
+                    <Button
+                      icon={selectedPromoCode?.code && ICONS.check}
+                      color={selectedPromoCode ? "active" : "primary"}
+                      loading={loadingPromoCode}
+                      disabled={loadingPromoCode || !!selectedPromoCode?.id}
+                      onClick={async () => {
+                        if (!data.birthDate) return toastWarning({ t, description: "Pick date of birth first" });
+                        if (!data.packageId) return toastWarning({ t, description: "Pick package first" });
+                        if (!data.promoCodeCode) return toastWarning({ t, description: "Fill out the Promo Code first" });
+                        checkPromoCode({ code: data.promoCodeCode, birthDate: getNewDate(data.birthDate) });
+                      }}
+                      size="m"
+                      className="h-10"
+                    >
+                      {selectedPromoCode?.code ? "Applied" : "Apply"}
+                    </Button>
+                  </section>
                 </section>
               </section>
             </section>
@@ -279,18 +286,16 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
 
       {/* TRANSACTION_INVOICE */}
 
-      {selectedPackage ? (
+      {selectedPackage && data.unitPrice ? (
         <TransactionInvoice>
           <TransactionInvoice.Header
             tz={session.user.tz}
             title="Package"
-            totalPrice={
-              selectedPromoCode?.discountPrice ? selectedPackage.price - selectedPromoCode?.discountPrice : selectedPackage.price
-            }
+            totalPrice={selectedPromoCode?.discountPrice ? data.unitPrice - selectedPromoCode?.discountPrice : data.unitPrice}
             transactionDate={data.transactionDate}
           />
           <TransactionInvoice.Buyer fullName={data.fullName} email={data.email} phoneNumber={data.phoneNumber} gender={data.gender} />
-          <TransactionInvoice.Package package={selectedPackage} promoCode={selectedPromoCode} />
+          <TransactionInvoice.Package unitPrice={data.unitPrice} package={selectedPackage} promoCode={selectedPromoCode} />
           <TransactionInvoice.Validity
             validityInDays={selectedPackage.validityInDays}
             startDate={data.startDate}

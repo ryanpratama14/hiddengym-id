@@ -73,9 +73,9 @@ export const packageTransactionRouter = createTRPCRouter({
 
     await ctx.db.packageTransaction.create({
       data: {
-        unitPrice: selectedPackage.price,
+        unitPrice: input.unitPrice,
         discountPrice: promoCode?.discountPrice ? promoCode.discountPrice : null,
-        totalPrice: promoCode ? selectedPackage.price - promoCode.discountPrice : selectedPackage.price,
+        totalPrice: promoCode ? input.unitPrice - promoCode.discountPrice : input.unitPrice,
         startDate: selectedPackage.validityInDays ? getStartDate(input.startDate) : null,
         expiryDate: selectedPackage.validityInDays
           ? getExpiryDate({ days: selectedPackage.validityInDays, dateString: input.startDate })

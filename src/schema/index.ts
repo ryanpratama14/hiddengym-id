@@ -1,5 +1,5 @@
 import { PAGINATION_LIMIT } from "@/trpc/shared";
-import { z } from "zod";
+import { number, z } from "zod";
 
 export const regex = {
   email:
@@ -92,6 +92,7 @@ export class schema {
       packageData: z
         .object({
           packageId: z.string().min(1, "Select package"),
+          unitPrice: z.number().min(1, numberMessage("Price", 1)),
           transactionDate: schema.date,
           startDate: schema.date,
           paymentMethodId: z.string().min(1, "Select payment method"),
@@ -223,6 +224,7 @@ export class schema {
       buyerId: z.string().min(1, "Select buyer"),
       promoCodeCode: z.string().optional(),
       promoCodeId: z.string().optional(),
+      unitPrice: z.number().min(1, numberMessage("Price", 1)),
     });
 
     static list = z.object({

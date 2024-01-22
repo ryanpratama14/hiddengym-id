@@ -58,8 +58,6 @@ export default function CreatePackageTransactionForm({ t, option }: Props) {
     { enabled: !!debouncedSearch },
   );
 
-  console.log(visitors);
-
   const {
     register,
     handleSubmit,
@@ -82,6 +80,7 @@ export default function CreatePackageTransactionForm({ t, option }: Props) {
     promoCodeCode: watch("promoCodeCode"),
     packageId: watch("packageId"),
     promoCodeId: watch("promoCodeId"),
+    unitPrice: watch("unitPrice"),
   };
 
   const { mutate: createData, isPending: loading } = api.packageTransaction.create.useMutation({
@@ -157,8 +156,10 @@ export default function CreatePackageTransactionForm({ t, option }: Props) {
               options={option.packages.map((e) => ({ ...e, value: e.id, label: `${e.type} - ${e.name}` }))}
               label="Package"
               onChange={(value, item) => {
-                setSelectedPackage(item as Package);
+                const data = structuredClone(item) as Package;
+                setSelectedPackage(data);
                 setValue("packageId", value as string);
+                setValue("unitPrice", data.price);
                 clearErrors("packageId");
               }}
             />
@@ -194,46 +195,47 @@ export default function CreatePackageTransactionForm({ t, option }: Props) {
       </section>
 
       {/* PROMO_CODES */}
-      <section className="flex flex-col gap-0.5">
-        <label htmlFor="promoCodeCode">Promo Code (Optional)</label>
-        <section className="flex flex-col">
-          <section className="grid grid-cols-3 items-end gap-2">
-            <input
-              disabled={loadingPromoCode || !!selectedPromoCode?.code || !selectedPackage?.id}
-              id="promoCodeCode"
-              {...register("promoCodeCode")}
-              className={cn("col-span-2 font-mono", inputVariants(), {
-                "border-dark/30": loadingPromoCode || !!selectedPromoCode?.code || !selectedPackage?.id,
-              })}
-            />
-            <Button
-              icon={selectedPromoCode?.code && ICONS.check}
-              color={selectedPromoCode ? "active" : "primary"}
-              loading={loadingPromoCode}
-              disabled={loadingPromoCode || !!selectedPromoCode?.id}
-              onClick={() => {
-                if (!selectedBuyer) return toastWarning({ t, description: "Pick buyer first" });
-                if (!data.packageId) return toastWarning({ t, description: "Pick package first" });
-                if (!data.promoCodeCode) return toastWarning({ t, description: "Fill out the Promo Code first" });
-                checkPromoCode({ code: data.promoCodeCode, birthDate: selectedBuyer.birthDate });
-              }}
-              size="m"
-              className="h-10"
-            >
-              {selectedPromoCode?.code ? "Applied" : "Apply"}
-            </Button>
+      <section className="grid md:grid-cols-2 gap-4">
+        <Input {...register("unitPrice")} label="Unit Price" disabled={!data.packageId} type="number" />
+        <section className="flex flex-col gap-0.5">
+          <label htmlFor="promoCodeCode">Promo Code (Optional)</label>
+          <section className="flex flex-col">
+            <section className="grid grid-cols-3 items-end gap-2">
+              <input
+                disabled={loadingPromoCode || !!selectedPromoCode?.code || !selectedPackage?.id}
+                id="promoCodeCode"
+                {...register("promoCodeCode")}
+                className={cn("col-span-2 font-mono", inputVariants(), {
+                  "border-dark/30": loadingPromoCode || !!selectedPromoCode?.code || !selectedPackage?.id,
+                })}
+              />
+              <Button
+                icon={selectedPromoCode?.code && ICONS.check}
+                color={selectedPromoCode ? "active" : "primary"}
+                loading={loadingPromoCode}
+                disabled={loadingPromoCode || !!selectedPromoCode?.id}
+                onClick={() => {
+                  if (!selectedBuyer) return toastWarning({ t, description: "Pick buyer first" });
+                  if (!data.packageId) return toastWarning({ t, description: "Pick package first" });
+                  if (!data.promoCodeCode) return toastWarning({ t, description: "Fill out the Promo Code first" });
+                  checkPromoCode({ code: data.promoCodeCode, birthDate: selectedBuyer.birthDate });
+                }}
+                size="m"
+                className="h-10"
+              >
+                {selectedPromoCode?.code ? "Applied" : "Apply"}
+              </Button>
+            </section>
           </section>
         </section>
       </section>
 
-      {selectedBuyer.tz && selectedPackage ? (
+      {selectedBuyer.tz && selectedPackage && data.unitPrice ? (
         <TransactionInvoice>
           <TransactionInvoice.Header
             tz={selectedBuyer.tz}
             title="Package"
-            totalPrice={
-              selectedPromoCode?.discountPrice ? selectedPackage.price - selectedPromoCode?.discountPrice : selectedPackage.price
-            }
+            totalPrice={selectedPromoCode?.discountPrice ? data.unitPrice - selectedPromoCode?.discountPrice : data.unitPrice}
             transactionDate={data.transactionDate}
           />
           <TransactionInvoice.Buyer
@@ -242,7 +244,7 @@ export default function CreatePackageTransactionForm({ t, option }: Props) {
             email={selectedBuyer.email}
             phoneNumber={selectedBuyer.phoneNumber}
           />
-          <TransactionInvoice.Package package={selectedPackage} promoCode={selectedPromoCode} />
+          <TransactionInvoice.Package unitPrice={data.unitPrice} package={selectedPackage} promoCode={selectedPromoCode} />
           <TransactionInvoice.Validity
             validityInDays={selectedPackage.validityInDays}
             startDate={data.startDate}

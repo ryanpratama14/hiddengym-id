@@ -114,7 +114,7 @@ TransactionInvoice.Header = function InvoiceHeader(props: {
   );
 };
 
-TransactionInvoice.Package = function InvoicePackage(props: { package: Package; promoCode?: PromoCode | null }) {
+TransactionInvoice.Package = function InvoicePackage(props: { unitPrice: number; package: Package; promoCode?: PromoCode | null }) {
   return (
     <section className="flex flex-col gap-1">
       <section className="flex justify-between items-center">
@@ -122,7 +122,7 @@ TransactionInvoice.Package = function InvoicePackage(props: { package: Package; 
           <small className="font-semibold border-1 border-dark px-1">{props.package.type}</small>
           <small>{props.package.name}</small>
         </section>
-        <small>{formatCurrency(props.package.price)}</small>
+        <small>{formatCurrency(props.unitPrice)}</small>
       </section>
       {props.promoCode ? (
         <section className="flex justify-between items-center">
