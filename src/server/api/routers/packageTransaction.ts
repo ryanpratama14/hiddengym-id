@@ -6,6 +6,7 @@ import {
   getPaginationData,
   getPaginationQuery,
   getSortingQuery,
+  getUpdatedMessage,
   insensitiveMode,
   prismaExclude,
   THROW_OK,
@@ -76,10 +77,11 @@ export const packageTransactionRouter = createTRPCRouter({
         unitPrice: input.unitPrice,
         discountPrice: promoCode?.discountPrice ? promoCode.discountPrice : null,
         totalPrice: promoCode ? input.unitPrice - promoCode.discountPrice : input.unitPrice,
-        startDate: selectedPackage.validityInDays ? getStartDate(input.startDate) : null,
-        expiryDate: selectedPackage.validityInDays
-          ? getExpiryDate({ days: selectedPackage.validityInDays, dateString: input.startDate })
-          : null,
+        startDate: selectedPackage.validityInDays && input.startDate ? getStartDate(input.startDate) : null,
+        expiryDate:
+          selectedPackage.validityInDays && input.startDate
+            ? getExpiryDate({ days: selectedPackage.validityInDays, dateString: input.startDate })
+            : null,
         remainingSessions: isSessions && selectedPackage.approvedSessions ? selectedPackage.approvedSessions : null,
         transactionDate: getNewDate(input.transactionDate),
         paymentMethodId: input.paymentMethodId,
@@ -93,6 +95,41 @@ export const packageTransactionRouter = createTRPCRouter({
     await updatePackageTotalTransactions(selectedPackage.id);
     return THROW_OK("CREATED", getCreatedMessage("package transaction"));
   }),
+
+  update: ownerProcedure.input(schema.packageTransaction.update).mutation(async ({ input, ctx }) => {
+    const { body, id } = input;
+    const data = await ctx.db.packageTransaction.findFirst({ where: { id }, ...packageTransactionSelect });
+    if (!data) return THROW_TRPC_ERROR("NOT_FOUND");
+    const selectedPackage = await ctx.db.package.findFirst({ where: { id: body.packageId } });
+    if (!selectedPackage) return THROW_TRPC_ERROR("NOT_FOUND");
+
+    const promoCode = body?.promoCodeId ? await ctx.db.promoCode.findFirst({ where: { id: body.promoCodeId } }) : null;
+
+    const isSessions = selectedPackage.type === "SESSIONS";
+
+    await ctx.db.packageTransaction.update({
+      where: { id },
+      data: {
+        unitPrice: body.unitPrice,
+        discountPrice: promoCode?.discountPrice ? promoCode.discountPrice : null,
+        totalPrice: promoCode ? body.unitPrice - promoCode.discountPrice : body.unitPrice,
+        startDate: selectedPackage.validityInDays && body.startDate ? getStartDate(body.startDate) : null,
+        expiryDate:
+          selectedPackage.validityInDays && body.startDate
+            ? getExpiryDate({ days: selectedPackage.validityInDays, dateString: body.startDate })
+            : null,
+        remainingSessions: isSessions && selectedPackage.approvedSessions ? selectedPackage.approvedSessions : null,
+        transactionDate: getNewDate(body.transactionDate),
+        paymentMethodId: body.paymentMethodId,
+        packageId: body.packageId,
+        buyerId: body.buyerId,
+        promoCodeId: promoCode?.id ? promoCode.id : null,
+      },
+    });
+
+    await updateTotalSpending(body.buyerId);
+    return THROW_OK("OK", getUpdatedMessage("package transaction"));
+  }),
 });
 
 // outputs
@@ -101,4 +138,5 @@ export type PackageTransactionDetail = RouterOutputs["packageTransaction"]["deta
 
 // inputs
 export type PackageTransactionCreateInput = RouterInputs["packageTransaction"]["create"];
+export type PackageTransactionUpdateInput = RouterInputs["packageTransaction"]["update"];
 export type PackageTransactionListInput = RouterInputs["packageTransaction"]["list"];

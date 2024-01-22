@@ -165,7 +165,11 @@ TransactionInvoice.PackageWithTxnId = function InvoicePackageWithTxnId(props: {
   );
 };
 
-TransactionInvoice.Validity = function InvoiceValidity(props: { validityInDays?: number | null; startDate?: string; tz: string }) {
+TransactionInvoice.Validity = function InvoiceValidity(props: {
+  validityInDays?: number | null;
+  startDate?: string | null;
+  tz: string;
+}) {
   return props.validityInDays && props.startDate ? (
     <section className="flex flex-col">
       <section className="flex justify-between">

@@ -78,6 +78,7 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
         paymentMethodId: getValues("packageData.paymentMethodId"),
         transactionDate: getValues("packageData.transactionDate"),
         promoCodeId: getValues("packageData.promoCodeId"),
+        packageType: getValues("packageData.packageType"),
         startDate: getValues("packageData.startDate"),
         unitPrice: getValues("packageData.unitPrice"),
         buyerId: res.visitorId,
@@ -203,6 +204,7 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
                     setSelectedPackage(data);
                     setValue("packageData.packageId", value as string);
                     setValue("packageData.unitPrice", data.price);
+                    setValue("packageData.packageType", data.type);
                     clearErrors("packageData.packageId");
                   }}
                 />

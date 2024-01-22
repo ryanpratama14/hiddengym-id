@@ -69,7 +69,7 @@ export default function CreatePackageTransactionForm({ t, option }: Props) {
     resetField,
   } = useForm<PackageTransactionCreateInput>({
     resolver: zodResolver(schema.packageTransaction.create),
-    defaultValues: { transactionDate: getInputDate({}), startDate: getInputDate({}), paymentMethodId: "", buyerId: "", packageId: "" },
+    defaultValues: { transactionDate: getInputDate({}), paymentMethodId: "", buyerId: "", packageId: "", promoCodeId: null },
   });
 
   const onSubmit: SubmitHandler<PackageTransactionCreateInput> = (data) => createData(data);
@@ -99,6 +99,8 @@ export default function CreatePackageTransactionForm({ t, option }: Props) {
     },
     onError: (res) => toastError({ t, description: res.message }),
   });
+
+  console.log(schema.packageTransaction.create.safeParse(watch()));
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 w-full">
@@ -159,8 +161,10 @@ export default function CreatePackageTransactionForm({ t, option }: Props) {
                 const data = structuredClone(item) as Package;
                 setSelectedPackage(data);
                 setValue("packageId", value as string);
+                setValue("packageType", data.type);
                 setValue("unitPrice", data.price);
                 clearErrors("packageId");
+                if (errors.startDate && data.type === "SESSIONS") clearErrors("startDate");
               }}
             />
           )}
@@ -170,7 +174,7 @@ export default function CreatePackageTransactionForm({ t, option }: Props) {
       <section className="grid md:grid-cols-2 gap-4">
         <section className="grid grid-cols-2 gap-4">
           <Input label="Transaction Date" {...register("transactionDate")} type="date" />
-          <Input label="Start Date" {...register("startDate")} type="date" />
+          <Input error={errors?.startDate?.message} label="Start Date" {...register("startDate")} type="date" />
         </section>
         <Controller
           control={control}
@@ -196,7 +200,12 @@ export default function CreatePackageTransactionForm({ t, option }: Props) {
 
       {/* PROMO_CODES */}
       <section className="grid md:grid-cols-2 gap-4">
-        <Input {...register("unitPrice")} label="Unit Price" disabled={!data.packageId} type="number" />
+        <Input
+          {...register("unitPrice", { setValueAs: (v: string) => parseInt(v) })}
+          label="Unit Price"
+          disabled={!data.packageId}
+          type="number"
+        />
         <section className="flex flex-col gap-0.5">
           <label htmlFor="promoCodeCode">Promo Code (Optional)</label>
           <section className="flex flex-col">

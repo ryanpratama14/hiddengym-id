@@ -61,7 +61,7 @@ const InputSelect = React.forwardRef<BaseSelectRef, InputSelectProps>((props, re
                 .toLowerCase()
                 .includes(input.toLowerCase())
             }
-            style={{ width: "100%", height: "100%" }}
+            style={{ width: "100%", height: "100%", textAlign: "left" }}
             showSearch={props.showSearch}
           />
           {props.icon ? (

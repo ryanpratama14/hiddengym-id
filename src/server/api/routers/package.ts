@@ -4,6 +4,7 @@ import {
   getConflictMessage,
   getCreatedMessage,
   getSortingQuery,
+  getUpdatedMessage,
   insensitiveMode,
   prismaExclude,
   THROW_OK,
@@ -36,7 +37,7 @@ export const packageRouter = createTRPCRouter({
       },
     });
 
-    return THROW_OK("OK", "Package has been updated.");
+    return THROW_OK("OK", getUpdatedMessage("package"));
   }),
 
   create: ownerProcedure.input(schema.package.create).mutation(async ({ ctx, input }) => {

@@ -1,5 +1,5 @@
 import { PAGINATION_LIMIT } from "@/trpc/shared";
-import { number, z } from "zod";
+import { z } from "zod";
 
 export const regex = {
   email:
@@ -97,7 +97,8 @@ export class schema {
           startDate: schema.date,
           paymentMethodId: z.string().min(1, "Select payment method"),
           promoCodeCode: z.string().optional(),
-          promoCodeId: z.string().optional(),
+          promoCodeId: z.string().nullable(),
+          packageType: schema.packageType,
         })
         .optional(),
     });
@@ -216,15 +217,38 @@ export class schema {
   };
 
   static packageTransaction = class {
-    static create = z.object({
-      startDate: schema.date,
-      transactionDate: schema.date,
-      paymentMethodId: z.string().min(1, "Select payment method"),
-      packageId: z.string().min(1, "Select package"),
-      buyerId: z.string().min(1, "Select buyer"),
-      promoCodeCode: z.string().optional(),
-      promoCodeId: z.string().optional(),
-      unitPrice: z.number().min(1, numberMessage("Price", 1)),
+    static create = z
+      .object({
+        startDate: schema.dateNullable,
+        transactionDate: schema.date,
+        paymentMethodId: z.string().min(1, "Select payment method"),
+        packageId: z.string().min(1, "Select package"),
+        buyerId: z.string().min(1, "Select buyer"),
+        promoCodeCode: z.string().optional(),
+        promoCodeId: z.string().nullable(),
+        unitPrice: z.number().min(1, numberMessage("Price", 1)),
+        packageType: schema.packageType,
+      })
+      .refine(
+        ({ startDate, packageType }) => {
+          if (!startDate && packageType !== "SESSIONS") return false;
+          return true;
+        },
+        { message: "Start date is required", path: ["startDate"] },
+      );
+
+    static update = z.object({
+      id: z.string(),
+      body: z.object({
+        transactionDate: schema.date,
+        startDate: schema.dateNullable,
+        paymentMethodId: z.string().min(1, "Select payment method"),
+        packageId: z.string().min(1, "Select package"),
+        promoCodeCode: z.string().optional(),
+        promoCodeId: z.string().nullable(),
+        unitPrice: z.number().min(1, numberMessage("Price", 1)),
+        buyerId: z.string(),
+      }),
     });
 
     static list = z.object({
