@@ -46,7 +46,6 @@ export default function CreatePackageForm({ option, t }: Props) {
     handleSubmit,
     formState: { errors },
     watch,
-
     control,
     resetField,
     setValue,

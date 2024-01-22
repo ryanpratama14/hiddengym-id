@@ -7,9 +7,7 @@ import { toastError, toastSuccess, toastWarning } from "@/components/Toast";
 import { GENDERS, ICONS } from "@/lib/constants";
 import { cn, getInputDate, localizePhoneNumber } from "@/lib/functions";
 import { schema } from "@/schema";
-import { type PackageList } from "@/server/api/routers/package";
 import { type PackageTransactionDetail, type PackageTransactionUpdateInput } from "@/server/api/routers/packageTransaction";
-import { type PaymentMethodList } from "@/server/api/routers/paymentMethod";
 import { inputVariants } from "@/styles/variants";
 import { api } from "@/trpc/react";
 import type { Dictionary } from "@/types";
@@ -23,12 +21,14 @@ type Props = {
   show: boolean;
   closeModal: () => void;
   data?: PackageTransactionDetail;
-  option: { packages: PackageList; paymentMethods: PaymentMethodList };
   t: Dictionary;
 };
 
-export default function ModalUpdate({ show, closeModal, data, option, t }: Props) {
+export default function ModalUpdate({ show, closeModal, data, t }: Props) {
   const utils = api.useUtils();
+  const { data: packages } = api.package.list.useQuery({});
+  const { data: paymentMethods } = api.paymentMethod.list.useQuery();
+
   const [selectedPromoCode, setSelectedPromoCode] = useState<PromoCode | null>(null);
   const {
     register,
@@ -111,7 +111,7 @@ export default function ModalUpdate({ show, closeModal, data, option, t }: Props
                   {...field}
                   icon={ICONS.package}
                   error={errors.body?.packageId?.message}
-                  options={option.packages.map((e) => ({ ...e, value: e.id, label: `${e.type} - ${e.name}` }))}
+                  options={packages?.map((e) => ({ ...e, value: e.id, label: `${e.type} - ${e.name}` }))}
                   label="Package"
                   onChange={(value, item) => {
                     const data = structuredClone(item) as Package;
@@ -140,7 +140,7 @@ export default function ModalUpdate({ show, closeModal, data, option, t }: Props
                   {...field}
                   icon={ICONS.payment_method}
                   error={errors.body?.paymentMethodId?.message}
-                  options={option.paymentMethods.map((e) => ({ value: e.id, label: e.name }))}
+                  options={paymentMethods?.map((e) => ({ value: e.id, label: e.name }))}
                   label="Payment Method"
                 />
               )}

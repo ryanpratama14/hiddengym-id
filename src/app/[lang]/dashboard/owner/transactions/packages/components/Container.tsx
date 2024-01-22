@@ -7,8 +7,6 @@ import { toastError, toastSuccess } from "@/components/Toast";
 import { REFETCH_INTERVAL, USER_REDIRECT } from "@/lib/constants";
 import { createUrl } from "@/lib/functions";
 import { schema } from "@/schema";
-import { type PackageList } from "@/server/api/routers/package";
-import { type PaymentMethodList } from "@/server/api/routers/paymentMethod";
 import { api } from "@/trpc/react";
 import type { ActionButtonAction, Dictionary, Lang, SearchParams } from "@/types";
 import { useRouter } from "next/navigation";
@@ -19,11 +17,11 @@ import ModalUpdate from "./ModalUpdate";
 type Props = {
   searchParams: SearchParams;
   lang: Lang;
-  option: { packages: PackageList; paymentMethods: PaymentMethodList };
+
   t: Dictionary;
 };
 
-export default function TransactionsProductContainer({ searchParams, lang, option, t }: Props) {
+export default function TransactionsProductContainer({ searchParams, lang, t }: Props) {
   const query = schema.packageTransaction.list.parse(searchParams);
   const newParams = new URLSearchParams(searchParams);
   const router = useRouter();
@@ -59,13 +57,7 @@ export default function TransactionsProductContainer({ searchParams, lang, optio
 
   return (
     <section className="grid md:grid-cols-5 gap-6 lg:gap-x-12">
-      <ModalUpdate
-        t={t}
-        show={!!searchParams.id && !!searchParams.update}
-        option={option}
-        closeModal={closeModal("update")}
-        data={selectedData}
-      />
+      <ModalUpdate t={t} show={!!searchParams.id && !!searchParams.update} closeModal={closeModal("update")} data={selectedData} />
       <ModalConfirm
         loading={loadingDelete}
         action="delete"
