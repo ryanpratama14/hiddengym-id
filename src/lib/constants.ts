@@ -324,7 +324,7 @@ export const ADD_BUTTON_ITEMS_TO_REMOVE: Record<Role, AddButtonKey[]> = {
 export const PROFILE_BUTTON_ITEMS_TO_REMOVE: Record<Role, ProfileButtonKey[]> = {
   ADMIN: [],
   OWNER: [],
-  VISITOR: ["change-password"],
+  VISITOR: ["changePassword"],
   TRAINER: [],
 };
 

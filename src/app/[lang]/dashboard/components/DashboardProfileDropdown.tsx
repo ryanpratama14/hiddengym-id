@@ -5,7 +5,7 @@ import { GENDERS, ICONS, PROFILE_BUTTON_ITEMS_TO_REMOVE } from "@/lib/constants"
 import { createUrl } from "@/lib/functions";
 import { type User } from "@/server/api/routers/user";
 import { COLORS } from "@/styles/theme";
-import type { ProfileButtonKey } from "@/types";
+import type { NewParamsAction, ProfileButtonKey } from "@/types";
 import { Menu, Transition } from "@headlessui/react";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import type { Role } from "@prisma/client";
@@ -24,7 +24,8 @@ export default function DashboardProfileDropdown({ user }: Props) {
   const searchParams = useSearchParams();
   const newParams = new URLSearchParams(searchParams);
 
-  const redirect = (newParams: URLSearchParams) => {
+  const redirect = (name: ProfileButtonKey, action: NewParamsAction) => {
+    action === "set" ? newParams.set(name, "true") : newParams.delete(name);
     router.push(createUrl(pathname, newParams));
   };
 
@@ -33,19 +34,13 @@ export default function DashboardProfileDropdown({ user }: Props) {
       label: "Sign Out",
       key: "signOut",
       icon: ICONS.signout,
-      onClick: () => {
-        newParams.set("signOut", "true");
-        redirect(newParams);
-      },
+      onClick: () => redirect("signOut", "set"),
     },
     {
       label: "Change Password",
       key: "changePassword",
       icon: ICONS.change,
-      onClick: () => {
-        newParams.set("changePassword", "true");
-        redirect(newParams);
-      },
+      onClick: () => redirect("changePassword", "set"),
     },
   ];
 
@@ -65,20 +60,11 @@ export default function DashboardProfileDropdown({ user }: Props) {
 
   return (
     <Fragment>
-      <ModalChangePassword
-        show={!!searchParams.get("changePassword")}
-        closeModal={() => {
-          newParams.delete("changePassword");
-          redirect(newParams);
-        }}
-      />
+      <ModalChangePassword show={!!searchParams.get("changePassword")} closeModal={() => redirect("changePassword", "delete")} />
       <ModalConfirm
         onConfirm={() => signOut()}
         action="sign out"
-        closeModal={() => {
-          newParams.delete("signOut");
-          redirect(newParams);
-        }}
+        closeModal={() => redirect("signOut", "delete")}
         show={!!searchParams.get("signOut")}
       />
       <ConfigProvider theme={{ components: { Menu: { itemHeight: 30, itemHoverBg: COLORS.orange, itemBorderRadius: 6 } } }}>
