@@ -22,7 +22,7 @@ import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 type Props = {
   show: boolean;
   closeModal: () => void;
-  data: PackageTransactionDetail | null;
+  data?: PackageTransactionDetail;
   option: { packages: PackageList; paymentMethods: PaymentMethodList };
   t: Dictionary;
 };

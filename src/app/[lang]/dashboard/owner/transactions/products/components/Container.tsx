@@ -1,18 +1,19 @@
 "use client";
 
+import { Modal } from "@/components/Modal";
+import ProductTransaction from "@/components/ProductTransaction";
 import { REFETCH_INTERVAL, USER_REDIRECT } from "@/lib/constants";
 import { createUrl } from "@/lib/functions";
 import { schema } from "@/schema";
-import { type ProductTransactionDetail } from "@/server/api/routers/productTransaction";
 import { api } from "@/trpc/react";
 import { type Lang, type SearchParams } from "@/types";
 import { useRouter } from "next/navigation";
 import Table from "../components/Table";
 import TableSorter from "../components/TableSorter";
 
-type Props = { searchParams: SearchParams; lang: Lang; selectedData: ProductTransactionDetail | null };
+type Props = { searchParams: SearchParams; lang: Lang };
 
-export default function TransactionsProductsContainer({ searchParams, lang, selectedData }: Props) {
+export default function TransactionsProductsContainer({ searchParams, lang }: Props) {
   const query = schema.productTransaction.list.parse(searchParams);
   const newParams = new URLSearchParams(searchParams);
   const router = useRouter();
@@ -22,6 +23,7 @@ export default function TransactionsProductsContainer({ searchParams, lang, sele
   };
 
   const { data, isLoading: loading } = api.productTransaction.list.useQuery(query, { refetchInterval: REFETCH_INTERVAL });
+  const { data: selectedData } = api.productTransaction.detail.useQuery({ id: searchParams.id ?? "" }, { enabled: !!searchParams.id });
 
   if (data?.isPaginationInvalid) {
     newParams.delete("page");
@@ -30,15 +32,19 @@ export default function TransactionsProductsContainer({ searchParams, lang, sele
 
   return (
     <section className="grid md:grid-cols-5 gap-6 lg:gap-x-12">
+      <Modal
+        show={!!searchParams.id}
+        closeModal={() => {
+          newParams.delete("id");
+          redirectTable(newParams);
+        }}
+      >
+        <Modal.Body>
+          <ProductTransaction data={selectedData} />
+        </Modal.Body>
+      </Modal>
       <section className="flex flex-col gap-6 md:col-span-4">
-        <Table
-          selectedData={selectedData}
-          loading={loading}
-          data={data}
-          searchParams={searchParams}
-          redirectTable={redirectTable}
-          newParams={newParams}
-        />
+        <Table loading={loading} data={data} searchParams={searchParams} redirectTable={redirectTable} newParams={newParams} />
       </section>
       <TableSorter redirectTable={redirectTable} newParams={newParams} />
     </section>

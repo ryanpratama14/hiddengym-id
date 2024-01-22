@@ -3,7 +3,7 @@ import { Skeleton } from "antd";
 import { Fragment } from "react";
 import TransactionInvoice from "./TransactionInvoice";
 
-type Props = { data: ProductTransactionDetail | null };
+type Props = { data?: ProductTransactionDetail };
 
 export default function ProductTransaction({ data }: Props) {
   return (

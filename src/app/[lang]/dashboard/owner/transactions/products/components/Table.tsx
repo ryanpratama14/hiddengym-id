@@ -3,15 +3,9 @@ import FilterIcon from "@/components/FilterIcon";
 import Iconify from "@/components/Iconify";
 import Img from "@/components/Img";
 import Input from "@/components/Input";
-import { Modal } from "@/components/Modal";
-import ProductTransaction from "@/components/ProductTransaction";
 import { GENDERS, ICONS } from "@/lib/constants";
 import { cn, formatCurrency, formatDateShort, textEllipsis } from "@/lib/functions";
-import type {
-  ProductTransactionDetail,
-  ProductTransactionList,
-  ProductTransactionListInput,
-} from "@/server/api/routers/productTransaction";
+import type { ProductTransactionList, ProductTransactionListInput } from "@/server/api/routers/productTransaction";
 import { PAGINATION_LIMIT } from "@/trpc/shared";
 import { type SearchParams } from "@/types";
 import ActionButton from "@dashboard/components/ActionButton";
@@ -26,10 +20,9 @@ type Props = {
   loading: boolean;
   newParams: URLSearchParams;
   redirectTable: (newParams: URLSearchParams) => void;
-  selectedData: ProductTransactionDetail | null;
 };
 
-export default function ProductTransactionsTable({ data, searchParams, loading, newParams, redirectTable, selectedData }: Props) {
+export default function ProductTransactionsTable({ data, searchParams, loading, newParams, redirectTable }: Props) {
   const getTableFilter = ({
     name,
     icon,
@@ -90,116 +83,103 @@ export default function ProductTransactionsTable({ data, searchParams, loading, 
   });
 
   return (
-    <Fragment>
-      <Modal
-        show={!!searchParams.id}
-        closeModal={() => {
-          newParams.delete("id");
+    <Table
+      loading={loading}
+      className="drop-shadow"
+      pagination={{
+        current: data?.page,
+        pageSize: data?.limit,
+        total: data?.totalData,
+        showSizeChanger: true,
+        pageSizeOptions: [String(PAGINATION_LIMIT), "75", "100"],
+        onChange: (_, limit) => {
+          if (limit === PAGINATION_LIMIT) {
+            newParams.delete("limit");
+          } else newParams.set("limit", String(limit));
           redirectTable(newParams);
-        }}
-      >
-        <Modal.Body>
-          <ProductTransaction data={selectedData} />
-        </Modal.Body>
-      </Modal>
-      <Table
-        loading={loading}
-        className="drop-shadow"
-        pagination={{
-          current: data?.page,
-          pageSize: data?.limit,
-          total: data?.totalData,
-          showSizeChanger: true,
-          pageSizeOptions: [String(PAGINATION_LIMIT), "75", "100"],
-          onChange: (_, limit) => {
-            if (limit === PAGINATION_LIMIT) {
-              newParams.delete("limit");
-            } else newParams.set("limit", String(limit));
-            redirectTable(newParams);
-          },
-          showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} package transactions`,
-        }}
-        onChange={(pagination) => {
-          if (pagination.current === 1) {
-            newParams.delete("page");
-          } else newParams.set("page", String(pagination.current));
-          redirectTable(newParams);
-        }}
-        rowKey="id"
-        dataSource={data?.data}
-        scroll={{ x: "max-content" }}
-        columns={[
-          {
-            fixed: "left",
-            align: "center",
-            title: "Action",
-            key: "id",
-            width: 1,
-            dataIndex: "id",
-            render: (id: string) => (
-              <section className="flex justify-center items-center">
-                <ActionButton
-                  onClick={() => {
-                    newParams.set("id", id);
-                    redirectTable(newParams);
-                  }}
-                  icon={ICONS.invoice}
-                  color="green"
-                />
+        },
+        showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} package transactions`,
+      }}
+      onChange={(pagination) => {
+        if (pagination.current === 1) {
+          newParams.delete("page");
+        } else newParams.set("page", String(pagination.current));
+        redirectTable(newParams);
+      }}
+      rowKey="id"
+      dataSource={data?.data}
+      scroll={{ x: "max-content" }}
+      columns={[
+        {
+          fixed: "left",
+          align: "center",
+          title: "Action",
+          key: "id",
+          width: 1,
+          dataIndex: "id",
+          render: (id: string) => (
+            <section className="flex justify-center items-center">
+              <ActionButton
+                onClick={() => {
+                  newParams.set("id", id);
+                  redirectTable(newParams);
+                }}
+                icon={ICONS.invoice}
+                color="green"
+              />
+            </section>
+          ),
+        },
+        {
+          title: "Products",
+          key: "products",
+          render: (_, item) =>
+            item.products.map((e) => (
+              <p key={e.id} className="md:text-base text-sm">
+                {e.quantity}x {e.product.name}
+              </p>
+            )),
+        },
+        {
+          title: "Total Price",
+          key: "totalPrice",
+          align: "right",
+          dataIndex: "totalPrice",
+          render: (text: number) => formatCurrency(text),
+          ...getTableFilter({ name: "totalPrice", type: "number" }),
+        },
+        {
+          title: "Paid By",
+          key: "paymentMethod.name",
+          render: (_, item) => item.paymentMethod.name,
+          ...getTableFilter({ name: "paymentMethod", icon: ICONS.payment_method }),
+        },
+        {
+          title: "Buyer",
+          key: "buyer.fullName",
+          render: (_, item) => (
+            <section className="flex gap-2 items-center">
+              <section className="size-7 bg-cream rounded-full relative shadow border-1 border-dotted border-dark flex items-center justify-center p-0.5">
+                {item.buyer?.image?.url ? (
+                  <Img src={item.buyer.image.url} alt={item.buyer.fullName} className="object-cover w-full h-full rounded-full" />
+                ) : (
+                  <Iconify icon={GENDERS[item.buyer.gender].picture} className="absolute centered text-dark" width={20} />
+                )}
               </section>
-            ),
-          },
-          {
-            title: "Products",
-            key: "products",
-            render: (_, item) =>
-              item.products.map((e) => (
-                <p key={e.id} className="md:text-base text-sm">
-                  {e.quantity}x {e.product.name}
-                </p>
-              )),
-          },
-          {
-            title: "Total Price",
-            key: "totalPrice",
-            align: "right",
-            dataIndex: "totalPrice",
-            render: (text: number) => formatCurrency(text),
-            ...getTableFilter({ name: "totalPrice", type: "number" }),
-          },
-          {
-            title: "Paid By",
-            key: "paymentMethod.name",
-            render: (_, item) => item.paymentMethod.name,
-            ...getTableFilter({ name: "paymentMethod", icon: ICONS.payment_method }),
-          },
-          {
-            title: "Buyer",
-            key: "buyer.fullName",
-            render: (_, item) => (
-              <section className="flex gap-2 items-center">
-                <section className="size-7 bg-cream rounded-full relative shadow border-1 border-dotted border-dark flex items-center justify-center p-0.5">
-                  {item.buyer?.image?.url ? (
-                    <Img src={item.buyer.image.url} alt={item.buyer.fullName} className="object-cover w-full h-full rounded-full" />
-                  ) : (
-                    <Iconify icon={GENDERS[item.buyer.gender].picture} className="absolute centered text-dark" width={20} />
-                  )}
-                </section>
-                {textEllipsis(item.buyer.fullName, 27)}
-              </section>
-            ),
-            ...getTableFilter({ name: "buyer", icon: ICONS.person }),
-          },
+              {textEllipsis(item.buyer.fullName, 27)}
+            </section>
+          ),
+          ...getTableFilter({ name: "buyer", icon: ICONS.person }),
+        },
 
-          {
-            title: "TXN Date",
-            key: "transactionDate",
-            dataIndex: "transactionDate",
-            render: (date: Date) => formatDateShort({ date }),
-            ...getTableFilter({ name: "transactionDate", type: "date" }),
-          },
-        ]}
-      />
-    </Fragment>
+        {
+          title: "TXN Date",
+          key: "transactionDate",
+          dataIndex: "transactionDate",
+          render: (date: Date) => formatDateShort({ date }),
+          ...getTableFilter({ name: "transactionDate", type: "date" }),
+        },
+      ]}
+    />
   );
 }

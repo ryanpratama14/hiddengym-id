@@ -6,7 +6,6 @@ import { REFETCH_INTERVAL, USER_REDIRECT } from "@/lib/constants";
 import { createUrl } from "@/lib/functions";
 import { schema } from "@/schema";
 import { type PackageList } from "@/server/api/routers/package";
-import { type PackageTransactionDetail } from "@/server/api/routers/packageTransaction";
 import { type PaymentMethodList } from "@/server/api/routers/paymentMethod";
 import { api } from "@/trpc/react";
 import type { Dictionary, Lang, SearchParams } from "@/types";
@@ -18,12 +17,11 @@ import ModalUpdate from "./ModalUpdate";
 type Props = {
   searchParams: SearchParams;
   lang: Lang;
-  selectedData: PackageTransactionDetail | null;
   option: { packages: PackageList; paymentMethods: PaymentMethodList };
   t: Dictionary;
 };
 
-export default function TransactionsProductContainer({ searchParams, lang, selectedData, option, t }: Props) {
+export default function TransactionsProductContainer({ searchParams, lang, option, t }: Props) {
   const query = schema.packageTransaction.list.parse(searchParams);
   const newParams = new URLSearchParams(searchParams);
   const router = useRouter();
@@ -33,6 +31,8 @@ export default function TransactionsProductContainer({ searchParams, lang, selec
   };
 
   const { data, isLoading: loading } = api.packageTransaction.list.useQuery(query, { refetchInterval: REFETCH_INTERVAL });
+  const selectedId = searchParams.id ?? searchParams.packageId ?? "";
+  const { data: selectedData } = api.packageTransaction.detail.useQuery({ id: selectedId }, { enabled: !!selectedId });
 
   if (data?.isPaginationInvalid) {
     newParams.delete("page");

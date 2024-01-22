@@ -4,7 +4,7 @@ import { Skeleton } from "antd";
 import { Fragment } from "react";
 import TransactionInvoice from "./TransactionInvoice";
 
-type Props = { data: PackageTransactionDetail | null };
+type Props = { data?: PackageTransactionDetail };
 
 export default function PackageTransaction({ data }: Props) {
   return (
