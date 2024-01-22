@@ -5,7 +5,7 @@ import { ICONS, PACKAGE_TYPES } from "@/lib/constants";
 import { cn, formatCurrency } from "@/lib/functions";
 import { type PackageList, type PackageListInput } from "@/server/api/routers/package";
 import { inputVariants, statusVariants } from "@/styles/variants";
-import { type Lang, type SearchParams } from "@/types";
+import type { ActionButtonAction, Lang, SearchParams } from "@/types";
 import ActionButton from "@dashboard/components/ActionButton";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import { type PackageTransaction, type PackageType } from "@prisma/client";
@@ -109,18 +109,18 @@ export default function PackagesTable({ data, loading, searchParams, newParams, 
             dataIndex: "id",
             title: "Action",
             width: 1,
-            render: (id: string) => (
-              <section className="flex justify-center items-center">
-                <ActionButton
-                  onClick={() => {
-                    newParams.set("id", id);
-                    redirectTable(newParams);
-                  }}
-                  icon={ICONS.edit}
-                  color="yellow"
-                />
-              </section>
-            ),
+            render: (id: string) => {
+              const redirect = (action: ActionButtonAction) => () => {
+                newParams.set("id", id);
+                newParams.set(action, "true");
+                redirectTable(newParams);
+              };
+              return (
+                <section className="flex justify-center items-center">
+                  <ActionButton onClick={redirect("update")} icon={ICONS.edit} color="yellow" />
+                </section>
+              );
+            },
           },
           {
             title: "Type",

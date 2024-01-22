@@ -4,7 +4,7 @@ import { REFETCH_INTERVAL, USER_REDIRECT } from "@/lib/constants";
 import { createUrl } from "@/lib/functions";
 import { schema } from "@/schema";
 import { api } from "@/trpc/react";
-import { type Dictionary, type Lang, type SearchParams } from "@/types";
+import type { ActionButtonAction, Dictionary, Lang, SearchParams } from "@/types";
 import { useRouter } from "next/navigation";
 import { Fragment } from "react";
 import Table from "../components/Table";
@@ -28,17 +28,20 @@ export default function PackagesContainer({ lang, searchParams, t }: Props) {
     router.push(createUrl(USER_REDIRECT({ lang, href: "/packages", role: "OWNER" }), newParams));
   };
 
+  const closeModal = (action: ActionButtonAction) => () => {
+    newParams.delete("id");
+    newParams.delete(action);
+    redirectTable(newParams);
+  };
+
   return (
     <Fragment>
       <section className="grid md:grid-cols-5 gap-6 lg:gap-x-12">
         <section className="flex flex-col gap-6 md:col-span-4">
           <ModalUpdate
             t={t}
-            show={!!searchParams.id && !!data?.find((e) => e.id === searchParams.id)}
-            closeModal={() => {
-              newParams.delete("id");
-              redirectTable(newParams);
-            }}
+            show={!!searchParams.id && !!searchParams.update && !!data?.find((e) => e.id === searchParams.id)}
+            closeModal={closeModal("update")}
             data={searchParams.id && data ? data.find((e) => e.id === searchParams.id)! : null}
           />
           <Table

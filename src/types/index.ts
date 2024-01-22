@@ -24,3 +24,4 @@ export type DashboardMenuKey = (typeof DASHBOARD_MENUS)[number]["key"];
 export type DashboardHrefKey = DashboardMenuKey | AddButtonKey | "" | "/visitors/detail";
 export type ProfileButtonKey = "changePassword" | "signOut";
 export type NewParamsAction = "delete" | "set";
+export type ActionButtonAction = "detail" | "update" | "create" | "delete";

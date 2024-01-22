@@ -6,7 +6,7 @@ import { REFETCH_INTERVAL, USER_REDIRECT } from "@/lib/constants";
 import { createUrl } from "@/lib/functions";
 import { schema } from "@/schema";
 import { api } from "@/trpc/react";
-import { type Lang, type SearchParams } from "@/types";
+import type { ActionButtonAction, Lang, SearchParams } from "@/types";
 import { useRouter } from "next/navigation";
 import Table from "../components/Table";
 import TableSorter from "../components/TableSorter";
@@ -25,6 +25,12 @@ export default function TransactionsProductsContainer({ searchParams, lang }: Pr
   const { data, isLoading: loading } = api.productTransaction.list.useQuery(query, { refetchInterval: REFETCH_INTERVAL });
   const { data: selectedData } = api.productTransaction.detail.useQuery({ id: searchParams.id ?? "" }, { enabled: !!searchParams.id });
 
+  const closeModal = (action: ActionButtonAction) => () => {
+    newParams.delete("id");
+    newParams.delete(action);
+    redirectTable(newParams);
+  };
+
   if (data?.isPaginationInvalid) {
     newParams.delete("page");
     redirectTable(newParams);
@@ -32,13 +38,7 @@ export default function TransactionsProductsContainer({ searchParams, lang }: Pr
 
   return (
     <section className="grid md:grid-cols-5 gap-6 lg:gap-x-12">
-      <Modal
-        show={!!searchParams.id}
-        closeModal={() => {
-          newParams.delete("id");
-          redirectTable(newParams);
-        }}
-      >
+      <Modal show={!!searchParams.id && !!searchParams.detail} closeModal={closeModal("detail")}>
         <Modal.Body>
           <ProductTransaction data={selectedData} />
         </Modal.Body>

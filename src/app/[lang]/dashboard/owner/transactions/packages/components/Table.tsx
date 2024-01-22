@@ -17,7 +17,7 @@ import {
 import type { PackageTransactionList, PackageTransactionListInput } from "@/server/api/routers/packageTransaction";
 import { inputVariants, statusVariants } from "@/styles/variants";
 import { PAGINATION_LIMIT } from "@/trpc/shared";
-import { type SearchParams } from "@/types";
+import type { ActionButtonAction, SearchParams } from "@/types";
 import ActionButton from "@dashboard/components/ActionButton";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import { Table } from "antd";
@@ -137,37 +137,21 @@ export default function PackageTransactionsTable({ data, searchParams, loading, 
           key: "id",
           width: 1,
           dataIndex: "id",
-          render: (id: string) => (
-            <section className="flex gap-2 justify-center items-center">
-              <ActionButton
-                onClick={() => {
-                  newParams.set("id", id);
-                  newParams.set("detail", "true");
-                  redirectTable(newParams);
-                }}
-                icon={ICONS.invoice}
-                color="green"
-              />
-              <ActionButton
-                onClick={() => {
-                  newParams.set("id", id);
-                  newParams.set("update", "true");
-                  redirectTable(newParams);
-                }}
-                icon={ICONS.edit}
-                color="yellow"
-              />
-              <ActionButton
-                onClick={() => {
-                  newParams.set("id", id);
-                  newParams.set("delete", "true");
-                  redirectTable(newParams);
-                }}
-                icon={ICONS.delete}
-                color="red"
-              />
-            </section>
-          ),
+          render: (id: string) => {
+            const redirect = (action: ActionButtonAction) => () => {
+              newParams.set("id", id);
+              newParams.set(action, "true");
+              redirectTable(newParams);
+            };
+
+            return (
+              <section className="flex gap-2 justify-center items-center">
+                <ActionButton onClick={redirect("detail")} icon={ICONS.invoice} color="blue" />
+                <ActionButton onClick={redirect("update")} icon={ICONS.edit} color="yellow" />
+                <ActionButton onClick={redirect("delete")} icon={ICONS.delete} color="red" />
+              </section>
+            );
+          },
         },
         {
           title: "Type",

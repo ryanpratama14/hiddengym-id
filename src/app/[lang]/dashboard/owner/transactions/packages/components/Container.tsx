@@ -10,7 +10,7 @@ import { schema } from "@/schema";
 import { type PackageList } from "@/server/api/routers/package";
 import { type PaymentMethodList } from "@/server/api/routers/paymentMethod";
 import { api } from "@/trpc/react";
-import type { Dictionary, Lang, SearchParams } from "@/types";
+import type { ActionButtonAction, Dictionary, Lang, SearchParams } from "@/types";
 import { useRouter } from "next/navigation";
 import Table from "../components/Table";
 import TableSorter from "../components/TableSorter";
@@ -36,12 +36,17 @@ export default function TransactionsProductContainer({ searchParams, lang, optio
   const { data, isLoading: loading } = api.packageTransaction.list.useQuery(query, { refetchInterval: REFETCH_INTERVAL });
   const selectedId = searchParams.id ?? searchParams.packageId ?? "";
   const { data: selectedData } = api.packageTransaction.detail.useQuery({ id: selectedId }, { enabled: !!selectedId });
+
+  const closeModal = (action: ActionButtonAction) => () => {
+    newParams.delete("id");
+    newParams.delete(action);
+    redirectTable(newParams);
+  };
+
   const { mutate: deleteData, isPending: loadingDelete } = api.packageTransaction.delete.useMutation({
     onSuccess: async (res) => {
       toastSuccess({ t, description: res.message });
-      newParams.delete("id");
-      newParams.delete("delete");
-      redirectTable(newParams);
+      closeModal("delete");
       await utils.packageTransaction.list.invalidate();
     },
     onError: (res) => toastError({ t, description: res.message }),
@@ -58,34 +63,17 @@ export default function TransactionsProductContainer({ searchParams, lang, optio
         t={t}
         show={!!searchParams.id && !!searchParams.update}
         option={option}
-        closeModal={() => {
-          newParams.delete("id");
-          newParams.delete("update");
-          redirectTable(newParams);
-        }}
+        closeModal={closeModal("update")}
         data={selectedData}
       />
       <ModalConfirm
         loading={loadingDelete}
         action="delete"
         show={!!searchParams.id && !!searchParams.delete}
-        onConfirm={() => {
-          searchParams.id && deleteData({ id: searchParams.id });
-        }}
-        closeModal={() => {
-          newParams.delete("id");
-          newParams.delete("delete");
-          redirectTable(newParams);
-        }}
+        onConfirm={() => searchParams.id && deleteData({ id: searchParams.id })}
+        closeModal={closeModal("delete")}
       />
-      <Modal
-        show={!!searchParams.id && !!searchParams.detail}
-        closeModal={() => {
-          newParams.delete("id");
-          newParams.delete("detail");
-          redirectTable(newParams);
-        }}
-      >
+      <Modal show={!!searchParams.id && !!searchParams.detail} closeModal={closeModal("detail")}>
         <Modal.Body>
           <PackageTransaction data={selectedData} />
         </Modal.Body>

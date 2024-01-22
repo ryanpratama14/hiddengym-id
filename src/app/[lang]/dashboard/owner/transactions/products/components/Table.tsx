@@ -7,12 +7,11 @@ import { GENDERS, ICONS } from "@/lib/constants";
 import { cn, formatCurrency, formatDateShort, textEllipsis } from "@/lib/functions";
 import type { ProductTransactionList, ProductTransactionListInput } from "@/server/api/routers/productTransaction";
 import { PAGINATION_LIMIT } from "@/trpc/shared";
-import { type SearchParams } from "@/types";
+import type { ActionButtonAction, SearchParams } from "@/types";
 import ActionButton from "@dashboard/components/ActionButton";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import { Table } from "antd";
 import { type FilterDropdownProps } from "antd/es/table/interface";
-import { Fragment } from "react";
 
 type Props = {
   data?: ProductTransactionList;
@@ -117,18 +116,18 @@ export default function ProductTransactionsTable({ data, searchParams, loading, 
           key: "id",
           width: 1,
           dataIndex: "id",
-          render: (id: string) => (
-            <section className="flex justify-center items-center">
-              <ActionButton
-                onClick={() => {
-                  newParams.set("id", id);
-                  redirectTable(newParams);
-                }}
-                icon={ICONS.invoice}
-                color="green"
-              />
-            </section>
-          ),
+          render: (id: string) => {
+            const redirect = (action: ActionButtonAction) => () => {
+              newParams.set("id", id);
+              newParams.set(action, "true");
+              redirectTable(newParams);
+            };
+            return (
+              <section className="flex justify-center items-center">
+                <ActionButton onClick={redirect("detail")} icon={ICONS.invoice} color="green" />
+              </section>
+            );
+          },
         },
         {
           title: "Products",
