@@ -142,6 +142,7 @@ export default function PackageTransactionsTable({ data, searchParams, loading, 
               <ActionButton
                 onClick={() => {
                   newParams.set("id", id);
+                  newParams.set("detail", "true");
                   redirectTable(newParams);
                 }}
                 icon={ICONS.invoice}
@@ -149,11 +150,21 @@ export default function PackageTransactionsTable({ data, searchParams, loading, 
               />
               <ActionButton
                 onClick={() => {
-                  newParams.set("packageId", id);
+                  newParams.set("id", id);
+                  newParams.set("update", "true");
                   redirectTable(newParams);
                 }}
                 icon={ICONS.edit}
                 color="yellow"
+              />
+              <ActionButton
+                onClick={() => {
+                  newParams.set("id", id);
+                  newParams.set("delete", "true");
+                  redirectTable(newParams);
+                }}
+                icon={ICONS.delete}
+                color="red"
               />
             </section>
           ),

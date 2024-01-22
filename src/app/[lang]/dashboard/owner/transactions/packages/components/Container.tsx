@@ -1,6 +1,7 @@
 "use client";
 
 import { Modal } from "@/components/Modal";
+import ModalConfirm from "@/components/ModalConfirm";
 import PackageTransaction from "@/components/PackageTransaction";
 import { REFETCH_INTERVAL, USER_REDIRECT } from "@/lib/constants";
 import { createUrl } from "@/lib/functions";
@@ -43,18 +44,33 @@ export default function TransactionsProductContainer({ searchParams, lang, optio
     <section className="grid md:grid-cols-5 gap-6 lg:gap-x-12">
       <ModalUpdate
         t={t}
-        show={!!searchParams.packageId}
+        show={!!searchParams.id && !!searchParams.update}
         option={option}
         closeModal={() => {
-          newParams.delete("packageId");
+          newParams.delete("id");
+          newParams.delete("update");
           redirectTable(newParams);
         }}
         data={selectedData}
       />
-      <Modal
-        show={!!searchParams.id}
+      <ModalConfirm
+        loading={true}
+        action="delete"
+        show={!!searchParams.id && !!searchParams.delete}
+        onConfirm={async () => {
+          console.log("hitted");
+        }}
         closeModal={() => {
           newParams.delete("id");
+          newParams.delete("delete");
+          redirectTable(newParams);
+        }}
+      />
+      <Modal
+        show={!!searchParams.id && !!searchParams.detail}
+        closeModal={() => {
+          newParams.delete("id");
+          newParams.delete("detail");
           redirectTable(newParams);
         }}
       >

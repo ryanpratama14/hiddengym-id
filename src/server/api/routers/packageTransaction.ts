@@ -3,6 +3,7 @@ import { schema, type Pagination } from "@/schema";
 import { createTRPCRouter, ownerProcedure, protectedProcedure } from "@/server/api/trpc";
 import {
   getCreatedMessage,
+  getDeletedMessage,
   getPaginationData,
   getPaginationQuery,
   getSortingQuery,
@@ -123,6 +124,15 @@ export const packageTransactionRouter = createTRPCRouter({
 
     await updateTotalSpending(body.buyerId);
     return THROW_OK("OK", getUpdatedMessage("package transaction"));
+  }),
+
+  delete: ownerProcedure.input(z.object({ id: z.string() })).mutation(async ({ ctx, input }) => {
+    const data = await ctx.db.packageTransaction.findFirst({ where: { id: input.id } });
+    if (!data) return THROW_TRPC_ERROR("NOT_FOUND");
+    await ctx.db.packageTransaction.delete({ where: { id: input.id } });
+    await updateTotalSpending(data.buyerId);
+    await updatePackageTotalTransactions(data.packageId);
+    return THROW_OK("OK", getDeletedMessage("package transaction"));
   }),
 });
 

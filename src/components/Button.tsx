@@ -25,7 +25,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         type={type ? type : "button"}
         ref={ref}
         {...rest}
-        className={cn(buttonVariants({ color, size, rounded, className }))}
+        className={cn(buttonVariants({ color: loading ? "expired" : color, size, rounded, className }))}
       >
         {loading ? (
           <ButtonLoader />

@@ -117,8 +117,8 @@ export const ICONS = {
   name: "mdi:rename-outline",
   invoice: "iconamoon:invoice",
   detail: "mdi:account-details",
-  edit: "basil:edit-outline",
-  delete: "material-symbols:delete",
+  edit: "material-symbols:edit-square-outline",
+  delete: "material-symbols:delete-outline",
 };
 
 export const GENDERS: Record<
