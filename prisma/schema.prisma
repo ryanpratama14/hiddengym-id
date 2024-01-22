@@ -79,7 +79,7 @@ model Package {
     name              String
     description       String?
     price             Int
-    validityInDays    Int?
+    validityInDays    Int
     approvedSessions  Int?
     isActive          Boolean @default(true)
     totalTransactions Int     @default(0)
@@ -200,14 +200,14 @@ model ProductOnTransaction {
 }
 
 model PackageTransaction {
-    id                String    @id @default(auto()) @map("_id") @db.ObjectId
+    id                String   @id @default(auto()) @map("_id") @db.ObjectId
     totalPrice        Int
     unitPrice         Int
     discountPrice     Int?
-    startDate         DateTime? @default(now())
-    expiryDate        DateTime?
+    startDate         DateTime
+    expiryDate        DateTime
     remainingSessions Int?
-    transactionDate   DateTime  @default(now())
+    transactionDate   DateTime @default(now())
 
     // relations
     paymentMethod   PaymentMethod @relation(fields: [paymentMethodId], references: [id])

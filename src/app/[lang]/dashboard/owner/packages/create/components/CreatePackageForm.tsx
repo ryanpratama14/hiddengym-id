@@ -25,7 +25,7 @@ const initialData: PackageCreateInput = {
   name: "",
   description: null,
   price: 0,
-  validityInDays: null,
+  validityInDays: 0,
   placeIDs: [],
   sportIDs: [],
   trainerIDs: [],
@@ -94,7 +94,7 @@ export default function CreatePackageForm({ option, t }: Props) {
         <Input error={errors.name?.message} {...register("name")} icon={ICONS.name} label="Name" />
         <Input
           error={errors.price?.message}
-          {...register("price", { setValueAs: (v: string) => (!v ? 0 : parseInt(v)) })}
+          {...register("price", { setValueAs: (v: string) => parseInt(v) })}
           type="number"
           icon={ICONS.payment_method}
           label="Price"
@@ -117,7 +117,7 @@ export default function CreatePackageForm({ option, t }: Props) {
             icon={ICONS.validity}
             type="number"
             label="Validity In Days"
-            {...register("validityInDays", { setValueAs: (v: string) => (!v ? null : parseInt(v)) })}
+            {...register("validityInDays", { setValueAs: (v: string) => parseInt(v) })}
           />
         </section>
 

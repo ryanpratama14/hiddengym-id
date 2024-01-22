@@ -77,11 +77,8 @@ export const packageTransactionRouter = createTRPCRouter({
         unitPrice: input.unitPrice,
         discountPrice: promoCode?.discountPrice ? promoCode.discountPrice : null,
         totalPrice: promoCode ? input.unitPrice - promoCode.discountPrice : input.unitPrice,
-        startDate: selectedPackage.validityInDays && input.startDate ? getStartDate(input.startDate) : null,
-        expiryDate:
-          selectedPackage.validityInDays && input.startDate
-            ? getExpiryDate({ days: selectedPackage.validityInDays, dateString: input.startDate })
-            : null,
+        startDate: getStartDate(input.startDate),
+        expiryDate: getExpiryDate({ days: selectedPackage.validityInDays, dateString: input.startDate }),
         remainingSessions: isSessions && selectedPackage.approvedSessions ? selectedPackage.approvedSessions : null,
         transactionDate: getNewDate(input.transactionDate),
         paymentMethodId: input.paymentMethodId,
@@ -113,11 +110,8 @@ export const packageTransactionRouter = createTRPCRouter({
         unitPrice: body.unitPrice,
         discountPrice: promoCode?.discountPrice ? promoCode.discountPrice : null,
         totalPrice: promoCode ? body.unitPrice - promoCode.discountPrice : body.unitPrice,
-        startDate: selectedPackage.validityInDays && body.startDate ? getStartDate(body.startDate) : null,
-        expiryDate:
-          selectedPackage.validityInDays && body.startDate
-            ? getExpiryDate({ days: selectedPackage.validityInDays, dateString: body.startDate })
-            : null,
+        startDate: getStartDate(body.startDate),
+        expiryDate: getExpiryDate({ days: selectedPackage.validityInDays, dateString: body.startDate }),
         remainingSessions: isSessions && selectedPackage.approvedSessions ? selectedPackage.approvedSessions : null,
         transactionDate: getNewDate(body.transactionDate),
         paymentMethodId: body.paymentMethodId,

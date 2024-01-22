@@ -38,7 +38,6 @@ export default function ModalUpdate({ show, closeModal, data, option, t }: Props
     watch,
     reset,
     setValue,
-    clearErrors,
   } = useForm<PackageTransactionUpdateInput>({ resolver: zodResolver(schema.packageTransaction.update) });
 
   const onSubmit: SubmitHandler<PackageTransactionUpdateInput> = (data) => updateData(data);
@@ -63,7 +62,6 @@ export default function ModalUpdate({ show, closeModal, data, option, t }: Props
   const watchedData = {
     packageId: watch("body.packageId"),
     promoCodeCode: watch("body.promoCodeCode"),
-    validityInDays: watch("body.validityInDays"),
   };
 
   useEffect(() => {
@@ -77,12 +75,11 @@ export default function ModalUpdate({ show, closeModal, data, option, t }: Props
           buyerId: data.buyerId,
           packageId: data.packageId,
           transactionDate: getInputDate({ date: data.transactionDate }),
-          startDate: data.startDate ? getInputDate({ date: data.startDate }) : null,
+          startDate: getInputDate({ date: data.startDate }),
           promoCodeCode: data.promoCode?.code,
           promoCodeId: data.promoCodeId,
           unitPrice: data.unitPrice,
           paymentMethodId: data.paymentMethodId,
-          validityInDays: data.package.validityInDays,
         },
       });
     }
@@ -120,31 +117,13 @@ export default function ModalUpdate({ show, closeModal, data, option, t }: Props
                     const data = structuredClone(item) as Package;
                     setValue("body.packageId", value as string);
                     setValue("body.unitPrice", data.price);
-                    setValue("body.validityInDays", data.validityInDays);
-                    if (!data.validityInDays) {
-                      setValue("body.startDate", null);
-                      clearErrors("body.startDate");
-                    }
                   }}
                 />
               )}
             />
             <section className="grid grid-cols-2 gap-4">
               <Input label="Transaction Date" {...register("body.transactionDate")} type="date" />
-              <section className="flex flex-col gap-0.5">
-                <Input
-                  {...register("body.startDate")}
-                  error={errors.body?.startDate?.message}
-                  label="Start Date"
-                  type="date"
-                  disabled={!watchedData.validityInDays}
-                />
-                {!watchedData.validityInDays ? (
-                  <small className="text-xs mt-0.5 text-red underline text-left">
-                    Start date is not required since the package hasn't validity in days
-                  </small>
-                ) : null}
-              </section>
+              <Input {...register("body.startDate")} error={errors.body?.startDate?.message} label="Start Date" type="date" />
             </section>
 
             <Controller

@@ -94,22 +94,11 @@ export class schema {
           packageId: z.string().min(1, "Select package"),
           unitPrice: z.number().min(1, numberMessage("Price", 1)),
           transactionDate: schema.date,
-          startDate: schema.dateNullable,
+          startDate: schema.date,
           paymentMethodId: z.string().min(1, "Select payment method"),
           promoCodeCode: z.string().optional(),
           promoCodeId: z.string().nullable(),
-          validityInDays: z.number().nullable(),
         })
-        .refine(
-          ({ validityInDays, startDate }) => {
-            if (!startDate && validityInDays) return false;
-            return true;
-          },
-          {
-            message: "Start date is required since the package has validity in days",
-            path: ["startDate"],
-          },
-        )
         .optional(),
     });
 
@@ -167,7 +156,7 @@ export class schema {
         name: z.string().min(4),
         description: z.string().nullable(),
         price: z.number().min(1),
-        validityInDays: z.number().nullable(),
+        validityInDays: z.number().min(1, numberMessage("Validity in days", 1)),
         approvedSessions: z.number().nullable(),
         type: schema.packageType,
         sportIDs: z.array(z.string()).min(1, "Pick at least 1 sport type"),
@@ -227,50 +216,29 @@ export class schema {
   };
 
   static packageTransaction = class {
-    static create = z
-      .object({
-        startDate: schema.dateNullable,
-        transactionDate: schema.date,
-        paymentMethodId: z.string().min(1, "Select payment method"),
-        packageId: z.string().min(1, "Select package"),
-        buyerId: z.string().min(1, "Select buyer"),
-        promoCodeCode: z.string().optional(),
-        promoCodeId: z.string().nullable(),
-        unitPrice: z.number().min(1, numberMessage("Price", 1)),
-        validityInDays: z.number().nullable(),
-      })
-      .refine(
-        ({ startDate, validityInDays }) => {
-          if (!startDate && validityInDays) return false;
-          return true;
-        },
-        { message: "Start date is required since the package has validity in days", path: ["startDate"] },
-      );
+    static create = z.object({
+      startDate: schema.date,
+      transactionDate: schema.date,
+      paymentMethodId: z.string().min(1, "Select payment method"),
+      packageId: z.string().min(1, "Select package"),
+      buyerId: z.string().min(1, "Select buyer"),
+      promoCodeCode: z.string().optional(),
+      promoCodeId: z.string().nullable(),
+      unitPrice: z.number().min(1, numberMessage("Price", 1)),
+    });
 
     static update = z.object({
       id: z.string(),
-      body: z
-        .object({
-          transactionDate: schema.date,
-          startDate: schema.dateNullable,
-          paymentMethodId: z.string().min(1, "Select payment method"),
-          packageId: z.string().min(1, "Select package"),
-          promoCodeCode: z.string().optional(),
-          promoCodeId: z.string().nullable(),
-          unitPrice: z.number().min(1, numberMessage("Price", 1)),
-          buyerId: z.string(),
-          validityInDays: z.number().nullable(),
-        })
-        .refine(
-          ({ validityInDays, startDate }) => {
-            if (!startDate && validityInDays) return false;
-            return true;
-          },
-          {
-            message: "Start date is required since the package has validity in days",
-            path: ["startDate"],
-          },
-        ),
+      body: z.object({
+        transactionDate: schema.date,
+        startDate: schema.date,
+        paymentMethodId: z.string().min(1, "Select payment method"),
+        packageId: z.string().min(1, "Select package"),
+        promoCodeCode: z.string().optional(),
+        promoCodeId: z.string().nullable(),
+        unitPrice: z.number().min(1, numberMessage("Price", 1)),
+        buyerId: z.string(),
+      }),
     });
 
     static list = z.object({
