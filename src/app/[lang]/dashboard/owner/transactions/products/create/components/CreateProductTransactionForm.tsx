@@ -4,15 +4,13 @@ import Button from "@/components/Button";
 import Iconify from "@/components/Iconify";
 import Input from "@/components/Input";
 import InputSelect from "@/components/InputSelect";
-import { toastError, toastSuccess } from "@/components/Toast";
+import { toastError, toastSuccess, toastWarning } from "@/components/Toast";
 import TransactionInvoice from "@/components/TransactionInvoice";
 import { useZustand } from "@/global/store";
 import { ICONS, USER_REDIRECT } from "@/lib/constants";
 import { cn, formatCurrency, getInputDate, localizePhoneNumber } from "@/lib/functions";
 import { schema } from "@/schema";
-import { type PaymentMethodList } from "@/server/api/routers/paymentMethod";
-import { type ProductList } from "@/server/api/routers/product";
-import { type ProductTransactionInput } from "@/server/api/routers/productTransaction";
+import { type ProductTransactionCreateInput } from "@/server/api/routers/productTransaction";
 import { api } from "@/trpc/react";
 import { type Dictionary } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -26,9 +24,12 @@ const productInitialData = { unitPrice: 0, quantity: 1, productId: "", name: "" 
 
 type SelectedUser = { fullName: string; email: null | string; phoneNumber: string; tz: string; gender: Gender };
 
-type Props = { t: Dictionary; option: { paymentMethods: PaymentMethodList; products: ProductList } };
+type Props = { t: Dictionary };
 
-export default function CreateProductTransactionForm({ t, option }: Props) {
+export default function CreateProductTransactionForm({ t }: Props) {
+  const { data: paymentMethods } = api.paymentMethod.list.useQuery();
+  const { data: products } = api.product.list.useQuery({});
+
   const { lang } = useZustand();
   const router = useRouter();
   const [selectedBuyer, setSelectedBuyer] = useState<SelectedUser>({
@@ -57,7 +58,7 @@ export default function CreateProductTransactionForm({ t, option }: Props) {
     formState: { errors },
     watch,
     clearErrors,
-  } = useForm<ProductTransactionInput>({
+  } = useForm<ProductTransactionCreateInput>({
     resolver: zodResolver(schema.productTransaction.create),
     defaultValues: {
       transactionDate: getInputDate({}),
@@ -69,7 +70,7 @@ export default function CreateProductTransactionForm({ t, option }: Props) {
 
   const { fields, insert, remove } = useFieldArray({ control, name: "products" });
 
-  const onSubmit: SubmitHandler<ProductTransactionInput> = (data) => createData(data);
+  const onSubmit: SubmitHandler<ProductTransactionCreateInput> = (data) => createData(data);
 
   const { mutate: createData, isPending: loading } = api.productTransaction.create.useMutation({
     onSuccess: (res) => {
@@ -80,6 +81,8 @@ export default function CreateProductTransactionForm({ t, option }: Props) {
   });
 
   const data = { products: watch("products"), transactionDate: watch("transactionDate") };
+
+  console.log(watch());
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 w-full">
@@ -120,7 +123,7 @@ export default function CreateProductTransactionForm({ t, option }: Props) {
             />
           )}
         />
-        <Input label="Transaction Date" {...register("transactionDate")} type="date" />
+        <Input error={errors?.transactionDate?.message} label="Transaction Date" {...register("transactionDate")} type="date" />
       </section>
       <section className="grid md:grid-cols-2 gap-4">
         <section className="flex flex-col gap-0.5">
@@ -142,11 +145,12 @@ export default function CreateProductTransactionForm({ t, option }: Props) {
                       icon={ICONS.product}
                       error={errors.products?.[index]?.productId?.message}
                       {...field}
-                      options={option.products.map((e) => ({
+                      options={products?.map((e) => ({
                         name: e.name,
                         unitPrice: e.price,
                         value: e.id,
                         label: `${e.name} - ${formatCurrency(e.price)}`,
+                        disabled: data.products.map((e) => e.productId).includes(e.id),
                       }))}
                       onChange={(e, item) => {
                         const data = structuredClone(item) as { unitPrice: number; name: string };
@@ -177,7 +181,11 @@ export default function CreateProductTransactionForm({ t, option }: Props) {
           </section>
           <section className="flex justify-end mt-2 pr-[0.15rem]">
             <section
-              onClick={() => insert(fields.length, productInitialData)}
+              onClick={() => {
+                if (products?.length === data?.products.length) {
+                  return toastWarning({ t, description: "All available products are already selected or can be selected." });
+                } else insert(fields.length, productInitialData);
+              }}
               className="relative size-6 bg-dark text-light cursor-pointer"
             >
               <Iconify className="absolute centered" icon={ICONS.add} width={25} />
@@ -193,7 +201,7 @@ export default function CreateProductTransactionForm({ t, option }: Props) {
               {...field}
               icon={ICONS.payment_method}
               error={errors.paymentMethodId?.message}
-              options={option.paymentMethods.map((e) => ({ value: e.id, label: e.name }))}
+              options={paymentMethods?.map((e) => ({ value: e.id, label: e.name }))}
               label="Payment Method"
               onChange={(value, item) => {
                 const data = structuredClone(item) as { value: string; label: string };

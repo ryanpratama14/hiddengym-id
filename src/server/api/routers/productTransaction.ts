@@ -2,9 +2,11 @@ import { formatName, getEndDate, getNewDate, getStartDate } from "@/lib/function
 import { schema, type Pagination } from "@/schema";
 import {
   getCreatedMessage,
+  getDeletedMessage,
   getPaginationData,
   getPaginationQuery,
   getSortingQuery,
+  getUpdatedMessage,
   insensitiveMode,
   prismaExclude,
   THROW_OK,
@@ -62,10 +64,7 @@ export const productTransactionRouter = createTRPCRouter({
   create: ownerAdminProcedure.input(schema.productTransaction.create).mutation(async ({ ctx, input }) => {
     const data = await ctx.db.productTransaction.create({
       data: {
-        totalPrice: input.products.reduce((sum, product) => {
-          const productTotalPrice = product.quantity * product.unitPrice;
-          return sum + productTotalPrice;
-        }, 0),
+        totalPrice: input.products.reduce((sum, product) => sum + product.quantity * product.unitPrice, 0),
         buyerId: input.buyerId,
         paymentMethodId: input.paymentMethodId,
         transactionDate: getNewDate(input.transactionDate),
@@ -85,6 +84,59 @@ export const productTransactionRouter = createTRPCRouter({
     await updateProductTotalTransactions(input.products.map((product) => product.productId));
     return THROW_OK("CREATED", getCreatedMessage("product transaction"));
   }),
+
+  update: ownerAdminProcedure.input(schema.productTransaction.update).mutation(async ({ ctx, input }) => {
+    const { id, body } = input;
+    const data = await ctx.db.productTransaction.findFirst({ where: { id }, ...productTransactionSelect });
+    if (!data) return THROW_TRPC_ERROR("NOT_FOUND");
+
+    for (const product of body.products) {
+      const updatedData = {
+        data: { productId: product.productId, quantity: product.quantity, unitPrice: product.unitPrice, productTransactionId: id },
+      };
+      const productOnTransaction = await ctx.db.productOnTransaction.findFirst({
+        where: { productTransactionId: id, productId: product.productId },
+      });
+
+      if (productOnTransaction) {
+        await ctx.db.productOnTransaction.update({ where: { id: productOnTransaction.id }, ...updatedData });
+      } else {
+        await ctx.db.productOnTransaction.create({ ...updatedData });
+      }
+    }
+
+    for (const productOnTransactionIDs of data.products
+      .filter((existingProduct) => !body.products.some((newProduct) => newProduct.productId === existingProduct.productId))
+      .map((e) => e.id)) {
+      await ctx.db.productOnTransaction.delete({ where: { id: productOnTransactionIDs } });
+    }
+
+    await ctx.db.productTransaction.update({
+      where: { id },
+      data: {
+        totalPrice: body.products.reduce((sum, product) => sum + product.quantity * product.unitPrice, 0),
+        buyerId: body.buyerId,
+        paymentMethodId: body.paymentMethodId,
+        transactionDate: getNewDate(body.transactionDate),
+      },
+    });
+
+    await updateTotalSpending(data.buyerId);
+    await updateProductTotalTransactions(body.products.map((product) => product.productId));
+    return THROW_OK("OK", getUpdatedMessage("product transaction"));
+  }),
+
+  delete: ownerAdminProcedure.input(z.object({ id: z.string() })).mutation(async ({ ctx, input }) => {
+    const data = await ctx.db.productTransaction.findFirst({ where: { id: input.id }, ...productTransactionSelect });
+    if (!data) return THROW_TRPC_ERROR("NOT_FOUND");
+    for (const id of data.products.map((e) => e.id)) {
+      await ctx.db.productOnTransaction.delete({ where: { id } });
+    }
+    await ctx.db.productTransaction.delete({ where: { id: input.id } });
+    await updateTotalSpending(data.buyerId);
+    await updateProductTotalTransactions(data.products.map((product) => product.productId));
+    return THROW_OK("OK", getDeletedMessage("product transaction"));
+  }),
 });
 
 // outputs
@@ -92,5 +144,6 @@ export type ProductTransactionList = RouterOutputs["productTransaction"]["list"]
 export type ProductTransactionDetail = RouterOutputs["productTransaction"]["detail"];
 
 // inputs
-export type ProductTransactionInput = RouterInputs["productTransaction"]["create"];
+export type ProductTransactionCreateInput = RouterInputs["productTransaction"]["create"];
+export type ProductTransactionUpdateInput = RouterInputs["productTransaction"]["update"];
 export type ProductTransactionListInput = RouterInputs["productTransaction"]["list"];

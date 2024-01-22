@@ -279,6 +279,24 @@ export class schema {
         )
         .min(1),
     });
+
+    static update = z.object({
+      id: z.string(),
+      body: z.object({
+        transactionDate: schema.date,
+        paymentMethodId: z.string().min(1, "Select payment method"),
+        buyerId: z.string().min(1, "Select buyer"),
+        products: z
+          .array(
+            z.object({
+              productId: z.string().min(1, "Select product"),
+              quantity: z.number().min(1, numberMessage("Quantity", 1)),
+              unitPrice: z.number(),
+            }),
+          )
+          .min(1),
+      }),
+    });
   };
 }
 

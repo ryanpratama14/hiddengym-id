@@ -44,7 +44,7 @@ export default function TransactionsProductContainer({ searchParams, lang, t }: 
   const { mutate: deleteData, isPending: loadingDelete } = api.packageTransaction.delete.useMutation({
     onSuccess: async (res) => {
       toastSuccess({ t, description: res.message });
-      closeModal("delete");
+      closeModal("delete")();
       await utils.packageTransaction.list.invalidate();
     },
     onError: (res) => toastError({ t, description: res.message }),

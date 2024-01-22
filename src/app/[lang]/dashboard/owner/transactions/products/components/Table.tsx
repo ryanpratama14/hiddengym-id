@@ -123,8 +123,10 @@ export default function ProductTransactionsTable({ data, searchParams, loading, 
               redirectTable(newParams);
             };
             return (
-              <section className="flex justify-center items-center">
-                <ActionButton onClick={redirect("detail")} icon={ICONS.invoice} color="green" />
+              <section className="flex justify-center items-center gap-2">
+                <ActionButton onClick={redirect("detail")} icon={ICONS.invoice} color="blue" />
+                <ActionButton onClick={redirect("update")} icon={ICONS.edit} color="yellow" />
+                <ActionButton onClick={redirect("delete")} icon={ICONS.delete} color="red" />
               </section>
             );
           },
