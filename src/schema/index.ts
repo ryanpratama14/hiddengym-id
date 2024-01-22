@@ -94,12 +94,19 @@ export class schema {
           packageId: z.string().min(1, "Select package"),
           unitPrice: z.number().min(1, numberMessage("Price", 1)),
           transactionDate: schema.date,
-          startDate: schema.date,
+          startDate: schema.dateNullable,
           paymentMethodId: z.string().min(1, "Select payment method"),
           promoCodeCode: z.string().optional(),
           promoCodeId: z.string().nullable(),
-          packageType: schema.packageType,
+          validityInDays: z.number().nullable(),
         })
+        .refine(
+          ({ startDate, validityInDays }) => {
+            if (!startDate && validityInDays) return false;
+            return true;
+          },
+          { message: "Start date is required since the package has validity in days", path: ["startDate"] },
+        )
         .optional(),
     });
 
@@ -227,14 +234,14 @@ export class schema {
         promoCodeCode: z.string().optional(),
         promoCodeId: z.string().nullable(),
         unitPrice: z.number().min(1, numberMessage("Price", 1)),
-        packageType: schema.packageType,
+        validityInDays: z.number().nullable(),
       })
       .refine(
-        ({ startDate, packageType }) => {
-          if (!startDate && packageType !== "SESSIONS") return false;
+        ({ startDate, validityInDays }) => {
+          if (!startDate && validityInDays) return false;
           return true;
         },
-        { message: "Start date is required", path: ["startDate"] },
+        { message: "Start date is required since the package has validity in days", path: ["startDate"] },
       );
 
     static update = z.object({

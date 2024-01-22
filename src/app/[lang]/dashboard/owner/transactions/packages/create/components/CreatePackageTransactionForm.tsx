@@ -100,8 +100,6 @@ export default function CreatePackageTransactionForm({ t, option }: Props) {
     onError: (res) => toastError({ t, description: res.message }),
   });
 
-  console.log(schema.packageTransaction.create.safeParse(watch()));
-
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 w-full">
       <section className="grid md:grid-cols-2 gap-4">
@@ -161,10 +159,13 @@ export default function CreatePackageTransactionForm({ t, option }: Props) {
                 const data = structuredClone(item) as Package;
                 setSelectedPackage(data);
                 setValue("packageId", value as string);
-                setValue("packageType", data.type);
+                setValue("validityInDays", data.validityInDays);
                 setValue("unitPrice", data.price);
                 clearErrors("packageId");
-                if (errors.startDate && data.type === "SESSIONS") clearErrors("startDate");
+                if (!data.validityInDays) {
+                  setValue("startDate", null);
+                  clearErrors("startDate");
+                }
               }}
             />
           )}

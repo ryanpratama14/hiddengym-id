@@ -48,6 +48,7 @@ export default function ModalUpdate({ show, closeModal, data, option, t }: Props
       closeModal();
       await utils.packageTransaction.list.invalidate();
     },
+    onError: (res) => toastError({ t, description: res.message }),
   });
 
   const { mutate: checkPromoCode, isPending: loadingPromoCode } = api.promoCode.checkPromoCode.useMutation({

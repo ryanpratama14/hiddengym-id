@@ -67,6 +67,7 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
     birthDate: watch("visitorData.birthDate"),
     promoCodeId: watch("packageData.promoCodeId"),
     unitPrice: watch("packageData.unitPrice"),
+    validityInDays: watch("packageData.validityInDays"),
   };
 
   const onSubmit: SubmitHandler<UserCreateVisitorInput> = async (data) => createVisitor(data);
@@ -78,7 +79,7 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
         paymentMethodId: getValues("packageData.paymentMethodId"),
         transactionDate: getValues("packageData.transactionDate"),
         promoCodeId: getValues("packageData.promoCodeId"),
-        packageType: getValues("packageData.packageType"),
+        validityInDays: getValues("packageData.validityInDays"),
         startDate: getValues("packageData.startDate"),
         unitPrice: getValues("packageData.unitPrice"),
         buyerId: res.visitorId,
@@ -172,9 +173,10 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
                 setIsAddingTransaction(!isAddingTransaction);
                 if (isAddingTransaction) unregister("packageData");
                 if (!isAddingTransaction) setValue("packageData.transactionDate", getInputDate({}));
-                if (!isAddingTransaction) setValue("packageData.startDate", getInputDate({}));
+                if (!isAddingTransaction) setValue("packageData.startDate", null);
                 if (!isAddingTransaction) setValue("packageData.packageId", "");
                 if (!isAddingTransaction) setValue("packageData.paymentMethodId", "");
+                if (!isAddingTransaction) setValue("packageData.promoCodeId", null);
                 if (selectedPackage) setSelectedPackage(null);
                 if (selectedPromoCode) setSelectedPromoCode(null);
                 if (selectedPaymentMethod) setSelectedPaymentMethod("");
@@ -204,8 +206,12 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
                     setSelectedPackage(data);
                     setValue("packageData.packageId", value as string);
                     setValue("packageData.unitPrice", data.price);
-                    setValue("packageData.packageType", data.type);
+                    setValue("packageData.validityInDays", data.validityInDays);
                     clearErrors("packageData.packageId");
+                    if (!data.validityInDays) {
+                      setValue("packageData.startDate", null);
+                      clearErrors("packageData.startDate");
+                    }
                   }}
                 />
               )}
@@ -218,12 +224,20 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
                 label="Transaction Date"
                 type="date"
               />
-              <Input
-                {...register("packageData.startDate")}
-                error={errors.packageData?.startDate?.message}
-                label="Start Date"
-                type="date"
-              />
+              <section className="flex flex-col gap-0.5">
+                <Input
+                  {...register("packageData.startDate")}
+                  error={errors.packageData?.startDate?.message}
+                  label="Start Date"
+                  type="date"
+                  disabled={!data.validityInDays}
+                />
+                {!data.validityInDays && selectedPackage ? (
+                  <small className="text-xs mt-0.5 text-red underline">
+                    Start date is not required since the package hasn't validity in days
+                  </small>
+                ) : null}
+              </section>
             </section>
           </section>
           <section className="grid md:grid-cols-2 gap-4">
@@ -249,7 +263,12 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
 
             {/* PROMO_CODES */}
             <section className="grid md:grid-cols-2 gap-4">
-              <Input disabled={!data.packageId} {...register("packageData.unitPrice")} type="number" label="Unit Price" />
+              <Input
+                disabled={!data.packageId}
+                {...register("packageData.unitPrice", { setValueAs: (v: string) => parseInt(v) })}
+                type="number"
+                label="Unit Price"
+              />
               <section className="flex flex-col gap-0.5">
                 <label htmlFor="promoCodeCode">Promo Code (Optional)</label>
                 <section className="flex flex-col">
