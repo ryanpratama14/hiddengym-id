@@ -1,6 +1,5 @@
 "use client";
 
-import ActionButton from "@/app/[lang]/dashboard/components/ActionButton";
 import Button from "@/components/Button";
 import FilterIcon from "@/components/FilterIcon";
 import Iconify from "@/components/Iconify";
@@ -12,6 +11,7 @@ import { cn, formatCurrency, localizePhoneNumber, textEllipsis } from "@/lib/fun
 import { type UserList, type UserListInput } from "@/server/api/routers/user";
 import { PAGINATION_LIMIT } from "@/trpc/shared";
 import { type Lang, type SearchParams } from "@/types";
+import ActionButton from "@dashboard/components/ActionButton";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import { Table } from "antd";
 import { type FilterDropdownProps } from "antd/es/table/interface";

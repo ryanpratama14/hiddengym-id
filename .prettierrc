@@ -1,4 +1,0 @@
-{
-  "plugins": ["@ianvs/prettier-plugin-sort-imports"],
-  "printWidth": 135
-}

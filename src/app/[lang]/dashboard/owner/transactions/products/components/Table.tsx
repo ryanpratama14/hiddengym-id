@@ -1,4 +1,3 @@
-import ActionButton from "@/app/[lang]/dashboard/components/ActionButton";
 import Button from "@/components/Button";
 import FilterIcon from "@/components/FilterIcon";
 import Iconify from "@/components/Iconify";
@@ -15,6 +14,7 @@ import type {
 } from "@/server/api/routers/productTransaction";
 import { PAGINATION_LIMIT } from "@/trpc/shared";
 import { type SearchParams } from "@/types";
+import ActionButton from "@dashboard/components/ActionButton";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import { Table } from "antd";
 import { type FilterDropdownProps } from "antd/es/table/interface";

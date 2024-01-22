@@ -1,4 +1,3 @@
-import ActionButton from "@/app/[lang]/dashboard/components/ActionButton";
 import Button from "@/components/Button";
 import FilterIcon from "@/components/FilterIcon";
 import Input from "@/components/Input";
@@ -7,6 +6,7 @@ import { cn, formatCurrency } from "@/lib/functions";
 import { type PackageList, type PackageListInput } from "@/server/api/routers/package";
 import { inputVariants, statusVariants } from "@/styles/variants";
 import { type Lang, type SearchParams } from "@/types";
+import ActionButton from "@dashboard/components/ActionButton";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import { type PackageTransaction, type PackageType } from "@prisma/client";
 import { Table } from "antd";
