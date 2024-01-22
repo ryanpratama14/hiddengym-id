@@ -101,11 +101,14 @@ export class schema {
           validityInDays: z.number().nullable(),
         })
         .refine(
-          ({ startDate, validityInDays }) => {
+          ({ validityInDays, startDate }) => {
             if (!startDate && validityInDays) return false;
             return true;
           },
-          { message: "Start date is required since the package has validity in days", path: ["startDate"] },
+          {
+            message: "Start date is required since the package has validity in days",
+            path: ["startDate"],
+          },
         )
         .optional(),
     });
@@ -246,16 +249,28 @@ export class schema {
 
     static update = z.object({
       id: z.string(),
-      body: z.object({
-        transactionDate: schema.date,
-        startDate: schema.dateNullable,
-        paymentMethodId: z.string().min(1, "Select payment method"),
-        packageId: z.string().min(1, "Select package"),
-        promoCodeCode: z.string().optional(),
-        promoCodeId: z.string().nullable(),
-        unitPrice: z.number().min(1, numberMessage("Price", 1)),
-        buyerId: z.string(),
-      }),
+      body: z
+        .object({
+          transactionDate: schema.date,
+          startDate: schema.dateNullable,
+          paymentMethodId: z.string().min(1, "Select payment method"),
+          packageId: z.string().min(1, "Select package"),
+          promoCodeCode: z.string().optional(),
+          promoCodeId: z.string().nullable(),
+          unitPrice: z.number().min(1, numberMessage("Price", 1)),
+          buyerId: z.string(),
+          validityInDays: z.number().nullable(),
+        })
+        .refine(
+          ({ validityInDays, startDate }) => {
+            if (!startDate && validityInDays) return false;
+            return true;
+          },
+          {
+            message: "Start date is required since the package has validity in days",
+            path: ["startDate"],
+          },
+        ),
     });
 
     static list = z.object({

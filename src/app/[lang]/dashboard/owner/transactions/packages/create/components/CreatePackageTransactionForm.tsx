@@ -69,7 +69,14 @@ export default function CreatePackageTransactionForm({ t, option }: Props) {
     resetField,
   } = useForm<PackageTransactionCreateInput>({
     resolver: zodResolver(schema.packageTransaction.create),
-    defaultValues: { transactionDate: getInputDate({}), paymentMethodId: "", buyerId: "", packageId: "", promoCodeId: null },
+    defaultValues: {
+      transactionDate: getInputDate({}),
+      startDate: null,
+      paymentMethodId: "",
+      buyerId: "",
+      packageId: "",
+      promoCodeId: null,
+    },
   });
 
   const onSubmit: SubmitHandler<PackageTransactionCreateInput> = (data) => createData(data);
@@ -175,7 +182,20 @@ export default function CreatePackageTransactionForm({ t, option }: Props) {
       <section className="grid md:grid-cols-2 gap-4">
         <section className="grid grid-cols-2 gap-4">
           <Input label="Transaction Date" {...register("transactionDate")} type="date" />
-          <Input error={errors?.startDate?.message} label="Start Date" {...register("startDate")} type="date" />
+          <section className="flex flex-col gap-0.5">
+            <Input
+              {...register("startDate")}
+              error={errors.startDate?.message}
+              label="Start Date"
+              type="date"
+              disabled={!selectedPackage?.validityInDays}
+            />
+            {!selectedPackage?.validityInDays && selectedPackage ? (
+              <small className="text-xs mt-0.5 text-red underline text-left">
+                Start date is not required since the package hasn't validity in days
+              </small>
+            ) : null}
+          </section>
         </section>
         <Controller
           control={control}

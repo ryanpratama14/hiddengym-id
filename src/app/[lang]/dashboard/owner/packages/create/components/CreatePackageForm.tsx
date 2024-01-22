@@ -28,6 +28,7 @@ const initialData: PackageCreateInput = {
   validityInDays: null,
   placeIDs: [],
   sportIDs: [],
+  trainerIDs: [],
   approvedSessions: null,
 };
 

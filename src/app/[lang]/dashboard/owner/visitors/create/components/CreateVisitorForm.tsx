@@ -74,17 +74,19 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
 
   const { mutate: createVisitor, isPending: loading } = api.user.createVisitor.useMutation({
     onSuccess: async (res) => {
-      const packageTransaction: PackageTransactionCreateInput = {
-        packageId: getValues("packageData.packageId"),
-        paymentMethodId: getValues("packageData.paymentMethodId"),
-        transactionDate: getValues("packageData.transactionDate"),
-        promoCodeId: getValues("packageData.promoCodeId"),
-        validityInDays: getValues("packageData.validityInDays"),
-        startDate: getValues("packageData.startDate"),
-        unitPrice: getValues("packageData.unitPrice"),
-        buyerId: res.visitorId,
-      };
-      await createPackageTransaction(packageTransaction);
+      if (getValues("packageData")) {
+        const packageTransaction: PackageTransactionCreateInput = {
+          packageId: getValues("packageData.packageId"),
+          paymentMethodId: getValues("packageData.paymentMethodId"),
+          transactionDate: getValues("packageData.transactionDate"),
+          promoCodeId: getValues("packageData.promoCodeId"),
+          validityInDays: getValues("packageData.validityInDays"),
+          startDate: getValues("packageData.startDate"),
+          unitPrice: getValues("packageData.unitPrice"),
+          buyerId: res.visitorId,
+        };
+        await createPackageTransaction(packageTransaction);
+      }
       toastSuccess({ t, description: res.message });
       router.push(USER_REDIRECT({ lang, href: "/visitors", role: "OWNER" }));
     },
@@ -233,7 +235,7 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
                   disabled={!data.validityInDays}
                 />
                 {!data.validityInDays && selectedPackage ? (
-                  <small className="text-xs mt-0.5 text-red underline">
+                  <small className="text-xs mt-0.5 text-red underline text-left">
                     Start date is not required since the package hasn't validity in days
                   </small>
                 ) : null}
