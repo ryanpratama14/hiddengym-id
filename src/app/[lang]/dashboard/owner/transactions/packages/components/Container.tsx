@@ -3,6 +3,7 @@
 import { Modal } from "@/components/Modal";
 import ModalConfirm from "@/components/ModalConfirm";
 import PackageTransaction from "@/components/PackageTransaction";
+import { toastError, toastSuccess } from "@/components/Toast";
 import { REFETCH_INTERVAL, USER_REDIRECT } from "@/lib/constants";
 import { createUrl } from "@/lib/functions";
 import { schema } from "@/schema";
@@ -31,9 +32,20 @@ export default function TransactionsProductContainer({ searchParams, lang, optio
     router.push(createUrl(USER_REDIRECT({ lang, href: "/transactions/packages", role: "OWNER" }), newParams));
   };
 
+  const utils = api.useUtils();
   const { data, isLoading: loading } = api.packageTransaction.list.useQuery(query, { refetchInterval: REFETCH_INTERVAL });
   const selectedId = searchParams.id ?? searchParams.packageId ?? "";
   const { data: selectedData } = api.packageTransaction.detail.useQuery({ id: selectedId }, { enabled: !!selectedId });
+  const { mutate: deleteData, isPending: loadingDelete } = api.packageTransaction.delete.useMutation({
+    onSuccess: async (res) => {
+      toastSuccess({ t, description: res.message });
+      newParams.delete("id");
+      newParams.delete("delete");
+      redirectTable(newParams);
+      await utils.packageTransaction.list.invalidate();
+    },
+    onError: (res) => toastError({ t, description: res.message }),
+  });
 
   if (data?.isPaginationInvalid) {
     newParams.delete("page");
@@ -54,11 +66,11 @@ export default function TransactionsProductContainer({ searchParams, lang, optio
         data={selectedData}
       />
       <ModalConfirm
-        loading={true}
+        loading={loadingDelete}
         action="delete"
         show={!!searchParams.id && !!searchParams.delete}
-        onConfirm={async () => {
-          console.log("hitted");
+        onConfirm={() => {
+          searchParams.id && deleteData({ id: searchParams.id });
         }}
         closeModal={() => {
           newParams.delete("id");

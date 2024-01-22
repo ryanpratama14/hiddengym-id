@@ -122,7 +122,12 @@ export default function ModalUpdate({ show, closeModal, data, option, t }: Props
               )}
             />
             <section className="grid grid-cols-2 gap-4">
-              <Input label="Transaction Date" {...register("body.transactionDate")} type="date" />
+              <Input
+                label="Transaction Date"
+                {...register("body.transactionDate")}
+                error={errors.body?.transactionDate?.message}
+                type="date"
+              />
               <Input {...register("body.startDate")} error={errors.body?.startDate?.message} label="Start Date" type="date" />
             </section>
 
