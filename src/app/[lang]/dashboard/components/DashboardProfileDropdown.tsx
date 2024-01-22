@@ -1,5 +1,6 @@
 import Iconify from "@/components/Iconify";
 import Img from "@/components/Img";
+import ModalConfirm from "@/components/ModalConfirm";
 import { GENDERS, ICONS, PROFILE_BUTTON_ITEMS_TO_REMOVE } from "@/lib/constants";
 import { createUrl } from "@/lib/functions";
 import { type User } from "@/server/api/routers/user";
@@ -30,18 +31,19 @@ export default function DashboardProfileDropdown({ user }: Props) {
   const PROFILE_BUTTON_ITEMS: { label: string; key: ProfileButtonKey; icon: IconifyIcon | string; onClick: () => void }[] = [
     {
       label: "Sign Out",
-      key: "sign-out",
+      key: "signOut",
       icon: ICONS.signout,
       onClick: () => {
-        signOut().catch((err) => console.error(err));
+        newParams.set("signOut", "true");
+        redirect(newParams);
       },
     },
     {
       label: "Change Password",
-      key: "change-password",
+      key: "changePassword",
       icon: ICONS.change,
       onClick: () => {
-        newParams.set("userId", user.id);
+        newParams.set("changePassword", "true");
         redirect(newParams);
       },
     },
@@ -64,11 +66,20 @@ export default function DashboardProfileDropdown({ user }: Props) {
   return (
     <Fragment>
       <ModalChangePassword
-        show={!!searchParams.get("userId")}
+        show={!!searchParams.get("changePassword")}
         closeModal={() => {
-          newParams.delete("userId");
+          newParams.delete("changePassword");
           redirect(newParams);
         }}
+      />
+      <ModalConfirm
+        onConfirm={() => signOut()}
+        action="sign out"
+        closeModal={() => {
+          newParams.delete("signOut");
+          redirect(newParams);
+        }}
+        show={!!searchParams.get("signOut")}
       />
       <ConfigProvider theme={{ components: { Menu: { itemHeight: 30, itemHoverBg: COLORS.orange, itemBorderRadius: 6 } } }}>
         <Menu as="article" className="relative">

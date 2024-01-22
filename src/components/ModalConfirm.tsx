@@ -2,7 +2,7 @@ import type { MouseEvent } from "@/types";
 import Button from "./Button";
 import { Modal } from "./Modal";
 
-type Props = { show: boolean; onConfirm: MouseEvent; closeModal: () => void; action: string; loading: boolean };
+type Props = { show: boolean; onConfirm: MouseEvent; closeModal: () => void; action: string; loading?: boolean };
 
 export default function ModalConfirm({ show, closeModal, onConfirm, action, loading }: Props) {
   return (
