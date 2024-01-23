@@ -10,7 +10,7 @@ export default function ProductTransaction({ data }: Props) {
     <TransactionInvoice shadow="none" background="cream">
       <Fragment>
         {!data ? (
-          <Skeleton paragraph={{ rows: 8 }} />
+          <Skeleton active paragraph={{ rows: 5 }} />
         ) : (
           <Fragment>
             <TransactionInvoice.Header

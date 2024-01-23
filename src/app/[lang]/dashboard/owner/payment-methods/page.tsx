@@ -14,7 +14,7 @@ export default function PaymentMethodsPage() {
         {loading
           ? Array(10)
               .fill(10)
-              .map((_, index) => <Skeleton key={index} />)
+              .map((_, index) => <Skeleton active key={index} />)
           : data?.map((e) => {
               return (
                 <section key={e?.id} className="p-6 bg-light rounded-md border-1 border-dark/50">

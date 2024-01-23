@@ -99,7 +99,7 @@ export default function ModalUpdate({ show, closeModal, data, t }: Props) {
               <small>{data.buyer.email}</small>
             </section>
           ) : (
-            <Skeleton />
+            <Skeleton active />
           )}
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 w-full">
             <Controller

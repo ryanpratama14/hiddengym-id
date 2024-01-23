@@ -17,7 +17,7 @@ export default function ProductsList({ data, loading, redirect, newParams }: Pro
   return loading
     ? Array(10)
         .fill(10)
-        .map((_, index) => <Skeleton key={index} />)
+        .map((_, index) => <Skeleton active key={index} />)
     : data?.map((product) => {
         return (
           <section key={product.id} className="flex flex-col gap-4 p-3 bg-light shadow-lg border-1 border-dark rounded-md">
