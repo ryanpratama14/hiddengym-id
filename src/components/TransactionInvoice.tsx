@@ -58,10 +58,10 @@ TransactionInvoice.Products = function InvoiceProducts({
       {products.map((product, index) =>
         product.productId ? (
           <section key={index} className="flex justify-between items-center">
-            <p>
+            <small>
               {product.quantity}x {product.name}
-            </p>
-            <p>{formatCurrency(product.quantity * product.unitPrice)}</p>
+            </small>
+            <small>{formatCurrency(product.quantity * product.unitPrice)}</small>
           </section>
         ) : null,
       )}
