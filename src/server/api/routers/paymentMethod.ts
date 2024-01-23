@@ -34,8 +34,8 @@ export const paymentMethodRouter = createTRPCRouter({
     const updatedData = data.map((e) => {
       return {
         ...e,
-        todayPackageTransactions: e.packageTransactions.filter((txn) => isTxnDateToday(txn.transactionDate, txn.buyer.tz)),
-        todayProductTransactions: e.productTransactions.filter((txn) => isTxnDateToday(txn.transactionDate, txn.buyer.tz)),
+        todayPackageTransactions: e.packageTransactions.filter((txn) => isTxnDateToday(txn.transactionDate)),
+        todayProductTransactions: e.productTransactions.filter((txn) => isTxnDateToday(txn.transactionDate)),
       };
     });
 
@@ -48,8 +48,8 @@ export const paymentMethodRouter = createTRPCRouter({
 
     return {
       ...data,
-      todayPackageTransaction: data.packageTransactions.filter((txn) => isTxnDateToday(txn.transactionDate, txn.buyer.tz)),
-      todayProductTransaction: data.productTransactions.filter((txn) => isTxnDateToday(txn.transactionDate, txn.buyer.tz)),
+      todayPackageTransaction: data.packageTransactions.filter((txn) => isTxnDateToday(txn.transactionDate)),
+      todayProductTransaction: data.productTransactions.filter((txn) => isTxnDateToday(txn.transactionDate)),
     };
   }),
 });

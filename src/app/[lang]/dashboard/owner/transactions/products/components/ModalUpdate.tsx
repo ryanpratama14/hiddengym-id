@@ -87,6 +87,7 @@ export default function ModalUpdate({ show, closeModal, data, t }: Props) {
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
             <section className="grid md:grid-cols-2 gap-4">
               <Input
+                max={getInputDate({})}
                 label="Transaction Date"
                 {...register("body.transactionDate")}
                 error={errors.body?.transactionDate?.message}

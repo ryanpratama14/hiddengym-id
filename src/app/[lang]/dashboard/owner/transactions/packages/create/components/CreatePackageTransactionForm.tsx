@@ -176,7 +176,13 @@ export default function CreatePackageTransactionForm({ t, option }: Props) {
 
       <section className="grid md:grid-cols-2 gap-4">
         <section className="grid grid-cols-2 gap-4">
-          <Input error={errors.transactionDate?.message} label="Transaction Date" {...register("transactionDate")} type="date" />
+          <Input
+            max={getInputDate({})}
+            error={errors.transactionDate?.message}
+            label="Transaction Date"
+            {...register("transactionDate")}
+            type="date"
+          />
           <Input error={errors.startDate?.message} label="Start Date" {...register("startDate")} type="date" />
         </section>
         <Controller

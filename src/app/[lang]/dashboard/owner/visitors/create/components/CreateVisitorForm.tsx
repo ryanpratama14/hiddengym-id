@@ -214,6 +214,7 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
 
             <section className="grid grid-cols-2 gap-4">
               <Input
+                max={getInputDate({})}
                 {...register("packageData.transactionDate")}
                 error={errors.packageData?.transactionDate?.message}
                 label="Transaction Date"

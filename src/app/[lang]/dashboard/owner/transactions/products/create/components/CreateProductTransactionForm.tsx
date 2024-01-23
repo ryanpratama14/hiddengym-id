@@ -123,7 +123,13 @@ export default function CreateProductTransactionForm({ t }: Props) {
             />
           )}
         />
-        <Input error={errors?.transactionDate?.message} label="Transaction Date" {...register("transactionDate")} type="date" />
+        <Input
+          max={getInputDate({})}
+          error={errors?.transactionDate?.message}
+          label="Transaction Date"
+          {...register("transactionDate")}
+          type="date"
+        />
       </section>
       <section className="grid md:grid-cols-2 gap-4">
         <section className="flex flex-col gap-0.5">

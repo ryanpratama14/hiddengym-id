@@ -106,31 +106,29 @@ export const getUserAge = (birthDate: Date): number => {
 };
 
 export const getRemainingDays = (targetDate: Date, tz: string): number => {
-  const currentDate = dayjs().tz(tz).toDate();
+  const currentDate = dayjs().toDate();
   const timeZoneOffset = dayjs.tz(targetDate, tz).utcOffset();
   const adjustedTargetDate = dayjs(targetDate).subtract(timeZoneOffset, "minute");
   const timeDifference = adjustedTargetDate.diff(currentDate, "millisecond");
   const remainingDays = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-
   return remainingDays;
 };
 
 export const getRemainingDate = (targetDate: Date, tz: string): string => {
-  const currentDate = dayjs().tz(tz).toDate();
+  const currentDate = dayjs().toDate();
   const timeZoneOffset = dayjs.tz(targetDate, tz).utcOffset();
   const adjustedTargetDate = dayjs(targetDate).subtract(timeZoneOffset, "minute");
   const timeDifference = adjustedTargetDate.diff(currentDate, "millisecond");
   const remainingDays = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
   if (remainingDays <= 0) return "Expired";
   if (remainingDays === 1) return "Today";
-
   return formatDateShort({ date: adjustedTargetDate.toDate(), utc: true });
 };
 
 export const getTokenExpiryDate = (): Date => new Date(getNewDate().getTime() + 3600000); // 1 hour;
 
 export const isDateFuture = (startDate: Date, tz: string) => {
-  const currentDate = dayjs().tz(tz).toDate();
+  const currentDate = dayjs().toDate();
   const timeZoneOffset = dayjs.tz(startDate, tz).utcOffset();
   const adjustedStartDate = dayjs(startDate).subtract(timeZoneOffset, "minute").toDate();
   const daysUntilStart = Math.ceil((adjustedStartDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24));
@@ -150,10 +148,9 @@ export const isDateToday = (date: Date, tz: string): boolean => {
   return false;
 };
 
-export const isTxnDateToday = (txnDate: Date, tz: string): boolean => {
-  const currentDate = dayjs().tz(tz).toDate();
-  const timeZoneOffset = dayjs.tz(txnDate, tz).utcOffset();
-  const adjustedTxnDate = dayjs(txnDate).add(timeZoneOffset, "minute");
+export const isTxnDateToday = (txnDate: Date): boolean => {
+  const currentDate = dayjs().toDate();
+  const adjustedTxnDate = dayjs(txnDate).endOf("day");
   const timeDifference = adjustedTxnDate.diff(currentDate, "millisecond");
   const remainingDays = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
   if (remainingDays === 1) return true;
