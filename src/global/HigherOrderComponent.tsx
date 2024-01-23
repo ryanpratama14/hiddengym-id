@@ -28,20 +28,22 @@ export default function HigherOrderComponent({ lang, session, children, isSessio
     if (t) setT(t);
   }, [session, lang, t]);
 
-  return (
-    <Suspense
-      fallback={
-        <main className="h-[100dvh] items-center justify-center flex flex-col gap-6 p-shorter">
-          <Logo className="w-72 aspect-video" />
-          <section className="flex flex-col text-center">
-            <h6>HIDDEN GYM</h6>
-            <small className="italic">eat sleep gym repeat</small>
-          </section>
-          <ClipLoader color={COLORS.orange} size={30} />
-        </main>
-      }
-    >
-      {children}
-    </Suspense>
-  );
+  return children;
+
+  // return (
+  //   <Suspense
+  //     fallback={
+  //       <main className="h-[100dvh] items-center justify-center flex flex-col gap-6 p-shorter">
+  //         <Logo className="w-72 aspect-video" />
+  //         <section className="flex flex-col text-center">
+  //           <h6>HIDDEN GYM</h6>
+  //           <small className="italic">eat sleep gym repeat</small>
+  //         </section>
+  //         <ClipLoader color={COLORS.orange} size={30} />
+  //       </main>
+  //     }
+  //   >
+  //     {children}
+  //   </Suspense>
+  // );
 }

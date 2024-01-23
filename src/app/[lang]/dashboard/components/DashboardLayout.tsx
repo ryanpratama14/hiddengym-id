@@ -8,7 +8,7 @@ import { Layout, Menu } from "antd";
 import { type ItemType, type MenuItemType } from "antd/es/menu/hooks/useItems";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import DashboardProfileDropdown from "./DashboardProfileDropdown";
 
 type Props = {

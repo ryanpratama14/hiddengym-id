@@ -1,7 +1,7 @@
 import { ICONS } from "@/lib/constants";
 import { cn } from "@/lib/functions";
 import { type MouseEvent } from "@/types";
-import React, { forwardRef, useId, type ComponentProps } from "react";
+import { forwardRef, useId, type ComponentProps } from "react";
 import Iconify from "./Iconify";
 
 type InputProps = ComponentProps<"input"> & {

@@ -5,7 +5,7 @@ import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import { ConfigProvider, Empty, Spin } from "antd";
 import Select, { type BaseOptionType, type DefaultOptionType, type SelectProps } from "antd/es/select";
 import { type BaseSelectRef } from "rc-select";
-import React, { useId } from "react";
+import { forwardRef, useId } from "react";
 import Iconify from "./Iconify";
 import { inputIconSize } from "./Input";
 
@@ -22,7 +22,7 @@ type InputSelectProps = SelectProps<ValueType, OptionType> & {
   className?: string;
 };
 
-const InputSelect = React.forwardRef<BaseSelectRef, InputSelectProps>((props, ref) => {
+const InputSelect = forwardRef<BaseSelectRef, InputSelectProps>((props, ref) => {
   const id = useId();
 
   return (
