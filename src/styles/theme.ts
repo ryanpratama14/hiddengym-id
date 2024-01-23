@@ -20,7 +20,7 @@ export const COLORS = {
 
 export const theme: ThemeConfig = {
   token: {
-    fontFamily: "var(--font-poppins)",
+    fontFamily: "Poppins",
     colorBgElevated: COLORS.dark,
     colorPrimary: COLORS.dark,
     colorLinkHover: COLORS.blue2,

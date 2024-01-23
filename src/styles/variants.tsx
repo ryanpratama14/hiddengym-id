@@ -90,18 +90,3 @@ export const actionVariants = tv({
   },
   defaultVariants: { color: "green" },
 });
-
-export const notificationVariants = tv({
-  base: "text-dark font-poppins bg-cream",
-  variants: {
-    type: {
-      info: "",
-      warning: "",
-      error: "",
-      success: "",
-    },
-  },
-  defaultVariants: {
-    type: "info",
-  },
-});

@@ -1,14 +1,10 @@
 import { withTV } from "tailwind-variants/transformer";
 import { type Config } from "tailwindcss";
-import { fontFamily } from "tailwindcss/defaultTheme";
 
 export default withTV({
   content: ["./src/**/*.tsx"],
   theme: {
     extend: {
-      fontFamily: {
-        poppins: ["var(--font-poppins)", ...fontFamily.sans],
-      },
       colors: {
         orange: "#ff4a01",
         orange2: "#bd3802",
