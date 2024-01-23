@@ -55,8 +55,8 @@ model File {
 
     // relations
     imageOwner User[] @relation("userImage")
-    owner      User   @relation(fields: [ownerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-    ownerId    String @db.ObjectId
+    uploader   User   @relation(fields: [uploaderId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+    uploaderId String @db.ObjectId
 
     createdDate DateTime @default(now())
 }

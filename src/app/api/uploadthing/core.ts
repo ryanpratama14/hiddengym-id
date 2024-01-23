@@ -13,7 +13,7 @@ export const ourFileRouter = {
       return { userId: session.user.id };
     })
     .onUploadComplete(async ({ file, metadata }) => {
-      const newImage = await db.file.create({ data: { url: file.url, name: file.name, ownerId: metadata.userId } });
+      const newImage = await db.file.create({ data: { url: file.url, name: file.name, uploaderId: metadata.userId } });
       await db.user.update({ where: { id: metadata.userId }, data: { imageId: newImage.id } });
       return THROW_OK("CREATED");
     }),
