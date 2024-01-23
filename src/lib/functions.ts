@@ -111,6 +111,7 @@ export const getRemainingDays = (targetDate: Date, tz: string): number => {
   const adjustedTargetDate = dayjs(targetDate).subtract(timeZoneOffset, "minute");
   const timeDifference = adjustedTargetDate.diff(currentDate, "millisecond");
   const remainingDays = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+
   return remainingDays;
 };
 
@@ -145,6 +146,16 @@ export const isDateExpired = (expiryDate: Date, tz: string): boolean => {
 
 export const isDateToday = (date: Date, tz: string): boolean => {
   const remainingDays = getRemainingDays(date, tz);
+  if (remainingDays === 1) return true;
+  return false;
+};
+
+export const isTxnDateToday = (txnDate: Date, tz: string): boolean => {
+  const currentDate = dayjs().tz(tz).toDate();
+  const timeZoneOffset = dayjs.tz(txnDate, tz).utcOffset();
+  const adjustedTxnDate = dayjs(txnDate).add(timeZoneOffset, "minute");
+  const timeDifference = adjustedTxnDate.diff(currentDate, "millisecond");
+  const remainingDays = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
   if (remainingDays === 1) return true;
   return false;
 };

@@ -1,3 +1,4 @@
+import { isTxnDateToday } from "@/lib/functions";
 import { schema } from "@/schema";
 import { createTRPCRouter, ownerProcedure } from "@/server/api/trpc";
 import {
@@ -9,6 +10,15 @@ import {
   type RouterInputs,
   type RouterOutputs,
 } from "@/trpc/shared";
+import { z } from "zod";
+
+const paymentMethodSelect = {
+  select: {
+    packageTransactions: { select: { ...prismaExclude("PackageTransaction", []), buyer: true } },
+    productTransactions: { select: { ...prismaExclude("ProductTransaction", []), buyer: true } },
+    ...prismaExclude("PaymentMethod", []),
+  },
+};
 
 export const paymentMethodRouter = createTRPCRouter({
   create: ownerProcedure.input(schema.paymentMethod.create).mutation(async ({ ctx, input }) => {
@@ -19,15 +29,34 @@ export const paymentMethodRouter = createTRPCRouter({
   }),
 
   list: ownerProcedure.query(async ({ ctx }) => {
-    const data = await ctx.db.paymentMethod.findMany({
-      select: { packageTransactions: true, productTransactions: true, ...prismaExclude("PaymentMethod", []) },
+    const data = await ctx.db.paymentMethod.findMany({ ...paymentMethodSelect });
+
+    const updatedData = data.map((e) => {
+      return {
+        ...e,
+        todayPackageTransactions: e.packageTransactions.filter((txn) => isTxnDateToday(txn.transactionDate, txn.buyer.tz)),
+        todayProductTransactions: e.productTransactions.filter((txn) => isTxnDateToday(txn.transactionDate, txn.buyer.tz)),
+      };
     });
-    return data;
+
+    return updatedData;
+  }),
+
+  detail: ownerProcedure.input(z.object({ id: z.string() })).query(async ({ ctx, input }) => {
+    const data = await ctx.db.paymentMethod.findFirst({ where: { id: input.id }, ...paymentMethodSelect });
+    if (!data) return THROW_TRPC_ERROR("NOT_FOUND");
+
+    return {
+      ...data,
+      todayPackageTransaction: data.packageTransactions.filter((txn) => isTxnDateToday(txn.transactionDate, txn.buyer.tz)),
+      todayProductTransaction: data.productTransactions.filter((txn) => isTxnDateToday(txn.transactionDate, txn.buyer.tz)),
+    };
   }),
 });
 
 // outputs
 export type PaymentMethodList = RouterOutputs["paymentMethod"]["list"];
+export type PaymentMethodDetail = RouterOutputs["paymentMethod"]["detail"];
 
 // inputs
 export type PaymentMethodCreateInput = RouterInputs["paymentMethod"]["create"];
