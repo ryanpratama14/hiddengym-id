@@ -25,6 +25,7 @@ export default function PackageTransaction({ data }: Props) {
               phoneNumber={data.buyer.phoneNumber}
               email={data.buyer?.email}
               gender={data.buyer.gender}
+              image={data.buyer.image}
             />
             <TransactionInvoice.PackageWithTxnId
               package={{ name: data.package.name, unitPrice: data.unitPrice, type: data.package.type }}

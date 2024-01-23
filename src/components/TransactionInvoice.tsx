@@ -10,8 +10,9 @@ import {
   getStartDate,
   localizePhoneNumber,
 } from "@/lib/functions";
-import type { Gender, Package, PackageType, PromoCode } from "@prisma/client";
+import type { File, Gender, Package, PackageType, PromoCode } from "@prisma/client";
 import Iconify from "./Iconify";
+import Img from "./Img";
 import Logo from "./Logo";
 import NavigatorX from "./NavigatorX";
 
@@ -72,18 +73,25 @@ TransactionInvoice.Buyer = function InvoiceBuyer(props: {
   fullName: string;
   phoneNumber: string;
   email?: string | null;
+  image?: File | null;
   gender: Gender;
 }) {
   return (
-    <section className="flex flex-col text-center">
-      <section className="flex gap-0.5 items-center justify-center">
-        <Iconify width={20} icon={GENDERS[props.gender].icon} color={GENDERS[props.gender].color} />
-        <p className="font-medium -mb-0.5">{props.fullName}</p>
+    <section className="flex gap-2 items-center">
+      <section className="size-10 bg-cream rounded-full relative shadow border-1 border-dotted border-dark flex items-center justify-center">
+        {props.image ? (
+          <Img src={props.image.url} alt={props.fullName} className="object-cover w-full h-full rounded-full" />
+        ) : (
+          <Iconify icon={GENDERS[props.gender].picture} className="text-dark" width={30} />
+        )}
       </section>
-      <NavigatorX newTab href={`tel:${COUNTRY_CODE}${props.phoneNumber}`}>
-        <small className="hover:text-blue">{localizePhoneNumber(props.phoneNumber)}</small>
-      </NavigatorX>
-      <small>{props.email}</small>
+      <section className="flex flex-col text-left">
+        <p className="font-medium -mb-0.5">{props.fullName}</p>
+        <NavigatorX newTab href={`tel:${COUNTRY_CODE}${props.phoneNumber}`}>
+          <small className="hover:text-blue">{localizePhoneNumber(props.phoneNumber)}</small>
+        </NavigatorX>
+        <small>{props.email}</small>
+      </section>
     </section>
   );
 };
@@ -107,8 +115,8 @@ TransactionInvoice.Header = function InvoiceHeader(props: {
         </small>
       </section>
       <section className="flex flex-col items-end">
-        <p className="font-semibold">TOTAL AMOUNT</p>
-        <h6 className="w-fit px-2 text-light bg-orange">{formatCurrency(props.totalPrice)}</h6>
+        <p className="font-medium">TOTAL AMOUNT</p>
+        <p className="text-lg font-semibold w-fit px-2 text-light bg-orange">{formatCurrency(props.totalPrice)}</p>
       </section>
     </section>
   );

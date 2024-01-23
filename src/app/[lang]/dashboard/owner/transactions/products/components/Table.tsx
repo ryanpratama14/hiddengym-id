@@ -155,7 +155,7 @@ export default function ProductTransactionsTable({ data, searchParams, loading, 
           key: "buyer.fullName",
           render: (_, item) => (
             <section className="flex gap-2 items-center">
-              <section className="size-7 bg-cream rounded-full relative shadow border-1 border-dotted border-dark flex items-center justify-center p-0.5">
+              <section className="size-7 bg-cream rounded-full relative shadow border-1 border-dotted border-dark flex items-center justify-center">
                 {item.buyer?.image?.url ? (
                   <Img src={item.buyer.image.url} alt={item.buyer.fullName} className="object-cover w-full h-full rounded-full" />
                 ) : (

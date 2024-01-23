@@ -24,6 +24,7 @@ export default function ProductTransaction({ data }: Props) {
               phoneNumber={data.buyer.phoneNumber}
               email={data.buyer?.email}
               gender={data.buyer.gender}
+              image={data.buyer.image}
             />
             <TransactionInvoice.Products
               products={data.products.map((e) => ({

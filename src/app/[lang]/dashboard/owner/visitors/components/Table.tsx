@@ -162,7 +162,7 @@ export default function VisitorsTable({ data, searchParams, lang, loading, newPa
           dataIndex: "fullName",
           render: (text: string, user) => (
             <section className="flex gap-2 items-center">
-              <section className="size-7 bg-cream rounded-full relative shadow border-1 border-dotted border-dark flex items-center justify-center p-0.5">
+              <section className="size-7 bg-cream rounded-full relative shadow border-1 border-dotted border-dark flex items-center justify-center">
                 {user?.image?.url ? (
                   <Img src={user.image.url} alt={text} className="object-cover w-full h-full rounded-full" />
                 ) : (
