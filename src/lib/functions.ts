@@ -25,7 +25,7 @@ export const cn = (...inputs: ClassValue[]): string => twMerge(clsx(inputs));
 
 export const consoleError = (error: string) => {
   console.error(
-    `❌ ${getNewDate().toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit", second: "2-digit" })} 👉 ${error}`,
+    `❌ ${dayjs().toDate().toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit", second: "2-digit" })} 👉 ${error}`,
   );
 };
 
@@ -69,8 +69,8 @@ export const getTodayDate = ({ locale, style }: { locale: Lang; style: "short" |
 };
 
 export const getNewDate = (dateString?: string): Date => {
-  if (dateString) return new Date(dateString);
-  return new Date();
+  if (dateString) return dayjs.utc(dateString).toDate();
+  return dayjs().toDate();
 };
 
 export const getInputDate = ({ date, tz }: { date?: Date; tz?: string }): string => {
@@ -92,16 +92,9 @@ export const getExpiryDate = ({ days, dateString }: { days: number; dateString: 
 };
 
 export const getUserAge = (birthDate: Date): number => {
-  const currentDate = getNewDate();
-  let age = currentDate.getFullYear() - birthDate.getFullYear();
-
-  if (
-    birthDate.getMonth() > currentDate.getMonth() ||
-    (birthDate.getMonth() === currentDate.getMonth() && birthDate.getDate() > currentDate.getDate())
-  ) {
-    age--;
-  }
-
+  const currentDate = dayjs();
+  const adjustedBirthDate = dayjs(birthDate);
+  const age = currentDate.diff(adjustedBirthDate, "year");
   return age;
 };
 
@@ -125,7 +118,7 @@ export const getRemainingDate = (targetDate: Date, tz: string): string => {
   return formatDateShort({ date: adjustedTargetDate.toDate(), utc: true });
 };
 
-export const getTokenExpiryDate = (): Date => new Date(getNewDate().getTime() + 3600000); // 1 hour;
+export const getTokenExpiryDate = (): Date => dayjs().add(1, "hour").toDate();
 
 export const isDateFuture = (startDate: Date, tz: string) => {
   const currentDate = dayjs().toDate();
