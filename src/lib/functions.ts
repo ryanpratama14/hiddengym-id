@@ -7,7 +7,7 @@ import {
   USER_PATHNAMES,
   USER_REDIRECT,
 } from "@/lib/constants";
-import type { DashboardMenuKey, DashboardMenuLabel, DashboardSubMenuKey, Lang } from "@/types";
+import type { ActionButtonAction, DashboardMenuKey, DashboardMenuLabel, DashboardSubMenuKey, Lang } from "@/types";
 import { type Role } from "@prisma/client";
 import { clsx, type ClassValue } from "clsx";
 import dayjs from "dayjs";
@@ -330,3 +330,37 @@ export const getSelectedMenu = ({ pathname, role, lang }: { pathname: string; ro
 export const accumulateValue = <T extends Record<K, number>, K extends keyof T>(array: T[], fieldName: K): T[K] => {
   return array.reduce((accumulator, item) => accumulator + item[fieldName], 0) as unknown as T[K];
 };
+
+export const closeModal =
+  ({
+    action,
+    newParams,
+    redirect,
+  }: {
+    action: ActionButtonAction;
+    newParams: URLSearchParams;
+    redirect: (newParams: URLSearchParams) => void;
+  }) =>
+  () => {
+    newParams.delete("id");
+    newParams.delete(action);
+    redirect(newParams);
+  };
+
+export const openModal =
+  ({
+    id,
+    action,
+    newParams,
+    redirect,
+  }: {
+    id: string;
+    action: ActionButtonAction;
+    newParams: URLSearchParams;
+    redirect: (newParams: URLSearchParams) => void;
+  }) =>
+  () => {
+    newParams.set("id", id);
+    newParams.set(action, "true");
+    redirect(newParams);
+  };

@@ -12,12 +12,13 @@ import {
   isDateExpired,
   isDateFuture,
   isDateToday,
+  openModal,
   textEllipsis,
 } from "@/lib/functions";
 import type { PackageTransactionList, PackageTransactionListInput } from "@/server/api/routers/packageTransaction";
 import { inputVariants, statusVariants } from "@/styles/variants";
 import { PAGINATION_LIMIT } from "@/trpc/shared";
-import type { ActionButtonAction, SearchParams } from "@/types";
+import type { SearchParams } from "@/types";
 import ActionButton from "@dashboard/components/ActionButton";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import { Table } from "antd";
@@ -28,10 +29,10 @@ type Props = {
   searchParams: SearchParams;
   loading: boolean;
   newParams: URLSearchParams;
-  redirectTable: (newParams: URLSearchParams) => void;
+  redirect: (newParams: URLSearchParams) => void;
 };
 
-export default function PackageTransactionsTable({ data, searchParams, loading, newParams, redirectTable }: Props) {
+export default function PackageTransactionsTable({ data, searchParams, loading, newParams, redirect }: Props) {
   const getTableFilter = ({
     name,
     icon,
@@ -52,7 +53,7 @@ export default function PackageTransactionsTable({ data, searchParams, loading, 
               newParams.set(name, value.value);
             } else newParams.delete(name);
             confirm();
-            redirectTable(newParams);
+            redirect(newParams);
           }}
           className="flex flex-col gap-2 w-52 bg-light p-2 rounded-md shadow"
         >
@@ -90,7 +91,7 @@ export default function PackageTransactionsTable({ data, searchParams, loading, 
                 newParams.delete(name);
                 newParams.delete("page");
                 confirm();
-                redirectTable(newParams);
+                redirect(newParams);
               }}
             >
               Reset
@@ -116,7 +117,7 @@ export default function PackageTransactionsTable({ data, searchParams, loading, 
           if (limit === PAGINATION_LIMIT) {
             newParams.delete("limit");
           } else newParams.set("limit", String(limit));
-          redirectTable(newParams);
+          redirect(newParams);
         },
         showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} package transactions`,
       }}
@@ -124,7 +125,7 @@ export default function PackageTransactionsTable({ data, searchParams, loading, 
         if (pagination.current === 1) {
           newParams.delete("page");
         } else newParams.set("page", String(pagination.current));
-        redirectTable(newParams);
+        redirect(newParams);
       }}
       rowKey="id"
       dataSource={data?.data}
@@ -138,17 +139,11 @@ export default function PackageTransactionsTable({ data, searchParams, loading, 
           width: 1,
           dataIndex: "id",
           render: (id: string) => {
-            const redirect = (action: ActionButtonAction) => () => {
-              newParams.set("id", id);
-              newParams.set(action, "true");
-              redirectTable(newParams);
-            };
-
             return (
               <section className="flex gap-2 justify-center items-center">
-                <ActionButton onClick={redirect("detail")} icon={ICONS.invoice} color="blue" />
-                <ActionButton onClick={redirect("update")} icon={ICONS.edit} color="yellow" />
-                <ActionButton onClick={redirect("delete")} icon={ICONS.delete} color="red" />
+                <ActionButton onClick={openModal({ newParams, id, action: "detail", redirect })} icon={ICONS.invoice} color="blue" />
+                <ActionButton onClick={openModal({ newParams, id, action: "update", redirect })} icon={ICONS.edit} color="yellow" />
+                <ActionButton onClick={openModal({ newParams, id, action: "delete", redirect })} icon={ICONS.delete} color="red" />
               </section>
             );
           },

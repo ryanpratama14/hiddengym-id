@@ -5,10 +5,10 @@ import ModalConfirm from "@/components/ModalConfirm";
 import PackageTransaction from "@/components/PackageTransaction";
 import { toastError, toastSuccess } from "@/components/Toast";
 import { REFETCH_INTERVAL, USER_REDIRECT } from "@/lib/constants";
-import { createUrl } from "@/lib/functions";
+import { closeModal, createUrl } from "@/lib/functions";
 import { schema } from "@/schema";
 import { api } from "@/trpc/react";
-import type { ActionButtonAction, Dictionary, Lang, SearchParams } from "@/types";
+import type { Dictionary, Lang, SearchParams } from "@/types";
 import { useRouter } from "next/navigation";
 import Table from "../components/Table";
 import TableSorter from "../components/TableSorter";
@@ -26,7 +26,7 @@ export default function TransactionsProductContainer({ searchParams, lang, t }: 
   const newParams = new URLSearchParams(searchParams);
   const router = useRouter();
 
-  const redirectTable = (newParams: URLSearchParams) => {
+  const redirect = (newParams: URLSearchParams) => {
     router.push(createUrl(USER_REDIRECT({ lang, href: "/transactions/packages", role: "OWNER" }), newParams));
   };
 
@@ -35,16 +35,10 @@ export default function TransactionsProductContainer({ searchParams, lang, t }: 
   const selectedId = searchParams.id ?? searchParams.packageId ?? "";
   const { data: selectedData } = api.packageTransaction.detail.useQuery({ id: selectedId }, { enabled: !!selectedId });
 
-  const closeModal = (action: ActionButtonAction) => () => {
-    newParams.delete("id");
-    newParams.delete(action);
-    redirectTable(newParams);
-  };
-
   const { mutate: deleteData, isPending: loadingDelete } = api.packageTransaction.delete.useMutation({
     onSuccess: async (res) => {
       toastSuccess({ t, description: res.message });
-      closeModal("delete")();
+      closeModal({ action: "delete", newParams, redirect })();
       await utils.packageTransaction.list.invalidate();
     },
     onError: (res) => toastError({ t, description: res.message }),
@@ -52,28 +46,33 @@ export default function TransactionsProductContainer({ searchParams, lang, t }: 
 
   if (data?.isPaginationInvalid) {
     newParams.delete("page");
-    redirectTable(newParams);
+    redirect(newParams);
   }
 
   return (
     <section className="grid md:grid-cols-5 gap-6 lg:gap-x-12">
-      <ModalUpdate t={t} show={!!searchParams.id && !!searchParams.update} closeModal={closeModal("update")} data={selectedData} />
+      <ModalUpdate
+        t={t}
+        show={!!searchParams.id && !!searchParams.update}
+        closeModal={closeModal({ action: "update", newParams, redirect })}
+        data={selectedData}
+      />
       <ModalConfirm
         loading={loadingDelete}
         action="delete"
         show={!!searchParams.id && !!searchParams.delete}
         onConfirm={() => searchParams.id && deleteData({ id: searchParams.id })}
-        closeModal={closeModal("delete")}
+        closeModal={closeModal({ action: "delete", newParams, redirect })}
       />
-      <Modal show={!!searchParams.id && !!searchParams.detail} closeModal={closeModal("detail")}>
+      <Modal show={!!searchParams.id && !!searchParams.detail} closeModal={closeModal({ action: "detail", newParams, redirect })}>
         <Modal.Body>
           <PackageTransaction data={selectedData} />
         </Modal.Body>
       </Modal>
       <section className="flex flex-col gap-6 md:col-span-4">
-        <Table loading={loading} data={data} searchParams={searchParams} redirectTable={redirectTable} newParams={newParams} />
+        <Table loading={loading} data={data} searchParams={searchParams} redirect={redirect} newParams={newParams} />
       </section>
-      <TableSorter redirectTable={redirectTable} newParams={newParams} />
+      <TableSorter redirect={redirect} newParams={newParams} />
     </section>
   );
 }

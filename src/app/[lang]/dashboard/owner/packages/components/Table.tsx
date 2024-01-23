@@ -2,10 +2,10 @@ import Button from "@/components/Button";
 import FilterIcon from "@/components/FilterIcon";
 import Input from "@/components/Input";
 import { ICONS, PACKAGE_TYPES } from "@/lib/constants";
-import { cn, formatCurrency } from "@/lib/functions";
+import { cn, formatCurrency, openModal } from "@/lib/functions";
 import { type PackageList, type PackageListInput } from "@/server/api/routers/package";
 import { inputVariants, statusVariants } from "@/styles/variants";
-import type { ActionButtonAction, Lang, SearchParams } from "@/types";
+import type { Lang, SearchParams } from "@/types";
 import ActionButton from "@dashboard/components/ActionButton";
 import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
 import { type PackageTransaction, type PackageType } from "@prisma/client";
@@ -19,10 +19,10 @@ type Props = {
   loading: boolean;
   searchParams: SearchParams;
   newParams: URLSearchParams;
-  redirectTable: (newParams: URLSearchParams) => void;
+  redirect: (newParams: URLSearchParams) => void;
 };
 
-export default function PackagesTable({ data, loading, searchParams, newParams, redirectTable }: Props) {
+export default function PackagesTable({ data, loading, searchParams, newParams, redirect }: Props) {
   const getTableFilter = ({
     name,
     icon,
@@ -43,7 +43,7 @@ export default function PackagesTable({ data, loading, searchParams, newParams, 
               newParams.set(name, value.value);
             } else newParams.delete(name);
             confirm();
-            redirectTable(newParams);
+            redirect(newParams);
           }}
           className="flex flex-col gap-2 w-52 bg-light p-2 rounded-md shadow"
         >
@@ -81,7 +81,7 @@ export default function PackagesTable({ data, loading, searchParams, newParams, 
                 newParams.delete(name);
                 newParams.delete("page");
                 confirm();
-                redirectTable(newParams);
+                redirect(newParams);
               }}
             >
               Reset
@@ -110,14 +110,9 @@ export default function PackagesTable({ data, loading, searchParams, newParams, 
             title: "Action",
             width: 1,
             render: (id: string) => {
-              const redirect = (action: ActionButtonAction) => () => {
-                newParams.set("id", id);
-                newParams.set(action, "true");
-                redirectTable(newParams);
-              };
               return (
                 <section className="flex justify-center items-center">
-                  <ActionButton onClick={redirect("update")} icon={ICONS.edit} color="yellow" />
+                  <ActionButton onClick={openModal({ id, newParams, redirect, action: "update" })} icon={ICONS.edit} color="yellow" />
                 </section>
               );
             },

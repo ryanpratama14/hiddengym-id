@@ -1,10 +1,10 @@
 "use client";
 
 import { REFETCH_INTERVAL, USER_REDIRECT } from "@/lib/constants";
-import { createUrl } from "@/lib/functions";
+import { closeModal, createUrl } from "@/lib/functions";
 import { schema } from "@/schema";
 import { api } from "@/trpc/react";
-import type { ActionButtonAction, Dictionary, Lang, SearchParams } from "@/types";
+import type { Dictionary, Lang, SearchParams } from "@/types";
 import { useRouter } from "next/navigation";
 import { Fragment } from "react";
 import Table from "../components/Table";
@@ -24,14 +24,8 @@ export default function PackagesContainer({ lang, searchParams, t }: Props) {
   const newParams = new URLSearchParams(searchParams);
   const router = useRouter();
 
-  const redirectTable = (newParams: URLSearchParams) => {
+  const redirect = (newParams: URLSearchParams) => {
     router.push(createUrl(USER_REDIRECT({ lang, href: "/packages", role: "OWNER" }), newParams));
-  };
-
-  const closeModal = (action: ActionButtonAction) => () => {
-    newParams.delete("id");
-    newParams.delete(action);
-    redirectTable(newParams);
   };
 
   return (
@@ -41,19 +35,12 @@ export default function PackagesContainer({ lang, searchParams, t }: Props) {
           <ModalUpdate
             t={t}
             show={!!searchParams.id && !!searchParams.update && !!data?.find((e) => e.id === searchParams.id)}
-            closeModal={closeModal("update")}
+            closeModal={closeModal({ action: "update", newParams, redirect })}
             data={searchParams.id && data ? data.find((e) => e.id === searchParams.id)! : null}
           />
-          <Table
-            data={data}
-            lang={lang}
-            loading={loading}
-            searchParams={searchParams}
-            redirectTable={redirectTable}
-            newParams={newParams}
-          />
+          <Table data={data} lang={lang} loading={loading} searchParams={searchParams} redirect={redirect} newParams={newParams} />
         </section>
-        <TableSorter redirectTable={redirectTable} newParams={newParams} />
+        <TableSorter redirect={redirect} newParams={newParams} />
       </section>
     </Fragment>
   );

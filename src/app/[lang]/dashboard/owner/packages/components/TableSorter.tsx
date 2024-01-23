@@ -5,9 +5,9 @@ import Iconify from "@/components/Iconify";
 import { ICONS, PACKAGE_SORTERERS } from "@/lib/constants";
 import { cn, getSorterSlug } from "@/lib/functions";
 
-type Props = { newParams: URLSearchParams; redirectTable: (newParams: URLSearchParams) => void };
+type Props = { newParams: URLSearchParams; redirect: (newParams: URLSearchParams) => void };
 
-export default function TableSorter({ newParams, redirectTable }: Props) {
+export default function TableSorter({ newParams, redirect }: Props) {
   return (
     <section className="hidden md:flex flex-col gap-2">
       <section className="flex justify-between items-end">
@@ -18,7 +18,7 @@ export default function TableSorter({ newParams, redirectTable }: Props) {
             color="expired"
             onClick={() => {
               newParams.delete("sort");
-              redirectTable(newParams);
+              redirect(newParams);
             }}
           >
             Reset
@@ -36,7 +36,7 @@ export default function TableSorter({ newParams, redirectTable }: Props) {
                   if (sort?.sorterer === "asc") {
                     newParams.set("sort", `${opt.name}-desc`);
                   } else newParams.set("sort", `${opt.name}-asc`);
-                  redirectTable(newParams);
+                  redirect(newParams);
                 }}
                 className={cn("hover:underline w-fit text-dark", {
                   underline: active,
