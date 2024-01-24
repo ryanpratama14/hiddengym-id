@@ -67,6 +67,7 @@ export class schema {
       birthDate: schema.dateNullable,
       credential: schema.password,
       gender: schema.gender,
+      role: schema.role,
     });
 
     static createVisitor = z.object({

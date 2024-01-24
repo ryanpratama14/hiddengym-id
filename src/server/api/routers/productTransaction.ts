@@ -105,10 +105,10 @@ export const productTransactionRouter = createTRPCRouter({
       }
     }
 
-    for (const productOnTransactionIDs of data.products
+    for (const productOnTransactionId of data.products
       .filter((existingProduct) => !body.products.some((newProduct) => newProduct.productId === existingProduct.productId))
       .map((e) => e.id)) {
-      await ctx.db.productOnTransaction.delete({ where: { id: productOnTransactionIDs } });
+      await ctx.db.productOnTransaction.delete({ where: { id: productOnTransactionId } });
     }
 
     await ctx.db.productTransaction.update({

@@ -55,20 +55,22 @@ export const userRouter = createTRPCRouter({
     const dataByPhoneNumber = await ctx.db.user.findUnique({ where: { phoneNumber: input.phoneNumber } });
     if (dataByPhoneNumber) return THROW_TRPC_ERROR("CONFLICT", getConflictMessage("user", "phone number"));
 
-    await ctx.db.user.create({
+    const newData = await ctx.db.user.create({
       data: {
+        role: input.role,
         email: input.email.toLowerCase(),
         fullName: formatName(input.fullName),
         phoneNumber: input.phoneNumber,
         gender: input.gender,
         credential: await hash(input.credential),
-        birthDate: input.birthDate && getNewDate(input.birthDate),
+        birthDate: input.birthDate ? getNewDate(input.birthDate) : null,
         imageId: null,
         emailVerified: null,
         activeVisitId: null,
       },
     });
-    return THROW_OK("CREATED");
+
+    return { ...THROW_OK("CREATED", getCreatedMessage("new visitor")), userId: newData.id };
   }),
 
   createVisitor: ownerAdminProcedure.input(schema.user.createVisitor).mutation(async ({ ctx, input }) => {

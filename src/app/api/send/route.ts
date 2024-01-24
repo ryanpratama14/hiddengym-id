@@ -1,5 +1,5 @@
 // // import VercelInviteUserEmail from "@/emails/welcome";
-// import { schema } from "@/schema";
+// import { schema } from "@schema";
 // import { env } from "@/env";
 // import { type NextRequest, NextResponse } from "next/server";
 // import { Resend } from "resend";
