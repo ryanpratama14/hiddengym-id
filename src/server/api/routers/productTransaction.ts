@@ -1,5 +1,4 @@
 import { formatName, getEndDate, getNewDate, getStartDate } from "@/lib/functions";
-import { schema, type Pagination } from "@/schema";
 import {
   getCreatedMessage,
   getDeletedMessage,
@@ -14,6 +13,7 @@ import {
   type RouterInputs,
   type RouterOutputs,
 } from "@/trpc/shared";
+import { schema, type Pagination } from "@schema";
 import { z } from "zod";
 import { createTRPCRouter, ownerAdminProcedure, protectedProcedure } from "../trpc";
 import { updateProductTotalTransactions, updateTotalSpending } from "./other";

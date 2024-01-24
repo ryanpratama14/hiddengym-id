@@ -1,5 +1,4 @@
 import { formatName, getNewDate } from "@/lib/functions";
-import { schema, type Pagination } from "@/schema";
 import { createTRPCRouter, ownerAdminProcedure, ownerProcedure, protectedProcedure, publicProcedure } from "@/server/api/trpc";
 import {
   getConflictMessage,
@@ -14,6 +13,7 @@ import {
   type RouterInputs,
   type RouterOutputs,
 } from "@/trpc/shared";
+import { schema, type Pagination } from "@schema";
 import { hash, verify } from "argon2";
 import { z } from "zod";
 

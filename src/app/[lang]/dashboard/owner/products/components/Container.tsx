@@ -2,9 +2,9 @@
 
 import { REFETCH_INTERVAL, USER_REDIRECT } from "@/lib/constants";
 import { closeModal, createUrl } from "@/lib/functions";
-import { schema } from "@/schema";
 import { api } from "@/trpc/react";
 import type { Dictionary, Lang, SearchParams } from "@/types";
+import { schema } from "@schema";
 import { useRouter } from "next/navigation";
 import { Fragment } from "react";
 import ProductsList from "./List";

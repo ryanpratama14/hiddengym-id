@@ -29,6 +29,7 @@
       "@/*": ["./src/*"],
       "#/*": ["./public/*"],
       "~/*": ["./src/app/[lang]/*"],
+      "@schema": ["./src/server/schema/index.ts"],
       "@router/*": ["./src/server/api/routers/*"],
       "@dashboard/*": ["./src/app/[lang]/dashboard/*"],
       "@owner/*": ["./src/app/[lang]/dashboard/owner/*"],

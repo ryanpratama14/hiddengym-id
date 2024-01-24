@@ -6,11 +6,11 @@ import Input from "@/components/Input";
 import { toastError, toastSuccess } from "@/components/Toast";
 import { GENDER_OPTIONS, ICONS } from "@/lib/constants";
 import { getInputDate } from "@/lib/functions";
-import { schema } from "@/schema";
 import { type User, type UserUpdateInput } from "@/server/api/routers/user";
 import { type TRPC_RESPONSE } from "@/trpc/shared";
 import { type Dictionary } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { schema } from "@schema";
 import { useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 

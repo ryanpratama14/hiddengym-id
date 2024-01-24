@@ -1,5 +1,4 @@
 import { formatName } from "@/lib/functions";
-import { schema } from "@/schema";
 import { createTRPCRouter, ownerProcedure } from "@/server/api/trpc";
 import {
   getConflictMessage,
@@ -9,6 +8,7 @@ import {
   type RouterInputs,
   type RouterOutputs,
 } from "@/trpc/shared";
+import { schema } from "@schema";
 
 export const placeRouter = createTRPCRouter({
   create: ownerProcedure.input(schema.place.create).mutation(async ({ ctx, input }) => {

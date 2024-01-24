@@ -6,11 +6,11 @@ import InputSelect from "@/components/InputSelect";
 import { toastError, toastSuccess } from "@/components/Toast";
 import { useZustand } from "@/global/store";
 import { ICONS, PROMO_CODE_TYPES, USER_REDIRECT } from "@/lib/constants";
-import { schema } from "@/schema";
 import { api } from "@/trpc/react";
 import { type Dictionary } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type PromoCodeCreateInput } from "@router/promoCode";
+import { schema } from "@schema";
 import { useRouter } from "next/navigation";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 

@@ -3,10 +3,10 @@ import Input from "@/components/Input";
 import { Modal } from "@/components/Modal";
 import { toastError, toastSuccess } from "@/components/Toast";
 import { useZustand } from "@/global/store";
-import { schema } from "@/schema";
 import { type UserChangePasswordInput } from "@/server/api/routers/user";
 import { api } from "@/trpc/react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { schema } from "@schema";
 import { useForm, type SubmitHandler } from "react-hook-form";
 
 type Props = { show: boolean; closeModal: () => void };

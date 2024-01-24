@@ -1,4 +1,3 @@
-import { schema } from "@/schema";
 import { createTRPCRouter, ownerProcedure, publicProcedure } from "@/server/api/trpc";
 import {
   getConflictMessage,
@@ -12,6 +11,7 @@ import {
   type RouterInputs,
   type RouterOutputs,
 } from "@/trpc/shared";
+import { schema } from "@schema";
 import { z } from "zod";
 
 const packageSelect = { select: { ...prismaExclude("Package", []), trainers: true, places: true, sports: true, transactions: true } };

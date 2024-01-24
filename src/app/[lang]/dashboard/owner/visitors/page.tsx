@@ -2,12 +2,12 @@
 
 import { REFETCH_INTERVAL, USER_REDIRECT } from "@/lib/constants";
 import { createUrl } from "@/lib/functions";
-import { schema } from "@/schema";
 import { api } from "@/trpc/react";
 import { type Lang, type SearchParams } from "@/types";
 import Table from "@owner/visitors/components/Table";
 import TableSearch from "@owner/visitors/components/TableSearch";
 import TableSorter from "@owner/visitors/components/TableSorter";
+import { schema } from "@schema";
 import { useRouter } from "next/navigation";
 
 type Props = {
