@@ -5,10 +5,10 @@ import Iconify from "@/components/Iconify";
 import Img from "@/components/Img";
 import Logo from "@/components/Logo";
 import NavigatorX from "@/components/NavigatorX";
-import { toastError, toastSuccess } from "@/components/Toast";
+import { toastError, toastSuccess, toastWarning } from "@/components/Toast";
 import { COUNTRY_CODE, GENDERS } from "@/lib/constants";
 import { formatDateLong, formatName, isFileSizeAllowed, localizePhoneNumber } from "@/lib/functions";
-import { uploadFiles } from "@/lib/uploadthing";
+import { useUploadThing } from "@/lib/uploadthing";
 import { type User, type UserUpdateInput } from "@/server/api/routers/user";
 import { type TRPC_RESPONSE } from "@/trpc/shared";
 import { type ChangeEvent, type Dictionary, type Lang } from "@/types";
@@ -28,9 +28,11 @@ type Props = {
 export default function HomeContainer({ lang, user, updateUser, refreshUser, t }: Props) {
   const [isEdit, setIsEdit] = useState<boolean>(false);
 
+  const { startUpload } = useUploadThing("uploadUserImage");
+
   const { mutate: uploadImage, isPending: loading } = useMutation({
     mutationFn: async (file: File) => {
-      await uploadFiles("uploadUserImage", { files: [file] });
+      await startUpload([file]);
       await refreshUser();
     },
     onSuccess: () => toastSuccess({ t, description: "Uploaded successfully, your profile picture should be changed in seconds..." }),
@@ -44,7 +46,7 @@ export default function HomeContainer({ lang, user, updateUser, refreshUser, t }
     const file = e.target.files?.[0];
     if (file && isFileSizeAllowed("1MB", file.size)) {
       uploadImage(file);
-    } else toastError({ t, description: "Please pick a picture that under 1MB" });
+    } else toastWarning({ t, description: "Please pick a picture that under 1MB." });
   };
 
   return (

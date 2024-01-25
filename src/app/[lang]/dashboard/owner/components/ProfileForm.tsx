@@ -44,7 +44,10 @@ export default function ProfileForm({ user, setIsEdit, updateUser, t }: Props) {
 
   const { mutate, isPending: loading } = useMutation({
     mutationFn: updateUser,
-    onSuccess: (res) => toastSuccess({ t, description: res.message }),
+    onSuccess: (res) => {
+      toastSuccess({ t, description: res.message });
+      setIsEdit(false);
+    },
     onError: (res) => toastError({ t, description: res.message }),
   });
 
