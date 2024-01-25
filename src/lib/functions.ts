@@ -220,7 +220,10 @@ export const formatDateLong = ({
 
 export const localizePhoneNumber = (phoneNumber: string): string => {
   const localizedPhoneNumber = `${COUNTRY_CODE}${phoneNumber}`;
-  const formattedNumber = `${localizedPhoneNumber.slice(0, 3)} ${localizedPhoneNumber.slice(3, 6)}-${localizedPhoneNumber.slice(6, 10)}-${localizedPhoneNumber.slice(10)}`;
+  const formattedNumber = `${localizedPhoneNumber.slice(0, 3)} ${localizedPhoneNumber.slice(3, 6)}-${localizedPhoneNumber.slice(
+    6,
+    10,
+  )}-${localizedPhoneNumber.slice(10)}`;
   return formattedNumber;
 };
 
@@ -252,8 +255,10 @@ const powOf2: Record<PowOf2, number> = {
 export const isFileSizeAllowed = (maxFileSize: FileSize, fileSize: number): boolean => {
   const fileSizeRegex = /^(\d+)(B|KB|MB|GB)$/;
   const match = maxFileSize.match(fileSizeRegex);
-  const size = parseInt(match![1]!, 10);
-  const unit = match![2] as SizeUnit;
+
+  // biome-ignore lint/style/noNonNullAssertion: <explanation>
+  const size = parseInt(match?.[1]!, 10);
+  const unit = match?.[2] as SizeUnit;
 
   const maxSize = powOf2[size as PowOf2] * bytesInUnit[unit as SizeUnit];
   if (fileSize < maxSize) return true;
@@ -293,12 +298,10 @@ export const getDashboardPathname = (pathname: string, role: Role): DashboardMen
     const result = parts.map((_, index) => `/${parts.slice(0, index + 1).join("/")}`);
     if (result.length > 0) {
       return result as DashboardMenuKey[];
-    } else {
-      return ["/"];
     }
-  } else {
-    return [];
+    return ["/"];
   }
+  return [];
 };
 
 type SelectedMenu = {
