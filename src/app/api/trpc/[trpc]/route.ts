@@ -3,7 +3,7 @@ import { consoleError } from "@/lib/functions";
 import { appRouter } from "@/server/api/root";
 import { createTRPCContext } from "@/server/api/trpc";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
-import { type NextRequest } from "next/server";
+import type { NextRequest } from "next/server";
 
 const createContext = async (req: NextRequest) => createTRPCContext({ headers: req.headers });
 

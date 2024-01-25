@@ -3,7 +3,7 @@ import { FILTERED_ADD_BUTTONS_ITEMS, FILTERED_DASHBOARD_MENU_ITEMS, MENU_ICON_SI
 import { getServerAuthSession } from "@/server/auth";
 import { api } from "@/trpc/server";
 import type { Lang } from "@/types";
-import { type ItemType, type MenuItemType } from "antd/es/menu/hooks/useItems";
+import type { ItemType, MenuItemType } from "antd/es/menu/hooks/useItems";
 import { redirect } from "next/navigation";
 import DashboardContainer from "./components/DashboardContainer";
 import DashboardNavigator from "./components/DashboardNavigator";

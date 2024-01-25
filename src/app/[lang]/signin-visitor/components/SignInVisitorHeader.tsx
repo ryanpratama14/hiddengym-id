@@ -13,7 +13,7 @@ export default function SignInVisitorHeader() {
       <Logo
         onClick={() => {
           setCount((prev) => prev + 1);
-          if (count === 7) return router.push(`/signin`);
+          if (count === 7) return router.push("/signin");
         }}
         className="w-full aspect-video"
       />

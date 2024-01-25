@@ -4,8 +4,8 @@ import Iconify from "@/components/Iconify";
 import { ICONS } from "@/lib/constants";
 import { COLORS } from "@/styles/theme";
 import { Menu, Transition } from "@headlessui/react";
-import { Menu as AntdMenu, ConfigProvider } from "antd";
-import { type ItemType, type MenuItemType } from "antd/es/menu/hooks/useItems";
+import { ConfigProvider, Menu as AntdMenu } from "antd";
+import type { ItemType, MenuItemType } from "antd/es/menu/hooks/useItems";
 import { Fragment } from "react";
 
 type Props = {

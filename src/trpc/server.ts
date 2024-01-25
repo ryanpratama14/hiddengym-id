@@ -1,13 +1,13 @@
-import "server-only";
-import { appRouter, type AppRouter } from "@/server/api/root";
+import { type AppRouter, appRouter } from "@/server/api/root";
 import { createTRPCContext } from "@/server/api/trpc";
 import { transformer } from "@/trpc/shared";
-import { createTRPCClient, loggerLink, TRPCClientError } from "@trpc/client";
+import { TRPCClientError, createTRPCClient, loggerLink } from "@trpc/client";
 import { callTRPCProcedure } from "@trpc/server";
 import { observable } from "@trpc/server/observable";
-import { type TRPCErrorResponse } from "@trpc/server/rpc";
+import type { TRPCErrorResponse } from "@trpc/server/rpc";
 import { cookies } from "next/headers";
 import { cache } from "react";
+import "server-only";
 
 const createContext = cache(() =>
   createTRPCContext({ headers: new Headers({ cookie: cookies().toString(), "x-trpc-source": "rsc" }) }),

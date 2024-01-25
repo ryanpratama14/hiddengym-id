@@ -1,8 +1,8 @@
-import { type AppRouter } from "@/server/api/root";
+import type { AppRouter } from "@/server/api/root";
 import { Prisma } from "@prisma/client";
-import { type Pagination } from "@schema";
+import type { Pagination } from "@schema";
 import { TRPCError, type inferRouterInputs, type inferRouterOutputs } from "@trpc/server";
-import { type TRPC_ERROR_CODE_KEY } from "@trpc/server/rpc";
+import type { TRPC_ERROR_CODE_KEY } from "@trpc/server/rpc";
 import SuperJSON from "superjson";
 import { z } from "zod";
 

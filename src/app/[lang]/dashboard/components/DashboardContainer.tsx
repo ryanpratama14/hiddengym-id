@@ -1,8 +1,8 @@
 "use client";
 
 import { cn } from "@/lib/functions";
-import { type User } from "@/server/api/routers/user";
-import { type ItemType, type MenuItemType } from "antd/es/menu/hooks/useItems";
+import type { User } from "@/server/api/routers/user";
+import type { ItemType, MenuItemType } from "antd/es/menu/hooks/useItems";
 import { Fragment, useState } from "react";
 import AddButton from "./AddButton";
 import DashboardLayout from "./DashboardLayout";

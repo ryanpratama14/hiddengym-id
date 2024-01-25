@@ -2,10 +2,10 @@ import { env } from "@/env";
 import { EMAIL_VISITOR_READONLY } from "@/lib/constants";
 import { db } from "@/server/db";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { type Role, type User } from "@prisma/client";
+import type { Role, User } from "@prisma/client";
 import { schema } from "@schema";
 import { verify } from "argon2";
-import { getServerSession, type DefaultSession, type NextAuthOptions } from "next-auth";
+import { type DefaultSession, type NextAuthOptions, getServerSession } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 declare module "next-auth" {

@@ -5,8 +5,10 @@
     "enabled": true,
     "rules": {
       "recommended": true,
+      "a11y": { "useKeyWithClickEvents": "off" },
       "complexity": { "noStaticOnlyClass": "off" },
-      "nursery": { "useImportType": "warn" }
+      "nursery": { "useImportType": "warn", "useGroupedTypeImport": "warn" },
+      "correctness": { "noUnusedVariables": "warn", "noUnusedLabels": "warn", "useExhaustiveDependencies": "off" }
     }
   },
   "formatter": {

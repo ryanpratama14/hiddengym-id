@@ -1,7 +1,7 @@
 import { USER_REDIRECT } from "@/lib/constants";
 import { cn } from "@/lib/functions";
-import { type AddButtonKey, type DashboardMenuKey, type Lang } from "@/types";
-import { type Role } from "@prisma/client";
+import type { AddButtonKey, DashboardMenuKey, Lang } from "@/types";
+import type { Role } from "@prisma/client";
 import Link from "next/link";
 
 const DashboardNavigator = ({

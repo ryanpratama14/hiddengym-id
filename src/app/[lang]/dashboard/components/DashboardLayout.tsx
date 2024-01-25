@@ -1,11 +1,11 @@
 import Logo from "@/components/Logo";
 import { useZustand } from "@/global/store";
 import { cn, formatDateShort, getNewDate, getSelectedMenu } from "@/lib/functions";
-import { type User } from "@/server/api/routers/user";
+import type { User } from "@/server/api/routers/user";
 import { COLORS } from "@/styles/theme";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
-import { type ItemType, type MenuItemType } from "antd/es/menu/hooks/useItems";
+import type { ItemType, MenuItemType } from "antd/es/menu/hooks/useItems";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Fragment, useEffect, useState } from "react";

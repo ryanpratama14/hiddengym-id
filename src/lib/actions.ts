@@ -1,6 +1,6 @@
 "use server";
 
-import { type UserUpdateInput } from "@/server/api/routers/user";
+import type { UserUpdateInput } from "@/server/api/routers/user";
 import { api } from "@/trpc/server";
 import { revalidatePath } from "next/cache";
 

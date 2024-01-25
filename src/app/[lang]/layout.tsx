@@ -1,14 +1,14 @@
-import "@/styles/tailwind.css";
-import "@/styles/stylesheet.css";
 import HigherOrderComponent from "@/global/HigherOrderComponent";
 import { useDictionary } from "@/lib/dictionary";
 import { getServerAuthSession } from "@/server/auth";
+import "@/styles/stylesheet.css";
+import "@/styles/tailwind.css";
 import { theme } from "@/styles/theme";
 import { TRPCReactProvider } from "@/trpc/react";
-import { type Lang } from "@/types";
+import type { Lang } from "@/types";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { ConfigProvider } from "antd";
-import { type Metadata } from "next";
+import type { Metadata } from "next";
 import { cookies } from "next/headers";
 
 export const metadata: Metadata = {
@@ -23,7 +23,7 @@ type Props = { children: React.ReactNode; params: { lang: Lang } };
 export default async function RootLayout({ children, params }: Props) {
   const t = await useDictionary(params.lang);
   const session = await getServerAuthSession();
-  let isSessionExpired;
+  let isSessionExpired = undefined;
 
   if (session) if (Date.now() >= session.user.exp) isSessionExpired = false;
 

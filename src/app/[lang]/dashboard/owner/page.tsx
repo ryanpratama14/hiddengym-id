@@ -3,9 +3,9 @@ import { USER_PATHNAMES } from "@/lib/constants";
 import { useDictionary } from "@/lib/dictionary";
 import { getServerAuthSession } from "@/server/auth";
 import { api } from "@/trpc/server";
-import { type Lang } from "@/types";
+import type { Lang } from "@/types";
 import HomeContainer from "@owner/components/HomeContainer";
-import { type Role } from "@prisma/client";
+import type { Role } from "@prisma/client";
 import { redirect } from "next/navigation";
 
 type Props = { params: { lang: Lang } };

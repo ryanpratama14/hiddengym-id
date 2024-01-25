@@ -1,11 +1,11 @@
 import { USER_PATHNAMES } from "@/lib/constants";
 import { useDictionary } from "@/lib/dictionary";
 import { getServerAuthSession } from "@/server/auth";
-import { type Lang, type SearchParams } from "@/types";
+import type { Lang, SearchParams } from "@/types";
+import { redirect } from "next/navigation";
 // components
 import SignInVisitor from "~/signin-visitor/components/SignInVisitor";
 import SignInVisitorHeader from "~/signin-visitor/components/SignInVisitorHeader";
-import { redirect } from "next/navigation";
 
 type Props = {
   searchParams: SearchParams;
@@ -14,7 +14,7 @@ type Props = {
 
 export default async function SignInVisitorPage({ searchParams, params }: Props) {
   const session = await getServerAuthSession();
-  if (session && session.user) redirect(USER_PATHNAMES[session.user.role]);
+  if (session?.user) redirect(USER_PATHNAMES[session.user.role]);
   const t = await useDictionary(params.lang);
 
   return (

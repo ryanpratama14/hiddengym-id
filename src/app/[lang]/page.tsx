@@ -5,5 +5,5 @@ import { redirect } from "next/navigation";
 export default async function Home() {
   const session = await getServerAuthSession();
   if (session) redirect(USER_PATHNAMES[session.user.role]);
-  return redirect(`/signin`);
+  return redirect("/signin");
 }
