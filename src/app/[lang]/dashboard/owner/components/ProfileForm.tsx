@@ -11,7 +11,7 @@ import { type TRPC_RESPONSE } from "@/trpc/shared";
 import { type Dictionary } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { schema } from "@schema";
-import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
 import { useForm, type SubmitHandler } from "react-hook-form";
 
 type Props = {
@@ -22,7 +22,6 @@ type Props = {
 };
 
 export default function ProfileForm({ user, setIsEdit, updateUser, t }: Props) {
-  const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -41,14 +40,13 @@ export default function ProfileForm({ user, setIsEdit, updateUser, t }: Props) {
     },
   });
 
-  const onSubmit: SubmitHandler<UserUpdateInput> = async (data) => {
-    setLoading(true);
-    const res = await updateUser(data);
-    setLoading(false);
-    setIsEdit(false);
-    if (!res.status) return toastError({ t, description: "An error occurred" });
-    toastSuccess({ t, description: res.message });
-  };
+  const onSubmit: SubmitHandler<UserUpdateInput> = async (data) => mutate(data);
+
+  const { mutate, isPending: loading } = useMutation({
+    mutationFn: updateUser,
+    onSuccess: (res) => toastSuccess({ t, description: res.message }),
+    onError: (res) => toastError({ t, description: res.message }),
+  });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 w-full">
