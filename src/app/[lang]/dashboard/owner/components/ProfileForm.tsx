@@ -17,11 +17,11 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 type Props = {
   user: User;
   setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
-  updateUser: (data: UserUpdateInput) => Promise<TRPC_RESPONSE>;
+  actionUserUpdate: (data: UserUpdateInput) => Promise<TRPC_RESPONSE>;
   t: Dictionary;
 };
 
-export default function ProfileForm({ user, setIsEdit, updateUser, t }: Props) {
+export default function ProfileForm({ user, setIsEdit, actionUserUpdate, t }: Props) {
   const {
     register,
     handleSubmit,
@@ -43,7 +43,7 @@ export default function ProfileForm({ user, setIsEdit, updateUser, t }: Props) {
   const onSubmit: SubmitHandler<UserUpdateInput> = async (data) => mutate(data);
 
   const { mutate, isPending: loading } = useMutation({
-    mutationFn: updateUser,
+    mutationFn: actionUserUpdate,
     onSuccess: (res) => {
       toastSuccess({ t, description: res.message });
       setIsEdit(false);

@@ -20,12 +20,12 @@ import { Fragment, useState } from "react";
 type Props = {
   lang: Lang;
   user: User;
-  updateUser: (data: UserUpdateInput) => Promise<TRPC_RESPONSE>;
-  refreshUser: () => Promise<void>;
+  actionUserUpdate: (data: UserUpdateInput) => Promise<TRPC_RESPONSE>;
+  revalidateCache: () => Promise<void>;
   t: Dictionary;
 };
 
-export default function HomeContainer({ lang, user, updateUser, refreshUser, t }: Props) {
+export default function HomeContainer({ lang, user, actionUserUpdate, revalidateCache, t }: Props) {
   const [isEdit, setIsEdit] = useState<boolean>(false);
 
   const { startUpload } = useUploadThing("uploadUserImage");
@@ -33,7 +33,7 @@ export default function HomeContainer({ lang, user, updateUser, refreshUser, t }
   const { mutate: uploadImage, isPending: loading } = useMutation({
     mutationFn: async (file: File) => {
       await startUpload([file]);
-      await refreshUser();
+      await revalidateCache();
     },
     onSuccess: () => toastSuccess({ t, description: "Uploaded successfully, your profile picture should be changed in seconds..." }),
     onError: (error) => {
@@ -88,7 +88,7 @@ export default function HomeContainer({ lang, user, updateUser, refreshUser, t }
         <section className="flex flex-col gap-6">
           <section className="flex flex-col gap-6">
             {isEdit ? (
-              <ProfileForm t={t} user={user} setIsEdit={setIsEdit} updateUser={updateUser} />
+              <ProfileForm t={t} user={user} setIsEdit={setIsEdit} actionUserUpdate={actionUserUpdate} />
             ) : (
               <Fragment>
                 <section className="flex flex-col gap-2">

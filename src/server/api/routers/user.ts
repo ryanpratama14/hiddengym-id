@@ -115,6 +115,8 @@ export const userRouter = createTRPCRouter({
 
   update: protectedProcedure.input(schema.user.update).mutation(async ({ ctx, input }) => {
     const { body, userId } = input;
+    const data = await ctx.db.user.findFirst({ where: { id: userId } });
+    if (!data) return THROW_TRPC_ERROR("NOT_FOUND");
     await ctx.db.user.update({
       where: { id: userId },
       data: {
