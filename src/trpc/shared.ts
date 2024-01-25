@@ -135,7 +135,7 @@ export const removeFieldsFromObject = <T extends Record<string, unknown>, K exte
 };
 
 export const mergeZodSchema = <T extends Entity>(entity: T): z.ZodObject<Record<Keys<T>, z.ZodString>, "strip"> => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const entityFields: Keys<T>[] = Object.keys((Prisma as any)[`${entity}ScalarFieldEnum`]) as Keys<T>[];
 
   const schema = entityFields.reduce((schema, field) => {
@@ -151,15 +151,12 @@ export const mergeZodSchema = <T extends Entity>(entity: T): z.ZodObject<Record<
 
 export const getZodKeys = (schema: z.ZodType): string[] => {
   if (schema instanceof z.ZodNullable || schema instanceof z.ZodOptional) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     return getZodKeys(schema.unwrap());
   }
   if (schema instanceof z.ZodArray) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     return getZodKeys(schema.element);
   }
   if (schema instanceof z.ZodObject) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const entries = Object.entries<z.ZodType>(schema.shape);
     return entries.flatMap(([key, value]) => {
       const nested = getZodKeys(value).map((subKey) => `${key}.${subKey}`);
@@ -171,11 +168,13 @@ export const getZodKeys = (schema: z.ZodType): string[] => {
 
 export const getZodEnum = <K extends string>(obj: Record<K, unknown>): z.ZodOptional<z.ZodEnum<[K, ...K[]]>> => {
   const [firstKey, ...otherKeys] = Object.keys(obj) as K[];
+  // biome-ignore lint/style/noNonNullAssertion: <explanation>
   return z.enum([firstKey!, ...otherKeys]).optional();
 };
 
 export const getEnum = <K extends string>(obj: Record<K, unknown>): [K, ...K[]] => {
   const [firstKey, ...otherKeys] = Object.keys(obj) as K[];
+  // biome-ignore lint/style/noNonNullAssertion: <explanation>
   return [firstKey!, ...otherKeys];
 };
 
@@ -207,6 +206,7 @@ export const getPaginationQuery = ({ limit, page }: Pagination) => ({ skip: (pag
 export const getSortingQuery = (sorting?: string) => {
   if (sorting) {
     const [name, value] = sorting.split("-");
+    // biome-ignore lint/style/noNonNullAssertion: <explanation>
     return { orderBy: { [name!]: value } };
   }
   return undefined;

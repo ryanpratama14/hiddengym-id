@@ -1,18 +1,14 @@
 {
   "$schema": "https://biomejs.dev/schemas/1.5.3/schema.json",
-  "organizeImports": {
-    "enabled": true
-  },
+  "organizeImports": { "enabled": true },
   "linter": {
     "enabled": true,
     "rules": {
       "recommended": true,
-      "complexity": {
-        "noStaticOnlyClass": "off"
-      }
+      "complexity": { "noStaticOnlyClass": "off" },
+      "nursery": { "useImportType": "warn" }
     }
   },
-
   "formatter": {
     "enabled": true,
     "formatWithErrors": false,
