@@ -75,10 +75,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             id={id}
             placeholder="----------"
             type={showPassword ? "text" : "password"}
-            className={cn(inputVariants({ size, color, className }), {
-              "border-red focus:border-red": error,
-              "pl-10 pr-9": withPasswordIcon,
-            })}
+            className={cn(inputVariants({ size, color, className }), { "pl-10 pr-9": withPasswordIcon })}
           />
 
           {withPasswordIcon ? (

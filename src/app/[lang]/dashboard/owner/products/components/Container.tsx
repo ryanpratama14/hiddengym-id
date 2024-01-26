@@ -25,7 +25,7 @@ export default function ProductsContainer({ lang, searchParams, t }: Props) {
   return (
     <Fragment>
       <section className="flex flex-col gap-6">
-        <section className="grid grid-cols-4 gap-4">
+        <section className="grid md:grid-cols-2 xl:grid-cols-4 gap-4">
           <ModalUpdate
             t={t}
             data={searchParams.id && searchParams.update && data ? data.find((e) => e.id === searchParams.id) : null}
