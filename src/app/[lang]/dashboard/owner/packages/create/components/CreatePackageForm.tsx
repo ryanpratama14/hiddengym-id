@@ -8,17 +8,17 @@ import { toastError, toastSuccess } from "@/components/Toast";
 import { useZustand } from "@/global/store";
 import { ICONS, PACKAGE_TYPES, USER_REDIRECT } from "@/lib/constants";
 import { cn } from "@/lib/functions";
-import { type PackageCreateInput } from "@/server/api/routers/package";
-import { type PlaceList } from "@/server/api/routers/place";
-import { type SportList } from "@/server/api/routers/sport";
-import { type UserListData } from "@/server/api/routers/user";
+import type { PackageCreateInput } from "@/server/api/routers/package";
+import type { PlaceList } from "@/server/api/routers/place";
+import type { SportList } from "@/server/api/routers/sport";
+import type { UserListData } from "@/server/api/routers/user";
 import { api } from "@/trpc/react";
-import { type Dictionary } from "@/types";
+import type { Dictionary } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { type PackageType } from "@prisma/client";
+import type { PackageType } from "@prisma/client";
 import { schema } from "@schema";
 import { useRouter } from "next/navigation";
-import { Controller, useForm, type SubmitHandler } from "react-hook-form";
+import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 
 const initialData: PackageCreateInput = {
   type: "MEMBER",

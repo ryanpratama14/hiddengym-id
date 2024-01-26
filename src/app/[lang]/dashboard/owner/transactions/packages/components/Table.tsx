@@ -20,9 +20,9 @@ import { inputVariants, statusVariants } from "@/styles/variants";
 import { PAGINATION_LIMIT } from "@/trpc/shared";
 import type { SearchParams } from "@/types";
 import ActionButton from "@dashboard/components/ActionButton";
-import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
+import type { IconifyIcon } from "@iconify/react/dist/iconify.js";
 import { Table } from "antd";
-import { type FilterDropdownProps } from "antd/es/table/interface";
+import type { FilterDropdownProps } from "antd/es/table/interface";
 
 type Props = {
   data?: PackageTransactionList;
@@ -83,7 +83,7 @@ export default function PackageTransactionsTable({ data, searchParams, loading, 
             <Button
               color="expired"
               onClick={(e) => {
-                const form = e.currentTarget.form!;
+                const form = e.currentTarget.form;
                 if (form) {
                   form.reset();
                   if (!searchParams[name]) return;

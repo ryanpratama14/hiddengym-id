@@ -36,7 +36,7 @@ export default function PackagesContainer({ lang, searchParams, t }: Props) {
             t={t}
             show={!!searchParams.id && !!searchParams.update && !!data?.find((e) => e.id === searchParams.id)}
             closeModal={closeModal({ action: "update", newParams, redirect })}
-            data={searchParams.id && data ? data.find((e) => e.id === searchParams.id)! : null}
+            data={searchParams.id && data ? data.find((e) => e.id === searchParams.id) : null}
           />
           <Table data={data} lang={lang} loading={loading} searchParams={searchParams} redirect={redirect} newParams={newParams} />
         </section>

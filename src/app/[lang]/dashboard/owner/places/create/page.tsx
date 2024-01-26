@@ -1,5 +1,5 @@
 import { useDictionary } from "@/lib/dictionary";
-import { type Lang } from "@/types";
+import type { Lang } from "@/types";
 import CreatePlaceForm from "./components/CreatePlaceForm";
 
 type Props = {

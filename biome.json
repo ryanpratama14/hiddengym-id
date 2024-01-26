@@ -6,7 +6,7 @@
     "rules": {
       "recommended": true,
       "suspicious": { "noArrayIndexKey": "off" },
-      "a11y": { "useKeyWithClickEvents": "off" },
+      "a11y": { "useKeyWithClickEvents": "off", "useValidAriaRole": "off" },
       "complexity": { "noStaticOnlyClass": "off" },
       "nursery": { "useImportType": "warn", "useGroupedTypeImport": "warn" },
       "correctness": { "noUnusedVariables": "warn", "noUnusedLabels": "warn", "useExhaustiveDependencies": "off" }

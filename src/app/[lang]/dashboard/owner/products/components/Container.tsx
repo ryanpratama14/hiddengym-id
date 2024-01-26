@@ -28,7 +28,7 @@ export default function ProductsContainer({ lang, searchParams, t }: Props) {
         <section className="grid grid-cols-4 gap-4">
           <ModalUpdate
             t={t}
-            data={searchParams.id && searchParams.update && data ? data.find((e) => e.id === searchParams.id)! : null}
+            data={searchParams.id && searchParams.update && data ? data.find((e) => e.id === searchParams.id) : null}
             show={!!searchParams.id && !!searchParams.update}
             closeModal={closeModal({ action: "update", newParams, redirect })}
           />

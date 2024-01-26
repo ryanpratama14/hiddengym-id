@@ -9,16 +9,16 @@ import TransactionInvoice from "@/components/TransactionInvoice";
 import { useZustand } from "@/global/store";
 import { ICONS, USER_REDIRECT } from "@/lib/constants";
 import { cn, formatCurrency, getInputDate, localizePhoneNumber } from "@/lib/functions";
-import { type ProductTransactionCreateInput } from "@/server/api/routers/productTransaction";
+import type { ProductTransactionCreateInput } from "@/server/api/routers/productTransaction";
 import { api } from "@/trpc/react";
-import { type Dictionary } from "@/types";
+import type { Dictionary } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { type Gender } from "@prisma/client";
+import type { Gender } from "@prisma/client";
 import { schema } from "@schema";
 import { useDebounce } from "@uidotdev/usehooks";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Controller, useFieldArray, useForm, type SubmitHandler } from "react-hook-form";
+import { Controller, type SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 
 const productInitialData = { unitPrice: 0, quantity: 1, productId: "", name: "" };
 
@@ -190,7 +190,8 @@ export default function CreateProductTransactionForm({ t }: Props) {
               onClick={() => {
                 if (products?.length === data?.products.length) {
                   return toastWarning({ t, description: "All available products are already selected or can be selected." });
-                } else insert(fields.length, productInitialData);
+                }
+                insert(fields.length, productInitialData);
               }}
               className="relative size-6 bg-dark text-light cursor-pointer"
             >

@@ -8,19 +8,19 @@ import TransactionInvoice from "@/components/TransactionInvoice";
 import { useZustand } from "@/global/store";
 import { ICONS, USER_REDIRECT } from "@/lib/constants";
 import { cn, getInputDate, localizePhoneNumber } from "@/lib/functions";
-import { type PackageList } from "@/server/api/routers/package";
-import { type PackageTransactionCreateInput } from "@/server/api/routers/packageTransaction";
-import { type PaymentMethodList } from "@/server/api/routers/paymentMethod";
+import type { PackageList } from "@/server/api/routers/package";
+import type { PackageTransactionCreateInput } from "@/server/api/routers/packageTransaction";
+import type { PaymentMethodList } from "@/server/api/routers/paymentMethod";
 import { inputVariants } from "@/styles/variants";
 import { api } from "@/trpc/react";
-import { type Dictionary } from "@/types";
+import type { Dictionary } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { Gender, Package, PromoCode } from "@prisma/client";
 import { schema } from "@schema";
 import { useDebounce } from "@uidotdev/usehooks";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Controller, useForm, type SubmitHandler } from "react-hook-form";
+import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 
 type Props = {
   t: Dictionary;

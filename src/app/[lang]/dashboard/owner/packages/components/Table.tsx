@@ -3,14 +3,14 @@ import FilterIcon from "@/components/FilterIcon";
 import Input from "@/components/Input";
 import { ICONS, PACKAGE_TYPES } from "@/lib/constants";
 import { cn, formatCurrency, openModal } from "@/lib/functions";
-import { type PackageList, type PackageListInput } from "@/server/api/routers/package";
+import type { PackageList, PackageListInput } from "@/server/api/routers/package";
 import { inputVariants, statusVariants } from "@/styles/variants";
 import type { Lang, SearchParams } from "@/types";
 import ActionButton from "@dashboard/components/ActionButton";
-import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
-import { type PackageTransaction, type PackageType } from "@prisma/client";
+import type { IconifyIcon } from "@iconify/react/dist/iconify.js";
+import type { PackageTransaction, PackageType } from "@prisma/client";
 import { Table } from "antd";
-import { type FilterDropdownProps } from "antd/es/table/interface";
+import type { FilterDropdownProps } from "antd/es/table/interface";
 import { Fragment } from "react";
 
 type Props = {
@@ -73,7 +73,7 @@ export default function PackagesTable({ data, loading, searchParams, newParams, 
             <Button
               color="expired"
               onClick={(e) => {
-                const form = e.currentTarget.form!;
+                const form = e.currentTarget.form;
                 if (form) {
                   form.reset();
                   if (!searchParams[name]) return;

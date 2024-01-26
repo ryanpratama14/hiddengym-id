@@ -1,5 +1,5 @@
 import { useDictionary } from "@/lib/dictionary";
-import { type Lang, type SearchParams } from "@/types";
+import type { Lang, SearchParams } from "@/types";
 import PackagesContainer from "./components/Container";
 
 type Props = { searchParams: SearchParams; params: { lang: Lang } };

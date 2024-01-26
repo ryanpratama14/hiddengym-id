@@ -1,6 +1,6 @@
 import { useDictionary } from "@/lib/dictionary";
 import { api } from "@/trpc/server";
-import { type Lang } from "@/types";
+import type { Lang } from "@/types";
 import CreatePackageTransactionForm from "./components/CreatePackageTransactionForm";
 
 type Props = {

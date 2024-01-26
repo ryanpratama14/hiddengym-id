@@ -4,7 +4,7 @@ import Button from "@/components/Button";
 import Iconify from "@/components/Iconify";
 import Input from "@/components/Input";
 import { ICONS } from "@/lib/constants";
-import { type SearchParams } from "@/types";
+import type { SearchParams } from "@/types";
 
 type Props = {
   searchParams: SearchParams;

@@ -8,17 +8,17 @@ import { Modal } from "@/components/Modal";
 import { toastError, toastSuccess } from "@/components/Toast";
 import { ICONS } from "@/lib/constants";
 import { cn } from "@/lib/functions";
-import { type PackageDetail, type PackageUpdateInput } from "@/server/api/routers/package";
+import type { PackageDetail, PackageUpdateInput } from "@/server/api/routers/package";
 import { api } from "@/trpc/react";
-import { type Dictionary } from "@/types";
+import type { Dictionary } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { schema } from "@schema";
 import { useEffect } from "react";
-import { Controller, useForm, type SubmitHandler } from "react-hook-form";
+import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 
 type Props = {
   t: Dictionary;
-  data: PackageDetail | null;
+  data?: PackageDetail | null;
   show: boolean;
   closeModal: () => void;
 };

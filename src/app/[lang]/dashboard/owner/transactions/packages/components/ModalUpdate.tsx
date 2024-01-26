@@ -6,7 +6,7 @@ import { Modal } from "@/components/Modal";
 import { toastError, toastSuccess, toastWarning } from "@/components/Toast";
 import { GENDERS, ICONS } from "@/lib/constants";
 import { cn, getInputDate, localizePhoneNumber } from "@/lib/functions";
-import { type PackageTransactionDetail, type PackageTransactionUpdateInput } from "@/server/api/routers/packageTransaction";
+import type { PackageTransactionDetail, PackageTransactionUpdateInput } from "@/server/api/routers/packageTransaction";
 import { inputVariants } from "@/styles/variants";
 import { api } from "@/trpc/react";
 import type { Dictionary } from "@/types";
@@ -15,7 +15,7 @@ import type { Package, PromoCode } from "@prisma/client";
 import { schema } from "@schema";
 import { Skeleton } from "antd";
 import { useEffect, useState } from "react";
-import { Controller, useForm, type SubmitHandler } from "react-hook-form";
+import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 
 type Props = {
   show: boolean;

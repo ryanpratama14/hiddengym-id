@@ -13,7 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { schema } from "@schema";
 import { Skeleton } from "antd";
 import { useEffect } from "react";
-import { Controller, useFieldArray, useForm, type SubmitHandler } from "react-hook-form";
+import { Controller, type SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 
 type Props = {
   show: boolean;
@@ -164,7 +164,8 @@ export default function ModalUpdate({ show, closeModal, data, t }: Props) {
                   onClick={() => {
                     if (products?.length === watchedData?.products.length) {
                       return toastWarning({ t, description: "All available products are already selected or can be selected." });
-                    } else insert(fields.length, productInitialData);
+                    }
+                    insert(fields.length, productInitialData);
                   }}
                   className="relative size-6 bg-dark text-light cursor-pointer"
                 >
