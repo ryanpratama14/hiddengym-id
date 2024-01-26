@@ -1,3 +1,5 @@
+import "server-only";
+
 import { type AppRouter, appRouter } from "@/server/api/root";
 import { createTRPCContext } from "@/server/api/trpc";
 import { transformer } from "@/trpc/shared";
@@ -7,7 +9,6 @@ import { observable } from "@trpc/server/observable";
 import type { TRPCErrorResponse } from "@trpc/server/rpc";
 import { cookies } from "next/headers";
 import { cache } from "react";
-import "server-only";
 
 const createContext = cache(() =>
   createTRPCContext({ headers: new Headers({ cookie: cookies().toString(), "x-trpc-source": "rsc" }) }),

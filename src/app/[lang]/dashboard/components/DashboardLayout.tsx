@@ -23,6 +23,7 @@ export default function DashboardLayout({ collapsed, setCollapsed, user, handleC
   const { lang } = useZustand();
   const pathname = usePathname();
   const [selectedMenu, setSelectedMenu] = useState(getSelectedMenu({ pathname, role: user.role, lang }));
+
   useEffect(() => {
     setSelectedMenu(getSelectedMenu({ pathname, role: user.role, lang }));
   }, [pathname]);
