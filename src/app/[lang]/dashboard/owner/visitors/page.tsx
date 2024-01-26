@@ -3,7 +3,7 @@
 import { REFETCH_INTERVAL, USER_REDIRECT } from "@/lib/constants";
 import { createUrl } from "@/lib/functions";
 import { api } from "@/trpc/react";
-import { type Lang, type SearchParams } from "@/types";
+import type { Lang, SearchParams } from "@/types";
 import Table from "@owner/visitors/components/Table";
 import TableSearch from "@owner/visitors/components/TableSearch";
 import TableSorter from "@owner/visitors/components/TableSorter";

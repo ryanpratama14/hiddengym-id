@@ -1,4 +1,4 @@
-import { type ThemeConfig } from "antd";
+import type { ThemeConfig } from "antd";
 
 export const COLORS = {
   orange: "#ff4a01",

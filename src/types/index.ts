@@ -1,6 +1,6 @@
-import { type ADD_BUTTON_ITEMS, type DASHBOARD_MENUS, type DASHBOARD_SUB_MENUS } from "@/lib/constants";
-import { type useDictionary } from "@/lib/dictionary";
-import { type internationalization } from "@/lib/internationalization";
+import type { ADD_BUTTON_ITEMS, DASHBOARD_MENUS, DASHBOARD_SUB_MENUS } from "@/lib/constants";
+import type { useDictionary } from "@/lib/dictionary";
+import type { internationalization } from "@/lib/internationalization";
 
 type UnwrapPromise<T> = T extends Promise<infer U> ? U : T;
 export type SearchParams = Record<string, string>;
