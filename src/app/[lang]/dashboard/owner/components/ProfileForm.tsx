@@ -57,7 +57,7 @@ export default function ProfileForm({ user, setIsEdit, actionUserUpdate, t }: Pr
       <Input icon={ICONS.email} label="Email" {...register("body.email")} error={errors.body?.email?.message} />
       <Input label="Phone Number" {...register("body.phoneNumber")} error={errors.body?.phoneNumber?.message} isPhoneNumber />
       <section className="flex flex-col">
-        <p>Gender</p>
+        <p className="font-medium">Gender</p>
         <section className="grid grid-cols-2 h-10">
           {GENDER_OPTIONS.map((option, index) => {
             return (

@@ -22,7 +22,7 @@ import { schema } from "@schema";
 import { type Session } from "next-auth";
 import { useRouter } from "next/navigation";
 import { Fragment, useState } from "react";
-import { Controller, useForm, type SubmitHandler } from "react-hook-form";
+import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 
 type Props = {
   createPackageTransaction: (data: PackageTransactionCreateInput) => Promise<TRPC_RESPONSE>;
@@ -137,7 +137,7 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
               }}
             />
             <section className="flex flex-col">
-              <p>Gender</p>
+              <p className="font-medium">Gender</p>
               <section className="grid grid-cols-2 h-10">
                 {GENDER_OPTIONS.map((option, index) => {
                   return (

@@ -77,12 +77,17 @@ TransactionInvoice.Buyer = function InvoiceBuyer(props: {
   gender: Gender;
 }) {
   return (
-    <section className="flex gap-2 items-center">
-      <section className="size-10 bg-cream rounded-full relative shadow border-1 border-dotted border-dark flex items-center justify-center">
+    <section className={cn("flex gap-2 items-center", { "gap-3": props.email })}>
+      <section
+        className={cn(
+          "size-10 bg-cream rounded-full relative shadow border-1 border-dotted border-dark flex items-center justify-center",
+          { "size-16": props.email },
+        )}
+      >
         {props.image ? (
           <Img src={props.image.url} alt={props.fullName} className="object-cover w-full h-full rounded-full" />
         ) : (
-          <Iconify icon={GENDERS[props.gender].picture} className="text-dark" width={30} />
+          <Iconify icon={GENDERS[props.gender].picture} className="text-dark" width={props.email ? 45 : 30} />
         )}
       </section>
       <section className="flex flex-col text-left">

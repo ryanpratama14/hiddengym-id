@@ -25,11 +25,6 @@ body,
   white-space: pre-line !important;
 }
 
-.ant-notification-notice-wrapper,
-.ant-notification-notice {
-  border-radius: 6px !important;
-}
-
 .ant-menu-vertical .iconify {
   position: absolute;
   top: 50%;
