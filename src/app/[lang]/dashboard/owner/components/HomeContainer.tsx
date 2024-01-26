@@ -8,10 +8,10 @@ import NavigatorX from "@/components/NavigatorX";
 import { toastError, toastSuccess, toastWarning } from "@/components/Toast";
 import { COUNTRY_CODE, GENDERS } from "@/lib/constants";
 import { formatDateLong, formatName, isFileSizeAllowed, localizePhoneNumber } from "@/lib/functions";
-import { useUploadThing } from "@/lib/uploadthing";
-import { type User, type UserUpdateInput } from "@/server/api/routers/user";
-import { type TRPC_RESPONSE } from "@/trpc/shared";
-import { type ChangeEvent, type Dictionary, type Lang } from "@/types";
+import { uploadFiles } from "@/lib/uploadthing";
+import type { User, UserUpdateInput } from "@/server/api/routers/user";
+import type { TRPC_RESPONSE } from "@/trpc/shared";
+import type { ChangeEvent, Dictionary, Lang } from "@/types";
 import { CloudUploadOutlined } from "@ant-design/icons";
 import ProfileForm from "@owner/components/ProfileForm";
 import { useMutation } from "@tanstack/react-query";
@@ -28,14 +28,12 @@ type Props = {
 export default function HomeContainer({ lang, user, actionUserUpdate, revalidateCache, t }: Props) {
   const [isEdit, setIsEdit] = useState<boolean>(false);
 
-  const { startUpload } = useUploadThing("uploadUserImage");
-
   const { mutate: uploadImage, isPending: loading } = useMutation({
     mutationFn: async (file: File) => {
-      await startUpload([file]);
+      await uploadFiles("uploadUserImage", { files: [file] });
       await revalidateCache();
     },
-    onSuccess: () => toastSuccess({ t, description: "Uploaded successfully, your profile picture should be changed in seconds..." }),
+    onSuccess: () => toastSuccess({ t, description: "Uploaded successfully, your profile picture should be changed in seconds." }),
     onError: (error) => {
       toastError({ t, description: "Can't upload image, try again later." });
       console.error(error);

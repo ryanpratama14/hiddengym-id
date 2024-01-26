@@ -1,7 +1,7 @@
 import { ICONS } from "@/lib/constants";
 import { cn } from "@/lib/functions";
 import { Dialog, Transition } from "@headlessui/react";
-import { Fragment, useRef, type ElementRef } from "react";
+import { type ElementRef, Fragment, useRef } from "react";
 import Iconify from "./Iconify";
 
 type Props = {
@@ -62,5 +62,5 @@ export const Modal = ({ show, closeModal, children, classNameDiv }: Props) => {
 };
 
 Modal.Body = function ModalBody({ children }: { children: React.ReactNode }) {
-  return <Fragment>{children}</Fragment>;
+  return children;
 };

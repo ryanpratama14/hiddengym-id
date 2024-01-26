@@ -5,6 +5,7 @@
     "enabled": true,
     "rules": {
       "recommended": true,
+      "suspicious": { "noArrayIndexKey": "off" },
       "a11y": { "useKeyWithClickEvents": "off" },
       "complexity": { "noStaticOnlyClass": "off" },
       "nursery": { "useImportType": "warn", "useGroupedTypeImport": "warn" },
