@@ -1,10 +1,10 @@
-import "@/styles/ant-select.css";
 import { cn } from "@/lib/functions";
+import "@/styles/ant-select.css";
 import { COLORS } from "@/styles/theme";
-import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
+import type { IconifyIcon } from "@iconify/react/dist/iconify.js";
 import { ConfigProvider, Empty, Spin } from "antd";
 import Select, { type BaseOptionType, type DefaultOptionType, type SelectProps } from "antd/es/select";
-import { type BaseSelectRef } from "rc-select";
+import type { BaseSelectRef } from "rc-select";
 import { forwardRef, useId } from "react";
 import Iconify from "./Iconify";
 import { inputIconSize } from "./Input";

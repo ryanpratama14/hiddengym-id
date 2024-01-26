@@ -2,7 +2,7 @@
 
 import { useZustand } from "@/global/store";
 import type { Dictionary, Lang } from "@/types";
-import { type Session } from "next-auth";
+import type { Session } from "next-auth";
 import { signOut } from "next-auth/react";
 import { useEffect } from "react";
 

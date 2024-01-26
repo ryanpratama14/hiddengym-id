@@ -1,5 +1,5 @@
 import { formatDateShort, getRemainingDate } from "@/lib/functions";
-import { type PackageTransactionDetail } from "@/server/api/routers/packageTransaction";
+import type { PackageTransactionDetail } from "@/server/api/routers/packageTransaction";
 import { Skeleton } from "antd";
 import { Fragment } from "react";
 import TransactionInvoice from "./TransactionInvoice";

@@ -1,10 +1,10 @@
 import { cn } from "@/lib/functions";
 import { COLORS } from "@/styles/theme";
 import { buttonVariants } from "@/styles/variants";
-import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
-import { forwardRef, type ComponentProps } from "react";
+import type { IconifyIcon } from "@iconify/react/dist/iconify.js";
+import { type ComponentProps, forwardRef } from "react";
 import { PulseLoader } from "react-spinners";
-import { type VariantProps } from "tailwind-variants";
+import type { VariantProps } from "tailwind-variants";
 import Iconify from "./Iconify";
 import { inputIconSize } from "./Input";
 

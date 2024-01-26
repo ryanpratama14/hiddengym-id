@@ -1,9 +1,9 @@
 import Iconify from "@/components/Iconify";
 import { cn } from "@/lib/functions";
 import { buttonVariants } from "@/styles/variants";
-import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
+import type { IconifyIcon } from "@iconify/react/dist/iconify.js";
 import Link from "next/link";
-import { type VariantProps } from "tailwind-variants";
+import type { VariantProps } from "tailwind-variants";
 import { inputIconSize } from "./Input";
 
 type Props = {

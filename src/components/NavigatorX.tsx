@@ -1,6 +1,6 @@
 import Iconify from "@/components/Iconify";
 import { cn } from "@/lib/functions";
-import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
+import type { IconifyIcon } from "@iconify/react/dist/iconify.js";
 import Link from "next/link";
 import { inputIconSize } from "./Input";
 

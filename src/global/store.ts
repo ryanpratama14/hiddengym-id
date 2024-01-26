@@ -1,5 +1,5 @@
 import type { Dictionary, Lang } from "@/types";
-import { type Session } from "next-auth";
+import type { Session } from "next-auth";
 import { create } from "zustand";
 
 type StateItems = {

@@ -4,9 +4,9 @@ import { COUNTRY_CODE, ICONS } from "@/lib/constants";
 import { cn } from "@/lib/functions";
 import { inputVariants } from "@/styles/variants";
 import { EyeInvisibleOutlined, EyeOutlined } from "@ant-design/icons";
-import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
-import { forwardRef, useId, useState, type ComponentProps } from "react";
-import { type VariantProps } from "tailwind-variants";
+import type { IconifyIcon } from "@iconify/react/dist/iconify.js";
+import { type ComponentProps, forwardRef, useId, useState } from "react";
+import type { VariantProps } from "tailwind-variants";
 import Iconify from "./Iconify";
 
 type InputProps = ComponentProps<"input"> &

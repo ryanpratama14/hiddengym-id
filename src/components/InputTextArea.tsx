@@ -1,8 +1,8 @@
 import { cn } from "@/lib/functions";
 import { inputVariants } from "@/styles/variants";
-import { type IconifyIcon } from "@iconify/react/dist/iconify.js";
-import { forwardRef, useId, type ComponentProps } from "react";
-import { type VariantProps } from "tailwind-variants";
+import type { IconifyIcon } from "@iconify/react/dist/iconify.js";
+import { type ComponentProps, forwardRef, useId } from "react";
+import type { VariantProps } from "tailwind-variants";
 import Iconify from "./Iconify";
 import { inputIconSize } from "./Input";
 

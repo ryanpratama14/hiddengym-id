@@ -1,6 +1,6 @@
 import { ICONS } from "@/lib/constants";
 import { cn } from "@/lib/functions";
-import { type SearchParams } from "@/types";
+import type { SearchParams } from "@/types";
 import Iconify from "./Iconify";
 
 type Props = {
