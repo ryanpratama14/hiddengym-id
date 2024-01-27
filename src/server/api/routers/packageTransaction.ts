@@ -1,6 +1,10 @@
 import { formatName, getEndDate, getExpiryDate, getNewDate, getStartDate } from "@/lib/functions";
 import { createTRPCRouter, ownerProcedure, protectedProcedure } from "@/server/api/trpc";
 import {
+  type RouterInputs,
+  type RouterOutputs,
+  THROW_OK,
+  THROW_TRPC_ERROR,
   getCreatedMessage,
   getDeletedMessage,
   getPaginationData,
@@ -9,12 +13,8 @@ import {
   getUpdatedMessage,
   insensitiveMode,
   prismaExclude,
-  THROW_OK,
-  THROW_TRPC_ERROR,
-  type RouterInputs,
-  type RouterOutputs,
 } from "@/trpc/shared";
-import { schema, type Pagination } from "@schema";
+import { type Pagination, schema } from "@schema";
 import { z } from "zod";
 import { updatePackageTotalTransactions, updateTotalSpending } from "./other";
 

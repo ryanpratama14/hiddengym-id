@@ -1,6 +1,6 @@
 import { accumulateValue } from "@/lib/functions";
 import { db } from "@/server/db";
-import { prismaExclude, THROW_TRPC_ERROR } from "@/trpc/shared";
+import { THROW_TRPC_ERROR, prismaExclude } from "@/trpc/shared";
 
 export const updateTotalSpending = async (userId: string) => {
   const data = await db.user.findFirst({

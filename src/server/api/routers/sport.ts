@@ -1,13 +1,13 @@
 import { formatName } from "@/lib/functions";
 import { createTRPCRouter, ownerProcedure } from "@/server/api/trpc";
 import {
+  type RouterInputs,
+  type RouterOutputs,
+  THROW_OK,
+  THROW_TRPC_ERROR,
   getConflictMessage,
   getCreatedMessage,
   prismaExclude,
-  THROW_OK,
-  THROW_TRPC_ERROR,
-  type RouterInputs,
-  type RouterOutputs,
 } from "@/trpc/shared";
 import { schema } from "@schema";
 
