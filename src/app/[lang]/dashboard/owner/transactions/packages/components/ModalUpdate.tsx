@@ -5,7 +5,7 @@ import InputSelect from "@/components/InputSelect";
 import { Modal } from "@/components/Modal";
 import { toastError, toastSuccess, toastWarning } from "@/components/Toast";
 import { GENDERS, ICONS } from "@/lib/constants";
-import { cn, getInputDate, localizePhoneNumber } from "@/lib/functions";
+import { cn, formatCurrency, getInputDate, localizePhoneNumber } from "@/lib/functions";
 import type { PackageTransactionDetail, PackageTransactionUpdateInput } from "@/server/api/routers/packageTransaction";
 import { inputVariants } from "@/styles/variants";
 import { api } from "@/trpc/react";
@@ -53,6 +53,7 @@ export default function ModalUpdate({ show, closeModal, data, t }: Props) {
 
   const { mutate: checkPromoCode, isPending: loadingPromoCode } = api.promoCode.checkPromoCode.useMutation({
     onSuccess: (res) => {
+      setSelectedPromoCode(res.data);
       setValue("body.promoCodeId", res.data.id);
       t && toastSuccess({ t, description: res.message });
     },
@@ -62,6 +63,7 @@ export default function ModalUpdate({ show, closeModal, data, t }: Props) {
   const watchedData = {
     packageId: watch("body.packageId"),
     promoCodeCode: watch("body.promoCodeCode"),
+    unitPrice: watch("body.unitPrice"),
   };
 
   useEffect(() => {
@@ -188,6 +190,16 @@ export default function ModalUpdate({ show, closeModal, data, t }: Props) {
               </section>
             </section>
 
+            <p className="text-left text-orange font-medium">
+              Total Price: <span className={cn({ "line-through": selectedPromoCode })}>{formatCurrency(watchedData.unitPrice)}</span>{" "}
+              {selectedPromoCode
+                ? formatCurrency(
+                    selectedPromoCode?.discountPrice
+                      ? watchedData.unitPrice - selectedPromoCode?.discountPrice
+                      : watchedData.unitPrice,
+                  )
+                : null}
+            </p>
             <section className="flex justify-center items-center">
               <Button className="md:w-fit w-full" loading={loading} type="submit" color="success" size="xl">
                 Update Package Transaction
