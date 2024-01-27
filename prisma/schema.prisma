@@ -68,8 +68,8 @@ model PromoCode {
     isActive      Boolean @default(true)
 
     // relations
-    packagePruchases PackageTransaction[]
-    type             PromoCodeType
+    packageTransactions PackageTransaction[]
+    type                PromoCodeType
 
     createdDate DateTime @default(now())
 }
