@@ -1,13 +1,13 @@
-import Iconify from "@/components/Iconify";
 import { ICONS } from "@/lib/constants";
 import { COLORS } from "@/styles/theme";
 import type { Dictionary } from "@/types";
 import type { IconifyIcon } from "@iconify/react/dist/iconify.js";
-import { notification } from "antd";
+import { toast as sonner } from "sonner";
+import Iconify from "./Iconify";
 
 type ToastType = "success" | "error" | "warning" | "info";
 
-const toastIcons: Record<ToastType, { icon: IconifyIcon | string; color: string }> = {
+const toastStyles: Record<ToastType, { icon: IconifyIcon | string; color: string }> = {
   success: { icon: ICONS.success, color: COLORS.green },
   error: { icon: ICONS.error, color: COLORS.red },
   info: { icon: ICONS.info, color: COLORS.blue },
@@ -15,13 +15,18 @@ const toastIcons: Record<ToastType, { icon: IconifyIcon | string; color: string 
 };
 
 export const toast = ({ type, description, t }: { type: ToastType; description: string; t: Dictionary }) => {
-  return notification[type]({
-    description,
-    message: t.toast[type],
-    duration: 3,
-    style: { backgroundColor: COLORS.light },
-    icon: <Iconify icon={toastIcons[type].icon} width={25} color={toastIcons[type].color} />,
-  });
+  return sonner[type](
+    <section
+      className="flex flex-col gap-1 py-4 px-6 w-full rounded-md shadow-lg text-dark bg-light"
+      style={{ borderColor: toastStyles[type].color }}
+    >
+      <section className="flex items-center gap-2">
+        <Iconify icon={toastStyles[type].icon} width={18} color={toastStyles[type].color} />
+        <p className="font-semibold">{t.toast[type]}</p>
+      </section>
+      <small>{description}</small>
+    </section>,
+  );
 };
 
 export const toastError = ({ t, description }: { t: Dictionary; description: string }) => toast({ t, description, type: "error" });

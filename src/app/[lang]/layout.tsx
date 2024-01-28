@@ -10,6 +10,7 @@ import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { ConfigProvider } from "antd";
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "Hidden Gym",
@@ -34,6 +35,12 @@ export default async function RootLayout({ children, params }: Props) {
           <TRPCReactProvider cookies={cookies().toString()}>
             <AntdRegistry>
               <ConfigProvider theme={theme}>
+                <Toaster
+                  duration={3000}
+                  style={{ fontFamily: "Poppins" }}
+                  position="top-center"
+                  toastOptions={{ unstyled: true, className: "w-full" }}
+                />
                 <main>{children}</main>
               </ConfigProvider>
             </AntdRegistry>
