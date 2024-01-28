@@ -38,8 +38,8 @@ export default async function RootLayout({ children, params }: Props) {
                 <Toaster
                   duration={3000}
                   style={{ fontFamily: "Poppins" }}
-                  position="top-center"
-                  toastOptions={{ unstyled: true, className: "w-full" }}
+                  position="top-right"
+                  toastOptions={{ unstyled: true, className: "w-full items-end" }}
                 />
                 <main>{children}</main>
               </ConfigProvider>

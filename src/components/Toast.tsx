@@ -16,10 +16,7 @@ const toastStyles: Record<ToastType, { icon: IconifyIcon | string; color: string
 
 export const toast = ({ type, description, t }: { type: ToastType; description: string; t: Dictionary }) => {
   return sonner[type](
-    <section
-      className="flex flex-col gap-1 py-4 px-6 w-full rounded-md shadow-lg text-dark bg-light"
-      style={{ borderColor: toastStyles[type].color }}
-    >
+    <section className="flex flex-col gap-1 py-4 px-6 rounded-md shadow-xl text-dark bg-light">
       <section className="flex items-center gap-2">
         <Iconify icon={toastStyles[type].icon} width={18} color={toastStyles[type].color} />
         <p className="font-semibold">{t.toast[type]}</p>
