@@ -3,7 +3,7 @@
   "short_name": "Hidden Gym",
   "theme_color": "#fff",
   "background_color": "#fff",
-  "display": "standalone",
+  "display": "browser",
   "orientation": "portrait",
   "scope": "/",
   "start_url": "/",
