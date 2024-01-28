@@ -16,15 +16,24 @@ type Props = {
 
 export default function DashboardContainer({ children, items, user, addButtonItems }: Props) {
   const [collapsed, setCollapsed] = useState(true);
+  const [open, setOpen] = useState(false);
   const handleCollapse = () => (collapsed ? undefined : setCollapsed(true));
 
   return (
     <Fragment>
-      <DashboardLayout items={items} user={user} handleCollapse={handleCollapse} collapsed={collapsed} setCollapsed={setCollapsed} />
+      <DashboardLayout
+        open={open}
+        setOpen={setOpen}
+        items={items}
+        user={user}
+        handleCollapse={handleCollapse}
+        collapsed={collapsed}
+        setCollapsed={setCollapsed}
+      />
 
       <article
         onClick={handleCollapse}
-        className={cn("animate h-dvh p-shorter bg-cream ml-[3.1rem] mt-14", { "xl:ml-64": !collapsed })}
+        className={cn("animate h-dvh p-shorter bg-cream mt-14 md:ml-[3.1rem]", { "xl:ml-64": !collapsed })}
       >
         {children}
       </article>

@@ -4,7 +4,7 @@ import { cn, formatDateShort, getNewDate, getSelectedMenu } from "@/lib/function
 import type { User } from "@/server/api/routers/user";
 import { COLORS } from "@/styles/theme";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
-import { Layout, Menu } from "antd";
+import { ConfigProvider, Drawer, Layout, Menu } from "antd";
 import type { ItemType, MenuItemType } from "antd/es/menu/hooks/useItems";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -12,6 +12,8 @@ import { Fragment, useEffect, useState } from "react";
 import DashboardProfileDropdown from "./DashboardProfileDropdown";
 
 type Props = {
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   collapsed: boolean;
   setCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
   handleCollapse: () => void;
@@ -19,7 +21,7 @@ type Props = {
   items: ItemType<MenuItemType>[];
 };
 
-export default function DashboardLayout({ collapsed, setCollapsed, user, handleCollapse, items }: Props) {
+export default function DashboardLayout({ collapsed, setCollapsed, user, handleCollapse, items, open, setOpen }: Props) {
   const { lang } = useZustand();
   const pathname = usePathname();
   const [selectedMenu, setSelectedMenu] = useState(getSelectedMenu({ pathname, role: user.role, lang }));
@@ -32,6 +34,7 @@ export default function DashboardLayout({ collapsed, setCollapsed, user, handleC
     <Fragment>
       <Layout>
         <Layout.Sider
+          className="max-md:hidden"
           style={{ overflow: "auto", height: "100vh", position: "fixed", left: 0, top: 0, bottom: 0, zIndex: 20 }}
           collapsedWidth={50}
           trigger={null}
@@ -60,9 +63,41 @@ export default function DashboardLayout({ collapsed, setCollapsed, user, handleC
         </Layout.Sider>
       </Layout>
 
+      <ConfigProvider theme={{ components: { Drawer: { padding: 0, paddingLG: 0 } } }}>
+        <Drawer
+          width={250}
+          closeIcon={
+            <section className="gap-2 flex items-center w-[250px] justify-center h-14 text-cream">
+              <MenuFoldOutlined style={{ fontSize: "30px" }} />
+            </section>
+          }
+          closable={true}
+          placement="left"
+          onClose={() => setOpen(false)}
+          open={open}
+        >
+          <aside className="h-full flex flex-col gap-6 justify-between pb-6">
+            <Menu color={COLORS.cream} selectedKeys={selectedMenu.keys} mode="inline" items={items} />
+            <section className="w-full flex flex-col gap-4 text-cream items-center justify-center">
+              <Logo className="w-[70%] aspect-video" />
+              <p className={cn("font-semibold")}>HIDDEN GYM</p>
+            </section>
+          </aside>
+        </Drawer>
+      </ConfigProvider>
+
       <nav onClick={handleCollapse} className="fixed flex items-center w-full top-0 h-14 bg-dark text-cream z-10">
-        <section className={cn("px-shorter ml-[3.1rem] flex items-center justify-between w-full animate", { "xl:ml-64": !collapsed })}>
-          <section className="flex gap-2">
+        <section
+          className={cn("px-shorter flex items-center justify-between w-full animate md:ml-[3.1rem]", { "xl:ml-64": !collapsed })}
+        >
+          <section className="flex gap-2 items-center">
+            <button
+              type="button"
+              onClick={() => setOpen(true)}
+              className="gap-2 flex md:hidden items-center w-full justify-center h-14 text-cream mr-4"
+            >
+              <MenuUnfoldOutlined style={{ fontSize: "30px" }} />
+            </button>
             <Link href={selectedMenu.href} className="font-medium px-3 py-0.5 rounded-md border-2 select-none border-cream shadow-lg">
               {selectedMenu.label}
             </Link>
