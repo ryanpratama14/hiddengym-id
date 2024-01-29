@@ -21,7 +21,7 @@ export const toast = ({ type, description, t }: { type: ToastType; description: 
         <Iconify icon={toastStyles[type].icon} width={18} color={toastStyles[type].color} />
         <p className="font-semibold">{t.toast[type]}</p>
       </section>
-      <small>{description}</small>
+      <small className="whitespace-pre-line">{description}</small>
     </section>,
   );
 };
