@@ -31,6 +31,8 @@ const InputSelect = forwardRef<BaseSelectRef, InputSelectProps>((props, ref) => 
         components: {
           Select: {
             selectorBg: COLORS.cream,
+            fontSizeXL: 16,
+            fontSize: 14,
           },
         },
       }}

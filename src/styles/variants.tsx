@@ -1,7 +1,7 @@
 import { tv } from "tailwind-variants";
 
 export const buttonVariants = tv({
-  base: "select-none font-medium text-light active:scale-95 outline-none text-center",
+  base: "select-none font-medium text-light active:scale-95 outline-none text-center xl:text-base text-base",
   variants: {
     rounded: {
       md: "rounded-md",
@@ -19,11 +19,11 @@ export const buttonVariants = tv({
       none: " ",
     },
     size: {
-      xxl: "px-4 h-10 text-xl",
-      xl: "px-3 h-9 text-lg",
-      l: "px-3 h-7 text-lg",
+      xxl: "px-4 h-10 xl:text-xl",
+      xl: "px-3 h-9 xl:text-lg",
+      l: "px-3 h-7 xl:text-lg",
       m: "px-3 h-6",
-      s: "px-2 h-6 text-sm",
+      s: "px-2 h-6 xl:text-base",
       none: " ",
     },
   },
@@ -35,7 +35,7 @@ export const buttonVariants = tv({
 });
 
 export const inputVariants = tv({
-  base: "w-full pl-3 rounded-none animate outline-none bg-inherit hover:border-dark/30 placeholder:text-dark/30",
+  base: "w-full pl-3 rounded-none animate outline-none bg-inherit hover:border-dark/30 placeholder:text-dark/30 max-xl:text-sm",
   variants: {
     color: {
       blue: " focus:border-blue2",
@@ -63,7 +63,7 @@ export const inputVariants = tv({
 });
 
 export const statusVariants = tv({
-  base: "h-6 md:h-7 md:text-base text-sm font-medium flex items-center w-fit text-cream shadow px-2 rounded-md",
+  base: "h-6 md:h-7 xl:text-base text-sm font-medium flex items-center w-fit text-cream shadow px-2 rounded-md",
   variants: {
     status: {
       active: "bg-emerald",

@@ -33,7 +33,7 @@ export default function DashboardContainer({ children, items, user, addButtonIte
 
       <article
         onClick={handleCollapse}
-        className={cn("animate h-dvh p-shorter bg-cream mt-14 md:ml-[3.1rem]", { "xl:ml-64": !collapsed })}
+        className={cn("animate h-dvh p-shorter bg-cream mt-14 lg:ml-[3.1rem]", { "xl:ml-64": !collapsed })}
       >
         {children}
       </article>

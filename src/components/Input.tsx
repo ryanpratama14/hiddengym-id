@@ -42,7 +42,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               type={type ? type : "text"}
               className={cn("pr-3", inputVariants({ size, color, className }), {
                 "pl-10": icon,
-                "pl-[4.4rem]": isPhoneNumber,
+                "pl-[4.1rem] xl:pl-[4.4rem]": isPhoneNumber,
                 "border-dark/30": disabled,
               })}
               ref={ref}

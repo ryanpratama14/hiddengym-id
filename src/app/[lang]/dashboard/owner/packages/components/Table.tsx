@@ -125,7 +125,7 @@ export default function PackagesTable({ data, loading, searchParams, newParams, 
             width: 1,
             ...getTableFilter({ name: "type", icon: ICONS.package }),
             render: (text: PackageType) => (
-              <p className="font-semibold border-1 border-dark px-2 select-none text-sm md:text-base">{text}</p>
+              <p className="font-semibold border-1 border-dark px-2 select-none text-sm xl:text-base">{text}</p>
             ),
           },
           {

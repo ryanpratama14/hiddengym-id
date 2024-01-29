@@ -153,7 +153,7 @@ export default function PackageTransactionsTable({ data, searchParams, loading, 
           key: "package.type",
           align: "center",
           render: (_, item) => (
-            <p className="font-semibold border-1 border-dark px-2 select-none text-sm md:text-base">{item.package.type}</p>
+            <p className="font-semibold border-1 border-dark px-2 select-none text-sm xl:text-base">{item.package.type}</p>
           ),
           ...getTableFilter({ name: "packageType" }),
         },

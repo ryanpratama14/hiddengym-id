@@ -131,7 +131,7 @@ export default function ProductTransactionsTable({ data, searchParams, loading, 
           key: "products",
           render: (_, item) =>
             item.products.map((e) => (
-              <p key={e.id} className="md:text-base text-sm">
+              <p key={e.id} className="xl:text-base text-sm">
                 {e.quantity}x {e.product.name}
               </p>
             )),
