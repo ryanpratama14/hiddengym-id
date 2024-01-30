@@ -24,7 +24,7 @@ export default async function DashboardLayout({ children, params }: Props) {
       key: e.key,
       icon: <Iconify icon={e.icon} width={MENU_ICON_SIZE} />,
       label: hasChildren ? (
-        <p className="text-sm xl:text-base select-none font-medium">{e.label}</p>
+        <p className="text-base select-none font-medium">{e.label}</p>
       ) : (
         <DashboardNavigator className="" href={e.key} lang={lang} role={role}>
           {e.label}

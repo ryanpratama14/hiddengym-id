@@ -24,42 +24,38 @@
     @apply animate;
   }
   h1 {
-    @apply text-5xl xl:text-6xl;
+    @apply text-6xl xl:text-7xl;
   }
   h2 {
-    @apply text-4xl xl:text-5xl;
+    @apply text-5xl xl:text-6xl;
   }
   h3 {
-    @apply text-3xl xl:text-4xl font-semibold;
+    @apply text-4xl xl:text-5xl font-semibold;
   }
   h4 {
-    @apply text-2xl xl:text-3xl font-semibold;
+    @apply text-3xl xl:text-4xl font-semibold;
   }
   h5 {
-    @apply text-xl xl:text-2xl font-semibold;
+    @apply text-2xl xl:text-3xl font-semibold;
   }
   h6 {
     @apply text-lg xl:text-xl font-semibold;
   }
   th {
-    @apply text-base xl:text-lg !font-medium select-none;
+    @apply text-base !font-medium select-none;
   }
   td {
-    @apply xl:text-base text-sm;
+    @apply text-sm xl:text-base;
   }
   label {
-    @apply font-medium;
+    @apply font-medium text-base select-none;
   }
   p,
-  a,
-  label {
-    @apply text-sm xl:text-base;
+  a {
+    @apply text-base;
   }
   small {
     @apply text-sm font-normal;
-  }
-  label {
-    @apply select-none;
   }
   p {
     @apply text-pretty;

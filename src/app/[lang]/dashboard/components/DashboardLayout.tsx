@@ -65,9 +65,9 @@ export default function DashboardLayout({ collapsed, setCollapsed, user, handleC
 
       <ConfigProvider theme={{ components: { Drawer: { padding: 0, paddingLG: 0 } } }}>
         <Drawer
-          width={225}
+          width={250}
           closeIcon={
-            <section className="gap-2 flex items-center w-[225px] justify-center h-14 text-cream">
+            <section className="gap-2 flex items-center w-[250px] justify-center h-14 text-cream">
               <MenuFoldOutlined style={{ fontSize: "30px" }} />
             </section>
           }
@@ -90,22 +90,23 @@ export default function DashboardLayout({ collapsed, setCollapsed, user, handleC
         <section
           className={cn("px-shorter flex items-center justify-between w-full animate lg:ml-[3.1rem]", { "xl:ml-64": !collapsed })}
         >
-          <section className="flex gap-2 items-center">
-            <button
-              type="button"
-              onClick={() => setOpen(true)}
-              className="gap-2 flex lg:hidden items-center w-full justify-center h-14 text-cream mr-4"
-            >
+          <section className="flex gap-4 items-center">
+            <button type="button" onClick={() => setOpen(true)} className="lg:hidden h-14 text-cream flex items-center">
               <MenuUnfoldOutlined style={{ fontSize: "30px" }} />
             </button>
-            <Link href={selectedMenu.href} className="font-medium px-3 py-0.5 rounded-md border-2 select-none border-cream shadow-lg">
-              {selectedMenu.label}
-            </Link>
-            {selectedMenu.subName ? (
-              <p className="font-medium px-3 py-0.5 rounded-md border-2 select-none bg-light border-light shadow-lg text-dark">
-                {selectedMenu.subName}
-              </p>
-            ) : null}
+            <section className="flex gap-2 items-center w-full">
+              <Link
+                href={selectedMenu.href}
+                className="font-medium px-3 py-0.5 rounded-md border-2 select-none border-cream shadow-lg w-full"
+              >
+                {selectedMenu.label}
+              </Link>
+              {selectedMenu.subName ? (
+                <p className="font-medium px-3 py-0.5 rounded-md border-2 select-none bg-light border-light shadow-lg text-dark">
+                  {selectedMenu.subName}
+                </p>
+              ) : null}
+            </section>
           </section>
           <section className="flex gap-4 items-center">
             <p className="md:block hidden select-none rounded-md border-2 border-cream py-0.5 px-3 font-medium">

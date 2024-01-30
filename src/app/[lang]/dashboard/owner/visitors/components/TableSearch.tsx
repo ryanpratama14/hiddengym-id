@@ -26,19 +26,18 @@ export default function TableSearch({ searchParams, loading, newParams, redirect
         newParams.delete("page");
         redirectTable(newParams);
       }}
-      className="flex justify-between gap-2 md:gap-6"
+      className="gap-4 grid grid-cols-5"
     >
-      <section className="relative w-[80%] group">
-        <Input
-          key={searchParams.search}
-          defaultValue={searchParams.search}
-          name="search"
-          autoComplete="off"
-          placeholder="Search by name, email or phone number"
-          icon={ICONS.search}
-        />
-      </section>
-      <Button loading={loading} type="submit" className="relative h-full w-[20%]" size="xl">
+      <Input
+        classNameDiv="col-span-4"
+        key={searchParams.search}
+        defaultValue={searchParams.search}
+        name="search"
+        autoComplete="off"
+        placeholder="Search by name, email or phone number"
+        icon={ICONS.search}
+      />
+      <Button loading={loading} type="submit" className="relative h-full" size="xl">
         <Iconify icon={ICONS.search} className="md:hidden absolute centered" width={30} />
         <span className="md:block hidden">Search</span>
       </Button>

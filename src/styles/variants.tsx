@@ -1,7 +1,7 @@
 import { tv } from "tailwind-variants";
 
 export const buttonVariants = tv({
-  base: "select-none font-medium text-light active:scale-95 outline-none text-center xl:text-base text-base",
+  base: "select-none font-medium text-light active:scale-95 outline-none text-center text-base",
   variants: {
     rounded: {
       md: "rounded-md",
@@ -19,11 +19,11 @@ export const buttonVariants = tv({
       none: " ",
     },
     size: {
-      xxl: "px-4 h-10 xl:text-xl",
-      xl: "px-3 h-9 xl:text-lg",
-      l: "px-3 h-7 xl:text-lg",
+      xxl: "px-4 h-10",
+      xl: "px-3 h-9",
+      l: "px-3 h-7",
       m: "px-3 h-6",
-      s: "px-2 h-6 xl:text-base",
+      s: "px-2 h-6",
       none: " ",
     },
   },
@@ -35,7 +35,7 @@ export const buttonVariants = tv({
 });
 
 export const inputVariants = tv({
-  base: "w-full pl-3 rounded-none animate outline-none bg-inherit hover:border-dark/30 placeholder:text-dark/30 max-xl:text-sm",
+  base: "w-full pl-3 rounded-none animate outline-none bg-inherit hover:border-dark/30 placeholder:text-dark/30 text-base",
   variants: {
     color: {
       blue: " focus:border-blue2",

@@ -21,7 +21,7 @@ type Props = {
   t: Dictionary;
 };
 
-export default function ProfileForm({ user, setIsEdit, actionUserUpdate, t }: Props) {
+export default function ProfileUpdate({ user, setIsEdit, actionUserUpdate, t }: Props) {
   const {
     register,
     handleSubmit,

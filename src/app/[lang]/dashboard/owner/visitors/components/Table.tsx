@@ -180,7 +180,7 @@ export default function VisitorsTable({ data, searchParams, lang, loading, newPa
           dataIndex: "phoneNumber",
           ...getTableFilter({ name: "phoneNumber" }),
           render: (text: string) => (
-            <NavigatorX newTab href={`tel:${COUNTRY_CODE}${text}`} className="hover:underline text-dark">
+            <NavigatorX newTab href={`tel:${COUNTRY_CODE}${text}`} className="hover:underline text-dark xl:text-base text-sm">
               {localizePhoneNumber(text)}
             </NavigatorX>
           ),

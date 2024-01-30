@@ -19,7 +19,7 @@ export const toast = ({ type, description, t }: { type: ToastType; description: 
     <section className="flex flex-col gap-1 py-4 px-6 rounded-md shadow-xl text-dark bg-light">
       <section className="flex items-center gap-2">
         <Iconify icon={toastStyles[type].icon} width={18} color={toastStyles[type].color} />
-        <p className="font-semibold">{t.toast[type]}</p>
+        <p className="font-semibold !text-base">{t.toast[type]}</p>
       </section>
       <small className="whitespace-pre-line">{description}</small>
     </section>,

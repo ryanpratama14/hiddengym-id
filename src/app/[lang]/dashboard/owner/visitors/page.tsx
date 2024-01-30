@@ -32,7 +32,7 @@ export default function VisitorsPage({ searchParams, params }: Props) {
 
   return (
     <section className="grid grid-cols-1 md:grid-cols-5 gap-6 lg:gap-x-12">
-      <section className="flex flex-col gap-6 md:col-span-4">
+      <section className="flex flex-col gap-4 md:col-span-4">
         <TableSearch loading={loading} searchParams={searchParams} redirectTable={redirectTable} newParams={newParams} />
         <Table
           lang={params.lang}
