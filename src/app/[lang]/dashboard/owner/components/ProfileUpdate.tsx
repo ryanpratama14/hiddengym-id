@@ -6,7 +6,7 @@ import Input from "@/components/Input";
 import { toastError, toastSuccess } from "@/components/Toast";
 import { GENDER_OPTIONS, ICONS } from "@/lib/constants";
 import { getInputDate } from "@/lib/functions";
-import type { User, UserUpdateInput } from "@/server/api/routers/user";
+import type { UserDetail, UserUpdateInput } from "@/server/api/routers/user";
 import type { TRPC_RESPONSE } from "@/trpc/shared";
 import type { Dictionary } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,7 +15,7 @@ import { useMutation } from "@tanstack/react-query";
 import { type SubmitHandler, useForm } from "react-hook-form";
 
 type Props = {
-  user: User;
+  user: UserDetail;
   setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
   actionUserUpdate: (data: UserUpdateInput) => Promise<TRPC_RESPONSE>;
   t: Dictionary;

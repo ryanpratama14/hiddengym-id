@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/functions";
-import type { User } from "@/server/api/routers/user";
+import type { UserDetail } from "@/server/api/routers/user";
 import type { ItemType, MenuItemType } from "antd/es/menu/hooks/useItems";
 import { Fragment, useState } from "react";
 import AddButton from "./AddButton";
@@ -9,7 +9,7 @@ import DashboardLayout from "./DashboardLayout";
 
 type Props = {
   children: React.ReactNode;
-  user: User;
+  user: UserDetail;
   items: ItemType<MenuItemType>[];
   addButtonItems: ItemType<MenuItemType>[];
 };

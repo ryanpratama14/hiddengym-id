@@ -1,7 +1,7 @@
 import Logo from "@/components/Logo";
 import { useZustand } from "@/global/store";
 import { cn, formatDateShort, getNewDate, getSelectedMenu } from "@/lib/functions";
-import type { User } from "@/server/api/routers/user";
+import type { UserDetail } from "@/server/api/routers/user";
 import { COLORS } from "@/styles/theme";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { ConfigProvider, Drawer, Layout, Menu } from "antd";
@@ -17,7 +17,7 @@ type Props = {
   collapsed: boolean;
   setCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
   handleCollapse: () => void;
-  user: User;
+  user: UserDetail;
   items: ItemType<MenuItemType>[];
 };
 

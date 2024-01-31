@@ -3,11 +3,11 @@ import Iconify from "@/components/Iconify";
 import NavigatorX from "@/components/NavigatorX";
 import { COUNTRY_CODE, GENDERS } from "@/lib/constants";
 import { formatDateLong, formatName, localizePhoneNumber } from "@/lib/functions";
-import type { User } from "@/server/api/routers/user";
+import type { UserDetail } from "@/server/api/routers/user";
 import type { Lang } from "@/types";
 import { Fragment } from "react";
 
-type Props = { user: User; setIsEdit: React.Dispatch<React.SetStateAction<boolean>>; lang: Lang };
+type Props = { user: UserDetail; setIsEdit: React.Dispatch<React.SetStateAction<boolean>>; lang: Lang };
 
 export default function Profile({ user, setIsEdit, lang }: Props) {
   return (

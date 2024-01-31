@@ -167,7 +167,7 @@ export const userRouter = createTRPCRouter({
 });
 
 // outputs
-export type User = RouterOutputs["user"]["detail"];
+export type UserDetail = RouterOutputs["user"]["detail"];
 export type UserList = RouterOutputs["user"]["list"];
 export type UserListData = RouterOutputs["user"]["list"]["data"];
 export type UserCreateVisitor = RouterOutputs["user"]["createVisitor"];
