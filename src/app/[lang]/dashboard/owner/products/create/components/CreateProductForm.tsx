@@ -5,13 +5,13 @@ import Input from "@/components/Input";
 import { toastError, toastSuccess } from "@/components/Toast";
 import { useZustand } from "@/global/store";
 import { ICONS, USER_REDIRECT } from "@/lib/constants";
-import { type ProductCreateInput } from "@/server/api/routers/product";
 import { api } from "@/trpc/react";
 import { type Dictionary } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { type ProductCreateInput } from "@router/product";
 import { schema } from "@schema";
 import { useRouter } from "next/navigation";
-import { useForm, type SubmitHandler } from "react-hook-form";
+import { type SubmitHandler, useForm } from "react-hook-form";
 
 type Props = {
   t: Dictionary;

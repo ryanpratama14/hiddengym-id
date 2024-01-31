@@ -1,8 +1,8 @@
 import { ICONS } from "@/lib/constants";
 import { formatCurrency, openModal } from "@/lib/functions";
-import type { ProductList } from "@/server/api/routers/product";
 import type { SearchParams } from "@/types";
 import ActionButton from "@dashboard/components/ActionButton";
+import type { ProductList } from "@router/product";
 import { Skeleton } from "antd";
 
 type Props = {

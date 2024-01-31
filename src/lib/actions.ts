@@ -1,7 +1,7 @@
 "use server";
 
-import type { UserUpdateInput } from "@/server/api/routers/user";
 import { api } from "@/trpc/server";
+import type { UserUpdateInput } from "@router/user";
 import { revalidatePath } from "next/cache";
 
 export const revalidateCache = async () => revalidatePath("/");

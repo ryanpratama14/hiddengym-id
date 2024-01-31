@@ -7,10 +7,10 @@ import { toastError, toastSuccess, toastWarning } from "@/components/Toast";
 import { GENDERS } from "@/lib/constants";
 import { isFileSizeAllowed } from "@/lib/functions";
 import { uploadFiles } from "@/lib/uploadthing";
-import type { User, UserUpdateInput } from "@/server/api/routers/user";
 import type { TRPC_RESPONSE } from "@/trpc/shared";
 import type { ChangeEvent, Dictionary, Lang } from "@/types";
 import { CloudUploadOutlined } from "@ant-design/icons";
+import type { UserDetail, UserUpdateInput } from "@router/user";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import Profile from "./Profile";
@@ -18,7 +18,7 @@ import ProfileUpdate from "./ProfileUpdate";
 
 type Props = {
   lang: Lang;
-  user: User;
+  user: UserDetail;
   actionUserUpdate: (data: UserUpdateInput) => Promise<TRPC_RESPONSE>;
   revalidateCache: () => Promise<void>;
   t: Dictionary;

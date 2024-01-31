@@ -1,9 +1,9 @@
 import Logo from "@/components/Logo";
 import { useZustand } from "@/global/store";
 import { cn, formatDateShort, getNewDate, getSelectedMenu } from "@/lib/functions";
-import type { UserDetail } from "@/server/api/routers/user";
 import { COLORS } from "@/styles/theme";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
+import type { UserDetail } from "@router/user";
 import { ConfigProvider, Drawer, Layout, Menu } from "antd";
 import type { ItemType, MenuItemType } from "antd/es/menu/hooks/useItems";
 import Link from "next/link";

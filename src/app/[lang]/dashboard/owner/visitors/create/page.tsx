@@ -1,8 +1,8 @@
 import { useDictionary } from "@/lib/dictionary";
-import type { PackageTransactionCreateInput } from "@/server/api/routers/packageTransaction";
 import { getServerAuthSession } from "@/server/auth";
 import { api } from "@/trpc/server";
 import type { Lang } from "@/types";
+import type { PackageTransactionCreateInput } from "@router/packageTransaction";
 import { revalidatePath } from "next/cache";
 import CreateVisitorForm from "./components/CreateVisitorForm";
 

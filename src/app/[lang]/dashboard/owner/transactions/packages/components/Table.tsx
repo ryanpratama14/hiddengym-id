@@ -15,12 +15,12 @@ import {
   openModal,
   textEllipsis,
 } from "@/lib/functions";
-import type { PackageTransactionList, PackageTransactionListInput } from "@/server/api/routers/packageTransaction";
 import { inputVariants, statusVariants } from "@/styles/variants";
 import { PAGINATION_LIMIT } from "@/trpc/shared";
 import type { SearchParams } from "@/types";
 import ActionButton from "@dashboard/components/ActionButton";
 import type { IconifyIcon } from "@iconify/react/dist/iconify.js";
+import type { PackageTransactionList, PackageTransactionListInput } from "@router/packageTransaction";
 import { Table } from "antd";
 import type { FilterDropdownProps } from "antd/es/table/interface";
 

@@ -3,17 +3,17 @@ import Img from "@/components/Img";
 import ModalConfirm from "@/components/ModalConfirm";
 import { GENDERS, ICONS, PROFILE_BUTTON_ITEMS_TO_REMOVE } from "@/lib/constants";
 import { createUrl } from "@/lib/functions";
-import type { User } from "@/server/api/routers/user";
 import type { NewParamsAction, ProfileButtonKey } from "@/types";
 import { Menu, Transition } from "@headlessui/react";
 import type { IconifyIcon } from "@iconify/react/dist/iconify.js";
 import type { Role } from "@prisma/client";
+import type { UserDetail } from "@router/user";
 import { signOut } from "next-auth/react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Fragment } from "react";
 import ModalChangePassword from "./ModalChangePassword";
 
-type Props = { user: User };
+type Props = { user: UserDetail };
 
 export default function DashboardProfileDropdown({ user }: Props) {
   const router = useRouter();

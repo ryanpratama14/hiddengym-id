@@ -8,12 +8,12 @@ import Input from "@/components/Input";
 import NavigatorX from "@/components/NavigatorX";
 import { COUNTRY_CODE, GENDERS, GENDER_OPTIONS, ICONS } from "@/lib/constants";
 import { cn, formatCurrency, localizePhoneNumber, textEllipsis } from "@/lib/functions";
-import type { UserList, UserListInput } from "@/server/api/routers/user";
 import { PAGINATION_LIMIT } from "@/trpc/shared";
 import type { Lang, SearchParams } from "@/types";
 import ActionButton from "@dashboard/components/ActionButton";
 import type { IconifyIcon } from "@iconify/react/dist/iconify.js";
 import type { Gender } from "@prisma/client";
+import type { UserList, UserListInput } from "@router/user";
 import { Table } from "antd";
 import type { FilterDropdownProps } from "antd/es/table/interface";
 

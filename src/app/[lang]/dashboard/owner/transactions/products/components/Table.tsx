@@ -5,11 +5,11 @@ import Img from "@/components/Img";
 import Input from "@/components/Input";
 import { GENDERS, ICONS } from "@/lib/constants";
 import { cn, formatCurrency, formatDateShort, openModal, textEllipsis } from "@/lib/functions";
-import type { ProductTransactionList, ProductTransactionListInput } from "@/server/api/routers/productTransaction";
 import { PAGINATION_LIMIT } from "@/trpc/shared";
 import type { SearchParams } from "@/types";
 import ActionButton from "@dashboard/components/ActionButton";
 import type { IconifyIcon } from "@iconify/react/dist/iconify.js";
+import type { ProductTransactionList, ProductTransactionListInput } from "@router/productTransaction";
 import { Table } from "antd";
 import type { FilterDropdownProps } from "antd/es/table/interface";
 

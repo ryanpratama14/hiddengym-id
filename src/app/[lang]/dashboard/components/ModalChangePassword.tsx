@@ -3,9 +3,9 @@ import Input from "@/components/Input";
 import { Modal } from "@/components/Modal";
 import { toastError, toastSuccess } from "@/components/Toast";
 import { useZustand } from "@/global/store";
-import type { UserChangePasswordInput } from "@/server/api/routers/user";
 import { api } from "@/trpc/react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import type { UserChangePasswordInput } from "@router/user";
 import { schema } from "@schema";
 import { type SubmitHandler, useForm } from "react-hook-form";
 

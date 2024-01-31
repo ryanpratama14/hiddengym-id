@@ -1,4 +1,4 @@
-import type { ProductTransactionDetail } from "@/server/api/routers/productTransaction";
+import type { ProductTransactionDetail } from "@router/productTransaction";
 import { Skeleton } from "antd";
 import { Fragment } from "react";
 import TransactionInvoice from "./TransactionInvoice";
