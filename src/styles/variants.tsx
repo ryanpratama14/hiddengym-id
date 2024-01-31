@@ -76,7 +76,7 @@ export const statusVariants = tv({
 });
 
 export const actionVariants = tv({
-  base: "p-1 text-cream rounded-md",
+  base: "text-cream h-6 rounded-md aspect-square relative",
   variants: {
     color: {
       green: "bg-green",
