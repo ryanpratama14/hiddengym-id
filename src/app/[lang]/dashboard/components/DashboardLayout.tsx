@@ -95,12 +95,15 @@ export default function DashboardLayout({ collapsed, setCollapsed, user, handleC
               <MenuUnfoldOutlined style={{ fontSize: "30px" }} />
             </button>
             <section className="flex gap-2 items-center w-full">
-              <Link
-                href={selectedMenu.href}
-                className="font-medium px-3 py-0.5 rounded-md border-2 select-none border-cream shadow-lg w-full"
-              >
-                {selectedMenu.label}
-              </Link>
+              {selectedMenu.menus.map((e) => (
+                <Link
+                  key={e.href}
+                  href={e.href}
+                  className="font-medium px-3 py-0.5 rounded-md border-2 select-none border-cream shadow-lg w-full"
+                >
+                  {e.label}
+                </Link>
+              ))}
               {selectedMenu.subName ? (
                 <p className="font-medium px-3 py-0.5 rounded-md border-2 select-none bg-light border-light shadow-lg text-dark">
                   {selectedMenu.subName}

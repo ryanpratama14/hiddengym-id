@@ -20,7 +20,7 @@ export type AddButtonKey =
   | "/transactions/products";
 
 export type DashboardMenuLabel = (typeof DASHBOARD_MENUS)[number]["label"];
-export type DashboardMenuKey = (typeof DASHBOARD_MENUS)[number]["key"];
+export type DashboardMenuKey = (typeof DASHBOARD_MENUS)[number]["key"] | "/transactions/packages" | "/transactions/products";
 export type DashboardHrefKey = DashboardMenuKey | AddButtonKey | "" | "/visitors/detail";
 export type ProfileButtonKey = "changePassword" | "signOut";
 export type NewParamsAction = "delete" | "set";

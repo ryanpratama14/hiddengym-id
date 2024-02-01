@@ -7,7 +7,7 @@ import {
   USER_PATHNAMES,
   USER_REDIRECT,
 } from "@/lib/constants";
-import type { ActionButtonAction, DashboardMenuKey, DashboardMenuLabel, DashboardSubMenuKey, Lang } from "@/types";
+import type { ActionButtonAction, DashboardMenuKey, DashboardSubMenuKey, Lang } from "@/types";
 import type { Role } from "@prisma/client";
 import { type ClassValue, clsx } from "clsx";
 import dayjs from "dayjs";
@@ -305,26 +305,32 @@ export const getDashboardPathname = (pathname: string, role: Role): DashboardMen
 };
 
 type SelectedMenu = {
-  label: DashboardMenuLabel | "";
-  href: string;
   subName?: DashboardSubMenuKey;
   keys: DashboardMenuKey[];
+  menus: { label: string; href: string }[];
 };
 
 export const getSelectedMenu = ({ pathname, role, lang }: { pathname: string; role: Role; lang: Lang }): SelectedMenu => {
   const selectedMenu: SelectedMenu = {
-    label: "",
-    href: "",
     subName: DASHBOARD_SUB_MENUS.find((value) => pathname.includes(value.toLowerCase())),
     keys: getDashboardPathname(pathname, role),
+    menus: [],
   };
 
   for (const path of selectedMenu.keys) {
     const menu = DASHBOARD_MENUS.find((item) => item.key === path);
     if (menu) {
-      selectedMenu.label = menu.label;
-      selectedMenu.href = USER_REDIRECT({ role, lang, href: path });
-      break;
+      if (menu.children?.length) {
+        for (const path of selectedMenu.keys) {
+          const childrenMenu = menu.children?.find((e) => e.key === path);
+          if (childrenMenu) {
+            selectedMenu.menus.push({
+              label: childrenMenu.extendedLabel,
+              href: USER_REDIRECT({ role, lang, href: childrenMenu.key }),
+            });
+          }
+        }
+      } else selectedMenu.menus.push({ label: menu.label, href: USER_REDIRECT({ role, lang, href: menu.key }) });
     }
   }
 
