@@ -31,10 +31,10 @@ const DashboardNavigator = ({
       target={newTab ? "_blank" : undefined}
       rel={newTab ? "noopener noreferrer" : undefined}
       className={cn(
-        `select-none font-medium text-base ${className}`,
-        { "ml-3 text-[13px] text-sm": isChildren },
-        { "ml-4 text-sm": isChildrenAddButton },
-        { "text-sm": smallText },
+        `select-none font-medium text-sm lg:text-base ${className}`,
+        { "ml-3 text-[13px] lg:text-sm": isChildren },
+        { "ml-4 lg:text-sm": isChildrenAddButton },
+        { "lg:text-sm": smallText },
       )}
       href={USER_REDIRECT({ lang, href, role })}
     >

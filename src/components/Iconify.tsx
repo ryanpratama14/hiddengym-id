@@ -22,7 +22,7 @@ export default function Iconify({ icon, width, className, rotate, style, onClick
       rotate={rotate}
       style={style}
       color={color}
-      className={cn("animate", className, { "cursor-pointer": onClick })}
+      className={cn(`animate ${className}`, { "cursor-pointer": onClick })}
     />
   );
 }

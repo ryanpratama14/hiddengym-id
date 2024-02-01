@@ -65,9 +65,9 @@ export default function DashboardLayout({ collapsed, setCollapsed, user, handleC
 
       <ConfigProvider theme={{ components: { Drawer: { padding: 0, paddingLG: 0 } } }}>
         <Drawer
-          width={250}
+          width={225}
           closeIcon={
-            <section className="gap-2 flex items-center w-[250px] justify-center h-14 text-cream">
+            <section className="gap-2 flex items-center w-[225px] justify-center h-14 text-cream">
               <MenuFoldOutlined style={{ fontSize: "30px" }} />
             </section>
           }
