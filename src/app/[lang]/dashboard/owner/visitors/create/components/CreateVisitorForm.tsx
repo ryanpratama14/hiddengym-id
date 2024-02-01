@@ -129,6 +129,7 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
               error={errors.visitorData?.birthDate?.message}
               label="Date of Birth (Optional)"
               type="date"
+              max={getInputDate({})}
               onChange={(e) => {
                 if (selectedPromoCode) setSelectedPromoCode(null);
                 if (data.promoCodeId) resetField("packageData.promoCodeId");

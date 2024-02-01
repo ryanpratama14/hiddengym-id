@@ -60,15 +60,21 @@ export class schema {
         message: "New password and confirm password don't match.",
         path: ["confirmPassword"],
       });
-    static create = z.object({
-      email: schema.email,
-      fullName: schema.fullName,
-      phoneNumber: schema.phoneNumber,
-      birthDate: schema.dateNullable,
-      credential: schema.password,
-      gender: schema.gender,
-      role: schema.role,
-    });
+    static create = z
+      .object({
+        email: schema.email,
+        fullName: schema.fullName,
+        phoneNumber: schema.phoneNumber,
+        birthDate: schema.dateNullable,
+        credential: schema.password,
+        confirmCredential: schema.password,
+        gender: schema.gender,
+        role: schema.role,
+      })
+      .refine(({ credential, confirmCredential }) => credential === confirmCredential, {
+        message: "Password and confirm password don't match.",
+        path: ["confirmCredential"],
+      });
 
     static createVisitor = z.object({
       visitorData: z

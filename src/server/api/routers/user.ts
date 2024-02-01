@@ -50,10 +50,10 @@ export const userRouter = createTRPCRouter({
 
   create: publicProcedure.input(schema.user.create).mutation(async ({ ctx, input }) => {
     const dataByEmail = await ctx.db.user.findFirst({ where: { email: input.email } });
-    if (dataByEmail) return THROW_TRPC_ERROR("CONFLICT", getConflictMessage("user", "email"));
+    if (dataByEmail) return THROW_TRPC_ERROR("CONFLICT", getConflictMessage(input.role.toLowerCase(), "email"));
 
     const dataByPhoneNumber = await ctx.db.user.findUnique({ where: { phoneNumber: input.phoneNumber } });
-    if (dataByPhoneNumber) return THROW_TRPC_ERROR("CONFLICT", getConflictMessage("user", "phone number"));
+    if (dataByPhoneNumber) return THROW_TRPC_ERROR("CONFLICT", getConflictMessage(input.role.toLowerCase(), "phone number"));
 
     const newData = await ctx.db.user.create({
       data: {
@@ -70,7 +70,7 @@ export const userRouter = createTRPCRouter({
       },
     });
 
-    return { ...THROW_OK("CREATED", getCreatedMessage("new visitor")), userId: newData.id };
+    return { ...THROW_OK("CREATED", getCreatedMessage(`new ${input.role.toLowerCase()}`)), userId: newData.id };
   }),
 
   createVisitor: ownerAdminProcedure.input(schema.user.createVisitor).mutation(async ({ ctx, input }) => {

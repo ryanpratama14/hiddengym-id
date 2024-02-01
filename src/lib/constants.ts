@@ -94,7 +94,7 @@ export const ICONS = {
   close: "mdi:close",
   add: "mdi:plus",
   home: "tabler:home",
-  visitor: "ic:baseline-people",
+  visitor: "ic:baseline-people-outline",
   trainer: "icon-park-outline:gymnastics",
   package: "iconoir:gym",
   product: "material-symbols:grocery",
@@ -119,6 +119,7 @@ export const ICONS = {
   detail: "mdi:account-details",
   edit: "material-symbols:edit-square-outline",
   delete: "material-symbols:delete-outline",
+  role: "eos-icons:role-binding-outlined",
 };
 
 export const GENDERS: Record<
@@ -178,6 +179,12 @@ export const ADD_BUTTON_ITEMS = [
     label: "Product",
     icon: ICONS.product,
     key: "/products/create",
+    children: undefined,
+  },
+  {
+    label: "Trainer",
+    icon: ICONS.trainer,
+    key: "/trainers/create",
     children: undefined,
   },
   {

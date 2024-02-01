@@ -26,17 +26,7 @@ const InputSelect = forwardRef<BaseSelectRef, InputSelectProps>((props, ref) => 
   const id = useId();
 
   return (
-    <ConfigProvider
-      theme={{
-        components: {
-          Select: {
-            selectorBg: COLORS.cream,
-            fontSizeXL: 16,
-            fontSize: 14,
-          },
-        },
-      }}
-    >
+    <ConfigProvider theme={{ components: { Select: { selectorBg: COLORS.cream } } }}>
       <section className={cn("flex flex-col gap-0.5", props.className)}>
         {props.label ? (
           <label className="text-left" htmlFor={id}>
