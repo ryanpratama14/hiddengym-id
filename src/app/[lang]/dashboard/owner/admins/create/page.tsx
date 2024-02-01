@@ -17,7 +17,7 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 
 type Props = { params: { lang: Lang } };
 
-export default function TrainerCreatePage({ params }: Props) {
+export default function AdminCreatePage({ params }: Props) {
   const router = useRouter();
   const { t } = useZustand();
   const {
@@ -26,7 +26,7 @@ export default function TrainerCreatePage({ params }: Props) {
     formState: { errors },
   } = useForm<UserCreateInput>({
     resolver: zodResolver(schema.user.create),
-    defaultValues: { role: "TRAINER", gender: "MALE" },
+    defaultValues: { role: "ADMIN", gender: "MALE" },
   });
 
   const onSubmit: SubmitHandler<UserCreateInput> = (data) => createData(data);
@@ -34,14 +34,14 @@ export default function TrainerCreatePage({ params }: Props) {
   const { mutate: createData, isPending: loading } = api.user.create.useMutation({
     onSuccess: async (res) => {
       t && toastSuccess({ t, description: res.message });
-      router.push(USER_REDIRECT({ lang: params.lang, href: "/trainers", role: "OWNER" }));
+      router.push(USER_REDIRECT({ lang: params.lang, href: "/admins", role: "OWNER" }));
     },
     onError: (res) => t && toastSuccess({ t, description: res.message }),
   });
 
   return (
     <section className="main-create-padding">
-      <h3>Create Trainer</h3>
+      <h3>Create Admin</h3>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 w-full">
         <section className="grid md:grid-cols-2 gap-4">
           <Input error={errors.fullName?.message} icon={ICONS.person} label="Full Name" {...register("fullName")} />
@@ -107,7 +107,7 @@ export default function TrainerCreatePage({ params }: Props) {
         </section>
         <section className="flex justify-center items-center">
           <Button className="md:w-fit w-full" loading={loading} type="submit" color="success" size="xl">
-            Create Trainer
+            Create Admin
           </Button>
         </section>
       </form>

@@ -120,6 +120,7 @@ export const ICONS = {
   edit: "material-symbols:edit-square-outline",
   delete: "material-symbols:delete-outline",
   role: "eos-icons:role-binding-outlined",
+  admin: "ri:admin-line",
 };
 
 export const GENDERS: Record<
@@ -170,6 +171,18 @@ export const ADD_BUTTON_ITEMS = [
     children: undefined,
   },
   {
+    label: "Admin",
+    icon: ICONS.admin,
+    key: "/admins/create",
+    children: undefined,
+  },
+  {
+    label: "Trainer",
+    icon: ICONS.trainer,
+    key: "/trainers/create",
+    children: undefined,
+  },
+  {
     label: "Package",
     icon: ICONS.package,
     key: "/packages/create",
@@ -181,12 +194,7 @@ export const ADD_BUTTON_ITEMS = [
     key: "/products/create",
     children: undefined,
   },
-  {
-    label: "Trainer",
-    icon: ICONS.trainer,
-    key: "/trainers/create",
-    children: undefined,
-  },
+
   {
     label: "Visit",
     icon: ICONS.visit,
@@ -254,6 +262,13 @@ export const DASHBOARD_MENUS = [
     key: "/trainers",
     label: "Trainers",
     icon: ICONS.trainer,
+    children: undefined,
+  },
+  {
+    title: "",
+    key: "/admins",
+    label: "Admins",
+    icon: ICONS.admin,
     children: undefined,
   },
   {
