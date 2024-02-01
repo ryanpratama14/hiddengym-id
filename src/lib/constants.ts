@@ -239,13 +239,13 @@ export const DASHBOARD_MENUS = [
     icon: ICONS.transaction,
     children: [
       {
-        extendedLabel: "Package Transactions",
+        extendedLabel: "Package Txn",
         title: "",
         key: "/transactions/packages",
         label: "Packages",
       },
       {
-        extendedLabel: "Product Transactions",
+        extendedLabel: "Product Txn",
         title: "",
         key: "/transactions/products",
         label: "Products",

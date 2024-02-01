@@ -23,7 +23,8 @@ export const theme: ThemeConfig = {
     fontFamily: "Poppins",
     colorBgElevated: COLORS.dark,
     colorPrimary: COLORS.dark,
-    colorLinkHover: COLORS.blue2,
+    colorLinkHover: " ",
+    colorLinkActive: " ",
   },
   components: {
     Pagination: {
