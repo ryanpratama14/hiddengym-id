@@ -1,9 +1,9 @@
 {
   "name": "Hidden Gym",
   "short_name": "Hidden Gym",
-  "theme_color": "#fff",
-  "background_color": "#fff",
-  "display": "browser",
+  "theme_color": "#212129",
+  "background_color": "#212129",
+  "display": "standalone",
   "orientation": "portrait",
   "scope": "/",
   "start_url": "/",
