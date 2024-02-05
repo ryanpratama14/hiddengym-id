@@ -35,7 +35,7 @@
     "@types/next-pwa": "^5.6.9",
     "@uidotdev/usehooks": "^2.4.1",
     "@uploadthing/react": "^6.2.2",
-    "antd": "^5.13.3",
+    "antd": "^5.14.0",
     "argon2": "^0.31.2",
     "clsx": "^2.1.0",
     "dayjs": "^1.11.10",
@@ -63,7 +63,7 @@
   "devDependencies": {
     "@biomejs/biome": "1.5.3",
     "@types/node": "^20.11.16",
-    "@types/react": "^18.2.51",
+    "@types/react": "^18.2.53",
     "@types/react-dom": "^18.2.18",
     "autoprefixer": "^10.4.17",
     "postcss": "^8.4.33",
