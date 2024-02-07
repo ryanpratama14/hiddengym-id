@@ -38,7 +38,7 @@ export default function ModalUpdate({ show, closeModal, data, t }: Props) {
     watch,
     reset,
     setValue,
-  } = useForm<PackageTransactionUpdateInput>({ resolver: zodResolver(schema.packageTransaction.update) });
+  } = useForm<PackageTransactionUpdateInput>({ mode: "onBlur", resolver: zodResolver(schema.packageTransaction.update) });
 
   const onSubmit: SubmitHandler<PackageTransactionUpdateInput> = (data) => updateData(data);
 

@@ -19,6 +19,7 @@ export default function ModalChangePassword({ show, closeModal }: Props) {
     formState: { errors },
     reset,
   } = useForm<UserChangePasswordInput>({
+    mode: "onBlur",
     resolver: zodResolver(schema.user.changePassword),
     defaultValues: { oldPassword: "", newPassword: "", confirmPassword: "" },
   });

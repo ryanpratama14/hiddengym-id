@@ -27,6 +27,7 @@ export default function ProfileUpdate({ user, setIsEdit, actionUserUpdate, t }: 
     handleSubmit,
     formState: { errors },
   } = useForm<UserUpdateInput>({
+    mode: "onBlur",
     resolver: zodResolver(schema.user.update),
     defaultValues: {
       userId: user?.id,

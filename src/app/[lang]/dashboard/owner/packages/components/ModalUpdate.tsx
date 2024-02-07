@@ -37,6 +37,7 @@ export default function ModalUpdate({ t, data, show, closeModal }: Props) {
     control,
     reset,
   } = useForm<PackageUpdateInput>({
+    mode: "onBlur",
     resolver: zodResolver(schema.package.update),
   });
 

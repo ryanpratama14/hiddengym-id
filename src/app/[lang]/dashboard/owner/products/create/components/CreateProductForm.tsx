@@ -6,9 +6,9 @@ import { toastError, toastSuccess } from "@/components/Toast";
 import { useZustand } from "@/global/store";
 import { ICONS, USER_REDIRECT } from "@/lib/constants";
 import { api } from "@/trpc/react";
-import { type Dictionary } from "@/types";
+import type { Dictionary } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { type ProductCreateInput } from "@router/product";
+import type { ProductCreateInput } from "@router/product";
 import { schema } from "@schema";
 import { useRouter } from "next/navigation";
 import { type SubmitHandler, useForm } from "react-hook-form";
@@ -25,6 +25,7 @@ export default function CreateProductForm({ t }: Props) {
     handleSubmit,
     formState: { errors },
   } = useForm<ProductCreateInput>({
+    mode: "onBlur",
     resolver: zodResolver(schema.product.create),
     defaultValues: { price: 0 },
   });

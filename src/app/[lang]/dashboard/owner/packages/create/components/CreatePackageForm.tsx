@@ -50,6 +50,7 @@ export default function CreatePackageForm({ option, t }: Props) {
     resetField,
     setValue,
   } = useForm<PackageCreateInput>({
+    mode: "onBlur",
     resolver: zodResolver(schema.package.create),
     defaultValues: initialData,
   });

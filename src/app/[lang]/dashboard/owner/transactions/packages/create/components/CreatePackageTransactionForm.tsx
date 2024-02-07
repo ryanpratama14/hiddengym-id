@@ -68,6 +68,7 @@ export default function CreatePackageTransactionForm({ t, option }: Props) {
     clearErrors,
     resetField,
   } = useForm<PackageTransactionCreateInput>({
+    mode: "onBlur",
     resolver: zodResolver(schema.packageTransaction.create),
     defaultValues: {
       transactionDate: getInputDate({}),

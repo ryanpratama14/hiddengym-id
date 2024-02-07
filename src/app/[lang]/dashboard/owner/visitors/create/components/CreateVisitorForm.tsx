@@ -51,6 +51,7 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
     resetField,
     getValues,
   } = useForm<UserCreateVisitorInput>({
+    mode: "onBlur",
     resolver: zodResolver(schema.user.createVisitor),
     defaultValues: { visitorData: { gender: "MALE" } },
   });

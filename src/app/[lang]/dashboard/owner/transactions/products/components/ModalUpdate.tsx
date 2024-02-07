@@ -38,7 +38,7 @@ export default function ModalUpdate({ show, closeModal, data, t }: Props) {
     clearErrors,
     reset,
     watch,
-  } = useForm<ProductTransactionUpdateInput>({ resolver: zodResolver(schema.productTransaction.update) });
+  } = useForm<ProductTransactionUpdateInput>({ mode: "onBlur", resolver: zodResolver(schema.productTransaction.update) });
   const { fields, insert, remove } = useFieldArray({ control, name: "body.products" });
 
   const onSubmit: SubmitHandler<ProductTransactionUpdateInput> = (data) => updateData(data);

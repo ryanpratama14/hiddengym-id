@@ -25,6 +25,7 @@ export default function AdminCreatePage({ params }: Props) {
     handleSubmit,
     formState: { errors },
   } = useForm<UserCreateInput>({
+    mode: "onBlur",
     resolver: zodResolver(schema.user.create),
     defaultValues: { role: "ADMIN", gender: "MALE" },
   });

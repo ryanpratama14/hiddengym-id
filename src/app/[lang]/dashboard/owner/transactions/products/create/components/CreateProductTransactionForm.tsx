@@ -59,6 +59,7 @@ export default function CreateProductTransactionForm({ t }: Props) {
     watch,
     clearErrors,
   } = useForm<ProductTransactionCreateInput>({
+    mode: "onBlur",
     resolver: zodResolver(schema.productTransaction.create),
     defaultValues: {
       transactionDate: getInputDate({}),

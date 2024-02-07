@@ -25,6 +25,7 @@ export default function CreatePaymentMethodForm({ t }: Props) {
     handleSubmit,
     formState: { errors },
   } = useForm<PaymentMethodCreateInput>({
+    mode: "onBlur",
     resolver: zodResolver(schema.paymentMethod.create),
     defaultValues: {},
   });

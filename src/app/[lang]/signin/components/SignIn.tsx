@@ -29,7 +29,7 @@ export default function SignIn({ callbackUrl, t }: Props) {
     formState: { errors },
     resetField,
     reset,
-  } = useForm<Login>({ resolver: zodResolver(schema.login) });
+  } = useForm<Login>({ mode: "onBlur", resolver: zodResolver(schema.login) });
 
   const onSubmit: SubmitHandler<Login> = (data) => logIn(data);
 

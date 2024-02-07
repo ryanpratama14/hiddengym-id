@@ -25,6 +25,7 @@ export default function TrainerCreatePage({ params }: Props) {
     handleSubmit,
     formState: { errors },
   } = useForm<UserCreateInput>({
+    mode: "onBlur",
     resolver: zodResolver(schema.user.create),
     defaultValues: { role: "TRAINER", gender: "MALE" },
   });

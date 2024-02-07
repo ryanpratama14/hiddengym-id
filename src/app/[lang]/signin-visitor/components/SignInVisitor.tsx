@@ -28,7 +28,7 @@ export default function SignInVisitor({ callbackUrl, t }: Props) {
     formState: { errors },
     resetField,
     reset,
-  } = useForm<LoginVisitor>({ resolver: zodResolver(schema.loginVisitor) });
+  } = useForm<LoginVisitor>({ mode: "onBlur", resolver: zodResolver(schema.loginVisitor) });
 
   const onSubmit: SubmitHandler<LoginVisitor> = (data) => logIn(data);
 

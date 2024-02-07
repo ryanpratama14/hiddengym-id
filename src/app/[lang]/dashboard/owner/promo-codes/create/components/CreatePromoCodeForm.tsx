@@ -27,6 +27,7 @@ export default function CreatePromoCodeForm({ t }: Props) {
     formState: { errors },
     control,
   } = useForm<PromoCodeCreateInput>({
+    mode: "onBlur",
     resolver: zodResolver(schema.promoCode.create),
     defaultValues: { isActive: true, discountPrice: 0, type: "REGULAR" },
   });

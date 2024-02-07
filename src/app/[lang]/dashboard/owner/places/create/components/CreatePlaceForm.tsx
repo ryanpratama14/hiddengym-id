@@ -26,6 +26,7 @@ export default function CreatePlaceForm({ t }: Props) {
     handleSubmit,
     formState: { errors },
   } = useForm<PlaceCreateInput>({
+    mode: "onBlur",
     resolver: zodResolver(schema.place.create),
     defaultValues: {},
   });

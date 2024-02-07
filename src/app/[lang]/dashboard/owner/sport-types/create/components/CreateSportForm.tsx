@@ -25,6 +25,7 @@ export default function CreateSportForm({ t }: Props) {
     handleSubmit,
     formState: { errors },
   } = useForm<SportCreateInput>({
+    mode: "onBlur",
     resolver: zodResolver(schema.sport.create),
     defaultValues: {},
   });
