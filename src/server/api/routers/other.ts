@@ -1,6 +1,6 @@
 import { accumulateValue } from "@/lib/functions";
 import { db } from "@/server/db";
-import { THROW_TRPC_ERROR, prismaExclude } from "@/trpc/shared";
+import { prismaExclude } from "@/trpc/shared";
 
 export const updateTotalSpending = async (userId: string) => {
   const data = await db.user.findFirst({
@@ -8,15 +8,15 @@ export const updateTotalSpending = async (userId: string) => {
     select: { ...prismaExclude("User", ["credential"]), packageTransactions: true, productTransactions: true },
   });
 
-  if (!data) return THROW_TRPC_ERROR("NOT_FOUND");
+  if (data) {
+    const spendingData = {
+      totalSpendingPackage: accumulateValue(data.packageTransactions, "totalPrice"),
+      totalSpendingProduct: accumulateValue(data.productTransactions, "totalPrice"),
+      totalSpending: accumulateValue(data.packageTransactions, "totalPrice") + accumulateValue(data.productTransactions, "totalPrice"),
+    };
 
-  const spendingData = {
-    totalSpendingPackage: accumulateValue(data.packageTransactions, "totalPrice"),
-    totalSpendingProduct: accumulateValue(data.productTransactions, "totalPrice"),
-    totalSpending: accumulateValue(data.packageTransactions, "totalPrice") + accumulateValue(data.productTransactions, "totalPrice"),
-  };
-
-  await db.user.update({ where: { id: userId }, data: spendingData });
+    await db.user.update({ where: { id: userId }, data: spendingData });
+  }
 };
 
 export const updatePackageTotalTransactions = async (packageId: string) => {
@@ -24,9 +24,8 @@ export const updatePackageTotalTransactions = async (packageId: string) => {
     where: { id: packageId },
     select: { ...prismaExclude("Package", []), transactions: true },
   });
-  if (!data) return THROW_TRPC_ERROR("NOT_FOUND");
 
-  await db.package.update({ where: { id: packageId }, data: { totalTransactions: data.transactions.length } });
+  if (data) await db.package.update({ where: { id: packageId }, data: { totalTransactions: data.transactions.length } });
 };
 
 export const updateProductTotalTransactions = async (productIDs: string[]) => {
@@ -35,7 +34,7 @@ export const updateProductTotalTransactions = async (productIDs: string[]) => {
       where: { id },
       select: { ...prismaExclude("Product", []), transactions: true },
     });
-    if (!data) return THROW_TRPC_ERROR("NOT_FOUND");
-    await db.product.update({ where: { id }, data: { totalTransactions: accumulateValue(data.transactions, "quantity") } });
+
+    if (data) await db.product.update({ where: { id }, data: { totalTransactions: accumulateValue(data.transactions, "quantity") } });
   }
 };

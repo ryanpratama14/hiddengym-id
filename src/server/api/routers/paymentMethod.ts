@@ -31,15 +31,11 @@ export const paymentMethodRouter = createTRPCRouter({
   list: ownerProcedure.query(async ({ ctx }) => {
     const data = await ctx.db.paymentMethod.findMany({ ...paymentMethodSelect });
 
-    const updatedData = data.map((e) => {
-      return {
-        ...e,
-        todayPackageTransactions: e.packageTransactions.filter((txn) => isTxnDateToday(txn.transactionDate)),
-        todayProductTransactions: e.productTransactions.filter((txn) => isTxnDateToday(txn.transactionDate)),
-      };
-    });
-
-    return updatedData;
+    return data.map((e) => ({
+      ...e,
+      todayPackageTransactions: e.packageTransactions.filter((txn) => isTxnDateToday(txn.transactionDate)),
+      todayProductTransactions: e.productTransactions.filter((txn) => isTxnDateToday(txn.transactionDate)),
+    }));
   }),
 
   detail: ownerProcedure.input(z.object({ id: z.string() })).query(async ({ ctx, input }) => {
