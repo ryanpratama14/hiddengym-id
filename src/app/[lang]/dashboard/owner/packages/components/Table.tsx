@@ -2,7 +2,7 @@ import Button from "@/components/Button";
 import FilterIcon from "@/components/FilterIcon";
 import Input from "@/components/Input";
 import { ICONS, PACKAGE_TYPES } from "@/lib/constants";
-import { cn, formatCurrency, openModal } from "@/lib/functions";
+import { formatCurrency, openModal } from "@/lib/functions";
 import { inputVariants, statusVariants } from "@/styles/variants";
 import type { Lang, SearchParams } from "@/types";
 import ActionButton from "@dashboard/components/ActionButton";
@@ -57,14 +57,7 @@ export default function PackagesTable({ data, loading, searchParams, newParams, 
               ))}
             </select>
           ) : (
-            <Input
-              icon={icon}
-              key={name}
-              defaultValue={searchParams[name]}
-              name={name}
-              type={type ? type : "text"}
-              className={cn("text-base")}
-            />
+            <Input icon={icon} key={name} defaultValue={searchParams[name]} name={name} type={type ? type : "text"} />
           )}
           <section className="grid grid-cols-2 gap-2">
             <Button color="success" type="submit">

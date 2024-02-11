@@ -31,9 +31,9 @@ export const packageRouter = createTRPCRouter({
         approvedSessions: body.approvedSessions,
         price: body.price,
         type: body.type,
-        placeIDs: body.placeIDs,
-        sportIDs: body.sportIDs,
-        trainerIDs: body.trainerIDs,
+        places: { set: body.placeIDs.map((e) => ({ id: e })) },
+        sports: { set: body.sportIDs.map((e) => ({ id: e })) },
+        trainers: { set: body.trainerIDs?.map((e) => ({ id: e })) },
       },
     });
 
@@ -52,9 +52,9 @@ export const packageRouter = createTRPCRouter({
         approvedSessions: input.approvedSessions,
         price: input.price,
         type: input.type,
-        placeIDs: input.placeIDs,
-        sportIDs: input.sportIDs,
-        trainerIDs: input.trainerIDs,
+        places: { connect: input.placeIDs.map((e) => ({ id: e })) },
+        sports: { connect: input.sportIDs.map((e) => ({ id: e })) },
+        trainers: { connect: input.trainerIDs?.map((e) => ({ id: e })) },
       },
     });
 

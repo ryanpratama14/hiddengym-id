@@ -1,14 +1,14 @@
 "use client";
 
-import { REFETCH_INTERVAL, USER_REDIRECT } from "@/lib/constants";
+import { PACKAGE_SORTERERS, REFETCH_INTERVAL, USER_REDIRECT } from "@/lib/constants";
 import { closeModal, createUrl } from "@/lib/functions";
 import { api } from "@/trpc/react";
 import type { Dictionary, Lang, SearchParams } from "@/types";
+import TableSorter from "@dashboard/components/TableSorter";
 import { schema } from "@schema";
 import { useRouter } from "next/navigation";
 import { Fragment } from "react";
 import Table from "../components/Table";
-import TableSorter from "../components/TableSorter";
 import ModalUpdate from "./ModalUpdate";
 
 type Props = {
@@ -40,7 +40,7 @@ export default function PackagesContainer({ lang, searchParams, t }: Props) {
           />
           <Table data={data} lang={lang} loading={loading} searchParams={searchParams} redirect={redirect} newParams={newParams} />
         </section>
-        <TableSorter redirect={redirect} newParams={newParams} />
+        <TableSorter redirectTable={redirect} newParams={newParams} sortererData={PACKAGE_SORTERERS} />
       </section>
     </Fragment>
   );

@@ -2,12 +2,16 @@
 
 import Button from "@/components/Button";
 import Iconify from "@/components/Iconify";
-import { ICONS, PACKAGE_TRANSACTION_SORTERERS } from "@/lib/constants";
+import { ICONS } from "@/lib/constants";
 import { cn, getSorterSlug } from "@/lib/functions";
 
-type Props = { newParams: URLSearchParams; redirect: (newParams: URLSearchParams) => void };
+type Props = {
+  newParams: URLSearchParams;
+  redirectTable: (newParams: URLSearchParams) => void;
+  sortererData: { name: string; title: string }[];
+};
 
-export default function TableSorter({ redirect, newParams }: Props) {
+export default function TableSorter({ redirectTable, newParams, sortererData }: Props) {
   return (
     <section className="hidden md:flex flex-col gap-2">
       <section className="flex justify-between items-end">
@@ -18,7 +22,7 @@ export default function TableSorter({ redirect, newParams }: Props) {
             color="expired"
             onClick={() => {
               newParams.delete("sort");
-              redirect(newParams);
+              redirectTable(newParams);
             }}
           >
             Reset
@@ -26,7 +30,7 @@ export default function TableSorter({ redirect, newParams }: Props) {
         ) : null}
       </section>
       <section className="flex flex-col gap-1">
-        {PACKAGE_TRANSACTION_SORTERERS.map((opt) => {
+        {sortererData.map((opt) => {
           const sort = getSorterSlug(newParams.get("sort"));
           const active = sort?.name === opt.name;
           return (
@@ -36,7 +40,7 @@ export default function TableSorter({ redirect, newParams }: Props) {
                   if (sort?.sorterer === "asc") {
                     newParams.set("sort", `${opt.name}-desc`);
                   } else newParams.set("sort", `${opt.name}-asc`);
-                  redirect(newParams);
+                  redirectTable(newParams);
                 }}
                 className={cn("hover:underline w-fit text-dark", {
                   underline: active,

@@ -4,14 +4,14 @@ import { Modal } from "@/components/Modal";
 import ModalConfirm from "@/components/ModalConfirm";
 import ProductTransaction from "@/components/ProductTransaction";
 import { toastError, toastSuccess } from "@/components/Toast";
-import { REFETCH_INTERVAL, USER_REDIRECT } from "@/lib/constants";
+import { PRODUCT_TRANSACTION_SORTERERS, REFETCH_INTERVAL, USER_REDIRECT } from "@/lib/constants";
 import { closeModal, createUrl } from "@/lib/functions";
 import { api } from "@/trpc/react";
 import type { Dictionary, Lang, SearchParams } from "@/types";
+import TableSorter from "@dashboard/components/TableSorter";
 import { schema } from "@schema";
 import { useRouter } from "next/navigation";
 import Table from "../components/Table";
-import TableSorter from "../components/TableSorter";
 import ModalUpdate from "./ModalUpdate";
 
 type Props = { searchParams: SearchParams; lang: Lang; t: Dictionary };
@@ -66,7 +66,7 @@ export default function TransactionsProductsContainer({ searchParams, lang, t }:
       <section className="flex flex-col gap-6 md:col-span-4">
         <Table loading={loading} data={data} searchParams={searchParams} redirect={redirect} newParams={newParams} />
       </section>
-      <TableSorter redirect={redirect} newParams={newParams} />
+      <TableSorter redirectTable={redirect} newParams={newParams} sortererData={PRODUCT_TRANSACTION_SORTERERS} />
     </section>
   );
 }

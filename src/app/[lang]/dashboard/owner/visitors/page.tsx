@@ -1,12 +1,12 @@
 "use client";
 
-import { REFETCH_INTERVAL, USER_REDIRECT } from "@/lib/constants";
+import { REFETCH_INTERVAL, USER_LIST_SORTERERS, USER_REDIRECT } from "@/lib/constants";
 import { createUrl } from "@/lib/functions";
 import { api } from "@/trpc/react";
 import type { Lang, SearchParams } from "@/types";
+import TableSearch from "@dashboard/components/TableSearch";
+import TableSorter from "@dashboard/components/TableSorter";
 import Table from "@owner/visitors/components/Table";
-import TableSearch from "@owner/visitors/components/TableSearch";
-import TableSorter from "@owner/visitors/components/TableSorter";
 import { schema } from "@schema";
 import { useRouter } from "next/navigation";
 
@@ -31,7 +31,7 @@ export default function VisitorsPage({ searchParams, params }: Props) {
   }
 
   return (
-    <section className="grid grid-cols-1 md:grid-cols-5 gap-6 lg:gap-x-12">
+    <section className="grid md:grid-cols-5 gap-6 lg:gap-x-12">
       <section className="flex flex-col gap-4 md:col-span-4">
         <TableSearch loading={loading} searchParams={searchParams} redirectTable={redirectTable} newParams={newParams} />
         <Table
@@ -43,7 +43,7 @@ export default function VisitorsPage({ searchParams, params }: Props) {
           newParams={newParams}
         />
       </section>
-      <TableSorter redirectTable={redirectTable} newParams={newParams} />
+      <TableSorter redirectTable={redirectTable} newParams={newParams} sortererData={USER_LIST_SORTERERS} />
     </section>
   );
 }

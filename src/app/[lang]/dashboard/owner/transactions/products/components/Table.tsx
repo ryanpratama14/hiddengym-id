@@ -4,7 +4,7 @@ import Iconify from "@/components/Iconify";
 import Img from "@/components/Img";
 import Input from "@/components/Input";
 import { GENDERS, ICONS } from "@/lib/constants";
-import { cn, formatCurrency, formatDateShort, openModal, textEllipsis } from "@/lib/functions";
+import { formatCurrency, formatDateShort, openModal, textEllipsis } from "@/lib/functions";
 import { PAGINATION_LIMIT } from "@/trpc/shared";
 import type { SearchParams } from "@/types";
 import ActionButton from "@dashboard/components/ActionButton";
@@ -46,14 +46,7 @@ export default function ProductTransactionsTable({ data, searchParams, loading, 
           }}
           className="flex flex-col gap-2 w-52 bg-light p-2 rounded-md shadow"
         >
-          <Input
-            icon={icon}
-            key={name}
-            defaultValue={searchParams[name]}
-            name={name}
-            type={type ? type : "text"}
-            className={cn("text-base")}
-          />
+          <Input icon={icon} key={name} defaultValue={searchParams[name]} name={name} type={type ? type : "text"} />
           <section className="grid grid-cols-2 gap-2">
             <Button color="success" type="submit">
               Search

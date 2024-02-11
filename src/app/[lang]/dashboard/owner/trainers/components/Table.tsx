@@ -1,19 +1,15 @@
-"use client";
-
 import Button from "@/components/Button";
 import FilterIcon from "@/components/FilterIcon";
 import Iconify from "@/components/Iconify";
 import Img from "@/components/Img";
 import Input from "@/components/Input";
 import NavigatorX from "@/components/NavigatorX";
-import { COUNTRY_CODE, GENDERS, GENDER_OPTIONS, ICONS } from "@/lib/constants";
-import { formatCurrency, localizePhoneNumber, textEllipsis } from "@/lib/functions";
-import { PAGINATION_LIMIT } from "@/trpc/shared";
+import { COUNTRY_CODE, GENDERS, GENDER_OPTIONS } from "@/lib/constants";
+import { cn, localizePhoneNumber, textEllipsis } from "@/lib/functions";
+import type { UserList, UserListInput } from "@/server/api/routers/user";
 import type { Lang, SearchParams } from "@/types";
-import ActionButton from "@dashboard/components/ActionButton";
 import type { IconifyIcon } from "@iconify/react/dist/iconify.js";
 import type { Gender } from "@prisma/client";
-import type { UserList, UserListInput } from "@router/user";
 import { Table } from "antd";
 import type { FilterDropdownProps } from "antd/es/table/interface";
 
@@ -26,7 +22,7 @@ type Props = {
   lang: Lang;
 };
 
-export default function VisitorsTable({ data, searchParams, lang, loading, newParams, redirectTable }: Props) {
+export default function TrainersTable({ data, searchParams, lang, loading, newParams, redirectTable }: Props) {
   const getTableFilter = ({
     name,
     icon,
@@ -86,6 +82,7 @@ export default function VisitorsTable({ data, searchParams, lang, loading, newPa
               isPhoneNumber={name === "phoneNumber"}
               name={name}
               type={type ? type : "text"}
+              className={cn("text-base")}
             />
           )}
           <section className="grid grid-cols-2 gap-2">
@@ -119,43 +116,12 @@ export default function VisitorsTable({ data, searchParams, lang, loading, newPa
     <Table
       loading={loading}
       className="drop-shadow"
-      pagination={{
-        current: data?.page,
-        pageSize: data?.limit,
-        total: data?.totalData,
-        showSizeChanger: true,
-        pageSizeOptions: [String(PAGINATION_LIMIT), "75", "100"],
-        onChange: (_, limit) => {
-          if (limit === PAGINATION_LIMIT) {
-            newParams.delete("limit");
-          } else newParams.set("limit", String(limit));
-          redirectTable(newParams);
-        },
-        showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} visitors`,
-      }}
-      onChange={(pagination) => {
-        if (pagination.current === 1) {
-          newParams.delete("page");
-        } else newParams.set("page", String(pagination.current));
-        redirectTable(newParams);
-      }}
-      rowKey="id"
+      pagination={false}
       dataSource={data?.data}
+      rowKey="id"
       scroll={{ x: "max-content" }}
       columns={[
-        {
-          fixed: "left",
-          align: "center",
-          title: "Action",
-          key: "id",
-          width: 1,
-          dataIndex: "id",
-          render: (id: string) => (
-            <section className="flex justify-center items-center">
-              <ActionButton href="/visitors/detail" params={`/${id}`} lang={lang} role="OWNER" icon={ICONS.detail} color="blue" />
-            </section>
-          ),
-        },
+        { fixed: "left", align: "center", title: "Action", key: "id", width: 1 },
         {
           title: "Full Name",
           key: "fullName",
@@ -205,14 +171,6 @@ export default function VisitorsTable({ data, searchParams, lang, loading, newPa
               </section>
             );
           },
-        },
-        {
-          align: "right",
-          title: "Total Spending",
-          key: "totalSpending",
-          dataIndex: "totalSpending",
-          ...getTableFilter({ name: "totalSpending", icon: ICONS.payment_method, type: "number" }),
-          render: (text: number) => formatCurrency(text),
         },
       ]}
     />

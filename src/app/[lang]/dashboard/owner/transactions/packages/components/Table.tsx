@@ -5,7 +5,6 @@ import Img from "@/components/Img";
 import Input from "@/components/Input";
 import { GENDERS, ICONS, PACKAGE_TYPES } from "@/lib/constants";
 import {
-  cn,
   formatCurrency,
   formatDateShort,
   getRemainingDays,
@@ -67,14 +66,7 @@ export default function PackageTransactionsTable({ data, searchParams, loading, 
               ))}
             </select>
           ) : (
-            <Input
-              icon={icon}
-              key={name}
-              defaultValue={searchParams[name]}
-              name={name}
-              type={type ? type : "text"}
-              className={cn("text-base")}
-            />
+            <Input icon={icon} key={name} defaultValue={searchParams[name]} name={name} type={type ? type : "text"} />
           )}
           <section className="grid grid-cols-2 gap-2">
             <Button color="success" type="submit">
