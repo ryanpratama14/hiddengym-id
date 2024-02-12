@@ -38,8 +38,8 @@ export class schema {
     .min(10, stringMessage("Phone Number", 10))
     .max(12);
 
-  static date = z.coerce.date({ required_error: "Pick a date", invalid_type_error: "Pick a date" });
-  static dateNullable = z.coerce.date().nullable();
+  static date = z.string().min(1, "Pick a date");
+  static dateNullable = z.string().nullable();
   static dateOptional = z.string().optional();
   static promoCodeCode = z
     .string()
@@ -114,7 +114,7 @@ export class schema {
         email: schema.email,
         fullName: schema.fullName,
         phoneNumber: schema.phoneNumber,
-        birthDate: schema.date.max(new Date()),
+        birthDate: schema.date,
         gender: schema.gender,
       }),
       userId: z.string(),
@@ -225,7 +225,7 @@ export class schema {
   static packageTransaction = class {
     static create = z.object({
       startDate: schema.date,
-      transactionDate: schema.date.max(new Date()),
+      transactionDate: schema.date,
       paymentMethodId: z.string().min(1, "Select payment method"),
       packageId: z.string().min(1, "Select package"),
       buyerId: z.string().min(1, "Select buyer"),
@@ -272,7 +272,7 @@ export class schema {
     });
 
     static create = z.object({
-      transactionDate: schema.date.max(new Date()),
+      transactionDate: schema.date,
       paymentMethodId: z.string().min(1, "Select payment method"),
       buyerId: z.string().min(1, "Select buyer"),
       products: z
