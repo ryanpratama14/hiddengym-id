@@ -31,9 +31,9 @@ export const packageRouter = createTRPCRouter({
         approvedSessions: body.approvedSessions,
         price: body.price,
         type: body.type,
-        places: { set: body.placeIDs.map((e) => ({ id: e })) },
-        sports: { set: body.sportIDs.map((e) => ({ id: e })) },
-        trainers: { set: body.trainerIDs?.map((e) => ({ id: e })) },
+        places: { set: body.placeIDs.map((id) => ({ id })) },
+        sports: { set: body.sportIDs.map((id) => ({ id })) },
+        trainers: { set: body.trainerIDs?.map((id) => ({ id })) },
       },
     });
 
@@ -52,9 +52,9 @@ export const packageRouter = createTRPCRouter({
         approvedSessions: input.approvedSessions,
         price: input.price,
         type: input.type,
-        places: { connect: input.placeIDs.map((e) => ({ id: e })) },
-        sports: { connect: input.sportIDs.map((e) => ({ id: e })) },
-        trainers: { connect: input.trainerIDs?.map((e) => ({ id: e })) },
+        places: { connect: input.placeIDs.map((id) => ({ id })) },
+        sports: { connect: input.sportIDs.map((id) => ({ id })) },
+        trainers: { connect: input.trainerIDs?.map((id) => ({ id })) },
       },
     });
 

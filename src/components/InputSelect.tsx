@@ -60,7 +60,7 @@ const InputSelect = forwardRef<BaseSelectRef, InputSelectProps>((props, ref) => 
             <Iconify width={inputIconSize} icon={props.icon} className="absolute centered-left translate-x-3 text-dark" />
           ) : null}
         </section>
-        {props.error ? <small className={cn("text-red text-xs mt-0.5")}>{props.error}</small> : null}
+        {props.error ? <small className={cn("text-red text-xs mt-0.5 text-left")}>{props.error}</small> : null}
       </section>
     </ConfigProvider>
   );
