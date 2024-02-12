@@ -38,9 +38,15 @@ export class schema {
     .min(10, stringMessage("Phone Number", 10))
     .max(12);
 
-  static date = z.string().min(1, "Pick a date");
-  static dateNullable = z.string().nullable();
-  static dateOptional = z.string().optional();
+  static date = z.coerce.date().transform((v) => v.toString());
+  static dateNullable = z.coerce
+    .date()
+    .nullable()
+    .transform((v) => v?.toString());
+  static dateOptional = z.coerce
+    .date()
+    .optional()
+    .transform((v) => v?.toString());
   static promoCodeCode = z
     .string()
     .min(4, "At least 4 characters")
