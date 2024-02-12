@@ -38,15 +38,16 @@ export class schema {
     .min(10, stringMessage("Phone Number", 10))
     .max(12);
 
-  static date = z.coerce.date().transform((v) => v.toString());
-  static dateNullable = z.coerce
-    .date()
-    .nullable()
-    .transform((v) => v?.toString());
-  static dateOptional = z.coerce
-    .date()
-    .optional()
-    .transform((v) => v?.toString());
+  static date = z
+    .string()
+    .pipe(z.coerce.date())
+    .transform((v) => v.toString());
+  static dateOptional = z.optional(
+    z
+      .string()
+      .pipe(z.coerce.date())
+      .transform((v) => v.toString()),
+  );
   static promoCodeCode = z
     .string()
     .min(4, "At least 4 characters")
@@ -71,7 +72,7 @@ export class schema {
         email: schema.email,
         fullName: schema.fullName,
         phoneNumber: schema.phoneNumber,
-        birthDate: schema.dateNullable,
+        birthDate: schema.dateOptional,
         credential: schema.password,
         confirmCredential: schema.password,
         gender: schema.gender,
