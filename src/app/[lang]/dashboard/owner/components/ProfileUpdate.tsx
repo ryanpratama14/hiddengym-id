@@ -30,13 +30,13 @@ export default function ProfileUpdate({ user, setIsEdit, actionUserUpdate, t }: 
     mode: "onBlur",
     resolver: zodResolver(schema.user.update),
     defaultValues: {
-      userId: user?.id,
+      id: user.id,
       body: {
-        fullName: user?.fullName,
-        email: user?.email ?? "",
-        gender: user?.gender,
-        phoneNumber: user?.phoneNumber,
-        birthDate: user?.birthDate ? getInputDate({ date: user.birthDate }) : "",
+        fullName: user.fullName,
+        email: user.email ?? "",
+        gender: user.gender,
+        phoneNumber: user.phoneNumber,
+        birthDate: user.birthDate ? getInputDate({ date: user.birthDate }) : "",
       },
     },
   });

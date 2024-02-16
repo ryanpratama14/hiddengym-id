@@ -138,7 +138,6 @@ export const userRouter = createTRPCRouter({
     const currentDate = dayjs();
     const minBirthDate = input.age ? currentDate.subtract(input.age, "year") : undefined;
 
-    console.log(minBirthDate?.toDate());
     const whereQuery = {
       where: {
         isActive: true,
