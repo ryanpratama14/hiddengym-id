@@ -137,6 +137,8 @@ export class schema {
       gender: schema.gender.optional(),
       totalSpending: z.coerce.number().optional(),
       search: z.string().optional(),
+      trainerPackageId: z.string().optional(),
+      age: z.coerce.number().optional(),
     });
   };
 

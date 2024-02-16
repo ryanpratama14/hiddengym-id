@@ -4,12 +4,13 @@ import Iconify from "@/components/Iconify";
 import Img from "@/components/Img";
 import Input from "@/components/Input";
 import NavigatorX from "@/components/NavigatorX";
-import { COUNTRY_CODE, GENDERS, GENDER_OPTIONS } from "@/lib/constants";
-import { cn, localizePhoneNumber, textEllipsis } from "@/lib/functions";
+import { COUNTRY_CODE, GENDERS, GENDER_OPTIONS, ICONS } from "@/lib/constants";
+import { cn, getUserAge, localizePhoneNumber, textEllipsis } from "@/lib/functions";
 import type { UserList, UserListInput } from "@/server/api/routers/user";
+import { inputVariants } from "@/styles/variants";
 import type { Lang, SearchParams } from "@/types";
 import type { IconifyIcon } from "@iconify/react/dist/iconify.js";
-import type { Gender } from "@prisma/client";
+import type { Gender, Package } from "@prisma/client";
 import { Table } from "antd";
 import type { FilterDropdownProps } from "antd/es/table/interface";
 
@@ -20,9 +21,10 @@ type Props = {
   newParams: URLSearchParams;
   redirectTable: (newParams: URLSearchParams) => void;
   lang: Lang;
+  packages?: Package[];
 };
 
-export default function TrainersTable({ data, searchParams, lang, loading, newParams, redirectTable }: Props) {
+export default function TrainersTable({ data, searchParams, lang, loading, newParams, redirectTable, packages }: Props) {
   const getTableFilter = ({
     name,
     icon,
@@ -74,6 +76,15 @@ export default function TrainersTable({ data, searchParams, lang, loading, newPa
                 );
               })}
             </section>
+          ) : name === "trainerPackageId" ? (
+            <select className={inputVariants()} name={name} defaultValue={searchParams[name]} key={name}>
+              <option value="">All</option>
+              {packages?.map((e) => (
+                <option key={e.id} value={e.id}>
+                  {e.name}
+                </option>
+              ))}
+            </select>
           ) : (
             <Input
               icon={icon}
@@ -81,7 +92,7 @@ export default function TrainersTable({ data, searchParams, lang, loading, newPa
               defaultValue={searchParams[name]}
               isPhoneNumber={name === "phoneNumber"}
               name={name}
-              type={type ? type : "text"}
+              type={type}
               className={cn("text-base")}
             />
           )}
@@ -145,7 +156,7 @@ export default function TrainersTable({ data, searchParams, lang, loading, newPa
           dataIndex: "phoneNumber",
           ...getTableFilter({ name: "phoneNumber" }),
           render: (text: string) => (
-            <NavigatorX newTab href={`tel:${COUNTRY_CODE}${text}`} className="hover:underline text-dark xl:text-base text-sm">
+            <NavigatorX newTab href={`tel:${COUNTRY_CODE}${text}`} className="hover:underline text-dark td">
               {localizePhoneNumber(text)}
             </NavigatorX>
           ),
@@ -154,7 +165,7 @@ export default function TrainersTable({ data, searchParams, lang, loading, newPa
           title: "Email",
           key: "email",
           dataIndex: "email",
-          ...getTableFilter({ name: "email", icon: "ic:outline-email" }),
+          ...getTableFilter({ name: "email", icon: ICONS.email }),
           render: (text: string) => text ?? "-",
         },
         {
@@ -171,6 +182,28 @@ export default function TrainersTable({ data, searchParams, lang, loading, newPa
               </section>
             );
           },
+        },
+        {
+          title: "Age",
+          key: "birthDate",
+          dataIndex: "birthDate",
+          render: (birthDate: Date) => getUserAge(birthDate),
+          ...getTableFilter({ name: "age", type: "number" }),
+        },
+        {
+          title: "Packages",
+          key: "trainerPackages",
+          dataIndex: "trainerPackages",
+          ...getTableFilter({ name: "trainerPackageId", icon: ICONS.package }),
+          render: (packages: Package[]) => (
+            <ul>
+              {packages?.map((e) => (
+                <li key={e.id} className="td">
+                  {e.name}
+                </li>
+              ))}
+            </ul>
+          ),
         },
       ]}
     />

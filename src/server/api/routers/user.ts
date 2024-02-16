@@ -15,6 +15,7 @@ import {
 } from "@/trpc/shared";
 import { type Pagination, schema } from "@schema";
 import { hash, verify } from "argon2";
+import dayjs from "dayjs";
 import { z } from "zod";
 
 const userSelect = {
@@ -133,6 +134,10 @@ export const userRouter = createTRPCRouter({
   list: ownerProcedure.input(schema.user.list).query(async ({ ctx, input }) => {
     const pagination: Pagination = { limit: input.limit, page: input.page };
 
+    const currentDate = dayjs();
+    const minBirthDate = input.age ? currentDate.subtract(input.age, "year") : undefined;
+
+    console.log(minBirthDate?.toDate());
     const whereQuery = {
       where: {
         isActive: true,
@@ -144,11 +149,13 @@ export const userRouter = createTRPCRouter({
               { email: { contains: input?.search, ...insensitiveMode } },
             ]
           : undefined,
+        trainerPackageIDs: input?.trainerPackageId ? { has: input?.trainerPackageId } : undefined,
         phoneNumber: { contains: input?.phoneNumber },
         email: { contains: input?.email, ...insensitiveMode },
         gender: input?.gender,
         fullName: { contains: input?.fullName && formatName(input?.fullName), ...insensitiveMode },
         totalSpending: { gte: input?.totalSpending },
+        birthDate: { lte: minBirthDate?.toDate() },
       },
     };
 

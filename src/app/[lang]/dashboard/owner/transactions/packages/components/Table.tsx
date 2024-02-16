@@ -66,7 +66,7 @@ export default function PackageTransactionsTable({ data, searchParams, loading, 
               ))}
             </select>
           ) : (
-            <Input icon={icon} key={name} defaultValue={searchParams[name]} name={name} type={type ? type : "text"} />
+            <Input icon={icon} key={name} defaultValue={searchParams[name]} name={name} type={type} />
           )}
           <section className="grid grid-cols-2 gap-2">
             <Button color="success" type="submit">

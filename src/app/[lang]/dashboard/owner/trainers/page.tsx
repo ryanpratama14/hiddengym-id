@@ -28,6 +28,8 @@ export default function TrainersPage({ searchParams, params }: Props) {
     { refetchInterval: REFETCH_INTERVAL },
   );
 
+  const { data: packages } = api.package.list.useQuery({}, { staleTime: Infinity });
+
   if (data?.isPaginationInvalid) {
     newParams.delete("page");
     redirectTable(newParams);
@@ -38,6 +40,7 @@ export default function TrainersPage({ searchParams, params }: Props) {
       <section className="flex flex-col gap-4 md:col-span-4">
         <TableSearch loading={loading} searchParams={searchParams} redirectTable={redirectTable} newParams={newParams} />
         <Table
+          packages={packages}
           data={data}
           loading={loading}
           redirectTable={redirectTable}

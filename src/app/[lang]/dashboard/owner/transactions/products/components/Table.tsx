@@ -46,7 +46,7 @@ export default function ProductTransactionsTable({ data, searchParams, loading, 
           }}
           className="flex flex-col gap-2 w-52 bg-light p-2 rounded-md shadow"
         >
-          <Input icon={icon} key={name} defaultValue={searchParams[name]} name={name} type={type ? type : "text"} />
+          <Input icon={icon} key={name} defaultValue={searchParams[name]} name={name} type={type} />
           <section className="grid grid-cols-2 gap-2">
             <Button color="success" type="submit">
               Search
@@ -122,12 +122,15 @@ export default function ProductTransactionsTable({ data, searchParams, loading, 
         {
           title: "Products",
           key: "products",
-          render: (_, item) =>
-            item.products.map((e) => (
-              <p key={e.id} className="xl:text-base text-sm">
-                {e.quantity}x {e.product.name}
-              </p>
-            )),
+          render: (_, item) => (
+            <ul>
+              {item.products.map((e) => (
+                <li key={e.id} className="td">
+                  {e.quantity}x {e.product.name}
+                </li>
+              ))}
+            </ul>
+          ),
         },
         {
           title: "Total Price",

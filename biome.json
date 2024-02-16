@@ -9,7 +9,7 @@
       "a11y": { "useKeyWithClickEvents": "off", "useValidAriaRole": "off" },
       "complexity": { "noStaticOnlyClass": "off" },
       "nursery": { "useImportType": "warn", "useGroupedTypeImport": "warn" },
-      "correctness": { "noUnusedVariables": "error", "noUnusedLabels": "warn", "useExhaustiveDependencies": "off" }
+      "correctness": { "noUnusedVariables": "warn", "noUnusedLabels": "warn", "useExhaustiveDependencies": "off" }
     }
   },
   "formatter": {

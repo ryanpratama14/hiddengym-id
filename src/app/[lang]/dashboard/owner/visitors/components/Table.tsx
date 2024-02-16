@@ -85,7 +85,7 @@ export default function VisitorsTable({ data, searchParams, lang, loading, newPa
               defaultValue={searchParams[name]}
               isPhoneNumber={name === "phoneNumber"}
               name={name}
-              type={type ? type : "text"}
+              type={type}
             />
           )}
           <section className="grid grid-cols-2 gap-2">
@@ -179,7 +179,7 @@ export default function VisitorsTable({ data, searchParams, lang, loading, newPa
           dataIndex: "phoneNumber",
           ...getTableFilter({ name: "phoneNumber" }),
           render: (text: string) => (
-            <NavigatorX newTab href={`tel:${COUNTRY_CODE}${text}`} className="hover:underline text-dark xl:text-base text-sm">
+            <NavigatorX newTab href={`tel:${COUNTRY_CODE}${text}`} className="hover:underline text-dark td">
               {localizePhoneNumber(text)}
             </NavigatorX>
           ),
@@ -188,7 +188,7 @@ export default function VisitorsTable({ data, searchParams, lang, loading, newPa
           title: "Email",
           key: "email",
           dataIndex: "email",
-          ...getTableFilter({ name: "email", icon: "ic:outline-email" }),
+          ...getTableFilter({ name: "email", icon: ICONS.email }),
           render: (text: string) => text ?? "-",
         },
         {
