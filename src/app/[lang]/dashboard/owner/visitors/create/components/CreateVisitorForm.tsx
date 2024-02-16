@@ -141,7 +141,7 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
             <section className="flex flex-col">
               <p className="font-medium">Gender</p>
               <section className="grid grid-cols-2 h-10">
-                {GENDER_OPTIONS.map((option, index) => {
+                {GENDER_OPTIONS.map((option) => {
                   return (
                     <section key={option.label} className="items-center flex gap-2">
                       <button
@@ -151,13 +151,13 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
                         <input
                           value={option.value}
                           className="cursor-pointer absolute w-full h-full opacity-0 z-10 top-0 left-0"
-                          id={`gender_option_${index}`}
+                          id={`gender_option_${option.label}`}
                           type="radio"
                           {...register("visitorData.gender")}
                         />
                         <div className="animate absolute centered w-[40%] aspect-square rounded-full bg-white has-[:checked]:scale-0" />
                       </button>
-                      <label className="flex items-center" htmlFor={`gender_option_${index}`}>
+                      <label className="flex items-center" htmlFor={`gender_option_${option.label}`}>
                         <Iconify color={option.color} width={25} icon={option.icon} />
                         {option.label}
                       </label>

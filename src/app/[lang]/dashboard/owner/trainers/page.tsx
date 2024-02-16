@@ -1,12 +1,15 @@
 "use client";
 
 import { REFETCH_INTERVAL, USER_REDIRECT } from "@/lib/constants";
-import { createUrl } from "@/lib/functions";
+import { closeModal, createUrl } from "@/lib/functions";
+import type { UserDetail } from "@/server/api/routers/user";
 import { schema } from "@/server/schema";
 import { api } from "@/trpc/react";
 import type { Lang, SearchParams } from "@/types";
 import TableSearch from "@dashboard/components/TableSearch";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import ModalUpdate from "./components/ModalUpdate";
 import Table from "./components/Table";
 
 type Props = {
@@ -38,6 +41,11 @@ export default function TrainersPage({ searchParams, params }: Props) {
   return (
     <section className="grid md:grid-cols-5 gap-6 lg:gap-x-12">
       <section className="flex flex-col gap-4 md:col-span-4">
+        <ModalUpdate
+          show={!!searchParams.id && !!searchParams.update && !!data?.data?.find((e) => e.id === searchParams.id)}
+          closeModal={closeModal({ action: "update", newParams, redirect: redirectTable })}
+          data={searchParams.id && data ? data?.data?.find((e) => e.id === searchParams.id) : null}
+        />
         <TableSearch loading={loading} searchParams={searchParams} redirectTable={redirectTable} newParams={newParams} />
         <Table
           packages={packages}

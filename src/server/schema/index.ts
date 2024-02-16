@@ -57,6 +57,16 @@ export class schema {
   static login = z.object({ email: schema.email, credential: schema.password });
 
   static user = class {
+    static updatePassword = z
+      .object({
+        credential: schema.password,
+        confirmCredential: schema.password,
+      })
+      .refine(({ credential, confirmCredential }) => credential === confirmCredential, {
+        message: "New password and confirm password don't match.",
+        path: ["confirmCredential"],
+      })
+      .optional();
     static changePassword = z
       .object({
         oldPassword: schema.password,
@@ -117,14 +127,15 @@ export class schema {
     });
 
     static update = z.object({
+      id: z.string(),
       body: z.object({
-        email: schema.email,
+        email: schema.email.nullable(),
         fullName: schema.fullName,
         phoneNumber: schema.phoneNumber,
-        birthDate: schema.date,
+        birthDate: schema.dateOptional,
         gender: schema.gender,
+        updatePassword: this.updatePassword,
       }),
-      userId: z.string(),
     });
 
     static list = z.object({

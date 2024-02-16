@@ -5,10 +5,11 @@ import Img from "@/components/Img";
 import Input from "@/components/Input";
 import NavigatorX from "@/components/NavigatorX";
 import { COUNTRY_CODE, GENDERS, GENDER_OPTIONS, ICONS } from "@/lib/constants";
-import { cn, getUserAge, localizePhoneNumber, textEllipsis } from "@/lib/functions";
+import { cn, getUserAge, localizePhoneNumber, openModal, textEllipsis } from "@/lib/functions";
 import type { UserList, UserListInput } from "@/server/api/routers/user";
 import { inputVariants } from "@/styles/variants";
 import type { Lang, SearchParams } from "@/types";
+import ActionButton from "@dashboard/components/ActionButton";
 import type { IconifyIcon } from "@iconify/react/dist/iconify.js";
 import type { Gender, Package } from "@prisma/client";
 import { Table } from "antd";
@@ -24,7 +25,7 @@ type Props = {
   packages?: Package[];
 };
 
-export default function TrainersTable({ data, searchParams, lang, loading, newParams, redirectTable, packages }: Props) {
+export default function TrainersTable({ data, searchParams, loading, newParams, redirectTable, packages }: Props) {
   const getTableFilter = ({
     name,
     icon,
@@ -132,7 +133,25 @@ export default function TrainersTable({ data, searchParams, lang, loading, newPa
       rowKey="id"
       scroll={{ x: "max-content" }}
       columns={[
-        { fixed: "left", align: "center", title: "Action", key: "id", width: 1 },
+        {
+          fixed: "left",
+          align: "center",
+          title: "Action",
+          key: "id",
+          dataIndex: "id",
+          width: 1,
+          render: (id: string) => {
+            return (
+              <section className="flex justify-center items-center">
+                <ActionButton
+                  onClick={openModal({ id, newParams, redirect: redirectTable, action: "update" })}
+                  icon={ICONS.edit}
+                  color="yellow"
+                />
+              </section>
+            );
+          },
+        },
         {
           title: "Full Name",
           key: "fullName",

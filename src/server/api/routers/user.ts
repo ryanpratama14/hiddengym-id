@@ -115,17 +115,18 @@ export const userRouter = createTRPCRouter({
   }),
 
   update: protectedProcedure.input(schema.user.update).mutation(async ({ ctx, input }) => {
-    const { body, userId } = input;
-    const data = await ctx.db.user.findFirst({ where: { id: userId } });
+    const { body, id } = input;
+    const data = await ctx.db.user.findFirst({ where: { id } });
     if (!data) return THROW_TRPC_ERROR("NOT_FOUND");
     await ctx.db.user.update({
-      where: { id: userId },
+      where: { id },
       data: {
         fullName: formatName(input.body.fullName),
         phoneNumber: body.phoneNumber,
         birthDate: getNewDate(body.birthDate),
         email: body.email,
         gender: body.gender,
+        ...(body.updatePassword && { credential: await hash(body.updatePassword.credential) }),
       },
     });
     return THROW_OK("OK", "Your profile has been updated.");
