@@ -50,6 +50,7 @@ export default function DashboardLayout({ collapsed, setCollapsed, user, handleC
                 className="gap-2 flex items-center w-full justify-center h-14 text-cream"
               >
                 {!collapsed ? <MenuFoldOutlined style={{ fontSize: "30px" }} /> : <MenuUnfoldOutlined style={{ fontSize: "30px" }} />}
+                <span className="sr-only">Collapse</span>
               </button>
               <Menu color={COLORS.cream} onClick={handleCollapse} selectedKeys={selectedMenu.keys} mode="inline" items={items} />
             </nav>
@@ -93,6 +94,7 @@ export default function DashboardLayout({ collapsed, setCollapsed, user, handleC
           <section className="flex gap-4 items-center">
             <button type="button" onClick={() => setOpen(true)} className="lg:hidden h-14 text-cream flex items-center">
               <MenuUnfoldOutlined style={{ fontSize: "30px" }} />
+              <span className="sr-only">Collapse</span>
             </button>
             <section className="flex gap-2 items-center w-full">
               {selectedMenu.menus.map((e) => (

@@ -48,6 +48,7 @@ export const Modal = ({ show, closeModal, children, classNameDiv }: Props) => {
                     type="button"
                     className=" hover:bg-dark/10 rounded-md absolute top-2 right-2 flex items-center justify-center"
                   >
+                    <span className="sr-only">Close</span>
                     <Iconify icon={ICONS.close} className="text-dark" width={22} />
                   </button>
                   {children}

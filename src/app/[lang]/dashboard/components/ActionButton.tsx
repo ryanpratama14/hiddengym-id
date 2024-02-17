@@ -24,6 +24,7 @@ export default function ActionButton({ color, role, icon, onClick, href, lang, p
   ) : (
     <button type="button" onClick={onClick} className={actionVariants({ color })}>
       <Iconify icon={icon} width={18} className="absolute centered" />
+      <span className="sr-only">Action</span>
     </button>
   );
 }
