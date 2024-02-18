@@ -1,6 +1,7 @@
 import { ICONS } from "@/lib/constants";
 import { cn } from "@/lib/functions";
 import { Dialog, Transition } from "@headlessui/react";
+import { Skeleton } from "antd";
 import { type ElementRef, Fragment, useRef } from "react";
 import Iconify from "./Iconify";
 
@@ -9,9 +10,10 @@ type Props = {
   show: boolean;
   children: React.ReactNode;
   classNameDiv?: string;
+  loading?: boolean;
 };
 
-export const Modal = ({ show, closeModal, children, classNameDiv }: Props) => {
+export const Modal = ({ show, closeModal, children, classNameDiv, loading }: Props) => {
   const closeButtonRef = useRef<ElementRef<"button">>(null);
 
   return (
@@ -51,7 +53,7 @@ export const Modal = ({ show, closeModal, children, classNameDiv }: Props) => {
                     <span className="sr-only">Close</span>
                     <Iconify icon={ICONS.close} className="text-dark" width={22} />
                   </button>
-                  {children}
+                  {loading ? <Skeleton active paragraph={{ rows: 5 }} /> : children}
                 </section>
               </Dialog.Panel>
             </Transition.Child>

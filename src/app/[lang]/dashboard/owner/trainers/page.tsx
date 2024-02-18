@@ -42,9 +42,8 @@ export default function TrainersPage({ searchParams, params }: Props) {
     <section className="grid md:grid-cols-5 gap-6 lg:gap-x-12">
       <section className="flex flex-col gap-4 md:col-span-4">
         <ModalUpdate
-          show={!!searchParams.id && !!searchParams.update && !!data?.data?.find((e) => e.id === searchParams.id)}
+          show={!!searchParams.id && !!searchParams.update}
           closeModal={closeModal({ action: "update", newParams, redirect: redirectTable })}
-          data={searchParams.id && data ? data?.data?.find((e) => e.id === searchParams.id) : null}
         />
         <TableSearch loading={loading} searchParams={searchParams} redirectTable={redirectTable} newParams={newParams} />
         <Table

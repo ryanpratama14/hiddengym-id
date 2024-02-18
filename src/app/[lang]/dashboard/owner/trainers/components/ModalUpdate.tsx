@@ -6,20 +6,24 @@ import { toastError, toastSuccess } from "@/components/Toast";
 import { useZustand } from "@/global/store";
 import { GENDER_OPTIONS } from "@/lib/constants";
 import { cn, getInputDate } from "@/lib/functions";
-import type { UserDetail, UserUpdateInput } from "@/server/api/routers/user";
+import type { UserUpdateInput } from "@/server/api/routers/user";
 import { schema } from "@/server/schema";
 import { api } from "@/trpc/react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 
-type Props = {
-  closeModal: () => void;
-  data?: UserDetail | null;
-  show: boolean;
-};
+type Props = { closeModal: () => void; show: boolean };
 
-export default function ModalUpdate({ closeModal, data, show }: Props) {
+export default function ModalUpdate({ closeModal, show }: Props) {
+  const searchParams = useSearchParams();
+
+  const { data, isFetching: loading } = api.user.detail.useQuery(
+    { id: searchParams.get("id") ?? "" },
+    { enabled: !!searchParams.get("id") },
+  );
+
   const { t } = useZustand();
   const utils = api.useUtils();
   const [isUpdatePassword, setIsUpdatePassword] = useState<boolean>(false);
@@ -30,7 +34,6 @@ export default function ModalUpdate({ closeModal, data, show }: Props) {
     unregister,
     formState: { errors },
     reset,
-    watch,
   } = useForm<UserUpdateInput>({
     mode: "onBlur",
     resolver: zodResolver(schema.user.update),
@@ -38,7 +41,7 @@ export default function ModalUpdate({ closeModal, data, show }: Props) {
 
   const onSubmit: SubmitHandler<UserUpdateInput> = async (data) => updateData(data);
 
-  const { mutate: updateData, isPending: loading } = api.user.update.useMutation({
+  const { mutate: updateData, isPending: pending } = api.user.update.useMutation({
     onSuccess: async (res) => {
       t && toastSuccess({ t, description: res.message });
       closeModal();
@@ -63,10 +66,8 @@ export default function ModalUpdate({ closeModal, data, show }: Props) {
     }
   }, [show, data]);
 
-  console.log(watch().body);
-
   return (
-    <Modal show={show} closeModal={closeModal} classNameDiv="xl:w-[60%]">
+    <Modal loading={loading} show={show} closeModal={closeModal} classNameDiv="xl:w-[60%]">
       <Modal.Body>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 w-full">
           <section className="grid md:grid-cols-2 gap-4">
@@ -141,7 +142,7 @@ export default function ModalUpdate({ closeModal, data, show }: Props) {
           ) : null}
 
           <section className="flex justify-center items-center">
-            <Button className="md:w-fit w-full" loading={loading} type="submit" color="success" size="xl">
+            <Button className="md:w-fit w-full" loading={pending} type="submit" color="success" size="xl">
               Update Trainer
             </Button>
           </section>
