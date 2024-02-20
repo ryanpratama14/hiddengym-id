@@ -96,7 +96,7 @@ export class schema {
     static createVisitor = z.object({
       visitorData: z
         .object({
-          email: z.string().optional(),
+          email: z.string().nullable(),
           fullName: schema.fullName,
           phoneNumber: schema.phoneNumber,
           gender: schema.gender,

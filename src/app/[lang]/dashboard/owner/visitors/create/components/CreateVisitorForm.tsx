@@ -53,7 +53,7 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
   } = useForm<UserCreateVisitorInput>({
     mode: "onBlur",
     resolver: zodResolver(schema.user.createVisitor),
-    defaultValues: { visitorData: { gender: "MALE" } },
+    defaultValues: { visitorData: { gender: "MALE", email: null } },
   });
 
   const data = {
@@ -296,7 +296,6 @@ export default function CreateVisitorForm({ lang, t, option, createPackageTransa
       ) : null}
 
       {/* TRANSACTION_INVOICE */}
-
       {selectedPackage && data.unitPrice ? (
         <TransactionInvoice>
           <TransactionInvoice.Header
