@@ -53,7 +53,7 @@ export const Modal = ({ show, closeModal, children, classNameDiv, loading }: Pro
                     <span className="sr-only">Close</span>
                     <Iconify icon={ICONS.close} className="text-dark" width={22} />
                   </button>
-                  {loading ? <Skeleton active paragraph={{ rows: 5 }} /> : children}
+                  {loading ? <Skeleton active paragraph={{ rows: 8 }} /> : children}
                 </section>
               </Dialog.Panel>
             </Transition.Child>

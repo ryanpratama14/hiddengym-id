@@ -1,4 +1,3 @@
-import { COUNTRY_CODE, GENDERS } from "@/lib/constants";
 import {
   cn,
   formatCurrency,
@@ -8,13 +7,10 @@ import {
   getNewDate,
   getRemainingDate,
   getStartDate,
-  localizePhoneNumber,
 } from "@/lib/functions";
 import type { File, Gender, Package, PackageType, PromoCode } from "@prisma/client";
-import Iconify from "./Iconify";
-import Img from "./Img";
 import Logo from "./Logo";
-import NavigatorX from "./NavigatorX";
+import Profile from "./Profile";
 
 export default function TransactionInvoice({
   children,
@@ -72,32 +68,18 @@ TransactionInvoice.Products = function InvoiceProducts({
 TransactionInvoice.Buyer = function InvoiceBuyer(props: {
   fullName: string;
   phoneNumber: string;
-  email?: string | null;
+  email: string | null;
   image?: File | null;
   gender: Gender;
 }) {
   return (
-    <section className={cn("flex gap-2 items-center", { "gap-3": props.email })}>
-      <section
-        className={cn(
-          "size-10 bg-cream rounded-full relative shadow border-1 border-dotted border-dark flex items-center justify-center",
-          { "size-16": props.email },
-        )}
-      >
-        {props.image ? (
-          <Img src={props.image.url} alt={props.fullName} className="object-cover w-full h-full rounded-full" />
-        ) : (
-          <Iconify icon={GENDERS[props.gender].picture} className="text-dark" width={props.email ? 45 : 30} />
-        )}
-      </section>
-      <section className="flex flex-col text-left">
-        <p className="font-medium -mb-0.5">{props.fullName}</p>
-        <NavigatorX newTab href={`tel:${COUNTRY_CODE}${props.phoneNumber}`}>
-          <small className="hover:text-blue">{localizePhoneNumber(props.phoneNumber)}</small>
-        </NavigatorX>
-        <small>{props.email}</small>
-      </section>
-    </section>
+    <Profile
+      fullName={props.fullName}
+      email={props.email}
+      gender={props.gender}
+      imageUrl={props.image?.url}
+      phoneNumber={props.phoneNumber}
+    />
   );
 };
 

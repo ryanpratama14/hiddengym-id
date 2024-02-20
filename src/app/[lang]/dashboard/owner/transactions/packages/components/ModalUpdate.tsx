@@ -1,11 +1,11 @@
 import Button from "@/components/Button";
-import Iconify from "@/components/Iconify";
 import Input from "@/components/Input";
 import InputSelect from "@/components/InputSelect";
 import { Modal } from "@/components/Modal";
+import Profile from "@/components/Profile";
 import { toastError, toastSuccess, toastWarning } from "@/components/Toast";
-import { GENDERS, ICONS } from "@/lib/constants";
-import { cn, formatCurrency, getInputDate, localizePhoneNumber } from "@/lib/functions";
+import { ICONS } from "@/lib/constants";
+import { cn, formatCurrency, getInputDate } from "@/lib/functions";
 import { inputVariants } from "@/styles/variants";
 import { api } from "@/trpc/react";
 import type { Dictionary } from "@/types";
@@ -13,7 +13,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import type { Package, PromoCode } from "@prisma/client";
 import type { PackageTransactionDetail, PackageTransactionUpdateInput } from "@router/packageTransaction";
 import { schema } from "@schema";
-import { Skeleton } from "antd";
 import { useEffect, useState } from "react";
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 
@@ -92,17 +91,15 @@ export default function ModalUpdate({ show, closeModal, data, t }: Props) {
       <Modal.Body>
         <section className="flex flex-col gap-4">
           {data ? (
-            <section className="flex flex-col">
-              <section className="flex gap-1 items-center justify-center">
-                <Iconify icon={GENDERS[data.buyer.gender].icon} color={GENDERS[data.buyer.gender].color} width={25} />
-                <h6>{data.buyer.fullName}</h6>
-              </section>
-              <small>{localizePhoneNumber(data.buyer.phoneNumber)}</small>
-              <small>{data.buyer.email}</small>
-            </section>
-          ) : (
-            <Skeleton active />
-          )}
+            <Profile
+              imageUrl={data.buyer.image?.url}
+              fullName={data.buyer.fullName}
+              gender={data.buyer.gender}
+              email={data.buyer.email}
+              phoneNumber={data.buyer.phoneNumber}
+              loading={!data}
+            />
+          ) : null}
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 w-full">
             <Controller
               control={control}
