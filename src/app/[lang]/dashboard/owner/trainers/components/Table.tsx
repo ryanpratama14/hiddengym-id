@@ -142,7 +142,7 @@ export default function TrainersTable({ data, searchParams, loading, newParams, 
           width: 1,
           render: (id: string) => {
             return (
-              <section className="flex justify-center items-center">
+              <section className="flex gap-2 justify-center items-center">
                 <ActionButton
                   onClick={openModal({ id, newParams, redirect: redirectTable, action: "update" })}
                   icon={ICONS.edit}

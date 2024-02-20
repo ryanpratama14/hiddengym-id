@@ -2,14 +2,12 @@
 
 import { REFETCH_INTERVAL, USER_REDIRECT } from "@/lib/constants";
 import { closeModal, createUrl } from "@/lib/functions";
-import type { UserDetail } from "@/server/api/routers/user";
 import { schema } from "@/server/schema";
 import { api } from "@/trpc/react";
 import type { Lang, SearchParams } from "@/types";
+import ModalUpdateTrainerVisitor from "@dashboard/components/ModalUpdateTrainerVisitor";
 import TableSearch from "@dashboard/components/TableSearch";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-import ModalUpdate from "./components/ModalUpdate";
 import Table from "./components/Table";
 
 type Props = {
@@ -41,7 +39,7 @@ export default function TrainersPage({ searchParams, params }: Props) {
   return (
     <section className="grid md:grid-cols-5 gap-6 lg:gap-x-12">
       <section className="flex flex-col gap-4 md:col-span-4">
-        <ModalUpdate
+        <ModalUpdateTrainerVisitor
           show={!!searchParams.id && !!searchParams.update}
           closeModal={closeModal({ action: "update", newParams, redirect: redirectTable })}
         />

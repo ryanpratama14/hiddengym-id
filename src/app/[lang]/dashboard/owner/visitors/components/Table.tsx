@@ -7,7 +7,7 @@ import Img from "@/components/Img";
 import Input from "@/components/Input";
 import NavigatorX from "@/components/NavigatorX";
 import { COUNTRY_CODE, GENDERS, GENDER_OPTIONS, ICONS } from "@/lib/constants";
-import { formatCurrency, localizePhoneNumber, textEllipsis } from "@/lib/functions";
+import { formatCurrency, localizePhoneNumber, openModal, textEllipsis } from "@/lib/functions";
 import { PAGINATION_LIMIT } from "@/trpc/shared";
 import type { Lang, SearchParams } from "@/types";
 import ActionButton from "@dashboard/components/ActionButton";
@@ -151,8 +151,13 @@ export default function VisitorsTable({ data, searchParams, lang, loading, newPa
           width: 1,
           dataIndex: "id",
           render: (id: string) => (
-            <section className="flex justify-center items-center">
+            <section className="flex gap-2 justify-center items-center">
               <ActionButton href="/visitors/detail" params={`/${id}`} lang={lang} role="OWNER" icon={ICONS.detail} color="blue" />
+              <ActionButton
+                onClick={openModal({ id, newParams, redirect: redirectTable, action: "update" })}
+                icon={ICONS.edit}
+                color="yellow"
+              />
             </section>
           ),
         },

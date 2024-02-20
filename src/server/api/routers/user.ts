@@ -118,6 +118,15 @@ export const userRouter = createTRPCRouter({
     const { body, id } = input;
     const data = await ctx.db.user.findFirst({ where: { id } });
     if (!data) return THROW_TRPC_ERROR("NOT_FOUND");
+
+    const dataByPhoneNumber = await ctx.db.user.findMany({ where: { id: { not: id }, phoneNumber: body.phoneNumber } });
+    if (dataByPhoneNumber.length) return THROW_TRPC_ERROR("CONFLICT", getConflictMessage(body.role.toLowerCase(), "phone number"));
+
+    if (body.email) {
+      const dataByEmail = await ctx.db.user.findMany({ where: { id: { not: id }, email: body.email } });
+      if (dataByEmail.length) return THROW_TRPC_ERROR("CONFLICT", getConflictMessage(body.role.toLowerCase(), "email"));
+    }
+
     await ctx.db.user.update({
       where: { id },
       data: {

@@ -107,10 +107,7 @@ export class schema {
             if (email) return regex.email.test(email);
             return true;
           },
-          {
-            message: "Please provide a valid email",
-            path: ["email"],
-          },
+          { message: "Provide a valid email", path: ["email"] },
         ),
 
       packageData: z
@@ -128,14 +125,30 @@ export class schema {
 
     static update = z.object({
       id: z.string(),
-      body: z.object({
-        email: schema.email.nullable(),
-        fullName: schema.fullName,
-        phoneNumber: schema.phoneNumber,
-        birthDate: schema.dateOptional,
-        gender: schema.gender,
-        updatePassword: this.updatePassword,
-      }),
+      body: z
+        .object({
+          email: z.string().nullable(),
+          fullName: schema.fullName,
+          phoneNumber: schema.phoneNumber,
+          birthDate: schema.dateOptional,
+          gender: schema.gender,
+          updatePassword: this.updatePassword,
+          role: schema.role,
+        })
+        .refine(
+          ({ email }) => {
+            if (email) return regex.email.test(email);
+            return true;
+          },
+          { message: "Provide a valid email", path: ["email"] },
+        )
+        .refine(
+          ({ email, role }) => {
+            if (!email && role === "TRAINER") return regex.email.test("");
+            return true;
+          },
+          { message: "Provide a valid email (required for trainers)", path: ["email"] },
+        ),
     });
 
     static list = z.object({

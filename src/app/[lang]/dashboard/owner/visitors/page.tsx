@@ -1,9 +1,10 @@
 "use client";
 
 import { REFETCH_INTERVAL, USER_LIST_SORTERERS, USER_REDIRECT } from "@/lib/constants";
-import { createUrl } from "@/lib/functions";
+import { closeModal, createUrl } from "@/lib/functions";
 import { api } from "@/trpc/react";
 import type { Lang, SearchParams } from "@/types";
+import ModalUpdateTrainerVisitor from "@dashboard/components/ModalUpdateTrainerVisitor";
 import TableSearch from "@dashboard/components/TableSearch";
 import TableSorter from "@dashboard/components/TableSorter";
 import Table from "@owner/visitors/components/Table";
@@ -33,6 +34,10 @@ export default function VisitorsPage({ searchParams, params }: Props) {
   return (
     <section className="grid md:grid-cols-5 gap-6 lg:gap-x-12">
       <section className="flex flex-col gap-4 md:col-span-4">
+        <ModalUpdateTrainerVisitor
+          show={!!searchParams.id && !!searchParams.update}
+          closeModal={closeModal({ action: "update", newParams, redirect: redirectTable })}
+        />
         <TableSearch loading={loading} searchParams={searchParams} redirectTable={redirectTable} newParams={newParams} />
         <Table
           lang={params.lang}
