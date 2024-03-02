@@ -43,6 +43,7 @@ export const ERROR_MESSAGES: Record<TRPC_ERROR_CODE_KEY, string> = {
   FORBIDDEN: "Access forbidden. You do not have permission to access this resource.",
   NOT_FOUND: "Resource not found. The requested resource does not exist.",
   METHOD_NOT_SUPPORTED: "HTTP method not supported. Please use a supported HTTP method.",
+  UNSUPPORTED_MEDIA_TYPE: "Media type not supported. Please use a supported media type.",
   TIMEOUT: "Request timeout. The server did not receive a timely response.",
   CONFLICT: "Conflict in resource state. There is a conflict with the current state of the resource.",
   PRECONDITION_FAILED: "Precondition failed for the request. Please meet the required conditions.",
