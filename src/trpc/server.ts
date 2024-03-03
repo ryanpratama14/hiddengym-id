@@ -6,12 +6,14 @@ import { TRPCClientError, createTRPCClient, loggerLink } from "@trpc/client";
 import { callTRPCProcedure } from "@trpc/server";
 import { observable } from "@trpc/server/observable";
 import type { TRPCErrorResponse } from "@trpc/server/rpc";
-import { cookies } from "next/headers";
+import { headers } from "next/headers";
 import { cache } from "react";
 
-const createContext = cache(() =>
-  createTRPCContext({ headers: new Headers({ cookie: cookies().toString(), "x-trpc-source": "rsc" }) }),
-);
+const createContext = cache(() => {
+  const heads = new Headers(headers());
+  heads.set("x-trpc-source", "rsc");
+  return createTRPCContext({ headers: heads });
+});
 
 export const api = createTRPCClient<AppRouter>({
   links: [

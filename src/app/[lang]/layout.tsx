@@ -9,7 +9,6 @@ import type { Lang } from "@/types";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { ConfigProvider } from "antd";
 import type { Metadata } from "next";
-import { cookies } from "next/headers";
 import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
@@ -32,7 +31,7 @@ export default async function RootLayout({ children, params }: Props) {
     <html lang={params.lang}>
       <body>
         <HigherOrderComponent t={t} lang={params.lang} session={session} isSessionExpired={isSessionExpired}>
-          <TRPCReactProvider cookies={cookies().toString()}>
+          <TRPCReactProvider>
             <AntdRegistry>
               <ConfigProvider theme={theme}>
                 <Toaster

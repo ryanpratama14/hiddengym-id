@@ -7,12 +7,22 @@ import { createTRPCReact } from "@trpc/react-query";
 import { useState } from "react";
 import { getUrl, transformer } from "./shared";
 
+const createQueryClient = () => new QueryClient();
+
+let clientQueryClientSingleton: QueryClient | undefined = undefined;
+
+const getQueryClient = () => {
+  if (typeof window === "undefined") return createQueryClient();
+  // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
+  return (clientQueryClientSingleton ??= createQueryClient());
+};
+
 export const api = createTRPCReact<AppRouter>();
 
-type Props = { children: React.ReactNode; cookies: string };
+type Props = { children: React.ReactNode };
 
-export function TRPCReactProvider({ children, cookies }: Props) {
-  const [queryClient] = useState(() => new QueryClient());
+export function TRPCReactProvider({ children }: Props) {
+  const queryClient = getQueryClient();
 
   const [trpcClient] = useState(() =>
     api.createClient({
@@ -23,15 +33,16 @@ export function TRPCReactProvider({ children, cookies }: Props) {
         httpBatchLink({
           transformer,
           url: getUrl(),
-          headers: () => ({ cookie: cookies, "x-trpc-source": "react" }),
         }),
       ],
     }),
   );
 
   return (
-    <api.Provider client={trpcClient} queryClient={queryClient}>
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-    </api.Provider>
+    <QueryClientProvider client={queryClient}>
+      <api.Provider client={trpcClient} queryClient={queryClient}>
+        {children}
+      </api.Provider>
+    </QueryClientProvider>
   );
 }
