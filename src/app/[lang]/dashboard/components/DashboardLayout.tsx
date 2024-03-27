@@ -65,20 +65,17 @@ export default function DashboardLayout({ collapsed, setCollapsed, user, handleC
       </Layout>
 
       <ConfigProvider theme={{ components: { Drawer: { padding: 0, paddingLG: 0 } } }}>
-        <Drawer
-          width={225}
-          closeIcon={
-            <section className="gap-2 flex items-center w-[225px] justify-center h-14 text-cream">
-              <MenuFoldOutlined style={{ fontSize: "30px" }} />
-            </section>
-          }
-          closable={true}
-          placement="left"
-          onClose={() => setOpen(false)}
-          open={open}
-        >
+        <Drawer onClose={() => setOpen(false)} width={225} closable={false} placement="left" open={open}>
           <aside className="h-full flex flex-col gap-6 justify-between pb-6">
-            <Menu color={COLORS.cream} selectedKeys={selectedMenu.keys} mode="inline" items={items} />
+            <section className="flex flex-col">
+              <section
+                onClick={() => setOpen(false)}
+                className="gap-2 flex items-center w-[225px] cursor-pointer justify-center h-14 text-cream"
+              >
+                <MenuFoldOutlined style={{ fontSize: "30px" }} />
+              </section>
+              <Menu color={COLORS.cream} selectedKeys={selectedMenu.keys} mode="inline" items={items} />
+            </section>
             <section className="w-full flex flex-col gap-4 text-cream items-center justify-center">
               <Logo className="w-[70%] aspect-video" />
               <p className={cn("font-semibold")}>HIDDEN GYM</p>
