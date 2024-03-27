@@ -13,7 +13,6 @@ let clientQueryClientSingleton: QueryClient | undefined = undefined;
 
 const getQueryClient = () => {
   if (typeof window === "undefined") return createQueryClient();
-  // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
   return (clientQueryClientSingleton ??= createQueryClient());
 };
 

@@ -5,10 +5,10 @@
     "enabled": true,
     "rules": {
       "recommended": true,
-      "suspicious": { "noArrayIndexKey": "off" },
+      "suspicious": { "noArrayIndexKey": "off", "noAssignInExpressions": "off" },
       "a11y": { "useKeyWithClickEvents": "off", "useValidAriaRole": "off" },
       "complexity": { "noStaticOnlyClass": "off" },
-      "nursery": { "useImportType": "warn", "useGroupedTypeImport": "warn" },
+      "nursery": { "useImportRestrictions": "warn" },
       "correctness": { "noUnusedVariables": "warn", "noUnusedLabels": "warn", "useExhaustiveDependencies": "off" }
     }
   },
